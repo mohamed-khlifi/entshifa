@@ -1,0 +1,95 @@
+---
+description: MySQL schema, SQLAlchemy models and Alembic migration conventions
+globs: apps/api/alembic/**/*.py,apps/api/src/ent/features/**/models.py,apps/api/src/ent/core/db/**/*.py
+alwaysApply: false
+---
+
+# Database and migration rules
+
+## Every table
+
+    id             BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY   internal only
+    public_id      CHAR(26) NOT NULL UNIQUE                     ULID, used in URLs
+    clinic_id      BIGINT UNSIGNED NOT NULL                     on every clinical table
+    created_at     DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
+    updated_at     DATETIME(6) NOT NULL ... ON UPDATE CURRENT_TIMESTAMP(6)
+    created_by_id  BIGINT UNSIGNED NULL -> user.id
+    updated_by_id  BIGINT UNSIGNED NULL -> user.id
+    deleted_at     DATETIME(6) NULL                             soft delete
+    deleted_by_id  BIGINT UNSIGNED NULL
+    version        INT UNSIGNED NOT NULL DEFAULT 1              optimistic locking
+
+Get these from the mixins. Do not retype them.
+
+## Types
+
+- Engine InnoDB, charset utf8mb4, collation utf8mb4_0900_ai_ci. Use
+  utf8mb4_0900_as_cs where case matters (codes, token hashes).
+- Timestamps stored UTC in DATETIME(6). Inherently local dates (birth date,
+  surgery date) are DATE.
+- Money: DECIMAL(12,3) plus a currency column. Never FLOAT or DOUBLE.
+- Clinical measurements: SMALLINT or DECIMAL with an explicit unit. Never float
+  where exactness matters.
+- Enum-like values: VARCHAR with a CHECK constraint, or a lookup table when
+  clinicians may extend the list. Never MySQL ENUM (altering it locks the table
+  and it cannot be translated).
+- Laterality: VARCHAR(10) CHECK IN ('right','left','bilateral','midline','na').
+  A bilateral finding on a paired structure is stored as TWO rows, one per side.
+- JSON only for genuinely schemaless payloads (device raw export, template
+  placeholder map). If you will filter, sort or aggregate on it, make it a
+  column.
+
+## Keys and indexes
+
+- Never expose the integer `id`. URLs and API payloads use `public_id`.
+- Every tenant-scoped index starts with `clinic_id`.
+- Index names: ix_<table>__<cols>, uq_<table>__<cols>, fk_<table>__<ref>.
+- Foreign keys are ON DELETE RESTRICT by default. Clinical rows are never
+  removed by a cascade.
+- Timeline and list queries need a covering index on
+  (clinic_id, patient_id, <date> DESC).
+
+## Where a new clinical field goes
+
+Ask this before adding a column:
+
+- Is it a clinician-extensible finding, sparse across patients, with a
+  terminology concept behind it?  -> it is an `observation` row, NOT a column.
+- Is it dense, fixed-shape, high-volume numeric data (audiogram thresholds,
+  questionnaire answers, prick test results)? -> its own narrow table.
+- Is it an attribute of the record itself (performed_at, equipment, status,
+  a computed summary metric)? -> a column on that table.
+
+Never add a wide examination table with dozens of nullable finding columns.
+That decision is argued in the architecture document and is settled.
+
+## Migrations
+
+- One Alembic migration per change. Review autogenerate by hand; it misses
+  index and constraint intent, CHECK constraints and column comments.
+- Additive first, always, so a deploy never locks a clinic out mid-morning:
+  add the column nullable, backfill in a separate data migration, enforce
+  NOT NULL in a later migration.
+- Every migration is reversible, or is explicitly marked irreversible with a
+  written reason in the docstring.
+- Data migrations live in their own migration files and are idempotent.
+- Never edit a migration that has been applied anywhere beyond your machine.
+  Write a new one.
+- Test the migration against an empty database and against a snapshot of the
+  previous release's schema before proposing it.
+
+## Reference data
+
+Terminology, formulary, instruments, protocols and templates are seeded by
+versioned scripts in `cli/seed.py`, never by hand-written SQL in a migration
+and never hardcoded in Python. Applying a seed records a row in
+`reference_data_version`.
+
+## Performance
+
+- No SELECT *. List queries select explicit columns.
+- Every list query paginates.
+- Declare eager loading; lazy loading in an async context is a bug waiting to
+  happen.
+- audit_log and access_log are partitioned by month.
+- Slow query threshold 200 ms, reviewed weekly.

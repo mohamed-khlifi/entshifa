@@ -1,0 +1,2086 @@
+================================================================================
+ENT CLINICAL WORKSPACE
+Feature specification for an otolaryngology (ENT / ORL) clinical web application
+================================================================================
+
+Version: 2.0 (rewritten and extended from the original 10-feature draft)
+Scope: features, clinical workflows, data the application must capture,
+       documents it must produce, and the order to build it in.
+Technology: covered briefly in section 15 only. The stack is already decided
+            (React / Next.js / shadcn front end, FastAPI back end, MySQL).
+
+
+--------------------------------------------------------------------------------
+HOW THIS DOCUMENT IS ORGANIZED
+--------------------------------------------------------------------------------
+
+ 1.  What changed compared to the first draft, and why
+ 2.  Product vision and design principles
+ 3.  A day in an ENT practice (the workflows the app must serve)
+ 4.  Foundation modules (patients, clinic, roles, schedule, alerts)
+ 5.  Consultation cockpit (the main screen)
+ 6.  Examination module with interactive anatomical maps
+ 7.  Procedure report builders (nasal endoscopy, laryngoscopy, otoscopy,
+     office procedures)
+ 8.  Audiology suite
+ 9.  Vestibular (vertigo) suite
+ 10. Sub-specialty modules (tinnitus, voice and swallowing, sleep and
+     snoring, allergy, head and neck / oncology, pediatric ENT, facial
+     nerve, salivary glands, epistaxis)
+ 11. Questionnaire and scoring engine
+ 12. Clinical calculator engine
+ 13. Surgery module (waiting list, pre-op, operative notes, post-op)
+ 14. Documents: reports, prescriptions, certificates, letters, requests,
+     patient handouts
+ 15. Patient timeline, comparison and follow-up (recall) engine
+ 16. Images, videos and attachments
+ 17. Doctor dashboard and practice analytics
+ 18. The AI assistant (deliberately small)
+ 19. Cross-cutting features (languages, keyboard, autosave, search,
+     safety alerts, audit, security, roles)
+ 20. Data principles and coding
+ 21. MVP scope, phasing and what to leave out
+ 22. Three "killer workflows" the product must nail
+ 23. Brief technology notes
+ 24. Appendix A: reference table of scores and grading systems
+ 25. Appendix B: chief complaint to template mapping
+ 26. Appendix C: common ENT procedures and default follow-up plans
+
+
+--------------------------------------------------------------------------------
+1. WHAT CHANGED COMPARED TO THE FIRST DRAFT, AND WHY
+--------------------------------------------------------------------------------
+
+The first draft was a reasonable skeleton. It had the right instinct
+(structured data first, AI last), but it described the application from a
+software engineer's point of view. It listed database tables and API routes
+and said "add validated scores later." An ENT doctor reading it would not
+recognize their own working day in it.
+
+This version starts from what ENT doctors actually do in a week:
+
+  - They see a high volume of short consultations dominated by a small set
+    of complaints (nasal obstruction, ear pain, hearing loss, sore throat,
+    vertigo, hoarseness, snoring, neck lump). Speed matters more than
+    completeness on most visits.
+  - They perform office procedures during the visit: nasal endoscopy,
+    fiberoptic laryngoscopy, otomicroscopy, wax removal, epistaxis cautery,
+    Epley maneuvers, tube insertion. These need a report, often on the spot.
+  - They read tests: audiograms, tympanograms, OAE, ABR, vestibular tests,
+    sinus CT, neck ultrasound, sleep studies, allergy panels. The results
+    need to be stored as numbers, not as scanned PDFs.
+  - They score things constantly: SNOT-22, NOSE, VHI, THI, DHI, Epworth,
+    STOP-BANG, Brodsky, Lund-Mackay, Lund-Kennedy, House-Brackmann, RSI,
+    EAT-10, TNM. Today these are done on paper or in the doctor's head.
+  - They operate. The consultation is often a step towards surgery, and
+    surgery generates its own paperwork (consent, quote, pre-op checklist,
+    operative note, post-op plan).
+  - They write a lot of documents: consultation report, procedure report,
+    prescription, referral letter, sick leave, medical certificate, imaging
+    request, lab request, patient instructions.
+  - They follow patients over years: cholesteatoma surveillance, tube
+    checks, yearly audiograms, post-cancer surveillance schedules,
+    immunotherapy schedules.
+
+What is new in this version:
+
+  - The consultation is organized around the chief complaint. Choosing the
+    complaint configures the whole visit (history fields, exam sections,
+    tests to expect, questionnaires to send, likely documents).
+  - Interactive anatomical maps (tympanic membrane, nasal cavity, larynx,
+    oral cavity, neck lymph node levels, face) replace long dropdown lists.
+  - Full audiology suite instead of "audiogram calculator": tympanometry,
+    speech audiometry, OAE, ABR, hearing aid tracking, WHO grading,
+    asymmetry and threshold-shift alerts, overlay comparison.
+  - Full vestibular suite with canal-specific BPPV logic and maneuver
+    documentation.
+  - Seven sub-specialty modules that were missing entirely (tinnitus,
+    voice and swallowing, sleep, allergy, head and neck oncology,
+    pediatrics, facial nerve, salivary, epistaxis).
+  - A questionnaire engine where patients fill scores on a tablet or via
+    QR code before the visit, so results are waiting for the doctor.
+  - A surgery module, because surgery is half of ENT.
+  - A documents module that covers everything the doctor prints, not only
+    the "report".
+  - A follow-up (recall) engine that knows the standard surveillance
+    intervals for ENT conditions and procedures.
+  - Safety alerts specific to ENT: only-hearing-ear, ototoxic drugs,
+    anticoagulants before procedures, drug allergies on prescriptions.
+  - A doctor dashboard with clinical outcomes (for example mean SNOT-22
+    improvement after sinus surgery in that doctor's own patients).
+  - Clear multilingual design (French, Arabic, English) with right-to-left
+    support for Arabic patient documents.
+
+The AI section is still the smallest. That was the right call in the first
+draft and it stays.
+
+
+--------------------------------------------------------------------------------
+2. PRODUCT VISION AND DESIGN PRINCIPLES
+--------------------------------------------------------------------------------
+
+One sentence:
+
+  An ENT doctor should finish a consultation, its procedure report, the
+  prescription and the follow-up plan before the patient has put their
+  coat back on, and everything should be stored as data they can compare
+  next year.
+
+Design principles (these decide arguments later):
+
+ P1. The chief complaint drives everything. Nobody should scroll past
+     vestibular fields when the patient came for a nosebleed.
+
+ P2. Every finding is a structured value first and a sentence second. The
+     sentence is generated from the value. The doctor edits the sentence
+     if needed, but the value is what gets stored and compared.
+
+ P3. Normal is one click. "Normal otoscopy, both ears" is a single action
+     that fills every sub-field and writes the negative findings into the
+     report.
+
+ P4. Copy forward, then show the difference. Every visit can start from
+     the previous one. The app highlights what changed.
+
+ P5. Numbers stay numbers. Audiogram thresholds, wheal sizes, AHI, SNOT-22
+     totals are stored as numeric fields so they can be graphed and
+     compared. Never as text inside a PDF.
+
+ P6. The app calculates, the doctor interprets. The app says "interaural
+     asymmetry of 25 dB at 4 kHz meets the configured asymmetry criterion."
+     It does not say "suspect acoustic neuroma."
+
+ P7. Anything printed comes from a template the doctor controls.
+
+ P8. Keyboard first, tablet second, mouse third. Doctors in a procedure
+     room have one hand on an endoscope.
+
+ P9. Nothing is lost. Autosave every few seconds, drafts survive a browser
+     crash, every clinical change is audited.
+
+ P10. AI is optional, visible, and never writes into the record without a
+      human confirming.
+
+
+--------------------------------------------------------------------------------
+3. A DAY IN AN ENT PRACTICE
+--------------------------------------------------------------------------------
+
+The application must support these five settings. Each has different
+constraints.
+
+3.1 Reception and waiting room
+  - Patient is registered or found (name, phone, national ID, insurance).
+  - Reason for visit is captured in the patient's words.
+  - Patient receives a tablet or a QR code and fills the questionnaire
+    matching the complaint (SNOT-22 for sinus, THI for tinnitus, Epworth
+    for snoring, DHI for vertigo, VHI-10 for voice). Score is ready when
+    the doctor opens the chart.
+  - Assistant records weight and height (essential for pediatric dosing),
+    temperature if febrile, and any new allergy.
+  - Assistant or technician may perform screening audiometry and
+    tympanometry and enter results directly. The doctor sees them already
+    plotted.
+
+3.2 Consultation room
+  - Doctor opens the patient. Sees a one-screen summary: alerts, active
+    problems, last visit summary, pending results, today's questionnaire
+    score.
+  - Selects or confirms the chief complaint. The consultation cockpit
+    reconfigures.
+  - Takes history with structured fields plus a free-text box.
+  - Examines using anatomical maps and one-click normals.
+  - Decides. Records diagnosis (coded), plan, prescriptions, requests,
+    follow-up.
+  - Prints or sends documents. All in under 10 minutes for a routine
+    visit.
+
+3.3 Procedure room (office procedures)
+  - Nasal endoscopy, fiberoptic laryngoscopy, videostroboscopy,
+    otomicroscopy with wax or foreign body removal, epistaxis cautery,
+    tympanostomy under local, Epley or other repositioning maneuver,
+    biopsy, botulinum injection, in-office FNA.
+  - Doctor has one free hand at most. The interface must work with
+    keyboard shortcuts, foot pedal image capture (later), or an assistant
+    entering findings as the doctor dictates.
+  - Images and short video clips are captured and attached to findings.
+  - Report is generated immediately and signed.
+
+3.4 Operating day
+  - Surgeon reviews the day's list with pre-op checklist status.
+  - After surgery, writes the operative note from a procedure-specific
+    template (structured fields, not a blank page).
+  - Post-op plan and follow-up appointments are generated automatically
+    from the procedure type.
+  - Procedure is added to the surgeon's logbook.
+
+3.5 Follow-up and administrative time
+  - Signing reports that were left as drafts.
+  - Reviewing results that arrived (audiograms from external lab, CT
+    reports, pathology).
+  - Handling recalls: who is overdue for tube check, cholesteatoma
+    review, cancer surveillance, immunotherapy dose.
+  - Answering referral letters.
+
+Pain points doctors report about existing generic software, which this
+product must fix:
+
+  - Fields designed for general medicine. No place to record a tympanic
+    membrane perforation location, a polyp grade, or vocal cord mobility.
+  - Audiograms stored as scanned images. Impossible to compare visits.
+  - Reports rewritten by hand every time. The same "Normal nasal
+    endoscopy" text typed 20 times a day.
+  - Scores calculated on paper and never stored.
+  - No memory of follow-up rules. Patients with tubes fall through.
+  - Surgery paperwork done in Word documents outside the system.
+  - Prescriptions without pediatric weight-based dosing help.
+  - Nothing in Arabic for the patient, nothing in French for the record.
+
+
+--------------------------------------------------------------------------------
+4. FOUNDATION MODULES
+--------------------------------------------------------------------------------
+
+4.1 Patient registry
+  Identity
+    - Full name, date of birth (age auto-computed, shown in years for
+      adults and in months for children under 3), sex, national ID or
+      passport, phone (primary and secondary), email, address, preferred
+      language for documents (French / Arabic / English).
+    - Insurance: scheme (national health insurance, private, none),
+      member number, coverage notes. Keep it a configurable list because
+      it varies by country.
+    - Referring doctor (name, specialty, phone, email) so referral replies
+      can be generated.
+    - Emergency contact. For minors, parent or guardian name and
+      relationship.
+    - Occupation and noise exposure (relevant for hearing loss). Smoking
+      and alcohol (relevant for head and neck cancer and voice).
+  Duplicate detection at creation: same name plus date of birth or same
+  phone triggers a "possible existing patient" prompt.
+  Merge patients (admin only, audited).
+
+4.2 Clinical background (persistent across visits)
+  - Drug allergies with reaction type and severity.
+  - Other allergies (latex, iodine contrast, food).
+  - Chronic conditions (diabetes, hypertension, asthma, GERD, coagulation
+    disorders, immunosuppression).
+  - Current medications with a flag for anticoagulants / antiplatelets
+    and for known ototoxic drugs.
+  - Past ENT surgeries (procedure, side, year, surgeon, complications).
+  - Other surgeries.
+  - Hearing aids or cochlear implant (see audiology module).
+  - Family history relevant to ENT (hearing loss, thyroid disease, head
+    and neck cancer, otosclerosis).
+  - Problem list: active and resolved diagnoses, each coded.
+  - ENT-specific persistent flags (see 4.5 alerts).
+
+4.3 Clinic, staff and roles
+  - Clinic profile: name, address, phone, logo, header and footer text for
+    documents, default language, tax or registration numbers for quotes.
+  - Multiple sites allowed under one clinic (a doctor working in a private
+    office and a hospital).
+  - Roles:
+      Clinic admin      manages users, templates, billing settings, merges
+      Doctor            full clinical access to their patients, signs
+                        documents
+      Assistant / nurse registers patients, enters vitals, questionnaires,
+                        schedules, prints unsigned documents, cannot sign
+      Audiology technician  enters audiometry, tympanometry, OAE, ABR;
+                        cannot see consultation notes beyond what is needed
+      Read-only         for a locum or a student, with audit
+  - A doctor sees their own patients by default and other doctors'
+    patients in the same clinic only if the admin enables shared access.
+
+4.4 Schedule (light version, deliberately minimal)
+  - Day and week view of appointments per doctor and per room.
+  - Appointment types with default durations: new consultation, follow-up,
+    procedure (endoscopy, laryngoscopy, microscopy), audiology test slot,
+    post-op check, surgery.
+  - Status: scheduled, waiting, in room, done, no-show.
+  - Waiting-room list with arrival time and questionnaire status
+    ("SNOT-22 completed").
+  - Book the follow-up directly from the consultation plan ("see in 6
+    weeks with audiogram" creates the appointment and the test slot).
+  This is not a full practice-management calendar. No online booking, no
+  recurring rules, no resource optimization in version 1.
+
+4.5 Safety alerts (banner at the top of the patient screen)
+  These are the ENT-specific alerts that generic software never has.
+  - ONLY HEARING EAR: patient has a dead or near-dead ear on one side.
+    Shown in red on every screen. Any procedure or ototoxic prescription
+    on the good side asks for explicit confirmation.
+  - Anticoagulant / antiplatelet in current medications. Shown before any
+    procedure (biopsy, cautery, surgery) with the drug name.
+  - Drug allergy. Shown on the prescription screen and blocks prescribing
+    the allergen class without an override reason.
+  - Ototoxic medication present (aminoglycosides, cisplatin or
+    carboplatin, loop diuretics, high-dose salicylates, quinine). Prompts
+    baseline and monitoring audiometry.
+  - Immunosuppressed or diabetic when otitis externa or invasive fungal
+    sinusitis is being documented.
+  - Pediatric weight missing when a prescription is started for a child.
+  - Airway alert: history of difficult airway, tracheostomy, laryngeal
+    stenosis.
+  - Pacemaker or cochlear implant (relevant for monopolar cautery and MRI
+    requests).
+  - Pregnancy or breastfeeding (prescriptions and imaging).
+  Alerts are structured flags with a start date, source and optional end
+  date. They are not free text.
+
+
+--------------------------------------------------------------------------------
+5. CONSULTATION COCKPIT (THE MAIN SCREEN)
+--------------------------------------------------------------------------------
+
+5.1 Layout
+  Left column (fixed): patient card with alerts, age, allergies, active
+    problems, current medications, last three visits in one line each,
+    today's questionnaire score.
+  Center: the consultation itself in collapsible sections that follow the
+    clinical order: reason, history, examination, tests, assessment, plan.
+  Right column: live report preview. As the doctor fills fields, the
+    sentences appear. Editable in place. This is what will be printed.
+  Bottom bar: autosave status, "normal exam" shortcuts, sign, print,
+    "copy from last visit".
+
+5.2 Chief complaint selector
+  A grid of the common ENT complaints, grouped by region, plus search.
+    Ear:    ear pain, hearing loss, ear discharge, tinnitus, ear fullness,
+            itching, foreign body, wax, sudden hearing loss
+    Nose:   nasal obstruction, rhinorrhea, sneezing / itching, epistaxis,
+            loss of smell, facial pain or pressure, post-nasal drip,
+            nasal deformity, nasal trauma
+    Throat: sore throat, recurrent tonsillitis, dysphagia, globus, reflux
+            symptoms, bad breath, oral lesion, dental-related pain
+    Voice / airway: hoarseness, voice fatigue, stridor, chronic cough,
+            breathing difficulty
+    Neck:   neck lump, thyroid nodule, salivary swelling, neck pain
+    Sleep:  snoring, witnessed apneas, daytime sleepiness, child mouth
+            breathing
+    Balance: vertigo, dizziness, imbalance, motion intolerance
+    Face:   facial weakness, facial pain, facial swelling
+    Pediatric: recurrent ear infections, speech delay, failed hearing
+            screen, noisy breathing
+    Follow-up: post-operative check, results review, chronic disease
+            review, tube check, immunotherapy visit
+  More than one complaint can be selected. The first one is primary.
+
+5.3 What the complaint changes (the core innovation of this screen)
+  Selecting a complaint applies a "visit template" that:
+    a. Adds the complaint-specific history questions (see 5.4).
+    b. Expands the relevant examination sections and collapses the others
+       (they remain available one click away).
+    c. Pre-loads the matching questionnaire result if the patient filled
+       it in the waiting room, or offers to send it.
+    d. Suggests the usual tests for that complaint as tick boxes (for
+       nasal obstruction: nasal endoscopy today, sinus CT request; for
+       hearing loss: audiogram, tympanogram).
+    e. Pre-selects the likely documents (for recurrent tonsillitis in a
+       child: tonsillectomy information sheet, surgery quote).
+    f. Loads the doctor's own favorite diagnoses and prescriptions for
+       this complaint.
+  Templates ship with sensible defaults and every doctor can edit their
+  own copy. Appendix B lists the default mapping.
+
+5.4 History (structured plus free text)
+  Common to all complaints:
+    onset (date or duration), course (constant, intermittent, progressive,
+    improving), laterality (right, left, bilateral, alternating), severity
+    (0 to 10 or mild / moderate / severe), triggers, relieving factors,
+    previous treatments tried and response, previous consultations for the
+    same problem, impact on work / school / sleep.
+  Complaint-specific blocks, examples:
+    Nasal obstruction: constant vs alternating, worse lying down, mouth
+      breathing at night, snoring, hyposmia, facial pressure, discharge
+      character, allergic symptoms and seasonality, nasal spray overuse
+      (decongestant rhinitis), previous nasal surgery or trauma.
+    Hearing loss: sudden vs progressive, fluctuating, with tinnitus or
+      vertigo, noise exposure, ototoxic drugs, family history, ear
+      infections in childhood, hearing aid use, difficulty in noise vs
+      quiet, which ear is used for the phone.
+    Vertigo: see vestibular suite (section 9), the history is the
+      diagnosis in vertigo.
+    Hoarseness: duration, voice use (teacher, singer, call center),
+      smoking, reflux, intubation history, breathing or swallowing
+      symptoms, weight loss (red flag), hemoptysis (red flag).
+    Sore throat / tonsillitis: number of episodes in the last 12 months
+      and in each of the previous 2 years (feeds the tonsillectomy
+      criteria, see calculator engine), antibiotic courses, missed school
+      or work days, abscess history, snoring.
+    Neck lump: duration, growth rate, pain, associated fever, weight
+      loss, night sweats, dysphagia, voice change, smoking and alcohol,
+      dental problems, recent infection, animal contact, tuberculosis
+      exposure.
+    Epistaxis: side, frequency, duration, anterior vs posterior pattern,
+      anticoagulants, hypertension, nose picking, dry environment,
+      bleeding elsewhere, family history of bleeding.
+    Snoring / sleep: Epworth and STOP-BANG scores, witnessed apneas,
+      nocturia, morning headaches, weight change, bed partner report,
+      previous sleep study (AHI), CPAP use and tolerance.
+  Free-text box always present. Anything the structured fields do not
+  capture goes there, and the AI assistant can later propose structured
+  values from it (section 18).
+
+5.5 Red flag capture
+  Certain answers set a visible red-flag marker on the consultation and
+  in the report (sudden sensorineural hearing loss, unilateral tinnitus
+  with asymmetric hearing, hoarseness over 3 weeks in a smoker, neck lump
+  over 3 weeks in an adult, unilateral nasal obstruction with bleeding,
+  stridor, dysphagia with weight loss, facial weakness with a parotid
+  mass). The app does not diagnose. It marks and lets the doctor decide.
+  The list of red flags is editable by the clinic.
+
+5.6 Assessment and plan
+  - Diagnoses: search by name or code, the doctor's favorites first,
+    complaint-specific favorites above that. Each diagnosis has side
+    (right / left / bilateral / not applicable), status (suspected,
+    confirmed, ruled out), and can be promoted to the problem list.
+  - Plan items, each structured: medication (opens prescription),
+    procedure done today, test requested, imaging requested, referral,
+    surgery proposed (opens surgery module), advice given (from a library
+    of handouts), follow-up (opens recall engine), sick leave, certificate.
+  - Every plan item becomes a sentence in the report and, where relevant,
+    a document.
+
+5.7 One-click normals and copy forward
+  - "Normal ENT examination" fills all exam sections with normal values
+    and generates the negative-findings text. The doctor then changes
+    only what is abnormal.
+  - Per-region normals: "Normal otoscopy R", "Normal otoscopy L", "Normal
+    anterior rhinoscopy", "Normal oral cavity and oropharynx", "Normal
+    neck".
+  - "Copy from last visit" pre-fills history, exam and problem list from
+    the previous consultation and shows each copied value in a distinct
+    style until the doctor confirms or changes it. The report then states
+    "unchanged compared to [date]" where the doctor wants it.
+
+5.8 Signing and locking
+  - A consultation is a draft until signed. Signing locks it. After
+    signing, corrections are added as dated addenda, never as silent
+    edits. The original stays visible in the audit trail.
+  - Unsigned drafts appear on the doctor's dashboard so nothing stays
+    unsigned for days.
+
+
+--------------------------------------------------------------------------------
+6. EXAMINATION MODULE WITH INTERACTIVE ANATOMICAL MAPS
+--------------------------------------------------------------------------------
+
+The examination is where dropdown-heavy medical software fails ENT. The
+answer is clickable schematic diagrams with structured findings attached to
+anatomical positions. Each map has a right and left version where the
+organ is paired.
+
+6.1 Ear: tympanic membrane map (otoscopy / otomicroscopy)
+  The diagram shows the external canal and a tympanic membrane divided
+  into the four quadrants (anterosuperior, anteroinferior, posterosuperior,
+  posteroinferior) plus pars flaccida, umbo, handle of malleus, light
+  reflex.
+  External canal findings: normal, wax (partial / complete occlusion),
+    otitis externa (edema, debris, fungal elements), exostoses, foreign
+    body, stenosis, granulation, discharge (serous, mucoid, purulent,
+    bloody, foul-smelling), skin lesion.
+  Membrane findings, placed by clicking the quadrant:
+    perforation (central / marginal / attic, quadrant(s) involved,
+      estimated percentage of surface, dry or wet, edges visible or not,
+      middle ear mucosa visible: normal / inflamed / polypoid)
+    retraction (pars tensa graded with Sadé, pars flaccida graded with
+      Tos, self-cleaning or not, keratin debris)
+    cholesteatoma (location, extent, active discharge)
+    tympanosclerosis (plaques, location)
+    effusion (serous / mucoid / air-fluid level / bubbles, membrane color:
+      amber, blue, dull)
+    acute otitis media (bulging, erythema, purulent effusion, ruptured)
+    hemotympanum
+    ventilation tube (type, in place and patent / blocked / extruded /
+      lying in canal, granulation around it, otorrhea through it)
+    bullae, granulation, polyp, mass
+    myringitis
+  Mobility: normal, reduced, absent, hypermobile (pneumatic otoscopy).
+  Tuning fork tests: Weber (midline / lateralizes right / left), Rinne
+    right and left (positive / negative), stored as structured values
+    with the frequency used (256 or 512 Hz).
+  Facial nerve function is recorded on the face map (6.6), not here.
+  Output sentence example (generated):
+    "Right ear: dry central perforation involving the anteroinferior and
+     posteroinferior quadrants, approximately 40% of the membrane, middle
+     ear mucosa normal. Left ear: normal."
+
+6.2 Nose: anterior rhinoscopy map
+  Diagram of the nasal cavity in coronal view, right and left.
+  Structures: vestibule, septum (deviation side, location: caudal,
+    anterior, posterior, spur, perforation with size), inferior turbinate
+    (normal, hypertrophic, response to decongestant), middle turbinate,
+    nasal valve (collapse on inspiration), mucosa (normal, pale, congested,
+    edematous, atrophic, crusting), discharge (none, clear, mucopurulent,
+    bloody, unilateral, posterior), polyps (grade with the chosen scale),
+    masses, bleeding point (Kiesselbach area or other), synechiae, signs
+    of previous surgery.
+  External nose: deformity (dorsal hump, deviation, saddle, tip), skin
+    lesions, swelling, trauma signs.
+  Detailed nasal endoscopy has its own report builder (section 7.1) but
+  the basic map is enough for a simple visit.
+
+6.3 Oral cavity and oropharynx map
+  Diagram: lips, buccal mucosa, teeth and gums, hard and soft palate,
+  uvula, tonsils, posterior pharyngeal wall, tongue (dorsum, lateral
+  borders, ventral), floor of mouth, salivary duct openings.
+  Tonsils: Brodsky grade 0 to 4 per side, crypts with debris, exudate,
+    erythema, asymmetry (a red flag when significant), peritonsillar
+    swelling, tonsillolith.
+  Palate: Friedman tongue position I to IV, Mallampati I to IV (useful
+    for the anesthetist), long uvula, bifid uvula, cleft or submucous
+    cleft.
+  Mucosal lesions placed by click: ulcer, leukoplakia, erythroplakia,
+    lichenoid change, mass, candidiasis, aphthous lesions, with size in
+    mm and whether it is indurated. Photo attachment strongly encouraged
+    for any lesion.
+  Dentition: poor, missing teeth, dental abscess, prosthesis.
+  Tongue mobility and deviation. Gag reflex.
+
+6.4 Larynx and hypopharynx (mirror or endoscopic)
+  Handled by the laryngoscopy report builder (7.2). The consultation
+  exam offers a shortcut: "indirect laryngoscopy: normal / not possible /
+  see laryngoscopy report".
+
+6.5 Neck map with lymph node levels
+  Diagram of the neck showing levels IA, IB, IIA, IIB, III, IV, VA, VB,
+  VI, VII, plus thyroid lobes and isthmus, parotid, submandibular gland,
+  midline.
+  Clicking a level opens a node entry: size in mm (largest dimension),
+    number (single / multiple / matted), consistency (soft, firm, hard,
+    rubbery, fluctuant), mobility (mobile, fixed to skin, fixed to deep
+    structures), tenderness, skin change.
+  Thyroid: size (normal, diffusely enlarged with grade), nodule (side,
+    size, consistency), tenderness, movement on swallowing, retrosternal
+    extension suspected, bruit.
+  Salivary glands: swelling, tenderness, stone palpable, duct discharge
+    on massage, mass.
+  Midline: thyroglossal cyst movement with tongue protrusion, dermoid.
+  Other: trachea position, laryngeal crepitus, carotid pulsation, skin
+    scars, sinus or fistula.
+  Every neck mass entry can be linked to an ultrasound or FNA result
+  later (head and neck module).
+
+6.6 Face and cranial nerves map
+  Facial nerve: House-Brackmann grade I to VI as a whole, with optional
+    Sunnybrook composite score (resting symmetry, voluntary movement,
+    synkinesis). Side. Onset date. Bell's phenomenon, eye closure
+    completeness, lagophthalmos in mm.
+  Facial sensation by trigeminal division (V1, V2, V3), normal or reduced.
+  Facial swelling or tenderness over sinuses (frontal, maxillary,
+    ethmoid), orbital signs (proptosis, chemosis, diplopia, reduced
+    acuity) for sinus complications.
+  Other cranial nerves relevant to skull base and head and neck: IX, X,
+    XI (shoulder shrug), XII (tongue deviation).
+
+6.7 General examination fields (compact)
+  Temperature, weight, height, BMI auto-computed, blood pressure (epistaxis
+  and pre-op), oxygen saturation (airway), respiratory rate and stridor
+  (inspiratory / expiratory / biphasic), voice quality on entry
+  (normal, hoarse, breathy, muffled "hot potato", nasal).
+
+6.8 Behavior of all maps
+  - Click a structure once: normal. Click again: opens finding picker.
+  - Long press or right click: attach photo to that structure.
+  - Right and left toggled with one key.
+  - Everything placed on the map appears in the report preview
+    immediately, in anatomical order, right before left.
+  - A "not examined" state exists for every structure and produces no
+    sentence (or "not examined" if the doctor wants that stated).
+  - Maps can be exported as annotated images into the report.
+
+
+--------------------------------------------------------------------------------
+7. PROCEDURE REPORT BUILDERS
+--------------------------------------------------------------------------------
+
+Each office procedure has a dedicated builder that produces a signed
+report in under two minutes. All builders share the same skeleton:
+indication, anesthesia (none / topical spray / local infiltration),
+instrument used, tolerance, findings by structure, images, conclusion,
+plan. The findings part is procedure-specific.
+
+7.1 Nasal endoscopy report builder
+  Structures per side, in the order the scope passes them:
+    vestibule and nasal valve, septum, inferior turbinate, inferior
+    meatus, middle turbinate (concha bullosa, paradoxical), middle meatus
+    and uncinate, ethmoid bulla, accessory ostia, superior turbinate and
+    superior meatus, sphenoethmoidal recess, olfactory cleft, nasopharynx
+    (adenoid tissue, Eustachian tube orifice, fossa of Rosenmuller,
+    masses), post-operative cavity when previous FESS.
+  Per structure: normal / abnormal / not visualized, then findings from
+    the ENT-specific list: edema (0 to 2), polyp (0 to 2 for the
+    Lund-Kennedy item, plus overall polyp grade using Meltzer 0 to 4 or
+    Lildholdt 0 to 3, chosen in settings), discharge (none / clear /
+    thick / purulent), crusting (0 to 2), scarring or synechiae (0 to 2),
+    bleeding, mass (with description: smooth, ulcerated, friable,
+    pulsatile), fungal debris, mucus recirculation, patent or blocked
+    ostium, accessory ostium, exposed bone, foreign body.
+  Automatic scores:
+    - Lund-Kennedy endoscopic score (polyps, edema, discharge, scarring,
+      crusting; 0 to 2 each per side; 0 to 20).
+    - Modified Lund-Kennedy (polyps, edema, discharge only; 0 to 12).
+    - Polyp grade per side.
+    - Adenoid size as percentage of choanal obstruction in children
+      (or a 4-grade scale, configurable).
+  Images: capture or upload, attach to a structure, draw arrows or
+    circles, label. Side-by-side with the previous endoscopy of the same
+    structure when one exists.
+  Comparison view: this endoscopy against the previous one, structure by
+    structure, with the score trend.
+  Report: findings right then left, then nasopharynx, then scores, then
+    conclusion (doctor's free text with the AI draft offered), then plan.
+  Special templates: post-FESS cavity check (patency of maxillary
+    antrostomy, frontal recess, sphenoid ostium, crusting, synechiae,
+    recurrent polyps), epistaxis endoscopy (bleeding site localization),
+    CSF leak assessment.
+
+7.2 Fiberoptic laryngoscopy and videostroboscopy report builder
+  Structures in passage order: nasal cavity (brief), nasopharynx, velum
+    (closure pattern), base of tongue and vallecula, epiglottis (shape,
+    omega, edema), aryepiglottic folds, arytenoids (edema, erythema,
+    mobility), pyriform sinuses, post-cricoid area (pooling), false
+    cords, ventricles, true vocal folds, anterior commissure, posterior
+    commissure (interarytenoid pachydermia), subglottis, upper trachea
+    if visible.
+  Vocal fold section (the heart of this builder):
+    - Mobility right and left: normal, hypomobile, immobile (fixed or
+      paralyzed), paradoxical. Position of an immobile fold: median,
+      paramedian, intermediate, lateral.
+    - Glottic closure: complete, anterior gap, posterior gap, spindle,
+      hourglass, irregular, incomplete.
+    - Lesions placed on a vocal fold diagram divided into anterior,
+      middle and posterior thirds and free edge / superior surface:
+      nodule, polyp (sessile / pedunculated), cyst, Reinke's edema (grade
+      1 to 3), granuloma, papilloma, leukoplakia, erythroplakia,
+      ulceration, mass (with size estimate), sulcus, scar, web, varix,
+      hemorrhage.
+    - Supraglottic activity (muscle tension pattern types).
+    - Secretions, pooling, laryngopharyngeal reflux signs.
+  Stroboscopy fields when available: symmetry, periodicity, amplitude
+    (right / left), mucosal wave (right / left: normal / reduced /
+    absent), phase closure, phase symmetry, vertical level, non-vibrating
+    segment.
+  Automatic scores:
+    - Reflux Finding Score (8 items, 0 to 26).
+    - GRBAS from the perceptual voice assessment (0 to 3 each).
+    - Penetration-Aspiration Scale if FEES (functional endoscopic
+      evaluation of swallowing) fields are used, with consistencies
+      tested and residue location.
+  Video clips (5 to 15 seconds) attached with timestamp markers on
+    key frames.
+  Special templates: pre-thyroidectomy vocal fold check, post-thyroidectomy
+    check, vocal fold paralysis workup, FEES swallowing study, pediatric
+    airway (laryngomalacia type, subglottic stenosis Myer-Cotton grade),
+    tracheostomy stoma and trachea check.
+
+7.3 Otomicroscopy and ear procedures
+  Uses the tympanic membrane map (6.1) at higher detail plus a procedure
+  block:
+    - Wax removal (method: microsuction / curette / irrigation; complete
+      or partial; canal condition after).
+    - Foreign body removal (object, method, canal trauma).
+    - Otitis externa toilet and wick placement (wick type, removal date
+      creates a recall).
+    - Myringotomy and ventilation tube insertion under local (tube type
+      and side, effusion character, complications). Creates a tube-
+      tracking record with automatic 6-month recall (configurable).
+    - Tube removal.
+    - Ear canal biopsy.
+    - Intratympanic injection (drug, dose, side, indication).
+    - Cholesteatoma cavity cleaning (mastoid cavity condition: dry,
+      moist, granulation, debris, exposed structures) with next cleaning
+      recall.
+  Every ear with a ventilation tube, a cholesteatoma or a mastoid cavity
+  gets a persistent tracking record visible on the patient card.
+
+7.4 Other office procedures (short structured forms)
+  - Epistaxis management: site found (yes / no, location), method
+    (silver nitrate cautery, electrocautery, anterior pack with type,
+    posterior pack, balloon), pack removal date (recall), blood pressure
+    at the time, anticoagulant status, advice given.
+  - Canalith repositioning maneuvers: see vestibular suite (9.5).
+  - Fine needle aspiration in office: site, needle gauge, passes,
+    ultrasound guided or not, sample sent to which lab, expected result
+    date (recall for result review).
+  - Oral or pharyngeal biopsy.
+  - Botulinum toxin injection (spasmodic dysphonia, sialorrhea,
+    cricopharyngeal): muscle, dose, side.
+  - Peritonsillar abscess drainage: aspiration vs incision, volume,
+    culture sent.
+  - Nasal fracture reduction: closed reduction under local, splint type,
+    removal date.
+  - Sialendoscopy: gland, findings (stone, stenosis, mucus plug), stone
+    removed or not.
+  Each produces a short report and, when relevant, a recall.
+
+
+--------------------------------------------------------------------------------
+8. AUDIOLOGY SUITE
+--------------------------------------------------------------------------------
+
+This is the module where storing numbers instead of PDFs pays off most.
+It is designed so that a technician enters the data and the doctor reads
+a finished dashboard.
+
+8.1 Pure tone audiogram entry
+  - Frequencies: 125, 250, 500, 750, 1000, 1500, 2000, 3000, 4000, 6000,
+    8000 Hz. Inter-octave frequencies optional per clinic setting.
+    Extended high frequencies (10, 12.5, 14, 16 kHz) optional for
+    ototoxicity monitoring.
+  - Air conduction right and left, bone conduction right and left, each
+    with masked / unmasked marker and "no response at limit" marker
+    (stored as the limit value plus a flag, drawn with the standard
+    arrow).
+  - Entry methods: type in a grid with arrow-key navigation, or click
+    directly on the audiogram chart. Both update each other.
+  - Standard symbols and colors (right red circles, left blue crosses,
+    bone brackets) so the printed audiogram looks like every audiogram
+    the doctor has ever read.
+  - Transducer (headphones, inserts, free field), tester, equipment
+    identifier, calibration date, reliability (good / fair / poor),
+    method for children (play audiometry, VRA, BOA).
+  - Import from audiometer export files where the manufacturer provides
+    a format (later phase). Manual entry is the baseline.
+
+8.2 Speech audiometry
+  - Speech reception threshold per ear (dB HL), word recognition score
+    at one or more presentation levels (percentage and level), word list
+    used (language matters: French, Arabic, English lists), most
+    comfortable and uncomfortable loudness levels, rollover noted.
+  - Speech-in-noise result if performed.
+
+8.3 Tympanometry and reflexes
+  - Per ear: ear canal volume (ml), peak pressure (daPa), static
+    compliance (ml), gradient. Jerger type auto-suggested from the
+    values (A, As, Ad, B, C) with the doctor able to override. Probe tone
+    (226 Hz standard, 1000 Hz for infants).
+  - Acoustic reflexes ipsilateral and contralateral at 500, 1000, 2000,
+    4000 Hz: present / absent / elevated, threshold.
+  - Eustachian tube function test result if performed.
+  - Type B with large canal volume automatically annotated "consistent
+    with perforation or patent tube" as an observation, not a diagnosis.
+
+8.4 Otoacoustic emissions and ABR
+  - OAE: TEOAE or DPOAE, per ear per frequency band: present / absent /
+    partial, signal-to-noise values optional. Newborn screening pass /
+    refer per ear with date, and the screening stage (first, second).
+  - ABR / BERA: click and tone-burst thresholds per ear, wave I, III, V
+    latencies at a stated intensity, interpeak intervals I-III, III-V,
+    I-V, interaural wave V latency difference, morphology comments.
+    Auto-flag when the interaural wave V difference exceeds the
+    configured threshold (default 0.3 ms) for the doctor to interpret.
+  - ASSR thresholds if used.
+
+8.5 Calculations (all deterministic, all on the server)
+  - Pure tone average with the formula chosen by the clinic:
+      3-frequency (500, 1000, 2000), 4-frequency (500, 1000, 2000, 4000,
+      the WHO method), high-frequency PTA (2000, 4000, 8000), and
+      Fletcher (best two of 500, 1000, 2000) available as options.
+    Show which formula was used on every printout.
+  - Air-bone gap per frequency and averaged.
+  - Interaural difference per frequency and on PTA.
+  - Hearing loss grade per ear using the WHO 2021 grades:
+      normal (below 20 dB), mild (20 to under 35), moderate (35 to under
+      50), moderately severe (50 to under 65), severe (65 to under 80),
+      profound (80 to under 95), complete (95 and above). The clinic can
+      switch to the older WHO or ASHA scales.
+  - Type of loss per ear suggested from air-bone gap: conductive,
+    sensorineural, mixed, with the rule shown (for example air-bone gap
+    of 15 dB or more at two or more frequencies). Doctor confirms.
+  - Configuration description: flat, sloping, rising, notched (with a
+    4 kHz noise notch flag), cookie-bite, precipitous, corner audiogram.
+  - Percentage of hearing impairment per ear and binaural using the
+    AMA / AAO-HNS method (for medico-legal certificates), shown only when
+    the doctor asks for it.
+  - Speech-pure tone agreement check: SRT should be within about 10 dB of
+    the PTA; a larger discrepancy is flagged as "check reliability".
+  - Asymmetry criterion: flag when interaural difference meets the
+    clinic's chosen rule (default: 15 dB or more at two adjacent
+    frequencies, or 20 dB or more at one frequency, or a word recognition
+    score difference of 15 percent or more). The flag text says the
+    criterion was met and nothing more.
+  - Significant threshold shift against the baseline audiogram, using
+    the ASHA ototoxicity criteria by default (20 dB or more decrease at
+    one frequency, or 10 dB or more at two adjacent frequencies, or loss
+    of response at three consecutive frequencies where responses were
+    previously obtained). Occupational standard threshold shift (average
+    of 10 dB or more at 2, 3 and 4 kHz) available as a second rule for
+    workplace medicine. The baseline audiogram is chosen by the doctor
+    and marked as such.
+
+8.6 Audiology dashboard (what the doctor sees)
+  Top row: two audiograms side by side (or overlaid, toggle), PTA and
+    grade per ear in large type, type of loss, tympanogram type per ear,
+    word recognition per ear.
+  Alerts row: asymmetry criterion met, threshold shift vs baseline,
+    speech-pure tone disagreement, conductive component on an ear
+    scheduled for surgery.
+  History strip: every previous audiogram as a small thumbnail, click to
+    overlay in a lighter color. Threshold evolution graph per frequency
+    over years.
+  Notes and interpretation box, with the AI assistant offering a
+    descriptive draft ("Right ear: moderate sloping sensorineural hearing
+    loss, PTA 42 dB HL, word recognition 88% at 75 dB HL"). The doctor
+    writes the clinical conclusion.
+
+8.7 Hearing aids and implants tracking
+  - Device per ear: type (BTE, RIC, ITE, CROS, bone conduction, cochlear
+    implant, middle ear implant), brand and model, serial, fitting date,
+    fitted by (in-house or external audiologist), warranty end date,
+    last programming date, battery type, satisfaction score, daily use
+    hours if known, aided thresholds if measured.
+  - Cochlear implant: side, date, surgeon, electrode array, activation
+    date, mapping dates, complications, MRI conditions.
+  - Candidacy checklist for hearing aids and for cochlear implantation
+    (audiometric criteria as a checklist, doctor confirms).
+  - Recall for annual review and warranty expiry.
+
+8.8 Pediatric audiology specifics
+  - Newborn hearing screening result and follow-up chain (screen, rescreen,
+    diagnostic ABR, intervention) with dates, so the "1-3-6" targets
+    (screen by 1 month, diagnosis by 3 months, intervention by 6 months)
+    can be tracked.
+  - Behavioral test method recorded, minimum response levels rather than
+    thresholds for infants, sound-field results flagged as binaural.
+  - Speech and language milestones checklist.
+  - Otitis media with effusion tracking: date first seen, hearing level,
+    watchful waiting start date, 3-month recall automatically proposed.
+
+
+--------------------------------------------------------------------------------
+9. VESTIBULAR (VERTIGO) SUITE
+--------------------------------------------------------------------------------
+
+In vertigo, the history makes the diagnosis and the examination confirms
+it. The module is built around the timing-and-triggers approach that
+vestibular specialists use.
+
+9.1 Structured vertigo history
+  - Character: spinning, swaying, lightheadedness, imbalance, "about to
+    faint", visual disturbance.
+  - Timing: single episode / recurrent episodes / continuous. Duration of
+    a typical episode (seconds, under a minute, minutes, under an hour,
+    hours, days). Onset date of the first episode and of the current one.
+  - Triggers: head position change (turning in bed, looking up, bending),
+    standing up, loud sound or pressure (Tullio, Valsalva), visual
+    motion, stress, menstruation, none (spontaneous).
+  - Associated auditory symptoms: hearing loss (fluctuating or not),
+    tinnitus, aural fullness, and on which side.
+  - Associated neurological symptoms: diplopia, dysarthria, dysphagia,
+    weakness, numbness, severe headache, loss of consciousness.
+  - Migraine history and features during attacks (photophobia,
+    phonophobia, visual aura).
+  - Nausea and vomiting, falls, injuries.
+  - Cardiovascular history and medications that can cause dizziness.
+  - Anxiety and avoidance behavior.
+  - DHI score (25 items, 0 to 100, with physical, emotional and functional
+    subscales) loaded from the questionnaire engine.
+  Summary card auto-generated: "Recurrent episodes lasting seconds,
+  triggered by turning in bed, no auditory symptoms, no neurological
+  symptoms, DHI 48 (moderate)." This card is what the doctor reads before
+  examining.
+
+9.2 Bedside vestibular examination
+  - Spontaneous nystagmus: present / absent, direction (horizontal,
+    vertical, torsional, mixed), beating direction, with and without
+    fixation removed (Frenzel or video goggles), first / second / third
+    degree.
+  - Gaze-evoked nystagmus in each direction.
+  - Head impulse test: right and left, corrective saccade present or
+    absent (overt / covert if video).
+  - Test of skew (cover-uncover).
+  - HINTS summary auto-composed from the three fields above for the
+    acute vestibular syndrome case, displayed as the three findings with
+    no verdict.
+  - Head-shaking nystagmus.
+  - Positional tests:
+      Dix-Hallpike right and left: nystagmus present / absent, latency
+        (s), duration (s), direction (upbeating torsional geotropic,
+        downbeating, horizontal), fatigability, reversal on sitting.
+      Supine roll test: nystagmus on right and left ear down, geotropic
+        or apogeotropic, which side stronger.
+      Side-lying test if used.
+    From these, the app names the canal pattern the findings match
+    (posterior canal right, horizontal canal geotropic left-stronger,
+    etc.) as a "pattern consistent with", which the doctor confirms.
+  - Romberg (eyes open / closed, sharpened), Fukuda stepping, tandem
+    gait, Unterberger, cerebellar tests (finger-nose, heel-shin,
+    dysdiadochokinesia), Dix-Hallpike contraindications checked (neck
+    problems).
+  - Orthostatic blood pressure when relevant.
+  - Fistula test (pressure-induced nystagmus).
+
+9.3 Vestibular laboratory tests (entry of results)
+  - Video head impulse test: gain per canal (six canals), saccade
+    presence, with the reference range shown.
+  - Caloric test: response per ear (warm and cool, slow phase velocity),
+    unilateral weakness percentage computed with the Jongkees formula,
+    directional preponderance, with the clinic's significance threshold
+    (default 25 percent).
+  - VEMP: cervical and ocular, present / absent, amplitude asymmetry
+    ratio.
+  - Posturography summary if available.
+  - Rotatory chair summary if available.
+  - Audiogram is linked automatically (Meniere workups need it).
+  - Imaging result linkage (MRI brain and internal auditory canals).
+
+9.4 Diagnostic criteria checklists (support, not diagnosis)
+  - Barany Society criteria displayed as checklists for definite and
+    probable Meniere's disease, vestibular migraine, BPPV by canal,
+    persistent postural-perceptual dizziness, vestibular paroxysmia,
+    bilateral vestibulopathy. The app ticks the items already documented
+    in the history and exam and shows which are missing. The doctor
+    decides. The criteria text is stored with its version and year.
+
+9.5 Repositioning maneuvers documentation
+  - Maneuver performed: Epley, Semont, Gufoni (geotropic / apogeotropic
+    variant), barbecue roll, Yacovino (anterior canal), Brandt-Daroff
+    exercises prescribed.
+  - Side treated, number of repetitions, nystagmus during maneuver,
+    symptoms after, immediate re-test result.
+  - Home exercise handout automatically added to the documents (in the
+    patient's language, with pictures).
+  - Recall in 1 to 2 weeks proposed.
+  - Outcome recorded at the next visit (resolved, improved, persistent,
+    canal conversion), feeding the doctor's outcome statistics.
+
+9.6 Vestibular rehabilitation
+  - Referral letter to a vestibular physiotherapist with the findings
+    pre-filled.
+  - Exercise program selection from a library (gaze stabilization,
+    habituation, balance) with printable handouts.
+  - DHI repeat at follow-up for outcome measurement.
+
+
+--------------------------------------------------------------------------------
+10. SUB-SPECIALTY MODULES
+--------------------------------------------------------------------------------
+
+Each module is a set of fields, scores and documents that attach to a
+consultation when the matching complaint or diagnosis is selected. They
+are not separate applications.
+
+10.1 Tinnitus
+  - Character (tonal, noise, pulsatile, clicking), side, onset,
+    constant / intermittent, loudness 0 to 10, annoyance 0 to 10, sleep
+    impact, concentration impact.
+  - Pulsatile tinnitus red flag with synchronous-with-pulse check and
+    auscultation of the neck and mastoid.
+  - Tinnitus pitch and loudness matching from audiology if performed,
+    minimum masking level, residual inhibition.
+  - Scores: THI (25 items, 0 to 100, five severity grades), Tinnitus
+    Functional Index optional, sleep and anxiety screening optional.
+  - Management tracking: counseling given, sound therapy, hearing aids,
+    CBT referral, medication review for tinnitus-inducing drugs.
+  - THI trend graph across visits.
+
+10.2 Voice and swallowing
+  - Voice: occupation and voice demand, VHI-10 (0 to 40) or VHI-30
+    (0 to 120), GRBAS by the doctor, maximum phonation time (seconds,
+    normal range shown), s/z ratio, voice recording (10 to 20 seconds of
+    sustained vowel and a standard sentence) attached and playable next
+    to the previous one. Acoustic analysis values (fundamental frequency,
+    jitter, shimmer) entered if a lab provides them.
+  - Reflux: RSI (9 items, 0 to 45) and RFS from laryngoscopy, with the
+    usual cut-offs shown (RSI above 13, RFS above 7).
+  - Swallowing: EAT-10 (0 to 40, cut-off 3), consistencies tolerated,
+    weight trend, aspiration events, pneumonia history, FEES results
+    with Penetration-Aspiration Scale, videofluoroscopy report linkage,
+    diet recommendation level.
+  - Speech therapy referral and progress notes from the therapist (if
+    given access) or scanned reports.
+  - Pre- and post-treatment comparison (phonosurgery, therapy) with
+    VHI and GRBAS deltas.
+
+10.3 Sleep and snoring (adult and pediatric)
+  - Adult: Epworth (0 to 24), STOP-BANG (0 to 8), neck circumference,
+    BMI, blood pressure, nasal obstruction assessment, tonsil grade,
+    Friedman tongue position, Mallampati, retrognathia, tongue
+    scalloping, Muller maneuver on endoscopy.
+  - Sleep study results entry: type (polysomnography, home sleep apnea
+    test), date, total sleep time, AHI (with severity band shown: under
+    5, 5 to 15, 15 to 30, over 30), RDI, ODI, lowest saturation, time
+    under 90 percent, supine vs non-supine AHI, REM AHI, arousal index,
+    snoring index. Upload of the full report.
+  - Drug-induced sleep endoscopy (DISE) using the VOTE classification:
+    velum, oropharynx, tongue base, epiglottis, each with degree of
+    obstruction (0 none, 1 partial, 2 complete) and configuration
+    (anteroposterior, lateral, concentric), sedation used, body position
+    tested. Video clips attached.
+  - Treatment tracking: CPAP (pressure, compliance report values,
+    tolerance issues), mandibular advancement device, positional
+    therapy, weight loss, surgery proposed and performed (see surgery
+    module), post-treatment AHI for outcome.
+  - Pediatric: OSA-18 questionnaire, snoring frequency, witnessed apneas,
+    restless sleep, enuresis, daytime behavior, growth percentiles,
+    adenoid size from endoscopy or X-ray, tonsil grade, with the
+    adenotonsillectomy discussion checklist and information sheet.
+
+10.4 Allergy
+  - Symptom pattern: perennial / seasonal (months), indoor / outdoor,
+    ARIA classification (intermittent / persistent, mild /
+    moderate-severe), conjunctival symptoms, asthma coexistence, eczema,
+    food allergy.
+  - Skin prick test panel entry: a table of allergens (configurable
+    regional panel, for example house dust mites D. pteronyssinus and
+    D. farinae, grass pollens, olive pollen, cypress, Parietaria, cat,
+    dog, Alternaria, Aspergillus, cockroach, storage mites) with wheal
+    diameter in mm, positive histamine control and negative saline
+    control values, reading time, antihistamine-free period confirmed.
+    Positivity threshold shown (commonly 3 mm above negative control).
+  - Specific IgE results entry per allergen with class 0 to 6 and kU/L,
+    total IgE, eosinophil count.
+  - Nasal provocation test result if performed.
+  - Immunotherapy tracking: allergen(s), route (subcutaneous /
+    sublingual), product, start date, build-up schedule with each dose
+    and date and any reaction (local / systemic grade), maintenance
+    phase, next dose due (recall), planned end date, symptom and
+    medication score trend.
+  - Environmental control handout selection based on positive allergens.
+  - Allergy summary printable for the patient and for the referring
+    doctor.
+
+10.5 Head and neck (masses, thyroid, salivary, oncology)
+  - Neck mass record linked to the neck map entry (6.5), with an
+    ultrasound result block (size in three dimensions, echogenicity,
+    vascularity, cystic component, calcification, margins) and TI-RADS
+    category for thyroid nodules.
+  - FNA cytology result with the Bethesda category for thyroid, and free
+    structured result for other sites (benign, atypical, suspicious,
+    malignant, non-diagnostic). Core biopsy and open biopsy results.
+  - Oral, oropharyngeal, laryngeal, hypopharyngeal, nasopharyngeal,
+    sinonasal, salivary and thyroid primary tumor records:
+      site and subsite, side, size, extent by structure (from the
+      relevant map), biopsy histology and grade, HPV / p16 status where
+      relevant, EBV for nasopharynx, imaging findings (CT, MRI, PET-CT)
+      with dates, TNM staging (clinical and pathological, with the AJCC
+      edition recorded explicitly, defaulting to the 8th) and the derived
+      stage group computed by the engine from the site-specific tables,
+      panendoscopy findings, second primary screening.
+  - Multidisciplinary tumor board sheet generated in one click: a one-
+    page summary with history, exam, imaging, pathology, staging, the
+    question for the board, and the board's decision recorded afterwards
+    with date and attendees.
+  - Treatment record: surgery (links to surgery module), radiotherapy
+    (dose, fractions, dates, center), chemotherapy (regimen, cycles),
+    immunotherapy, palliative care referral.
+  - Surveillance schedule generated from the recall engine using the
+    clinic's protocol (default follows common guideline spacing: more
+    frequent visits in year 1, spacing out through year 5, then annual),
+    with each visit prompting the surveillance checklist (mucosal exam,
+    neck, laryngoscopy, weight, thyroid function after neck irradiation,
+    dental status, swallowing, imaging due).
+  - Functional outcomes: voice (VHI), swallowing (EAT-10), feeding tube
+    dependence, tracheostomy status, shoulder function after neck
+    dissection.
+  - Salivary glands: stone (gland, size, location by ultrasound),
+    recurrent sialadenitis episodes, Sjogren screening, sialendoscopy
+    results, sialorrhea management.
+  - Thyroid: nodule follow-up schedule by TI-RADS category and size,
+    thyroid function results, pre-op vocal fold check enforced before
+    thyroidectomy (an alert if missing), calcium and PTH tracking after
+    surgery, post-op vocal fold check.
+
+10.6 Pediatric ENT
+  - Growth chart: weight, height, head circumference plotted on WHO
+    curves, with percentile shown. Weight drives every pediatric
+    prescription.
+  - Recurrent acute otitis media tracking: each episode with date,
+    side, treatment, so the "3 in 6 months or 4 in 12 months" type
+    criteria are computed for the tube discussion.
+  - Otitis media with effusion: see 8.8.
+  - Adenotonsillar disease: tonsillitis episode log (feeds the Paradise
+    criteria calculator), obstructive symptoms, adenoid size, growth
+    impact.
+  - Ventilation tube registry: see 7.3.
+  - Speech and language: milestone checklist by age, hearing screening
+    status, referral to speech therapy.
+  - Foreign bodies: ear, nose, airway suspicion (red flag), esophageal
+    (button battery is an emergency alert).
+  - Congenital anomalies: preauricular pits, branchial cleft anomalies,
+    thyroglossal cyst, choanal atresia, laryngomalacia, microtia,
+    syndromic associations noted.
+  - Newborn hearing follow-up chain: see 8.8.
+  - Pediatric drug dosing calculator wired into the prescription (see
+    section 12 and 14.2).
+  - Parent-facing handouts in the family's language: post-
+    tonsillectomy care, tube care and swimming advice, nasal saline
+    technique for infants, fever and ear pain guidance.
+
+10.7 Facial nerve
+  - Onset date, side, complete / incomplete, House-Brackmann and
+    Sunnybrook at each visit with a trend graph, associated ear findings
+    (vesicles for Ramsay Hunt, otitis, cholesteatoma, parotid mass),
+    hearing and taste changes, hyperacusis, tear production.
+  - Eye protection checklist (lubricants, taping at night, ophthalmology
+    referral) with a printed handout.
+  - Electrodiagnostic results (ENoG percentage degeneration, EMG) with
+    dates.
+  - Treatment given (steroids, antivirals, with start day relative to
+    onset), physiotherapy referral, surgical decompression discussion.
+  - Recovery tracking and synkinesis assessment at later visits.
+
+10.8 Epistaxis (recurrent or severe)
+  - Episode log with date, side, duration, estimated volume, setting
+    (home, ED), management received.
+  - Risk factor checklist: anticoagulant (with INR value if warfarin),
+    antiplatelet, hypertension (with today's reading), bleeding disorder,
+    hereditary hemorrhagic telangiectasia features (family history,
+    telangiectasia, epistaxis severity score), nasal steroid or oxygen
+    use, cocaine use, tumor suspicion.
+  - Endoscopic localization results (from 7.1) and management (7.4).
+  - Hemoglobin and coagulation results entry.
+  - Prevention handout and first-aid instructions for the patient.
+
+
+--------------------------------------------------------------------------------
+11. QUESTIONNAIRE AND SCORING ENGINE
+--------------------------------------------------------------------------------
+
+One engine, many instruments. The engine stores the instrument
+definition (items, response options, scoring rules, subscales, cut-offs,
+language versions, license notes) and every completed response as items
+plus total.
+
+11.1 Instruments shipped in version 1 (see Appendix A for scoring)
+  Sinonasal: SNOT-22, NOSE
+  Ear: THI, hearing handicap inventory (HHIE / HHIA) optional
+  Vertigo: DHI
+  Voice: VHI-10, VHI-30
+  Reflux: RSI
+  Swallowing: EAT-10
+  Sleep: Epworth, STOP-BANG, OSA-18 (pediatric)
+  Quality of life optional: a generic 5-level scale if the clinic wants it
+  Clinician-rated (filled by the doctor, not the patient): Brodsky,
+    Friedman, Mallampati, Lund-Kennedy, Modified Lund-Kennedy,
+    Lund-Mackay, polyp grades, House-Brackmann, Sunnybrook, GRBAS, RFS,
+    Penetration-Aspiration Scale, VOTE, Myer-Cotton, Sadé, Tos, TI-RADS,
+    Bethesda, TNM.
+
+11.2 How patients fill them
+  - In the waiting room on a clinic tablet, launched by the assistant for
+    the chosen instrument, in the patient's language, large touch
+    targets, one item per screen, progress bar.
+  - At home via a link or QR code sent by SMS or WhatsApp before the
+    visit or before a follow-up. The link is single-use, expires, and
+    shows no other patient data.
+  - On paper, with the assistant entering the answers (fallback).
+  - The completed score appears on the consultation cockpit with the date
+    and a badge "completed by patient" or "entered by staff".
+
+11.3 Presentation
+  - Total, subscales, severity band, and the change from the previous
+    administration with the minimal clinically important difference shown
+    where one is published (for example around 9 points for SNOT-22).
+  - Trend graph per instrument over time, with treatment events (surgery,
+    therapy start) marked on the timeline.
+  - Item-level view for the doctor to see which items drive the score
+    (for SNOT-22, the sleep and psychological items often matter more
+    than the nasal ones).
+
+11.4 Adding instruments
+  - Admin can add an instrument by defining items, options, scoring and
+    translations without code, as long as it is a simple sum or weighted
+    sum. Anything with complex logic is added by the development team.
+  - Every instrument carries its source reference and a note on
+    licensing so the clinic knows what it is allowed to use.
+
+
+--------------------------------------------------------------------------------
+12. CLINICAL CALCULATOR ENGINE
+--------------------------------------------------------------------------------
+
+One place for every formula, each with inputs, validation ranges, the
+formula shown to the user, the result, the reference, and a save-to-
+consultation button. Formulas live only on the server.
+
+12.1 Audiology
+  PTA (all variants), air-bone gap, interaural difference, WHO grade,
+  percentage of hearing impairment (monaural and binaural), significant
+  threshold shift, Jongkees unilateral weakness, ABR interaural wave V
+  difference.
+
+12.2 Pediatric dosing
+  Weight-based dose calculator for the ENT formulary: amoxicillin,
+  amoxicillin-clavulanate, cefuroxime, cefpodoxime, azithromycin,
+  clindamycin, prednisolone, paracetamol, ibuprofen, cetirizine,
+  desloratadine, montelukast, oral rehydration. Inputs: weight, age,
+  indication (some indications use higher doses), formulation strength
+  available locally. Output: mg per dose, ml per dose for the chosen
+  syrup concentration, doses per day, duration, maximum daily dose check.
+  Every result shows the mg/kg/day rule used. The formulary and rules are
+  editable by the clinic pharmacist or doctor because local products
+  differ.
+
+12.3 Surgical decision aids (as checklists, doctor decides)
+  - Paradise criteria for tonsillectomy in recurrent tonsillitis
+    (episode counts per year plus documentation features).
+  - Ventilation tube criteria for recurrent AOM and for persistent OME
+    with hearing loss.
+  - Adenotonsillectomy for pediatric OSA: symptom, exam and sleep study
+    inputs.
+  - Cochlear implant candidacy audiometric checklist.
+  - Septoplasty and turbinate reduction: NOSE score plus exam findings
+    summary.
+  - FESS: SNOT-22, Lund-Mackay, medical therapy trial documented.
+
+12.4 Head and neck
+  - TNM stage group calculator by site and edition.
+  - Neck dissection level nomenclature helper.
+  - Lund-Mackay CT score entry (maxillary, anterior ethmoid, posterior
+    ethmoid, sphenoid, frontal 0 to 2 each; ostiomeatal complex 0 or 2;
+    per side; total 0 to 24).
+  - Chandler classification of orbital complications of sinusitis (I to
+    V) as a structured field.
+
+12.5 General
+  BMI, body surface area, ideal body weight, creatinine clearance (for
+  dose adjustment), corrected age for premature infants, expected date
+  of splint or pack removal from insertion date.
+
+12.6 Airway
+  Myer-Cotton subglottic stenosis grade from percentage obstruction,
+  endotracheal tube size estimate by age (for the anesthesia team and
+  for pediatric airway notes).
+
+12.7 Epistaxis and bleeding
+  Epistaxis severity score for HHT, INR interpretation range display.
+
+Every calculator result saved into a consultation is stored with the
+inputs, the formula version and a timestamp, so a result can always be
+reproduced later.
+
+
+--------------------------------------------------------------------------------
+13. SURGERY MODULE
+--------------------------------------------------------------------------------
+
+ENT is a surgical specialty. The consultation frequently ends with
+"we should operate." From that moment the app must carry the patient
+through the surgical pathway.
+
+13.1 Proposing surgery (from the consultation plan)
+  - Procedure(s) from the ENT procedure catalog (Appendix C), side,
+    urgency (elective, semi-urgent, urgent), anesthesia expected (local,
+    sedation, general), setting (day case, inpatient), estimated
+    duration, indication text auto-drafted from the diagnosis.
+  - Generates in one click the "surgery bundle":
+      procedure information sheet in the patient's language,
+      consent form with the procedure-specific risks list (editable
+        library, e.g. tonsillectomy: bleeding, pain, dehydration,
+        infection, voice change, dental injury; FESS: bleeding, CSF leak,
+        orbital injury, recurrence; tympanoplasty: graft failure, hearing
+        worse, taste change, dizziness, facial nerve injury; thyroidectomy:
+        recurrent laryngeal nerve injury, hypocalcemia, bleeding, scar),
+      quote (devis) with the clinic's price list and insurance codes,
+      pre-anesthesia consultation request,
+      pre-operative tests request (blood count, coagulation, others by
+        age and comorbidity per the clinic's protocol),
+      pre-operative instructions (fasting, medications to stop such as
+        anticoagulants and when, what to bring).
+  - Adds the patient to the surgical waiting list.
+
+13.2 Waiting list and pre-op checklist
+  - List per surgeon with planned date, priority, days waiting, status.
+  - Pre-op checklist per patient with ticks and dates: consent signed,
+    anesthesia consult done, labs done and reviewed, imaging available,
+    pre-op vocal fold check done (mandatory flag for thyroid and
+    laryngeal surgery), hearing test done (mandatory flag for ear
+    surgery), anticoagulant plan documented, pregnancy status if
+    applicable, implants or pacemaker noted, blood group and antibodies
+    if needed, insurance approval received, quote accepted.
+  - Missing items shown in red on the operating day list.
+
+13.3 Operating day list
+  - For each patient: procedure, side (large, unmissable, matching the
+    consent), allergies, anticoagulants, airway alerts, checklist status,
+    surgeon, assistant, anesthetist, room, order.
+  - WHO surgical safety checklist fields (sign in, time out, sign out)
+    optionally recorded.
+
+13.4 Operative note builder
+  - One template per procedure family with structured fields, so a
+    tonsillectomy note takes 90 seconds:
+      date, surgeon, assistant, anesthetist, anesthesia type, position,
+      antibiotic prophylaxis given, tranexamic acid given, steroid given,
+      findings, technique (with the clinic's usual text pre-filled and
+      editable), instruments or energy device, implants or grafts (type,
+      lot number for traceability: tubes, ossicular prostheses, septal
+      splints, packing material, nasal stents), specimens sent (site,
+      laboratory, expected result date creates a recall), estimated
+      blood loss, drains, packing (type, planned removal date creates a
+      recall), complications (none or from list), intra-op images or
+      video attached, post-op instructions, planned follow-up.
+  - Procedure-specific structured fields, examples:
+      Tympanoplasty: perforation size and site, ossicular chain status
+        (intact, eroded incus, absent), graft material (temporalis
+        fascia, cartilage, perichondrium), technique (underlay,
+        overlay), approach (transcanal, endaural, postauricular),
+        cholesteatoma extent if present.
+      Mastoidectomy: canal wall up or down, extent of disease, facial
+        nerve status, dural or sinus exposure, second look planned.
+      Stapedotomy: footplate findings, prosthesis type and length.
+      Septoplasty and turbinates: deviation location, technique, spur
+        removed, turbinate technique (radiofrequency, submucosal
+        resection, outfracture), splints and planned removal date.
+      FESS: side, sinuses opened (uncinectomy, maxillary antrostomy,
+        anterior and posterior ethmoidectomy, sphenoidotomy, frontal
+        recess work with Draf type), navigation used, polyps removed,
+        complications, packing.
+      Tonsillectomy and adenoidectomy: technique (cold steel, bipolar,
+        coblation), hemostasis method, adenoid size, bleeding amount.
+      Microlaryngoscopy: lesion, technique (cold, laser with type and
+        settings), biopsy, injection material and volume.
+      Thyroidectomy: extent (lobectomy, total), nerve monitoring signal
+        before and after, parathyroids identified and preserved or
+        reimplanted, drain, specimen.
+      Parotidectomy: extent, facial nerve branches identified and
+        stimulated, immediate facial function.
+      Neck dissection: levels dissected per side, structures preserved
+        or sacrificed.
+      Tracheostomy: indication, technique, tube type and size, sutures,
+        first change date.
+      Nasal fracture reduction, rhinoplasty, otoplasty, excision of neck
+        lump, branchial or thyroglossal excision, salivary stone removal.
+  - Every operative note feeds the surgeon's logbook (13.6) and the
+    patient timeline.
+
+13.5 Post-operative pathway
+  - Default post-op plan per procedure (Appendix C), editable, creating
+    appointments and recalls: for example tonsillectomy phone check at
+    day 2 and visit at day 10 to 14; septoplasty splint removal at day 5
+    to 7; tympanoplasty visit at 2 to 3 weeks and audiogram at 3 months;
+    FESS cavity debridement at week 1 and 3 and endoscopy at 3 months;
+    thyroidectomy calcium at day 1 and vocal fold check at 2 weeks.
+  - Post-op visit template: pain score, bleeding, fever, oral intake,
+    wound or cavity check with the relevant map, packing or splint
+    removal recorded, complication capture (structured list with
+    severity, useful for the surgeon's own audit), return to work or
+    school date, next step.
+  - Pathology result review recall with a "result explained to patient"
+    tick and date.
+  - Outcome measurement: the same questionnaire that justified the
+    surgery is re-sent automatically at 3, 6 and 12 months (SNOT-22
+    after FESS, NOSE after septoplasty, VHI after phonosurgery, THI if
+    relevant, Epworth after sleep surgery), and audiograms are compared
+    to the pre-op baseline for ear surgery.
+
+13.6 Surgeon logbook
+  - Every procedure with role (primary, assistant, supervising), date,
+    complexity, complications, outcome. Filter by procedure and period.
+  - Export for training, accreditation or personal audit.
+  - Complication rate per procedure over time, private to the surgeon.
+
+
+--------------------------------------------------------------------------------
+14. DOCUMENTS
+--------------------------------------------------------------------------------
+
+Everything printed comes from a template. Templates carry the clinic
+header and footer, the doctor's identity and signature, and the language.
+Every document is generated from structured data, previewed, and can be
+edited before it is finalized. Finalized documents are stored as files
+attached to the visit and cannot be silently changed.
+
+14.1 Clinical reports
+  - Consultation report (for the chart and for the referring doctor).
+  - Procedure reports: nasal endoscopy, laryngoscopy / stroboscopy,
+    otomicroscopy, FEES, DISE, office procedures.
+  - Audiology report with the plotted audiogram, tympanograms, speech
+    results, calculations and the doctor's interpretation.
+  - Vestibular assessment report.
+  - Allergy assessment report with the prick test table.
+  - Sleep assessment summary.
+  - Operative report and discharge summary.
+  - Tumor board summary sheet.
+  - Referral reply letter to the referring doctor ("Dear colleague, thank
+    you for referring...") pre-filled with the consultation content, in
+    the referring doctor's language.
+  - Report writing rules: right before left, positive findings before
+    negatives, negatives grouped ("no polyps, discharge or masses"),
+    scores with their scale names, conclusion in the doctor's words,
+    plan as numbered items. The doctor can maintain a personal phrase
+    library ("my phrases") inserted with a shortcut.
+
+14.2 Prescriptions
+  - Drug search with the clinic's formulary first and the doctor's
+    favorites for the current complaint at the top.
+  - Structured items: drug, form, strength, dose, route (oral, nasal,
+    otic, topical, injection), frequency, duration, quantity, instructions
+    in the patient's language, substitution allowed or not.
+  - ENT-specific prescription helpers: nasal saline irrigation protocol
+    with volume and frequency, nasal steroid spray technique note, ear
+    drop instillation technique with tragal pumping, taper schedules for
+    oral steroids (auto-generated day by day), antibiotic duration
+    defaults per indication, weight-based pediatric dosing pulled from
+    the calculator with the syrup volume, "renewable" flag for chronic
+    therapy (allergic rhinitis, reflux).
+  - Safety checks on the prescription screen: drug allergy block,
+    ototoxic drug warning when hearing loss is on the problem list,
+    duplicate class warning, pregnancy and breastfeeding warning, dose
+    above the maximum for weight or age.
+  - Template prescriptions ("ordonnance types") the doctor saves: acute
+    otitis media child, allergic rhinitis adult, post-tonsillectomy pain,
+    BPPV, sudden hearing loss, acute sinusitis adult, otitis externa.
+  - Printed in the clinic's legal format with the required identifiers.
+  - Medication list on the patient card updated from prescriptions.
+
+14.3 Certificates and administrative documents
+  - Sick leave (work or school absence) with dates and, where required,
+    diagnosis or "medical reasons" only.
+  - Medical certificate (free-text with template), fitness certificates
+    with ENT-specific variants: swimming with tubes, air travel after
+    ear surgery, diving fitness with audiogram summary, driving fitness
+    after vertigo, professional voice fitness, hearing certificate for
+    employment or licensing with the percentage of impairment.
+  - Certificate of surgery performed, hospitalization dates.
+  - Insurance forms: configurable templates per insurer with fields
+    auto-filled (diagnosis code, procedure code, dates). Kept generic
+    because forms differ by country.
+  - Attendance certificate.
+
+14.4 Requests to other services
+  - Imaging request: modality and protocol from an ENT list (CT sinuses
+    non-contrast, CT temporal bone high resolution, CT neck with
+    contrast, MRI internal auditory canals with gadolinium, MRI neck,
+    PET-CT, ultrasound neck with FNA, panoramic dental X-ray, lateral
+    neck X-ray for adenoids), clinical question auto-written from the
+    consultation, contrast allergy and renal function flags, pregnancy
+    flag, pacemaker or cochlear implant MRI warning.
+  - Laboratory request: ENT panels (pre-operative, thyroid function and
+    calcitonin, allergy specific IgE panel, autoimmune inner ear panel,
+    infectious screen for sudden hearing loss, culture and sensitivity
+    of ear discharge, HPV status, coagulation for epistaxis).
+  - Audiology and vestibular test requests to an in-house or external
+    lab, with the specific tests ticked.
+  - Referral letters: speech therapy, vestibular physiotherapy,
+    audiologist for hearing aid fitting, allergist, pulmonologist and
+    sleep lab, oncology, radiotherapy, dentistry and maxillofacial,
+    neurology, ophthalmology (facial palsy, orbital complications),
+    pediatrics, psychology (tinnitus, PPPD). Each pre-filled with the
+    relevant findings only.
+
+14.5 Patient handouts (education)
+  A library in French, Arabic and English, with pictures where they help,
+  selected automatically by diagnosis or procedure and printed with the
+  prescription or sent by link:
+    nasal saline irrigation technique, nasal spray technique, ear drop
+    technique, ear care with tubes and swimming, post-tonsillectomy diet
+    and pain plan with warning signs, post-septoplasty and post-FESS
+    care, post-ear-surgery care, epistaxis first aid and prevention,
+    BPPV explanation and Brandt-Daroff or Epley home exercises, tinnitus
+    coping and sound enrichment, hearing protection and noise, vocal
+    hygiene, reflux diet and lifestyle, allergen avoidance per allergen,
+    CPAP adherence tips, sleep hygiene, eye protection in facial palsy,
+    voice rest after phonosurgery, tracheostomy care at home,
+    thyroidectomy recovery and calcium symptoms, what to expect from a
+    nasal endoscopy or laryngoscopy (pre-visit).
+  Clinics can edit texts and add their own.
+
+14.6 Output and delivery
+  - Print, download as PDF, attach to the visit. Optional: send the
+    patient a secure link by SMS, WhatsApp or email to download their
+    documents. Optional: send the referral reply to the referring doctor
+    by email.
+  - Batch print of the whole visit (report, prescription, requests,
+    handouts, follow-up card) in one action at the end of the visit.
+  - A follow-up card for the patient: next appointment, tests to do
+    before it, what to bring.
+
+
+--------------------------------------------------------------------------------
+15. PATIENT TIMELINE, COMPARISON AND FOLLOW-UP ENGINE
+--------------------------------------------------------------------------------
+
+15.1 Timeline
+  - Vertical timeline of every event: consultation, procedure, test,
+    document, surgery, questionnaire, phone call, external result
+    received, recall sent, no-show. Each with a one-line summary and
+    icons by type. Filter by type, by problem, by side.
+  - Grouping by problem: click "left chronic otitis media" and see only
+    the events related to that problem.
+  - Hover shows the summary, click opens the full record.
+  - Print the timeline as a one-page patient history summary (useful for
+    referrals and for the doctor's own recall before a visit).
+
+15.2 Comparison views
+  - Audiograms: overlay of any two or more, with threshold differences
+    per frequency in a table and the shift criteria evaluated.
+  - Endoscopy and laryngoscopy: structure-by-structure table (previous
+    vs current) with changed items highlighted, plus image pairs.
+  - Scores: line graphs per instrument with treatment markers.
+  - Exam maps: previous and current side by side.
+  - Consultations: field-level diff of history and exam.
+  - Photos: any two photos of the same region in a slider.
+  - Growth: percentile curves for children.
+
+15.3 Follow-up (recall) engine
+  This is the module that stops patients from being forgotten.
+  - A recall is a structured item: patient, reason, due date, window
+    (e.g., plus or minus 2 weeks), what should happen (visit, test,
+    phone call, questionnaire), who created it (doctor, or a rule),
+    status (pending, booked, done, overdue, cancelled with reason).
+  - Recalls are created three ways:
+      manually from the plan ("see in 6 weeks with audiogram"),
+      automatically from procedures and findings (tube inserted: check
+        at 6 months; pack inserted: remove in 48 to 72 hours; splints:
+        remove in 5 to 7 days; wick: remove in 2 to 3 days; specimen
+        sent: review in 7 to 10 days; cholesteatoma cavity: clean every
+        6 to 12 months; immunotherapy dose: next in 4 weeks),
+      automatically from protocols attached to a diagnosis (head and
+        neck cancer surveillance schedule; thyroid nodule follow-up by
+        TI-RADS; OME watchful waiting 3 months; sudden hearing loss
+        repeat audiogram at 2 to 4 weeks; post-op outcome questionnaires
+        at 3, 6, 12 months; hearing aid annual review; yearly audiogram
+        for ototoxic therapy or noise exposure).
+    All intervals are defaults in an editable protocol table, not hard-
+    coded.
+  - Work list for the assistant: overdue and upcoming recalls, one-click
+    to call, send an SMS or WhatsApp reminder in the patient's language,
+    book, or mark unreachable (with attempt count).
+  - Dashboard counters for the doctor: overdue recalls by type.
+  - When the patient arrives, the cockpit shows the recall reason and
+    the expected actions ("tube check: otoscopy, tympanogram").
+
+
+--------------------------------------------------------------------------------
+16. IMAGES, VIDEOS AND ATTACHMENTS
+--------------------------------------------------------------------------------
+
+  - Capture from a connected endoscopy camera or webcam directly in the
+    browser, or upload from a file. Short video clips (limited duration
+    and size) for laryngoscopy and stroboscopy.
+  - Every image is tagged with patient, date, procedure, region and side,
+    and optionally attached to a specific structure on a map.
+  - Annotation tools: arrow, circle, freehand, text label, measurement
+    against a known scale where possible. Annotations are stored
+    separately from the original so the original is never altered.
+  - Side-by-side viewer for the same region across dates.
+  - Selected images are placed in the report with captions
+    auto-generated from the tags ("Left middle meatus, polyp grade 2,
+    2026-09-18").
+  - External documents: scanned CT and MRI reports, pathology reports,
+    external audiograms, sleep study PDFs, previous letters, each tagged
+    with type and date and, where possible, linked to the structured
+    result record (a scanned audiogram can be transcribed into numbers by
+    the technician; the AI assistant can propose the transcription).
+  - Image consent flag for teaching use.
+  - Storage lifecycle and access are covered under security (19.8).
+
+
+--------------------------------------------------------------------------------
+17. DOCTOR DASHBOARD AND PRACTICE ANALYTICS
+--------------------------------------------------------------------------------
+
+17.1 Today
+  - Today's list with questionnaire status and recall reasons.
+  - Drafts to sign, results to review (pathology, imaging, audiology
+    entered by the technician), referral letters to answer.
+  - Surgical waiting list count and pre-op checklist gaps for the next
+    operating day.
+  - Overdue recalls by type.
+
+17.2 My practice (private to each doctor, clinic-level for the admin)
+  - Volumes: consultations, procedures, surgeries per month; new vs
+    follow-up; by chief complaint; by diagnosis; by age group.
+  - Referral sources and referral replies sent.
+  - Outcomes: mean and median change in SNOT-22 after FESS, NOSE after
+    septoplasty, VHI after phonosurgery, THI after tinnitus management,
+    Epworth or AHI after sleep surgery, audiogram change after
+    tympanoplasty or stapedotomy (air-bone gap closure rate to within
+    10 dB or 20 dB), BPPV resolution after one maneuver, tube
+    complication rates (otorrhea, blockage, early extrusion).
+  - Complications per procedure over time (from operative and post-op
+    notes).
+  - Documentation quality: percentage of visits with a coded diagnosis,
+    with a signed report within 24 hours, with a follow-up plan.
+  - Time metrics: average consultation duration if the clinic wants it.
+  - All charts are built from the structured data already collected.
+    There is no separate data entry for analytics.
+
+17.3 Research and export
+  - Anonymized export of selected fields for a chosen diagnosis or
+    procedure, with the identifiers removed and dates shifted, for
+    audit or research, admin-approved and logged.
+  - Cohort builder: "all patients with FESS in 2025 who completed SNOT-22
+    at 6 months".
+
+
+--------------------------------------------------------------------------------
+18. THE AI ASSISTANT (DELIBERATELY SMALL)
+--------------------------------------------------------------------------------
+
+Everything above works without AI. The assistant adds convenience at
+five points, always as a suggestion the doctor accepts or rejects, and
+always visibly labelled as a draft. It never writes into the record on
+its own.
+
+18.1 Free text to structured fields
+  The doctor types or dictates a paragraph of history. The assistant
+  proposes values for the structured fields (onset, laterality,
+  duration, associated symptoms). Each proposed value is shown next to
+  the field with an accept button. Nothing is saved until accepted.
+
+18.2 Report drafting
+  From the structured findings, the assistant drafts the narrative
+  conclusion and the referral reply letter in the chosen language and in
+  the doctor's usual style (learned from the doctor's own signed
+  reports, kept private to that doctor). The template engine already
+  produces the findings text; the assistant only helps with the
+  conclusion and the letter prose.
+
+18.3 Patient-friendly explanation
+  Converts the diagnosis and plan into a short explanation for the
+  patient in French, Arabic or English, at a chosen reading level,
+  printed with the handouts. The doctor reads it before it prints.
+
+18.4 Transcription of scanned results
+  Proposes the numeric transcription of a scanned external audiogram or
+  a sleep study summary into the structured fields, for the technician
+  or doctor to verify field by field.
+
+18.5 Pre-visit summary
+  Before a follow-up visit, a three-line summary of the patient's ENT
+  history, last plan, and what is due today, generated from the timeline
+  and recalls. Useful for a doctor seeing 40 patients a day.
+
+Explicitly out of scope: diagnosis suggestion, treatment recommendation,
+image interpretation of endoscopy or CT, triage, anything that could be
+read by the doctor as a clinical opinion from the software.
+
+Every AI request and response is logged with the user, time and whether
+the suggestion was accepted, so its usefulness can be measured and its
+cost controlled.
+
+
+--------------------------------------------------------------------------------
+19. CROSS-CUTTING FEATURES
+--------------------------------------------------------------------------------
+
+19.1 Languages
+  - Interface in French and English at launch, Arabic later.
+  - Patient-facing documents and questionnaires in French, Arabic and
+    English at launch, with right-to-left layout for Arabic. Each patient
+    has a document language.
+  - Clinical vocabulary (findings, diagnoses, procedures) stored as codes
+    with labels per language, so a report can be produced in a language
+    different from the one used to enter it.
+
+19.2 Keyboard and speed
+  - Command palette (a single shortcut) to jump to any patient, module,
+    template or action by typing.
+  - Every map, grid and picker fully operable by keyboard. Right / left
+    toggle, normal, next structure, attach image, sign, print each have
+    a shortcut.
+  - Audiogram grid navigation with arrow keys and typed values.
+  - Dictation into any free-text field using the browser's speech input
+    where available.
+
+19.3 Autosave and drafts
+  - Every field saves within seconds. A visit interrupted by a browser
+    crash or a tablet battery reopens exactly where it was.
+  - A visible saved indicator. Conflict handling if two users edit the
+    same record (the second sees the first's changes before overwriting).
+
+19.4 Search
+  - Patients by name, phone, ID, date of birth, fuzzy and accent-
+    insensitive, Arabic and Latin scripts.
+  - Clinical search across a doctor's patients: by diagnosis, procedure,
+    finding, score range, date range ("all patients with grade 3 polyps
+    seen in 2026").
+
+19.5 Templates the doctor owns
+  - Visit templates per complaint, report phrase library, prescription
+    templates, document templates, favorite diagnoses and procedures,
+    default follow-up intervals. Clinic defaults plus personal overrides.
+
+19.6 Tablet and procedure-room modes
+  - A simplified touch layout for the tablet the assistant carries and
+    for the procedure room screen: large targets, the current structure
+    map, capture button, previous image, sign.
+
+19.7 Audit and traceability
+  - Who created, viewed, changed or printed every clinical record, when,
+    from where. Viewing is logged too (break-glass access to a patient
+    outside one's list requires a reason).
+  - Signed records are immutable; changes are addenda.
+  - Versioned templates, protocols and calculators: a report always
+    knows which template version and which formula version produced it.
+
+19.8 Security and privacy (minimum for medical data)
+  - Individual accounts, strong passwords, optional second factor,
+    automatic session lock after inactivity (short in shared rooms).
+  - Role-based permissions as in 4.3, per clinic and per site.
+  - Encryption in transit everywhere and at rest for the database and
+    the file store. Images and documents stored outside the database
+    with access only through authenticated, expiring links.
+  - Daily backups, tested restores, retention rules aligned with local
+    medical record retention law.
+  - Patient data export on request and deletion or anonymization rules
+    per local law.
+  - No patient identifiers sent to the AI provider beyond what the
+    feature needs; identifiers stripped where possible; the clinic can
+    disable AI entirely.
+  - Consent flag for SMS or WhatsApp contact.
+
+19.9 Offline resilience (later phase)
+  - Read-only access to today's patients and the ability to keep
+    entering a visit during a short connection loss, synchronized when
+    back online. Not in version 1 but the data model should not prevent it.
+
+
+--------------------------------------------------------------------------------
+20. DATA PRINCIPLES AND CODING
+--------------------------------------------------------------------------------
+
+  - Every finding is a coded value with side, date, source (doctor,
+    technician, patient, device, AI-proposed-then-accepted) and the
+    visit it belongs to.
+  - Diagnoses coded with ICD-10 (the ENT chapters: H60 to H95 for the
+    ear, J00 to J39 for the upper respiratory tract, C00 to C14 and C30
+    to C32 and C73 for head and neck and thyroid cancer, K11 to K14 for
+    salivary glands and oral cavity, R42 and H81 for vertigo, and
+    others), with a display name in each language and room for a local
+    code system in parallel.
+  - Procedures coded with a configurable catalog mapped to the local
+    nomenclature used by insurers.
+  - Measurements stored with units and reference ranges.
+  - Scores stored as items plus computed total plus the instrument
+    version.
+  - Free text always allowed but never the only place a fact lives.
+  - Right and left are explicit on every paired structure. "Bilateral"
+    is never stored as a single value on a paired finding; it becomes two
+    findings.
+  - Dates of onset are stored as either a date or a duration with a
+    "recorded on" date, so "6 months" typed today still means something
+    next year.
+  - Reference data (allergen panels, drug formulary, procedure catalog,
+    protocols, questionnaires) is versioned and editable by the clinic
+    admin without code changes.
+
+
+--------------------------------------------------------------------------------
+21. MVP SCOPE, PHASING AND WHAT TO LEAVE OUT
+--------------------------------------------------------------------------------
+
+The product is large. The MVP must still be small enough to ship, so the
+phases below are ordered by what makes a single ENT doctor's day faster
+first.
+
+Phase 1  Foundation (weeks 1 to 6)
+  Clinic and users with roles, patient registry with alerts and
+  clinical background, minimal schedule and waiting list, audit, document
+  templates with header and footer, print to PDF.
+
+Phase 2  The consultation (weeks 7 to 14)
+  Consultation cockpit with chief complaint templates for the ten most
+  common complaints, structured history, examination with the ear, nose,
+  oral cavity and neck maps, one-click normals, copy forward, diagnosis
+  coding, plan items, consultation report, prescription with pediatric
+  dosing and safety checks, sick leave and certificates, imaging and lab
+  requests, referral letters, patient timeline, manual recalls.
+  This phase alone is a usable product.
+
+Phase 3  Office procedures (weeks 15 to 20)
+  Nasal endoscopy and laryngoscopy report builders with image capture
+  and annotation, Lund-Kennedy and RFS scores, otomicroscopy and ear
+  procedures with tube tracking, epistaxis and other short procedure
+  forms, automatic recalls from procedures.
+
+Phase 4  Audiology (weeks 21 to 26)
+  Audiogram entry and chart, speech, tympanometry, calculations, WHO
+  grading, asymmetry and shift alerts, dashboard, overlay comparison,
+  audiology report, hearing aid tracking, technician role.
+
+Phase 5  Questionnaires, scores and calculators (weeks 27 to 30)
+  Questionnaire engine with SNOT-22, NOSE, THI, DHI, VHI-10, RSI,
+  EAT-10, Epworth, STOP-BANG; tablet and QR filling; trend graphs;
+  calculator engine with the audiology, pediatric dosing and surgical
+  criteria calculators.
+
+Phase 6  Vestibular suite (weeks 31 to 34)
+  Structured history, bedside exam with positional tests and canal
+  pattern, maneuver documentation, criteria checklists, lab test entry.
+
+Phase 7  Surgery module (weeks 35 to 42)
+  Surgery proposal and bundle, waiting list, pre-op checklist, operating
+  day list, operative note templates for the top fifteen procedures,
+  post-op pathways with automatic recalls and outcome questionnaires,
+  surgeon logbook.
+
+Phase 8  Sub-specialty modules (weeks 43 to 50)
+  Sleep and DISE, allergy with prick test and immunotherapy, head and
+  neck with TNM and tumor board sheet, pediatric growth and episode
+  logs, facial nerve, voice recordings.
+
+Phase 9  Analytics and AI (weeks 51 onward)
+  Dashboard outcomes, cohort export, the five AI assistant functions.
+
+Not in version 1 (and probably not in version 2):
+  online booking by patients, billing and accounting, pharmacy stock,
+  full insurance claims processing, hospital bed management, patient
+  portal beyond document download and questionnaires, telemedicine
+  video, AI diagnosis or treatment suggestions, automatic image
+  interpretation, integration with hospital systems (HL7 / FHIR) until a
+  real customer asks, device integrations beyond simple file import.
+
+
+--------------------------------------------------------------------------------
+22. THREE KILLER WORKFLOWS THE PRODUCT MUST NAIL
+--------------------------------------------------------------------------------
+
+22.1 Chronic rhinosinusitis, first visit to surgery, under 12 minutes
+  Patient fills SNOT-22 on the tablet in the waiting room (score 58).
+  Doctor selects "nasal obstruction" and "facial pressure". History
+  block appears, doctor fills 8 structured fields and one free-text
+  line. "Normal ear, oral cavity, neck" in one click. Nasal endoscopy
+  builder: right middle meatus polyp grade 2 with purulent discharge,
+  left grade 1, two photos captured and labelled. Lund-Kennedy computed.
+  Diagnosis coded. Plan: nasal steroid and irrigation prescription
+  template, CT sinuses request with the clinical question auto-written,
+  handout on irrigation, follow-up in 6 weeks with CT and repeat
+  SNOT-22 (recall created, SNOT-22 link scheduled). Batch print. At the
+  follow-up, Lund-Mackay entered from the CT, FESS proposed, surgery
+  bundle generated, patient on the waiting list. After surgery, the
+  operative note takes two minutes, SNOT-22 is re-sent at 3, 6 and 12
+  months, and the doctor's dashboard shows the improvement.
+
+22.2 Child with recurrent ear infections and hearing concern
+  Weight entered by the assistant. Screening tympanometry by the
+  technician shows type B both ears. Doctor selects "recurrent ear
+  infections". Episode log shows 5 episodes in 9 months (criterion
+  met, displayed). Otoscopy map: bilateral dull membranes with effusion.
+  Audiogram by play audiometry shows a 30 dB conductive loss. OME
+  tracking started, 3-month watchful waiting recall created, parent
+  handout printed in Arabic. At 3 months, effusion persists, tubes
+  proposed, surgery bundle in the parents' language, tube inserted,
+  tube registry starts, 6-month checks created, swimming certificate
+  available on request. Two years later, the timeline shows the whole
+  story on one screen.
+
+22.3 Acute vertigo in the procedure room
+  Doctor selects "vertigo". DHI filled on the tablet. Structured history
+  card reads: recurrent, seconds, positional, no auditory symptoms.
+  Dix-Hallpike right positive with upbeating torsional nystagmus, 5
+  seconds latency, 20 seconds duration. Pattern displayed: consistent
+  with right posterior canal. Epley performed, documented, immediate
+  re-test negative. Handout with home exercises printed. Recall in 2
+  weeks with DHI. Report signed. Total time 8 minutes, and the outcome
+  feeds the doctor's maneuver success statistics.
+
+
+--------------------------------------------------------------------------------
+23. BRIEF TECHNOLOGY NOTES
+--------------------------------------------------------------------------------
+
+The stack is decided (React / Next.js with shadcn on the front end,
+FastAPI on the back end, MySQL). A few implications of this
+specification, kept short:
+
+  - All calculations, scoring and criteria evaluation run on the server,
+    versioned and covered by automated tests with known-answer cases from
+    the published sources. The front end only displays results.
+  - Report and document generation runs on the server from templates,
+    so the same structured data produces the same document every time.
+  - Images and videos are stored in object storage, not in MySQL; the
+    database holds metadata, tags and annotation geometry.
+  - The data model is built around visits containing typed findings
+    (structure, side, code, value, unit, source), not around wide tables
+    with one column per possible finding. This is what makes the maps,
+    the comparisons and the analytics possible.
+  - Reference data (codes, questionnaires, protocols, formulary,
+    procedure catalog) lives in editable tables, not in code.
+  - Audit is a first-class table written by the API layer, not an
+    afterthought.
+  - The questionnaire links for patients need a small public endpoint
+    with strong token handling and rate limiting, separate from the
+    clinical API.
+  - Multilingual labels are data, not hard-coded strings.
+
+
+--------------------------------------------------------------------------------
+24. APPENDIX A: REFERENCE TABLE OF SCORES AND GRADING SYSTEMS
+--------------------------------------------------------------------------------
+
+Verify each against the primary publication before implementation and
+store the reference and version with the instrument. Several are
+copyrighted and may need permission for commercial use.
+
+Patient-reported
+  SNOT-22          22 items, 0 to 5 each, total 0 to 110. Sinonasal.
+  NOSE             5 items, 0 to 4 each, sum multiplied by 5, total 0 to
+                   100. Nasal obstruction.
+  THI              25 items, no 0 / sometimes 2 / yes 4, total 0 to 100.
+                   Grades: slight 0-16, mild 18-36, moderate 38-56,
+                   severe 58-76, catastrophic 78-100.
+  DHI              25 items, same scoring, total 0 to 100. Subscales
+                   physical, emotional, functional.
+  VHI-10           10 items, 0 to 4, total 0 to 40.
+  VHI-30           30 items, 0 to 4, total 0 to 120. Subscales
+                   functional, physical, emotional.
+  RSI              9 items, 0 to 5, total 0 to 45. Above 13 abnormal.
+  EAT-10           10 items, 0 to 4, total 0 to 40. 3 or more abnormal.
+  Epworth          8 items, 0 to 3, total 0 to 24. Above 10 excessive
+                   daytime sleepiness.
+  STOP-BANG        8 yes/no items, 0 to 8. 0-2 low, 3-4 intermediate,
+                   5-8 high risk.
+  OSA-18           18 items, 1 to 7 each, total 18 to 126. Pediatric.
+
+Clinician-rated
+  Brodsky tonsil grade    0 to 4 by percentage of oropharyngeal width.
+  Friedman tongue position I to IV.
+  Mallampati              I to IV.
+  Lund-Kennedy            polyps, edema, discharge, scarring, crusting;
+                          0 to 2 each per side; total 0 to 20.
+  Modified Lund-Kennedy   polyps, edema, discharge; total 0 to 12.
+  Lund-Mackay CT          6 regions per side (OMC scored 0 or 2); total 0
+                          to 24.
+  Polyp grade             Meltzer 0 to 4, or Lildholdt 0 to 3.
+  House-Brackmann         I to VI facial nerve.
+  Sunnybrook              composite 0 to 100.
+  GRBAS                   grade, roughness, breathiness, asthenia, strain,
+                          0 to 3 each.
+  RFS                     8 items, total 0 to 26. Above 7 abnormal.
+  Penetration-Aspiration  1 to 8.
+  VOTE                    velum, oropharynx, tongue base, epiglottis;
+                          degree 0 to 2; configuration AP / lateral /
+                          concentric.
+  Myer-Cotton             grade I to IV subglottic stenosis by percentage.
+  Sadé                    pars tensa retraction I to IV.
+  Tos                     pars flaccida (attic) retraction grades.
+  Jerger tympanogram      A, As, Ad, B, C.
+  WHO hearing grades 2021 normal, mild, moderate, moderately severe,
+                          severe, profound, complete (PTA 0.5, 1, 2,
+                          4 kHz).
+  ASHA threshold shift    20 dB at one frequency, or 10 dB at two
+                          adjacent, or loss of response at three
+                          consecutive frequencies.
+  Jongkees formula        unilateral weakness (R - L) / (R + L) x 100.
+  ACR TI-RADS             TR1 to TR5 thyroid nodules.
+  Bethesda                I to VI thyroid cytology.
+  AJCC TNM                8th edition by site; record edition.
+  Chandler                I to V orbital complications of sinusitis.
+  AHI severity            under 5 normal, 5-15 mild, 15-30 moderate,
+                          over 30 severe.
+  Paradise criteria       tonsillectomy in recurrent tonsillitis.
+  Barany Society criteria Meniere's, vestibular migraine, BPPV, PPPD,
+                          vestibular paroxysmia, bilateral vestibulopathy.
+
+
+--------------------------------------------------------------------------------
+25. APPENDIX B: CHIEF COMPLAINT TO TEMPLATE MAPPING (DEFAULTS)
+--------------------------------------------------------------------------------
+
+Complaint            Exam sections opened      Questionnaire   Usual tests / docs
+-------------------  ------------------------  --------------  ------------------------
+Nasal obstruction    Nose map, endoscopy,      NOSE, SNOT-22   Endoscopy, CT sinuses,
+                     oral cavity (palate)                      irrigation handout
+Facial pain/pressure Nose, endoscopy, face     SNOT-22         Endoscopy, CT sinuses
+Rhinorrhea/sneezing  Nose, endoscopy           SNOT-22         Prick test, IgE, ARIA
+Epistaxis            Nose, endoscopy, BP       none            Cautery form, coag labs
+Loss of smell        Nose, endoscopy           SNOT-22 items   Endoscopy, MRI if needed
+Hearing loss         Ear map, tuning forks     HHIE optional   Audiogram, tympanogram
+Sudden hearing loss  Ear map, tuning forks,    none            Urgent audiogram, MRI
+  (red flag)         vestibular screen                         IAC, steroid template
+Ear pain             Ear map, oral cavity,     none            Otoscopy, culture if
+                     neck                                      discharge
+Ear discharge        Ear map, microscopy       none            Culture, audiogram
+Tinnitus             Ear map, neck ausc.       THI             Audiogram, MRI if
+                                                               asymmetric or pulsatile
+Vertigo/dizziness    Vestibular exam, ear map  DHI             Audiogram, maneuver,
+                                                               handout
+Sore throat/         Oral cavity, neck         none            Episode log, Paradise,
+  tonsillitis                                                  surgery bundle
+Dysphagia/globus     Oral, laryngoscopy, neck  EAT-10, RSI     Laryngoscopy, FEES,
+                                                               barium if needed
+Hoarseness           Laryngoscopy, neck        VHI-10, RSI     Laryngoscopy/strobo,
+                                                               voice recording
+Chronic cough        Laryngoscopy, nose        RSI             Laryngoscopy
+Stridor/breathing    Laryngoscopy, general     none            Airway template, SpO2
+Neck lump            Neck map, oral,           none            US neck, FNA, laryngo-
+                     laryngoscopy                              scopy, TNM if malignant
+Thyroid nodule       Neck map, laryngoscopy    none            US, TSH, FNA, TI-RADS
+Salivary swelling    Neck map, oral (ducts)    none            US, sialendoscopy
+Snoring/apnea adult  Oral, nose, laryngo-      Epworth,        Sleep study, DISE,
+                     scopy, BMI, neck circ.    STOP-BANG       CPAP tracking
+Child snoring        Oral (tonsils), nose,     OSA-18          Adenoid assessment,
+                     growth, endoscopy                         AT information sheet
+Recurrent AOM child  Ear map, growth           none            Episode log, tympano-
+                                                               gram, tube criteria
+Failed hearing       Ear map                   none            OAE, ABR, screening
+  screen (infant)                                              chain
+Speech delay         Ear map, oral             none            Audiogram/ABR, speech
+                                                               therapy referral
+Facial weakness      Face map, ear map,        none            HB grade, eye protection
+                     parotid                                   handout, steroids
+Oral lesion          Oral cavity map, neck     none            Photo, biopsy, TNM
+Post-op check        Relevant region map       Outcome         Post-op template,
+                                               instrument      complication capture
+Tube check           Ear map                   none            Otoscopy, tympanogram,
+                                                               6-month recall
+Immunotherapy visit  Nose                      symptom score   Dose record, reaction,
+                                                               next dose recall
+Results review       none by default           none            Result review template,
+                                                               explain-to-patient tick
+
+
+--------------------------------------------------------------------------------
+26. APPENDIX C: COMMON ENT PROCEDURES AND DEFAULT FOLLOW-UP PLANS
+--------------------------------------------------------------------------------
+
+All intervals are editable defaults.
+
+Procedure                     Default post-op plan
+----------------------------  --------------------------------------------------
+Tonsillectomy (+/- adenoid)   Phone check day 2; visit day 10-14; bleeding
+                              warning handout; outcome questionnaire at 3 months
+                              (OSA-18 or episode log)
+Adenoidectomy alone           Visit at 3-4 weeks
+Ventilation tubes             Visit 3-4 weeks (patency, otorrhea); then every 6
+                              months until extrusion; audiogram at 3 months if
+                              hearing loss pre-op; swimming advice handout
+Myringoplasty/tympanoplasty   Visit 2-3 weeks (pack removal, graft check);
+                              6-8 weeks; audiogram at 3 months; annual if
+                              cholesteatoma
+Mastoidectomy                 Visit 2-3 weeks; cavity cleaning every 6-12 months
+                              lifelong; second-look planning if canal wall up
+Stapedotomy                   Visit 1-2 weeks; audiogram 6-8 weeks and 1 year;
+                              no flying/diving advice period
+Septoplasty                   Splint removal day 5-7; visit 4-6 weeks; NOSE at
+                              3 months
+Turbinate reduction           Visit 3-4 weeks; NOSE at 3 months
+FESS                          Debridement week 1 and week 3; endoscopy at 3
+                              months; SNOT-22 at 3, 6, 12 months; irrigation
+                              protocol handout
+Nasal fracture reduction      Splint removal day 7-10; visit 4 weeks
+Rhinoplasty                   Splint removal day 7; visits 1, 3, 6, 12 months
+Microlaryngoscopy/            Voice rest per protocol; visit 1-2 weeks with
+  phonosurgery                laryngoscopy; VHI at 3 months; pathology review
+Vocal fold injection          Visit 2-4 weeks with laryngoscopy
+Thyroidectomy                 Calcium day 1 (total); vocal fold check 2 weeks;
+                              histology review; TSH at 6 weeks; calcium symptoms
+                              handout
+Parotidectomy                 Visit 1 week (drain/wound, facial function HB);
+                              histology review; 6 weeks
+Submandibular gland excision  Visit 1 week; histology review
+Neck dissection               Visit 1 week; histology and tumor board; shoulder
+                              physiotherapy; surveillance schedule
+Excision neck cyst/lump       Visit 1 week; histology review
+Tracheostomy                  First tube change per protocol; stoma care
+                              handout; decannulation planning
+UPPP / palate surgery         Visit 2 weeks; Epworth at 3 months; sleep study at
+                              3-6 months
+Epistaxis pack                Removal 48-72 h; visit 1 week
+Otitis externa wick           Removal/replace 48-72 h
+Cerumen removal               None unless canal injury; recall if recurrent
+Intratympanic injection       Audiogram at 2-4 weeks
+Epley/other maneuver          Visit 1-2 weeks with DHI; repeat if persistent
+Sialendoscopy                 Visit 2-4 weeks
+Office biopsy                 Histology review 7-10 days; explain-to-patient tick
+
+================================================================================
+END OF DOCUMENT
+================================================================================

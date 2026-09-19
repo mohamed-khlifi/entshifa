@@ -1,0 +1,151 @@
+---
+description: FastAPI backend conventions — layering, repositories, services, routers, schemas, errors
+globs: apps/api/**/*.py
+alwaysApply: false
+---
+
+# Backend rules (FastAPI)
+
+## Layering and allowed imports
+
+    router      -> service, schemas, dependencies, core
+    service     -> repository, engines, schemas, integrations, core, events
+    repository  -> models, core
+    engines     -> stdlib, typing, core.types ONLY
+    models      -> core.db only
+
+Forbidden, CI fails on these:
+
+    router      -> repository        (skipping the service layer)
+    router      -> models            (leaking ORM to HTTP)
+    repository  -> service           (circular)
+    engines     -> models, fastapi, sqlalchemy, httpx, redis
+
+## Feature module shape
+
+Every folder under `src/ent/features/<domain>/` has this shape. Omit files the
+feature does not need; never add files outside this set without asking.
+
+    router.py          endpoints only
+    dependencies.py    feature-specific FastAPI dependencies
+    schemas/
+      requests.py      input models
+      responses.py     output models
+      internal.py      DTOs between service and engines
+    models.py          SQLAlchemy models owned by this feature
+    repository.py      all queries
+    service.py         use cases, transaction boundary
+    selectors.py       read-optimized queries for dashboards and lists
+    policies.py        authorization rules specific to this domain
+    events.py          domain events this feature emits
+    handlers.py        reactions to events from other features
+    constants.py
+    exceptions.py
+    tests/
+
+## Routers
+
+- Thin. Parse input, call exactly one service method, return a response schema.
+- No business rules, no queries, no ORM objects.
+- Use the public ULID (`public_id`) in paths, never the integer `id`.
+- Declare `response_model` on every endpoint.
+- Every state transition is its own sub-resource or verb endpoint
+  (`POST /encounters/{id}/sign`), never `PATCH {status: "signed"}`.
+- Accept `Idempotency-Key` on POSTs that create clinical records.
+- Permissions are declared with the dependency, not checked in the body:
+
+```python
+@router.post("/{encounter_id}/sign", response_model=EncounterRead)
+async def sign_encounter(
+    encounter_id: str,
+    user: CurrentUser = Depends(require(Permission.ENCOUNTER_SIGN)),
+    service: EncounterService = Depends(get_encounter_service),
+) -> EncounterRead:
+    return await service.sign(encounter_id, signed_by=user)
+```
+
+## Services
+
+- One public method per use case, named for the use case (`create_audiogram`,
+  `sign_encounter`), not for the HTTP verb.
+- Own the transaction through the unit of work. Emit domain events inside it;
+  the bus publishes them only after commit.
+- Call engines for anything computed. Never compute clinically meaningful
+  values inline.
+- Return schemas, never ORM objects.
+- Raise domain errors from `core.errors`, never `HTTPException`.
+- Receive dependencies through `__init__` so tests can pass fakes.
+
+## Repositories
+
+- Subclass `BaseRepository[Model]` and never bypass `_base_query()`, which
+  applies soft-delete and tenant filters.
+- Select explicit columns for list endpoints. No `SELECT *`.
+- Declare eager loading in the repository method (`selectinload` for
+  collections, `joinedload` for single relations). Never rely on lazy loading.
+- Every list method paginates. There is no unbounded `list_all`.
+- No business rules here. A method that decides something belongs in the
+  service.
+
+## Models
+
+- Inherit the mixins rather than repeating columns: `PublicIdMixin`,
+  `TimestampMixin`, `AuditMixin`, `SoftDeleteMixin`, `TenantMixin`,
+  `VersionMixin`.
+- `id` is `BIGINT UNSIGNED` internal; `public_id` is a ULID and is what leaves
+  the process.
+- Enum-like columns are `VARCHAR` with a `CHECK` constraint, or a lookup table
+  when clinicians may extend the list. Never MySQL `ENUM`.
+- Money is `DECIMAL(12,3)` plus a currency column. Never float.
+- `ON DELETE RESTRICT` on clinical relations. Never cascade.
+- JSON columns only for genuinely schemaless payloads. If you will filter,
+  sort or aggregate on it, it is a column.
+
+## Schemas
+
+- Inherit `CamelModel` so Python stays snake_case and JSON is camelCase.
+- Separate `Create`, `Update`, `Read` models. Never reuse one for input and
+  output; that is how write-only fields leak.
+- Validate ranges on clinical inputs (frequencies, thresholds, scores, doses).
+  A threshold of 500 dB is a typo, not data.
+- Reuse the shared value objects from `core.schemas.common`: `CodeableConcept`,
+  `Quantity`, `Laterality`, `Period`, `Attachment`, `Provenance`.
+
+## Errors
+
+- Raise `NotFoundError`, `PermissionDeniedError`, `ConflictError`,
+  `ValidationError`, `ClinicalSafetyError`, `RecordLockedError`.
+- Every error carries a stable namespaced `code` and a `context` dict.
+  `prescription.allergy_conflict`, not `"Patient is allergic to penicillin"`.
+- Never put a displayable English sentence in an API response.
+- A cross-tenant access attempt raises `NotFoundError`, not
+  `PermissionDeniedError`.
+
+## Engines (clinical logic)
+
+- Pure functions. Inputs in, dataclass out. No session, no clock, no settings
+  lookup. If it needs "now", it is a parameter.
+- Each module exposes `VERSION` and `REFERENCE`.
+- Return `CalculationResult` carrying value, unit, inputs, formula, version,
+  reference and flags.
+- Every engine has a test file with cases from the published source, cited in
+  the test docstring.
+- Never invent a threshold, formula, dose or staging table. Use the documented
+  value or ask, and mark uncertainty with `# VERIFY:`.
+
+## Async
+
+- The stack is async end to end. Never call a blocking library inside a request
+  handler. CPU-bound or blocking work goes to the worker.
+- Do not mix sync and async sessions.
+
+## Testing
+
+- `tests/unit/` for engines, fast, no database.
+- `tests/clinical/` for known-answer cases per formula and score.
+- `tests/integration/` for repositories and services against real MySQL, each
+  test in a rolled-back transaction.
+- `tests/api/` for status codes, permissions, tenant isolation, error codes and
+  pagination envelope.
+- Use the factories in `tests/factories/`. Do not build fixtures by hand.
+- Every new endpoint gets a cross-tenant isolation test.

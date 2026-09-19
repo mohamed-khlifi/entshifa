@@ -1,0 +1,60 @@
+---
+description: Translation catalog conventions for every locale
+globs: apps/web/messages/**/*.json,packages/i18n-messages/**/*.json
+alwaysApply: false
+---
+
+# Translation catalog rules
+
+## Structure
+
+One file per feature per locale, so merge conflicts stay small:
+
+    messages/<locale>/common.json
+    messages/<locale>/errors.json
+    messages/<locale>/patients.json
+    messages/<locale>/audiology.json
+    ...
+
+Locales at launch: `en`, `fr`. Then `ar` (RTL). The set is open; adding a
+language must never require a code change.
+
+## Keys
+
+- Semantic and namespaced by feature and area:
+  `audiology.audiogram.actions.addThreshold`
+- Never the English text as the key. `"Add threshold"` as a key is rejected.
+- Never build a key at runtime by concatenation, except through an explicit,
+  typed map. Dynamic keys break the missing-key check.
+- Sort keys alphabetically within each object so diffs stay readable.
+
+## Values
+
+- ICU message format for plurals, selects and interpolation:
+
+      "recalls.overdue": "{count, plural, =0 {No recalls} one {# recall} other {# recalls}} overdue"
+
+  English has two plural forms, French two with different rules, Arabic six.
+  Never assemble a plural by hand.
+- Interpolation placeholders keep the same names across all locales.
+- Units (dB HL, Hz, daPa, mg, mL, mmHg, kg) are never translated. Keep them out
+  of the message or pass them as a parameter.
+- Clinical terms do not belong here at all. They are `concept_translation` rows
+  in the database.
+- Keep tone consistent: imperative for actions, sentence case for labels, no
+  trailing periods on button labels.
+
+## Rules enforced in CI
+
+1. Every key present in the default locale must exist in every other locale.
+   A missing key fails the build.
+2. No orphan keys: a key absent from the source code fails the build.
+3. Placeholder sets must match across locales for the same key.
+4. The pseudo-locale (`en-XA`) renders strings with accents and 40% extra
+   length; run the UI in it to catch truncation and hardcoded strings.
+
+## When adding a key
+
+Add it to every locale in the same change. If you do not have the French or
+Arabic wording, add the key with the English value and a `# TODO(i18n)` entry
+in the translation coverage list, never leave the key missing.

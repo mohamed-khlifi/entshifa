@@ -1,0 +1,2743 @@
+================================================================================
+ENT CLINICAL WORKSPACE
+Project architecture, folder structure, reusable building blocks
+and database design
+================================================================================
+
+Companion to: ENT_Clinical_Workspace_Feature_Specification.txt
+Stack: Next.js + React + TypeScript + shadcn/ui  |  FastAPI + Python
+       MySQL 8  |  S3-compatible object storage  |  Redis
+Languages at launch: English, French. Arabic next. Designed for any number
+       of languages, including right-to-left ones.
+
+
+--------------------------------------------------------------------------------
+TABLE OF CONTENTS
+--------------------------------------------------------------------------------
+
+  PART I   PRINCIPLES
+   1.  The ten rules this architecture enforces
+   2.  Layering model and the dependency direction
+   3.  Repository layout (monorepo)
+
+  PART II  BACKEND
+   4.  Backend folder structure
+   5.  Anatomy of a feature module
+   6.  The core package (what every feature reuses)
+   7.  Reusable building blocks, with code
+   8.  Clinical engines (calculations, scoring, rules, templates)
+   9.  Background jobs and scheduling
+   10. Backend testing layout
+
+  PART III FRONTEND
+   11. Frontend folder structure
+   12. Anatomy of a frontend feature
+   13. Reusable frontend building blocks, with code
+   14. Form system, table system, chart system
+   15. Clinical UI components (maps, audiogram, timeline)
+   16. State, caching and data-fetching rules
+   17. Frontend testing layout
+
+  PART IV  INTERNATIONALIZATION
+   18. Four kinds of text, four different mechanisms
+   19. UI translation, formatting, RTL
+   20. Clinical terminology as translated data
+   21. Document and template translation
+   22. Rules that keep languages from rotting
+
+  PART V   DATABASE
+   23. Conventions that apply to every table
+   24. Schema map by domain
+   25. Tables and columns, domain by domain
+   26. The observation model (how clinical findings are stored)
+   27. Indexing, partitioning and performance notes
+   28. Migrations, seeds and reference data versioning
+
+  PART VI  CROSS-CUTTING
+   29. Authentication, authorization and multi-tenancy
+   30. Audit, immutability and signing
+   31. Error handling contract
+   32. Logging, tracing and metrics
+   33. Configuration and environments
+   34. File storage and media pipeline
+   35. API design conventions
+   36. Security checklist
+   37. CI/CD and quality gates
+   38. Naming conventions cheat sheet
+   39. Anti-patterns: what will kill this project
+   40. Build order for the skeleton
+
+
+================================================================================
+PART I  PRINCIPLES
+================================================================================
+
+--------------------------------------------------------------------------------
+1. THE TEN RULES THIS ARCHITECTURE ENFORCES
+--------------------------------------------------------------------------------
+
+ R1. Dependencies point inward. Routers depend on services, services depend on
+     repositories and domain logic. Nothing in the domain layer imports FastAPI,
+     SQLAlchemy or HTTP.
+
+ R2. One feature owns one domain. Code is grouped by clinical domain (patients,
+     audiology, endoscopy), never by technical type. There is no global
+     "models" folder holding 80 unrelated tables.
+
+ R3. Only repositories touch the database. Services never write a query.
+     Routers never see an ORM object.
+
+ R4. Clinical math is a pure function. Every calculation takes plain inputs and
+     returns a plain result. No DB, no HTTP, no globals. That is what makes it
+     testable against published reference values.
+
+ R5. Everything crossing a boundary is a typed schema. Pydantic on the backend,
+     TypeScript types generated from the OpenAPI spec on the frontend. No dicts
+     with magic keys.
+
+ R6. No user-visible string is hardcoded. Not in the UI, not in reports, not in
+     error messages. Strings are keys; clinical terms are database rows.
+
+ R7. Reference data is data, not code. Drug formulary, questionnaires, protocols,
+     procedure catalog, allergen panels live in versioned tables an admin can
+     edit.
+
+ R8. Clinical records are append-only once signed. Corrections are addenda.
+     Every read and write is audited.
+
+ R9. Every clinical value carries its provenance: who recorded it, when, from
+     which device or person, and whether a human confirmed it.
+
+ R10. If it happens more than twice, it becomes a reusable primitive. Base
+     repository, base service, form factory, query factory, map component.
+     Write it once, use it in fifteen places.
+
+
+--------------------------------------------------------------------------------
+2. LAYERING MODEL AND THE DEPENDENCY DIRECTION
+--------------------------------------------------------------------------------
+
+  HTTP request
+      |
+      v
+  +-------------------------------------------------------------+
+  |  API layer         router.py, dependencies.py                |
+  |  - parse and validate input (Pydantic)                       |
+  |  - resolve current user, clinic, permissions                 |
+  |  - call ONE service method                                   |
+  |  - map domain errors to HTTP responses                       |
+  |  - never contains business rules, never touches the DB       |
+  +-------------------------------------------------------------+
+      |
+      v
+  +-------------------------------------------------------------+
+  |  Service layer     service.py                                |
+  |  - orchestrates a use case end to end                        |
+  |  - enforces business rules and invariants                    |
+  |  - owns the transaction boundary (unit of work)              |
+  |  - calls repositories, engines, other services, event bus    |
+  |  - never builds SQL, never returns ORM objects outward       |
+  +-------------------------------------------------------------+
+      |                          |                        |
+      v                          v                        v
+  +------------------+  +---------------------+  +-------------------+
+  | Repository layer |  | Domain layer        |  | Integration layer |
+  | repository.py    |  | calculations.py     |  | storage, email,   |
+  | - all queries    |  | rules.py            |  | SMS, PDF, AI      |
+  | - no business    |  | policies.py         |  | - adapters behind |
+  |   rules          |  | value objects       |  |   interfaces      |
+  +------------------+  | PURE FUNCTIONS ONLY |  +-------------------+
+      |                 +---------------------+
+      v
+  +-------------------------------------------------------------+
+  |  Persistence       models.py (SQLAlchemy), MySQL             |
+  +-------------------------------------------------------------+
+
+  Allowed imports (enforced by an import-linter rule in CI):
+
+    router      -> service, schemas, dependencies, core
+    service     -> repository, domain, schemas, integrations, core, events
+    repository  -> models, core
+    domain      -> nothing but stdlib, typing and core.types
+    models      -> core.db only
+
+  Forbidden, and CI fails on them:
+
+    router      -> repository        (skipping the service layer)
+    router      -> models            (leaking ORM to HTTP)
+    repository  -> service           (circular)
+    domain      -> models, fastapi, sqlalchemy, requests
+
+
+--------------------------------------------------------------------------------
+3. REPOSITORY LAYOUT (MONOREPO)
+--------------------------------------------------------------------------------
+
+One repository, three deployable pieces, shared contracts. This keeps the API
+types and the frontend types from drifting apart.
+
+ent-workspace/
+├── apps/
+│   ├── api/                      FastAPI application
+│   ├── web/                      Next.js application
+│   └── worker/                   background jobs (shares api code)
+│
+├── packages/
+│   ├── contracts/                generated OpenAPI spec + generated TS types
+│   ├── i18n-messages/            all UI translation catalogs (shared)
+│   └── config/                   shared eslint, tsconfig, prettier presets
+│
+├── infra/
+│   ├── docker/                   Dockerfiles, docker-compose for local dev
+│   ├── migrations/               (optional) SQL snapshots for DBAs
+│   ├── nginx/                    reverse proxy config
+│   └── scripts/                  backup, restore, seed, anonymize
+│
+├── docs/
+│   ├── architecture/             ADRs (architecture decision records)
+│   ├── clinical/                 the feature spec, score references, sources
+│   └── runbooks/                 deploy, incident, restore procedures
+│
+├── .github/workflows/            CI pipelines
+├── Makefile                      one-word commands: make dev, make test, make seed
+└── README.md
+
+Why a monorepo: the OpenAPI schema is generated from FastAPI, TypeScript types
+are generated from that schema, and the frontend imports them. One command
+(`make contracts`) regenerates both. A backend field rename becomes a frontend
+compile error instead of a runtime bug in a clinic.
+
+
+================================================================================
+PART II  BACKEND
+================================================================================
+
+--------------------------------------------------------------------------------
+4. BACKEND FOLDER STRUCTURE
+--------------------------------------------------------------------------------
+
+apps/api/
+├── pyproject.toml
+├── alembic.ini
+├── alembic/
+│   ├── env.py
+│   └── versions/                       one file per migration, never edited
+│
+├── src/ent/
+│   │
+│   ├── main.py                         app factory, router mounting, lifespan
+│   ├── settings.py                     pydantic-settings, all env config
+│   │
+│   ├── core/                           ← the reusable spine (section 6)
+│   │   ├── db/
+│   │   │   ├── base.py                 declarative Base, naming convention
+│   │   │   ├── session.py              engine, sessionmaker, get_session dep
+│   │   │   ├── mixins.py               TimestampMixin, AuditMixin, SoftDelete,
+│   │   │   │                           TenantMixin, PublicIdMixin
+│   │   │   ├── types.py                ULIDType, EncryptedString, MoneyType,
+│   │   │   │                           LateralityEnum, JSONBLike
+│   │   │   └── unit_of_work.py         transaction boundary helper
+│   │   ├── repository/
+│   │   │   ├── base.py                 BaseRepository[Model] (section 7.1)
+│   │   │   ├── filters.py              declarative filter builder
+│   │   │   └── pagination.py           cursor + offset pagination
+│   │   ├── service/
+│   │   │   └── base.py                 BaseService, transactional decorator
+│   │   ├── schemas/
+│   │   │   ├── base.py                 CamelModel, ORMModel, PageSchema
+│   │   │   ├── common.py               Laterality, CodeableConcept, Quantity,
+│   │   │   │                           Period, Reference, Attachment
+│   │   │   └── responses.py            Envelope, ErrorResponse, Problem
+│   │   ├── errors/
+│   │   │   ├── exceptions.py           DomainError hierarchy
+│   │   │   ├── codes.py                machine-readable error code enum
+│   │   │   └── handlers.py             FastAPI exception handlers -> RFC 7807
+│   │   ├── security/
+│   │   │   ├── passwords.py            argon2 hashing
+│   │   │   ├── tokens.py               JWT access/refresh, single-use tokens
+│   │   │   ├── permissions.py          permission enum + role matrix
+│   │   │   ├── dependencies.py         CurrentUser, RequirePermission, Tenant
+│   │   │   └── crypto.py               field-level encryption helpers
+│   │   ├── i18n/
+│   │   │   ├── locale.py               locale negotiation, RTL detection
+│   │   │   ├── translator.py           gettext-style lookup for server strings
+│   │   │   └── formatting.py           dates, numbers, units per locale
+│   │   ├── events/
+│   │   │   ├── bus.py                  in-process event bus
+│   │   │   └── events.py               domain event definitions
+│   │   ├── audit/
+│   │   │   ├── recorder.py             writes audit rows
+│   │   │   └── middleware.py           request context (user, ip, request id)
+│   │   ├── pagination.py
+│   │   ├── context.py                  contextvars: request_id, user, clinic
+│   │   ├── enums.py                    shared enums (Sex, Laterality, Status)
+│   │   ├── constants.py
+│   │   └── utils/
+│   │       ├── dates.py                age, corrected age, duration parsing
+│   │       ├── strings.py              slugify, normalize (Arabic/French)
+│   │       ├── ids.py                  ULID generation, MRN generation
+│   │       └── collections.py
+│   │
+│   ├── features/                       ← one folder per clinical domain
+│   │   ├── auth/
+│   │   ├── users/
+│   │   ├── clinics/
+│   │   ├── patients/
+│   │   ├── encounters/                 visits / consultations
+│   │   ├── observations/               the structured findings engine
+│   │   ├── examination/                anatomical maps + normals
+│   │   ├── endoscopy/
+│   │   ├── laryngoscopy/
+│   │   ├── otology/                    otoscopy, tubes, cavities
+│   │   ├── audiology/
+│   │   ├── vestibular/
+│   │   ├── allergy/
+│   │   ├── sleep/
+│   │   ├── voice_swallowing/
+│   │   ├── headneck/                   masses, thyroid, TNM, tumor board
+│   │   ├── pediatrics/
+│   │   ├── questionnaires/
+│   │   ├── calculators/
+│   │   ├── diagnoses/                  problem list, coding
+│   │   ├── prescriptions/
+│   │   ├── documents/                  reports, certificates, requests
+│   │   ├── surgery/
+│   │   ├── scheduling/
+│   │   ├── recalls/                    follow-up engine
+│   │   ├── attachments/                images, video, external files
+│   │   ├── terminology/                concepts, translations, value sets
+│   │   ├── analytics/
+│   │   ├── ai/
+│   │   └── admin/                      templates, protocols, formulary
+│   │
+│   ├── integrations/                   ← everything outside our process
+│   │   ├── storage/
+│   │   │   ├── base.py                 StoragePort (interface)
+│   │   │   ├── s3.py                   S3/MinIO adapter
+│   │   │   └── local.py                dev adapter
+│   │   ├── pdf/
+│   │   │   ├── base.py                 PdfRendererPort
+│   │   │   └── weasyprint.py           HTML+CSS -> PDF, RTL-capable
+│   │   ├── messaging/
+│   │   │   ├── base.py                 NotifierPort
+│   │   │   ├── smtp.py
+│   │   │   ├── sms.py
+│   │   │   └── whatsapp.py
+│   │   ├── llm/
+│   │   │   ├── base.py                 LlmPort
+│   │   │   ├── anthropic.py
+│   │   │   └── redaction.py            strip identifiers before sending
+│   │   ├── imaging/                    optional DICOM / device import
+│   │   └── cache/
+│   │       └── redis.py
+│   │
+│   ├── engines/                        ← pure clinical logic, no I/O
+│   │   ├── audiology/
+│   │   │   ├── pta.py
+│   │   │   ├── air_bone_gap.py
+│   │   │   ├── who_grading.py
+│   │   │   ├── asymmetry.py
+│   │   │   ├── threshold_shift.py
+│   │   │   ├── impairment_percentage.py
+│   │   │   └── tympanometry.py
+│   │   ├── scoring/
+│   │   │   ├── registry.py             instrument registry
+│   │   │   ├── sum_scorer.py           generic sum/weighted-sum scorer
+│   │   │   ├── snot22.py, nose.py, thi.py, dhi.py, vhi.py,
+│   │   │   ├── rsi.py, eat10.py, epworth.py, stopbang.py, osa18.py
+│   │   │   ├── lund_kennedy.py, lund_mackay.py, rfs.py
+│   │   │   └── house_brackmann.py, sunnybrook.py
+│   │   ├── staging/
+│   │   │   ├── tnm.py                  site-specific stage group tables
+│   │   │   └── tirads.py, bethesda.py
+│   │   ├── dosing/
+│   │   │   ├── weight_based.py
+│   │   │   ├── formulary_rules.py
+│   │   │   └── safety_checks.py        max dose, duplicate class, allergy
+│   │   ├── vestibular/
+│   │   │   ├── canal_pattern.py        Dix-Hallpike/roll -> canal pattern
+│   │   │   ├── jongkees.py
+│   │   │   └── criteria.py             Barany checklists (data-driven)
+│   │   ├── rules/
+│   │   │   ├── engine.py               declarative rule evaluator
+│   │   │   ├── alerts.py               ENT safety alerts
+│   │   │   └── red_flags.py
+│   │   ├── narrative/
+│   │   │   ├── renderer.py             findings -> sentences (per locale)
+│   │   │   ├── grammar.py              agreement, plurals, laterality order
+│   │   │   └── ordering.py             right before left, positives first
+│   │   └── recalls/
+│   │       └── protocol_resolver.py    procedure/diagnosis -> recall plan
+│   │
+│   ├── jobs/                           ← background tasks (Celery/ARQ)
+│   │   ├── worker.py
+│   │   ├── scheduler.py                cron definitions
+│   │   ├── tasks/
+│   │   │   ├── documents.py            render PDFs
+│   │   │   ├── media.py                thumbnails, transcode, EXIF strip
+│   │   │   ├── recalls.py              due-date sweep, reminders
+│   │   │   ├── questionnaires.py       scheduled sends (post-op outcomes)
+│   │   │   ├── notifications.py
+│   │   │   ├── exports.py              anonymized research exports
+│   │   │   └── maintenance.py          retention, orphan cleanup
+│   │   └── base.py                     retry policy, idempotency keys
+│   │
+│   └── cli/
+│       ├── seed.py                     reference data seeding
+│       ├── create_admin.py
+│       ├── anonymize.py                make a safe dev dump from prod
+│       └── verify_engines.py           run all known-answer clinical tests
+│
+└── tests/
+    ├── conftest.py
+    ├── factories/                      one factory per model
+    ├── unit/                           engines, pure logic (fast, no DB)
+    ├── integration/                    repositories + services with a real DB
+    ├── api/                            endpoint contract tests
+    └── clinical/                       known-answer tests from publications
+
+
+--------------------------------------------------------------------------------
+5. ANATOMY OF A FEATURE MODULE
+--------------------------------------------------------------------------------
+
+Every feature folder has the same shape. A developer who has seen one has seen
+them all. Files that a feature does not need simply do not exist.
+
+features/audiology/
+├── __init__.py
+├── router.py             HTTP endpoints. Thin. One service call each.
+├── dependencies.py       feature-specific FastAPI dependencies
+├── schemas/
+│   ├── requests.py       AudiogramCreate, ThresholdInput, TympanogramCreate
+│   ├── responses.py      AudiogramRead, AudiologyDashboard, ComparisonRead
+│   └── internal.py       DTOs passed between service and engines
+├── models.py             SQLAlchemy models owned by this feature
+├── repository.py         AudiogramRepository, TympanometryRepository
+├── service.py            AudiologyService: use cases
+├── selectors.py          read-optimized queries for dashboards/lists
+├── policies.py           "can this user see this audiogram" rules
+├── events.py             AudiogramCreated, BaselineChanged
+├── handlers.py           reacts to events from other features
+├── constants.py          FREQUENCIES_HZ, SYMBOLS, DEFAULT_PTA_FORMULA
+├── exceptions.py         AudiogramNotFound, IncompleteThresholds
+└── tests/
+    ├── test_service.py
+    ├── test_repository.py
+    └── test_router.py
+
+Where each kind of logic goes, with concrete examples:
+
+  "Compute the PTA"                      -> engines/audiology/pta.py (pure)
+  "Load the last 5 audiograms"           -> repository.py
+  "Create an audiogram, compute metrics,
+   flag asymmetry, emit an event"        -> service.py
+  "POST /audiograms returns 201"         -> router.py
+  "Only the owning clinic may read it"   -> policies.py
+  "When an audiogram is created, cancel
+   the pending 'audiogram due' recall"   -> handlers.py (listens to the event)
+  "Dashboard query joining 6 tables"     -> selectors.py
+
+Rule of thumb for file size: if router.py exceeds ~200 lines, split it by
+sub-resource (audiograms.py, tympanometry.py, devices.py) inside a routes/
+folder. If service.py exceeds ~400 lines, split by use case group.
+
+
+--------------------------------------------------------------------------------
+6. THE CORE PACKAGE (WHAT EVERY FEATURE REUSES)
+--------------------------------------------------------------------------------
+
+core/ is written once, early, and then barely changes. It is what makes adding
+the fifteenth feature take a day instead of a week. Contents:
+
+  db/mixins.py        PublicIdMixin (ULID), TimestampMixin (created_at,
+                      updated_at), AuditMixin (created_by_id, updated_by_id),
+                      SoftDeleteMixin (deleted_at, deleted_by_id),
+                      TenantMixin (clinic_id + automatic query filter),
+                      VersionMixin (optimistic locking with a version column)
+
+  db/types.py         ULIDType (CHAR(26), sortable), EncryptedString
+                      (application-level AES-GCM for the few fields that need
+                      it), LocalizedText (JSON keyed by locale), Laterality
+                      enum, Quantity composite (value + unit)
+
+  db/unit_of_work.py  async context manager that opens a transaction, commits
+                      on success, rolls back on any exception, and flushes
+                      collected domain events after commit
+
+  repository/base.py  generic CRUD + filtering + pagination (section 7.1)
+
+  schemas/base.py     CamelModel: Pydantic base that serializes snake_case
+                      Python to camelCase JSON automatically, so the backend
+                      stays pythonic and the frontend stays idiomatic
+
+  schemas/common.py   the clinical value objects reused everywhere:
+                      CodeableConcept {conceptId, code, system, display}
+                      Quantity {value, unit, system}
+                      Laterality {right | left | bilateral | midline | na}
+                      Period {start, end}
+                      Attachment {id, url, contentType, title}
+                      Provenance {recordedBy, recordedAt, source, confirmed}
+
+  errors/             one exception hierarchy, one HTTP mapping, one error
+                      code per failure mode so the frontend can translate it
+
+  security/           authentication, permission checks, tenant resolution
+
+  i18n/               locale negotiation and server-side translation
+
+  events/             in-process pub/sub so features stay decoupled
+
+  audit/              request context and audit writing
+
+
+--------------------------------------------------------------------------------
+7. REUSABLE BUILDING BLOCKS, WITH CODE
+--------------------------------------------------------------------------------
+
+These are the pieces worth writing carefully on day one.
+
+7.1 Generic repository
+--------------------------------------------------------------------------------
+
+# core/repository/base.py
+from typing import Generic, TypeVar, Sequence, Any
+from sqlalchemy import select, func, update
+from sqlalchemy.ext.asyncio import AsyncSession
+
+ModelT = TypeVar("ModelT")
+
+class BaseRepository(Generic[ModelT]):
+    model: type[ModelT]
+
+    def __init__(self, session: AsyncSession, clinic_id: int | None = None):
+        self.session = session
+        self.clinic_id = clinic_id          # tenant scope, applied automatically
+
+    def _base_query(self):
+        stmt = select(self.model)
+        if hasattr(self.model, "deleted_at"):
+            stmt = stmt.where(self.model.deleted_at.is_(None))
+        if self.clinic_id and hasattr(self.model, "clinic_id"):
+            stmt = stmt.where(self.model.clinic_id == self.clinic_id)
+        return stmt
+
+    async def get(self, id_: int) -> ModelT | None:
+        return await self.session.scalar(
+            self._base_query().where(self.model.id == id_)
+        )
+
+    async def get_by_public_id(self, public_id: str) -> ModelT | None:
+        return await self.session.scalar(
+            self._base_query().where(self.model.public_id == public_id)
+        )
+
+    async def list(self, *, filters=None, sort=None, page=None) -> Page[ModelT]:
+        stmt = apply_filters(self._base_query(), self.model, filters)
+        total = await self.session.scalar(
+            select(func.count()).select_from(stmt.subquery())
+        )
+        stmt = apply_sort(stmt, self.model, sort)
+        stmt = apply_pagination(stmt, page)
+        rows = (await self.session.scalars(stmt)).all()
+        return Page(items=rows, total=total, page=page)
+
+    async def add(self, entity: ModelT) -> ModelT:
+        self.session.add(entity)
+        await self.session.flush()
+        return entity
+
+    async def soft_delete(self, id_: int, by_user_id: int) -> None:
+        await self.session.execute(
+            update(self.model)
+            .where(self.model.id == id_)
+            .values(deleted_at=func.now(), deleted_by_id=by_user_id)
+        )
+
+Every feature repository then becomes five lines plus its own specific queries:
+
+# features/audiology/repository.py
+class AudiogramRepository(BaseRepository[Audiogram]):
+    model = Audiogram
+
+    async def list_for_patient(self, patient_id: int) -> Sequence[Audiogram]:
+        stmt = (self._base_query()
+                .where(Audiogram.patient_id == patient_id)
+                .order_by(Audiogram.performed_at.desc())
+                .options(selectinload(Audiogram.thresholds)))
+        return (await self.session.scalars(stmt)).all()
+
+    async def get_baseline(self, patient_id: int) -> Audiogram | None:
+        ...
+
+7.2 Unit of work and transactional services
+--------------------------------------------------------------------------------
+
+# core/db/unit_of_work.py
+class UnitOfWork:
+    def __init__(self, session_factory, event_bus):
+        self._session_factory = session_factory
+        self._bus = event_bus
+        self.events: list[DomainEvent] = []
+
+    async def __aenter__(self):
+        self.session = self._session_factory()
+        await self.session.begin()
+        return self
+
+    async def __aexit__(self, exc_type, *_):
+        if exc_type:
+            await self.session.rollback()
+        else:
+            await self.session.commit()
+            for event in self.events:        # published only after commit
+                await self._bus.publish(event)
+        await self.session.close()
+
+    def emit(self, event: DomainEvent) -> None:
+        self.events.append(event)
+
+Services use it so that a failed PDF render never leaves a half-created record:
+
+class AudiologyService(BaseService):
+    async def create_audiogram(self, data: AudiogramCreate, user: CurrentUser):
+        async with self.uow as uow:
+            patient = await self.patients.get_or_raise(data.patient_id)
+            audiogram = Audiogram.from_input(data, recorded_by=user.id)
+            metrics = compute_audiogram_metrics(          # pure engine call
+                thresholds=data.thresholds,
+                pta_formula=self.settings.pta_formula,
+            )
+            audiogram.apply_metrics(metrics)
+            baseline = await self.repo.get_baseline(patient.id)
+            if baseline:
+                audiogram.shift = evaluate_threshold_shift(baseline, audiogram)
+            await self.repo.add(audiogram)
+            uow.emit(AudiogramCreated(audiogram.id, patient.id))
+            return AudiogramRead.model_validate(audiogram)
+
+7.3 Declarative filtering and pagination
+--------------------------------------------------------------------------------
+
+One filter mechanism for every list endpoint, so the frontend learns it once:
+
+class PatientFilter(FilterSet):
+    search:        str  | None = SearchOn("last_name", "first_name", "mrn",
+                                          "phone", normalize=True)
+    sex:           Sex  | None = Eq("sex")
+    age_min:       int  | None = AgeGte("birth_date")
+    age_max:       int  | None = AgeLte("birth_date")
+    has_diagnosis: str  | None = RelatedEq("diagnoses.concept.code")
+    created_after: date | None = Gte("created_at")
+
+  GET /api/v1/patients?search=ben&ageMin=18&sort=-createdAt&limit=25&cursor=...
+
+Cursor pagination for timelines and long lists (stable under inserts), offset
+pagination for admin tables. Both return the same envelope:
+
+  { "items": [...], "page": { "total": 412, "nextCursor": "01J...", "limit": 25 } }
+
+7.4 Domain errors with translatable codes
+--------------------------------------------------------------------------------
+
+# core/errors/exceptions.py
+class DomainError(Exception):
+    code: str = "domain_error"
+    http_status: int = 400
+    def __init__(self, message: str = "", **context):
+        self.context = context
+        super().__init__(message or self.code)
+
+class NotFoundError(DomainError):      code, http_status = "not_found", 404
+class PermissionDeniedError(DomainError): code, http_status = "forbidden", 403
+class ConflictError(DomainError):      code, http_status = "conflict", 409
+class ValidationError(DomainError):    code, http_status = "validation_failed", 422
+class ClinicalSafetyError(DomainError):code, http_status = "safety_block", 409
+class RecordLockedError(DomainError):  code, http_status = "record_signed", 409
+
+Handlers convert these to RFC 7807 problem documents:
+
+  {
+    "type": "https://errors.entapp.io/safety_block",
+    "title": "Prescription blocked",
+    "status": 409,
+    "code": "prescription.allergy_conflict",
+    "detail": null,
+    "context": { "drugName": "Amoxicillin", "allergen": "penicillin" },
+    "requestId": "01J8Z..."
+  }
+
+The `code` plus `context` is what the frontend translates. The backend never
+sends an English sentence that the UI has to display verbatim.
+
+7.5 Domain events
+--------------------------------------------------------------------------------
+
+Events keep features from importing each other. Endoscopy does not need to know
+that the recall engine exists.
+
+  EncounterSigned          -> documents: render final PDFs
+                           -> recalls: materialize plan items
+                           -> analytics: refresh counters
+  ProcedurePerformed       -> recalls: apply protocol (pack removal, tube check)
+  AudiogramCreated         -> recalls: close "audiogram due"
+                           -> alerts: re-evaluate only-hearing-ear flag
+  SurgeryCompleted         -> questionnaires: schedule 3/6/12-month outcomes
+                           -> recalls: post-op pathway
+  QuestionnaireCompleted   -> encounters: attach score to the visit
+  SpecimenSent             -> recalls: result review in 7-10 days
+
+# core/events/bus.py
+class EventBus:
+    def __init__(self): self._handlers = defaultdict(list)
+    def subscribe(self, event_type, handler): self._handlers[event_type].append(handler)
+    async def publish(self, event):
+        for handler in self._handlers[type(event)]:
+            await enqueue_or_call(handler, event)   # async ones go to the worker
+
+7.6 Permission dependency
+--------------------------------------------------------------------------------
+
+@router.post("/{public_id}/sign", response_model=EncounterRead)
+async def sign_encounter(
+    public_id: str,
+    user: CurrentUser = Depends(require(Permission.ENCOUNTER_SIGN)),
+    service: EncounterService = Depends(get_encounter_service),
+):
+    return await service.sign(public_id, signed_by=user)
+
+`require()` checks the role matrix, the clinic scope and, for patient-level
+resources, the patient access policy (own patients vs clinic-wide vs
+break-glass with a recorded reason).
+
+7.7 Service base and dependency wiring
+--------------------------------------------------------------------------------
+
+Services receive their dependencies through the constructor, so tests can pass
+fakes without patching. FastAPI's Depends builds them in one place per feature
+(dependencies.py), never inside the service.
+
+
+--------------------------------------------------------------------------------
+8. CLINICAL ENGINES (THE PART THAT MUST NEVER BE WRONG)
+--------------------------------------------------------------------------------
+
+Everything in engines/ obeys four rules:
+
+  1. Pure functions. Inputs in, result out. No session, no clock, no config
+     lookup. If it needs "now", it is passed in.
+  2. Explicit versioning. Each engine module exposes VERSION and REFERENCE.
+     Results are stored with the version that produced them.
+  3. Typed results, not tuples. A calculation returns a dataclass with the
+     value, the unit, the inputs used, the formula name, any flags raised and
+     the reference citation.
+  4. Known-answer tests. Every engine has a test file with cases taken from
+     the original publication or a worked example, with the source cited in
+     the test docstring.
+
+Example shape:
+
+@dataclass(frozen=True)
+class CalculationResult:
+    code: str                 # "audiology.pta"
+    value: float | int | str
+    unit: str | None
+    inputs: dict
+    formula: str              # "PTA4 = mean(500, 1000, 2000, 4000)"
+    version: str              # "1.2.0"
+    reference: str            # "WHO 2021 grades of hearing impairment"
+    flags: list[Flag]         # e.g. Flag("asymmetry_criterion_met", ...)
+
+VERSION = "1.2.0"
+
+def pure_tone_average(thresholds: dict[int, float], formula: PtaFormula) -> CalculationResult:
+    ...
+
+The calculator registry exposes them uniformly so one endpoint serves all of
+them and the frontend can render any calculator from its metadata:
+
+  GET  /api/v1/calculators                 -> list with inputs + units + refs
+  GET  /api/v1/calculators/audiology.pta   -> input schema, formula, reference
+  POST /api/v1/calculators/audiology.pta   -> CalculationResult
+
+The narrative renderer is also an engine: structured findings in, localized
+sentences out, with grammar rules per language (French adjective agreement and
+gender, Arabic RTL and dual forms, English plain). This is why reports can be
+produced in a language different from the one used during data entry.
+
+
+--------------------------------------------------------------------------------
+9. BACKGROUND JOBS AND SCHEDULING
+--------------------------------------------------------------------------------
+
+The worker shares the same codebase and imports the same services. Job rules:
+
+  - Every task is idempotent and takes an idempotency key, so a retry cannot
+    send the same SMS twice or render two PDFs.
+  - Every task takes IDs, never ORM objects or full payloads.
+  - Retries with exponential backoff; a dead-letter table for permanent
+    failures, visible in the admin panel.
+  - Long user-facing jobs (PDF batch, export) write progress to a jobs table
+    the frontend polls.
+
+Scheduled jobs:
+  every 5 min   dispatch queued notifications
+  hourly        recompute recall due status, escalate overdue
+  daily 02:00   send questionnaire links due today (post-op outcomes)
+  daily 03:00   media cleanup, thumbnail backfill, orphan file sweep
+  daily 04:00   database backup verification hook
+  weekly        analytics rollups, retention policy pass
+  monthly       reference-data update check (formulary, protocol versions)
+
+
+--------------------------------------------------------------------------------
+10. BACKEND TESTING LAYOUT
+--------------------------------------------------------------------------------
+
+  tests/unit/           engines and pure logic. Milliseconds. No database.
+                        Target: 100% of engines/ covered.
+  tests/clinical/       known-answer tests per score and formula, each citing
+                        its source. These are the tests that let a doctor trust
+                        the software.
+  tests/integration/    repositories and services against a real MySQL in
+                        Docker, wrapped in a rolled-back transaction per test.
+  tests/api/            endpoint contract tests: status codes, permissions,
+                        tenant isolation, error codes, pagination envelope.
+  tests/factories/      factory-boy factories per model so a test needing a
+                        patient with three audiograms writes one line.
+
+Non-negotiable test cases that must exist from the start:
+  - a user from clinic A cannot read any record of clinic B (run for every
+    resource, generated by a parametrized test over the router table)
+  - a signed encounter cannot be mutated
+  - a prescription for a known allergen is blocked
+  - every calculator returns its documented value for its reference case
+  - every list endpoint enforces pagination limits
+
+
+================================================================================
+PART III  FRONTEND
+================================================================================
+
+--------------------------------------------------------------------------------
+11. FRONTEND FOLDER STRUCTURE
+--------------------------------------------------------------------------------
+
+apps/web/
+├── next.config.mjs
+├── tailwind.config.ts
+├── components.json                     shadcn config
+├── messages/                           UI translation catalogs (per locale)
+│   ├── en/
+│   │   ├── common.json
+│   │   ├── patients.json
+│   │   ├── audiology.json
+│   │   ├── endoscopy.json
+│   │   ├── errors.json
+│   │   └── ...
+│   ├── fr/  (same files)
+│   └── ar/  (same files)
+│
+├── src/
+│   ├── app/                            ROUTES ONLY. No business logic here.
+│   │   ├── [locale]/                   locale segment: /fr/patients/...
+│   │   │   ├── layout.tsx              html lang + dir, providers, fonts
+│   │   │   ├── (auth)/
+│   │   │   │   ├── login/page.tsx
+│   │   │   │   └── reset-password/page.tsx
+│   │   │   ├── (app)/                  authenticated shell
+│   │   │   │   ├── layout.tsx          sidebar, topbar, command palette
+│   │   │   │   ├── dashboard/page.tsx
+│   │   │   │   ├── schedule/page.tsx
+│   │   │   │   ├── patients/
+│   │   │   │   │   ├── page.tsx                list
+│   │   │   │   │   ├── new/page.tsx
+│   │   │   │   │   └── [patientId]/
+│   │   │   │   │       ├── layout.tsx          patient shell + header card
+│   │   │   │   │       ├── page.tsx            overview
+│   │   │   │   │       ├── timeline/page.tsx
+│   │   │   │   │       ├── encounters/[encounterId]/page.tsx
+│   │   │   │   │       ├── audiology/page.tsx
+│   │   │   │   │       ├── endoscopy/page.tsx
+│   │   │   │   │       ├── documents/page.tsx
+│   │   │   │   │       └── surgery/page.tsx
+│   │   │   │   ├── surgery/waiting-list/page.tsx
+│   │   │   │   ├── recalls/page.tsx
+│   │   │   │   ├── calculators/[slug]/page.tsx
+│   │   │   │   ├── analytics/page.tsx
+│   │   │   │   └── admin/
+│   │   │   │       ├── templates/page.tsx
+│   │   │   │       ├── formulary/page.tsx
+│   │   │   │       ├── protocols/page.tsx
+│   │   │   │       ├── terminology/page.tsx
+│   │   │   │       └── users/page.tsx
+│   │   │   └── q/[token]/page.tsx       public questionnaire (no auth)
+│   │   ├── api/                        route handlers (auth callback, proxy)
+│   │   └── globals.css
+│   │
+│   ├── features/                       ← mirrors the backend features
+│   │   ├── patients/
+│   │   ├── encounters/
+│   │   ├── examination/
+│   │   ├── endoscopy/
+│   │   ├── laryngoscopy/
+│   │   ├── audiology/
+│   │   ├── vestibular/
+│   │   ├── questionnaires/
+│   │   ├── prescriptions/
+│   │   ├── documents/
+│   │   ├── surgery/
+│   │   ├── recalls/
+│   │   ├── calculators/
+│   │   ├── attachments/
+│   │   ├── analytics/
+│   │   └── admin/
+│   │
+│   ├── components/                     ← shared, feature-agnostic
+│   │   ├── ui/                         shadcn primitives (generated)
+│   │   ├── layout/                     AppShell, Sidebar, Topbar, PageHeader
+│   │   ├── data/                       DataTable, EmptyState, Pagination,
+│   │   │                               FilterBar, BulkActions
+│   │   ├── forms/                      Form, Field wrappers, FieldArray,
+│   │   │                               AutosaveIndicator, DirtyGuard
+│   │   ├── clinical/                   ← the ENT-specific shared widgets
+│   │   │   ├── AnatomicalMap/          generic clickable SVG map engine
+│   │   │   ├── LateralityToggle/
+│   │   │   ├── SeverityScale/
+│   │   │   ├── ScoreBadge/
+│   │   │   ├── FindingChip/
+│   │   │   ├── NormalButton/
+│   │   │   ├── ComparisonTable/
+│   │   │   ├── ImageAnnotator/
+│   │   │   └── ProvenanceTag/
+│   │   ├── charts/                     LineChart, BarChart, TrendChart wrappers
+│   │   ├── feedback/                   Toast, ErrorBoundary, LoadingStates
+│   │   └── command/                    CommandPalette (global search + actions)
+│   │
+│   ├── lib/
+│   │   ├── api/
+│   │   │   ├── client.ts               fetch wrapper: auth, locale, retries
+│   │   │   ├── generated/              TS types generated from OpenAPI
+│   │   │   ├── query-keys.ts           centralized query key factory
+│   │   │   ├── query-client.ts         TanStack Query config
+│   │   │   └── errors.ts               problem+json -> typed AppError
+│   │   ├── i18n/
+│   │   │   ├── config.ts               locales, default, RTL list
+│   │   │   ├── request.ts              server-side message loading
+│   │   │   ├── navigation.ts           locale-aware Link/router
+│   │   │   ├── format.ts               dates, numbers, units, names
+│   │   │   └── terminology.ts          concept display resolution
+│   │   ├── auth/
+│   │   │   ├── session.ts
+│   │   │   ├── permissions.ts          usePermission, <Can permission=...>
+│   │   │   └── middleware.ts
+│   │   ├── forms/
+│   │   │   ├── createForm.ts           typed form factory (section 13.3)
+│   │   │   ├── autosave.ts             debounced autosave hook
+│   │   │   └── resolvers.ts            zod <-> server validation mapping
+│   │   ├── hooks/                      useDebounce, useMediaQuery, useHotkey,
+│   │   │                               useLocalStorage, usePrevious
+│   │   ├── utils/                      cn, dates, ids, laterality helpers
+│   │   └── constants/
+│   │
+│   ├── providers/                      QueryProvider, ThemeProvider,
+│   │                                   LocaleProvider, SessionProvider,
+│   │                                   PermissionProvider, ToastProvider
+│   ├── styles/
+│   │   ├── globals.css
+│   │   ├── tokens.css                  design tokens (colors, spacing, type)
+│   │   └── print.css                   print/PDF-oriented styles
+│   ├── types/                          global TS types not tied to a feature
+│   └── middleware.ts                   locale detection + auth redirect
+│
+├── public/
+│   ├── anatomy/                        SVG source maps (ear, nose, larynx...)
+│   └── fonts/                          Latin + Arabic families
+│
+└── tests/
+    ├── unit/
+    ├── components/
+    └── e2e/                            Playwright: the three killer workflows
+
+
+--------------------------------------------------------------------------------
+12. ANATOMY OF A FRONTEND FEATURE
+--------------------------------------------------------------------------------
+
+features/audiology/
+├── index.ts                  public surface (barrel). Other features import
+│                             ONLY from here.
+├── api/
+│   ├── audiology.api.ts      raw HTTP calls, typed from generated contracts
+│   └── audiology.keys.ts     query keys for this feature
+├── hooks/
+│   ├── useAudiogram.ts       useQuery wrappers
+│   ├── useAudiograms.ts
+│   ├── useCreateAudiogram.ts useMutation + optimistic update + invalidation
+│   └── useAudiogramCompare.ts
+├── components/
+│   ├── AudiogramChart/
+│   │   ├── AudiogramChart.tsx
+│   │   ├── AudiogramGrid.tsx        keyboard-navigable entry grid
+│   │   ├── symbols.tsx              standard audiometric symbols
+│   │   └── index.ts
+│   ├── AudiogramEntryForm.tsx
+│   ├── TympanogramPanel.tsx
+│   ├── AudiologyDashboard.tsx
+│   ├── ComparisonOverlay.tsx
+│   └── HearingAidPanel.tsx
+├── schemas/
+│   └── audiogram.schema.ts   zod schemas for the forms
+├── types/
+│   └── audiology.types.ts    view models; API types come from generated/
+├── utils/
+│   └── audiogram.utils.ts    DISPLAY ONLY (symbol choice, axis scaling).
+│                             No clinical math. Ever.
+└── constants.ts              FREQUENCIES, AXIS_RANGE, COLORS
+
+Rules:
+  - Nothing outside the feature imports a deep path. `import { AudiogramChart }
+    from "@/features/audiology"` is allowed; reaching into
+    `@/features/audiology/components/AudiogramChart/symbols` is not. An eslint
+    no-restricted-imports rule enforces it.
+  - Features may import from components/, lib/, providers/. Features import
+    other features only through their barrel, and a feature dependency graph
+    is checked in CI to stay acyclic.
+  - Pages in app/ contain layout and data-loading composition, nothing else.
+    A page file over ~80 lines means logic leaked out of a feature.
+
+
+--------------------------------------------------------------------------------
+13. REUSABLE FRONTEND BUILDING BLOCKS, WITH CODE
+--------------------------------------------------------------------------------
+
+13.1 API client
+--------------------------------------------------------------------------------
+
+// lib/api/client.ts
+export async function apiFetch<T>(path: string, init: RequestInit & {
+  locale?: string; clinicId?: string;
+} = {}): Promise<T> {
+  const res = await fetch(`${API_URL}${path}`, {
+    ...init,
+    headers: {
+      "Content-Type": "application/json",
+      "Accept-Language": init.locale ?? getLocale(),
+      "X-Clinic-Id": init.clinicId ?? getActiveClinicId(),
+      "X-Request-Id": crypto.randomUUID(),
+      ...init.headers,
+    },
+    credentials: "include",
+  });
+  if (!res.ok) throw await toAppError(res);   // problem+json -> typed error
+  return res.status === 204 ? (undefined as T) : res.json();
+}
+
+Every error thrown carries `code` and `context`, and the UI renders
+`t(`errors.${error.code}`, error.context)`. No English strings from the server
+reach the screen.
+
+13.2 Query key factory
+--------------------------------------------------------------------------------
+
+// lib/api/query-keys.ts
+export const queryKeys = {
+  patients: {
+    all: ["patients"] as const,
+    list: (f: PatientFilters) => [...queryKeys.patients.all, "list", f] as const,
+    detail: (id: string) => [...queryKeys.patients.all, "detail", id] as const,
+    timeline: (id: string) => [...queryKeys.patients.detail(id), "timeline"] as const,
+  },
+  audiology: {
+    all: ["audiology"] as const,
+    byPatient: (id: string) => [...queryKeys.audiology.all, "patient", id] as const,
+    detail: (id: string) => [...queryKeys.audiology.all, "detail", id] as const,
+  },
+} satisfies Record<string, unknown>;
+
+One place to look when invalidating. No string literals scattered in hooks.
+
+13.3 Typed form factory
+--------------------------------------------------------------------------------
+
+The app is mostly forms, so the form layer must be excellent.
+
+// lib/forms/createForm.ts
+export function createClinicalForm<S extends z.ZodTypeAny>(config: {
+  schema: S;
+  defaultValues: z.infer<S>;
+  autosave?: { key: string; delayMs?: number };
+  onSubmit: (values: z.infer<S>) => Promise<void>;
+}) { /* wraps react-hook-form + zodResolver + autosave + dirty guard */ }
+
+Field components wrap shadcn inputs and handle label, description, error
+message, required marker, unit suffix, RTL and help tooltip in one place:
+
+  <TextField    name="lastName"   label={t("patient.lastName")} required />
+  <SelectField  name="sex"        options={sexOptions} />
+  <NumberField  name="weightKg"   unit="kg" min={0.5} max={300} step={0.1} />
+  <DateField    name="birthDate"  max={today} />
+  <ConceptField name="diagnosis"  valueSet="ent-diagnoses" />   // terminology
+  <LateralityField name="side" />
+  <ScaleField   name="painScore"  min={0} max={10} />
+  <FindingField structure="tympanic-membrane" side="right" />
+
+Server validation errors map back onto fields automatically: the API returns
+`context.fieldErrors = { "thresholds.0.value": "out_of_range" }` and the
+resolver sets them with the translated message.
+
+13.4 Autosave
+--------------------------------------------------------------------------------
+
+Consultations must survive a crashed tablet.
+
+  - Debounced (2 s idle, or 15 s maximum) PATCH of the dirty subset only.
+  - Draft snapshot mirrored to IndexedDB with an encounter id, so a reload
+    restores unsaved values before the network answers.
+  - Optimistic concurrency: every PATCH sends the record `version`; a 409
+    opens a conflict panel showing both versions rather than overwriting.
+  - A visible state machine in the status bar: idle / saving / saved / offline
+    / conflict, never a silent failure.
+
+13.5 DataTable
+--------------------------------------------------------------------------------
+
+One table component (TanStack Table + shadcn) used by every list: patients,
+recalls, waiting list, documents, admin tables. It handles column definitions,
+server-side sorting and pagination, URL-synced filters, column visibility,
+density, row selection, bulk actions, sticky header, empty and error states,
+loading skeletons and CSV export. Adding a new list is defining columns.
+
+13.6 Permission gate
+--------------------------------------------------------------------------------
+
+  <Can permission="encounter.sign" fallback={null}>
+    <Button onClick={sign}>{t("encounter.sign")}</Button>
+  </Can>
+
+and `usePermission("prescription.create")` for logic. The server re-checks
+everything; the client gate only avoids showing impossible actions.
+
+
+--------------------------------------------------------------------------------
+14. FORM, TABLE AND CHART SYSTEMS
+--------------------------------------------------------------------------------
+
+Three systems, each written once:
+
+  Forms   react-hook-form + zod + the field library above + autosave.
+          Schemas live in the feature, fields are shared.
+
+  Tables  TanStack Table + the DataTable shell + URL state sync.
+
+  Charts  A thin wrapper layer over the charting library so that chart colors,
+          fonts, tooltips, locale-formatted axes and RTL mirroring are
+          consistent. Specialized clinical charts (audiogram, tympanogram,
+          growth curves, score trends) are their own components because they
+          have fixed conventions doctors expect: the audiogram must have dB HL
+          descending on the Y axis, log frequency on X, red circles right,
+          blue crosses left, brackets for bone conduction, arrows for
+          no-response. These conventions are not configurable.
+
+
+--------------------------------------------------------------------------------
+15. CLINICAL UI COMPONENTS
+--------------------------------------------------------------------------------
+
+The three components that define the product's feel. Build them properly.
+
+15.1 AnatomicalMap (generic engine, many maps)
+--------------------------------------------------------------------------------
+
+One component drives the tympanic membrane, nasal cavity, oral cavity, larynx,
+neck levels and face maps. A map is described by data, not by code:
+
+  type AnatomicalMap = {
+    id: "tympanic-membrane" | "nasal-cavity" | "larynx" | "neck-levels" | ...;
+    svg: string;                       // from public/anatomy
+    paired: boolean;                   // has right/left variants
+    regions: Array<{
+      id: string;                      // "tm.pars-tensa.antero-superior"
+      labelKey: string;                // translation key
+      conceptId: number;               // terminology link
+      pathId: string;                  // element id inside the SVG
+      valueSetId: string;              // which findings are allowed here
+      defaultNormalConceptId: number;
+    }>;
+  };
+
+Behaviour: click = normal, second click = finding picker, long press = attach
+photo, keyboard navigation between regions, right/left toggle, "not examined"
+state, live narrative preview, and an annotated PNG export for reports.
+Adding a new map is adding an SVG plus a JSON definition. No new React code.
+
+15.2 AudiogramChart and AudiogramGrid
+--------------------------------------------------------------------------------
+
+Two-way binding between a numeric grid and the plotted chart: typing in the
+grid moves the symbol, clicking the chart fills the grid. Arrow keys move
+between frequencies, Tab switches ear, masking toggled with a key, "no
+response" with a key. Overlay of previous audiograms in faded colors with a
+date legend. Print stylesheet produces the standard audiogram form.
+
+15.3 Timeline
+--------------------------------------------------------------------------------
+
+Virtualized vertical timeline: event type icons, filters by type and by
+problem, grouping, lazy loading of older years, click to open the record,
+"compare with" selection mode, and a print view that fits one page.
+
+
+--------------------------------------------------------------------------------
+16. STATE, CACHING AND DATA-FETCHING RULES
+--------------------------------------------------------------------------------
+
+  - Server state lives in TanStack Query. Never copy it into useState.
+  - Client state (open panels, selected side, active tab) lives in local
+    component state or a small Zustand store per feature when it must be
+    shared. There is no global Redux-style store.
+  - URL state (filters, pagination, selected patient tab) lives in the URL so
+    a doctor can bookmark and share a view, and a refresh keeps the context.
+  - Server Components fetch read-only data for first paint (patient header,
+    timeline first page). Anything interactive is a Client Component.
+  - Mutations always: optimistic update where safe, invalidate the precise
+    query keys, roll back on error, toast with a translated message.
+  - staleTime defaults: reference data 1 hour, patient record 30 seconds,
+    dashboards 60 seconds, terminology 24 hours (it barely changes).
+  - Prefetch on hover for patient rows and timeline events, so opening a chart
+    feels instant in a busy clinic.
+
+
+--------------------------------------------------------------------------------
+17. FRONTEND TESTING LAYOUT
+--------------------------------------------------------------------------------
+
+  unit/        pure utils, formatters, laterality helpers, schema validation
+  components/  React Testing Library for the clinical components, especially
+               AnatomicalMap keyboard behaviour and AudiogramGrid entry
+  e2e/         Playwright covering the three killer workflows end to end, run
+               in English, French and Arabic to catch layout and RTL breakage
+  a11y/        axe checks on the main screens; medical software gets used by
+               tired people on bad screens, contrast and focus order matter
+
+
+================================================================================
+PART IV  INTERNATIONALIZATION
+================================================================================
+
+--------------------------------------------------------------------------------
+18. FOUR KINDS OF TEXT, FOUR DIFFERENT MECHANISMS
+--------------------------------------------------------------------------------
+
+This is the part most projects get wrong by treating all text the same. There
+are four distinct categories and each needs its own mechanism.
+
+  A. UI chrome            buttons, labels, menus, validation messages.
+                          -> translation files in the repo, keyed strings.
+                          Changes with releases. Developers own it.
+
+  B. Clinical terminology findings, diagnoses, procedures, anatomy, drug names,
+                          questionnaire items.
+                          -> DATABASE ROWS with per-locale translations.
+                          Changes without a deploy. Clinicians own it.
+
+  C. Generated narrative  the sentences in reports built from findings.
+                          -> narrative engine with per-language grammar rules
+                          and phrase templates stored as data.
+
+  D. User-authored text   the doctor's own conclusion, clinic footer, custom
+                          handouts, personal phrase library.
+                          -> stored as written, tagged with its language.
+                          Never machine-translated silently.
+
+Mixing these up is what produces a French UI with English findings, or a
+report that cannot be produced in Arabic because the sentences were hardcoded.
+
+--------------------------------------------------------------------------------
+19. UI TRANSLATION, FORMATTING, RTL
+--------------------------------------------------------------------------------
+
+  - Library: next-intl (or an equivalent with server-component support).
+  - Routing: locale as the first URL segment (/fr/patients/123). Middleware
+    negotiates from the URL, then the user's saved preference, then the
+    Accept-Language header, then the clinic default.
+  - Catalogs: one JSON file per feature per locale, so merge conflicts stay
+    small. Keys are namespaced and semantic, never the English text itself:
+        "audiology.audiogram.actions.addThreshold"    good
+        "Add threshold"                                bad
+  - ICU message format for plurals, gender and interpolation:
+        "recalls.overdue": "{count, plural, =0 {No recalls} one {# recall} other {# recalls}} overdue"
+    French and Arabic plural rules differ from English; ICU handles it. Arabic
+    has six plural categories, which is exactly why ad-hoc string concatenation
+    must be banned.
+  - Formatting always through lib/i18n/format.ts: dates, times, numbers,
+    decimal separators (French uses a comma), units, and name order. Never
+    `date.toLocaleDateString()` inline.
+  - Medical units are NOT translated: dB HL, Hz, daPa, mL, mg/kg, mmHg stay as
+    they are in every language. Only the surrounding words translate.
+  - RTL: `dir` is set on <html> from the locale. Layout uses logical CSS
+    properties (margin-inline-start, padding-inline-end, inset-inline) so
+    nothing needs a mirrored stylesheet. Icons that imply direction (back,
+    next, chevrons) flip through a small utility; icons that do not (an ear, a
+    nose) never flip. Charts, audiograms and anatomical maps do NOT mirror:
+    clinical conventions are direction-independent, and a mirrored audiogram
+    would be dangerous.
+  - Fonts: a Latin family and an Arabic family loaded per locale, with
+    matching x-height so the UI does not jump between languages.
+  - Missing keys fail the build in CI, and fall back to the default locale at
+    runtime with a logged warning, never showing a raw key to a doctor.
+
+--------------------------------------------------------------------------------
+20. CLINICAL TERMINOLOGY AS TRANSLATED DATA
+--------------------------------------------------------------------------------
+
+Every clinical term the user sees or picks is a row in `concept`, with its
+display names in `concept_translation`. That single decision gives you:
+
+  - a French UI that can print an Arabic patient handout and an English
+    referral letter from the same stored data,
+  - adding a language without touching application code,
+  - a clinic that can rename a term locally without a deploy,
+  - findings that stay comparable across languages because the stored value is
+    a concept id, not a word.
+
+Resolution order when displaying a concept: clinic override in the requested
+locale -> global translation in the requested locale -> translation in the
+clinic's default locale -> concept code with a "missing translation" marker
+that admins can see in a dedicated screen.
+
+The frontend caches the concept dictionary per locale (it is large but static),
+loads it once per session, and resolves ids to labels locally, so a list of 200
+findings does not need 200 lookups.
+
+--------------------------------------------------------------------------------
+21. DOCUMENT AND TEMPLATE TRANSLATION
+--------------------------------------------------------------------------------
+
+  - Each patient has a `preferred_document_locale`. The referring doctor may
+    have a different one. A single visit can therefore produce: a chart report
+    in the clinic locale, a patient handout in Arabic, and a referral letter in
+    French. All from the same structured data.
+  - Templates are versioned rows with a body per locale, edited in an admin
+    screen with a preview. Placeholders are typed and validated
+    ({{patient.fullName}}, {{audiogram.ptaRight}} with unit), so a template
+    cannot reference a field that does not exist.
+  - The narrative engine holds phrase templates per concept per locale:
+        concept: tm.perforation.central
+        en: "central perforation of the {{quadrants}} quadrant(s)"
+        fr: "perforation centrale du/des quadrant(s) {{quadrants}}"
+        ar: "..."
+    plus per-language ordering and agreement rules (French adjective gender
+    and number, Arabic dual forms, English simple plurals).
+  - PDF rendering must support RTL, Arabic shaping and bidirectional text.
+    Verify the renderer with a real Arabic report early, not at the end. Table
+    column order also flips in RTL documents while numeric columns keep their
+    alignment.
+
+--------------------------------------------------------------------------------
+22. RULES THAT KEEP LANGUAGES FROM ROTTING
+--------------------------------------------------------------------------------
+
+  1. No string literal in JSX or in a Python response. An eslint rule and a
+     ruff check enforce it.
+  2. Adding a key without adding it to every locale fails CI (a script diffs
+     the catalogs).
+  3. A "translation coverage" admin screen shows untranslated concepts per
+     locale, sorted by usage frequency, so the clinic fixes what matters.
+  4. Pseudo-locale (`en-XA`) in dev: renders every string with accents and
+     40% extra length, exposing truncation and hardcoded strings immediately.
+  5. Every new language is a data task plus a font, never a code task. If
+     adding Spanish requires a developer, the design has failed.
+
+
+================================================================================
+PART V  DATABASE
+================================================================================
+
+--------------------------------------------------------------------------------
+23. CONVENTIONS THAT APPLY TO EVERY TABLE
+--------------------------------------------------------------------------------
+
+  Engine and charset
+    InnoDB, utf8mb4, collation utf8mb4_0900_ai_ci (accent- and case-insensitive
+    search, correct for French accents and Arabic). Use utf8mb4_0900_as_cs on
+    columns where case matters (codes, tokens).
+
+  Keys
+    id            BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY  (internal joins)
+    public_id     CHAR(26) NOT NULL UNIQUE                    (ULID, used in
+                  every URL and API payload; never expose sequential ids,
+                  they leak patient volume and allow enumeration)
+
+  Tenancy
+    clinic_id     BIGINT UNSIGNED NOT NULL on every clinical table, always the
+                  first column of the main composite index. Every query is
+                  scoped by it at the repository level.
+
+  Audit columns (on every table that a human edits)
+    created_at    DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
+    updated_at    DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
+                  ON UPDATE CURRENT_TIMESTAMP(6)
+    created_by_id BIGINT UNSIGNED NULL  -> users.id
+    updated_by_id BIGINT UNSIGNED NULL  -> users.id
+    deleted_at    DATETIME(6) NULL      (soft delete; clinical data is never
+                  hard-deleted outside a legal erasure procedure)
+    deleted_by_id BIGINT UNSIGNED NULL
+    version       INT UNSIGNED NOT NULL DEFAULT 1   (optimistic locking)
+
+  Naming
+    tables        snake_case, singular  (patient, encounter, audiogram)
+    columns       snake_case; booleans start with is_/has_ (is_active)
+    dates         *_at for datetimes, *_date for dates, *_on for day-precision
+    foreign keys  <referenced_table>_id
+    indexes       ix_<table>__<cols>, uq_<table>__<cols>, fk_<table>__<ref>
+    enums         stored as VARCHAR with a CHECK constraint, or as a lookup
+                  table when clinicians may extend the list. Never MySQL ENUM
+                  (altering it locks and it does not translate).
+
+  Time and dates
+    All timestamps stored UTC in DATETIME(6). Clinical dates that are
+    inherently local (date of surgery, date of birth) stored as DATE. Each
+    clinic has a timezone; conversion happens at the edges only.
+
+  Money
+    DECIMAL(12,3) plus a currency column. Never floats.
+
+  Clinical numerics
+    Thresholds, scores and measurements as SMALLINT/DECIMAL with explicit
+    units in a sibling column or fixed by the table's contract. Never floats
+    where exactness matters.
+
+  Laterality
+    VARCHAR(10) CHECK IN ('right','left','bilateral','midline','na'). A
+    bilateral finding on a paired structure is stored as TWO rows, one per
+    side, so comparisons and counts stay correct.
+
+  JSON
+    Allowed only for genuinely schemaless payloads (device raw export, AI
+    request metadata, template placeholders map). Never for anything you will
+    filter, sort or aggregate on. If you want to query it, it is a column.
+
+  Deletion policy
+    ON DELETE RESTRICT everywhere by default. Clinical rows are never removed
+    by a cascade. Reference data uses RESTRICT so a used concept cannot vanish.
+
+
+--------------------------------------------------------------------------------
+24. SCHEMA MAP BY DOMAIN
+--------------------------------------------------------------------------------
+
+  Identity and tenancy   clinic, site, user, role, permission, role_permission,
+                         user_clinic_role, user_session, api_token
+  Terminology            concept, concept_translation, concept_relationship,
+                         value_set, value_set_member, code_system
+  Patient                patient, patient_identifier, patient_contact,
+                         patient_allergy, patient_medication, patient_flag,
+                         patient_problem, patient_history, patient_merge_log
+  Scheduling             appointment, appointment_type, waiting_room_entry
+  Encounter              encounter, encounter_complaint, encounter_template,
+                         encounter_addendum, encounter_signature
+  Observation            observation, observation_component, body_site,
+                         examination_snapshot
+  Procedures             procedure_record, endoscopy_exam, laryngoscopy_exam,
+                         otology_exam, ear_device, office_procedure
+  Audiology              audiogram, audiogram_threshold, speech_audiometry,
+                         tympanometry, acoustic_reflex, oae_result, abr_result,
+                         hearing_device, audiology_metric
+  Vestibular             vestibular_assessment, positional_test,
+                         vestibular_lab_result, repositioning_maneuver
+  Questionnaires         instrument, instrument_version, instrument_item,
+                         instrument_option, instrument_translation,
+                         questionnaire_response, questionnaire_answer,
+                         questionnaire_invitation
+  Calculations           calculation_result
+  Diagnoses              diagnosis, problem_list_entry
+  Medication             drug, drug_form, formulary_entry, prescription,
+                         prescription_item, prescription_template
+  Documents              document_template, document, document_version,
+                         document_recipient, phrase_library
+  Surgery                surgery_case, surgery_checklist_item, operative_note,
+                         implant_used, specimen, postop_event, surgeon_logbook
+  Oncology               tumor_record, staging_record, tumor_board_case,
+                         treatment_record, surveillance_plan
+  Allergy                allergy_test, allergy_test_result, immunotherapy_plan,
+                         immunotherapy_dose
+  Sleep                  sleep_study, dise_finding, therapy_adherence
+  Recalls                protocol, protocol_rule, recall, recall_action
+  Media                  attachment, attachment_annotation, media_variant
+  Admin/reference        template_version, reference_data_version, setting,
+                         feature_flag
+  Audit and ops          audit_log, access_log, job_run, notification,
+                         export_request
+
+That is roughly 95 tables at full build. Phase 1 to 3 needs about 35 of them.
+
+
+--------------------------------------------------------------------------------
+25. TABLES AND COLUMNS, DOMAIN BY DOMAIN
+--------------------------------------------------------------------------------
+
+Common columns (id, public_id, clinic_id, created_at, updated_at, created_by_id,
+updated_by_id, deleted_at, version) are implied on every table below and listed
+only where they differ.
+
+25.1 IDENTITY AND TENANCY
+--------------------------------------------------------------------------------
+
+clinic
+  name VARCHAR(160), legal_name VARCHAR(160), slug VARCHAR(80) UNIQUE
+  default_locale VARCHAR(10), supported_locales JSON, timezone VARCHAR(64)
+  country_code CHAR(2), currency CHAR(3)
+  address_line1/2 VARCHAR(160), city VARCHAR(80), postal_code VARCHAR(20)
+  phone VARCHAR(32), email VARCHAR(160), website VARCHAR(160)
+  tax_id VARCHAR(40), registration_number VARCHAR(40)
+  logo_attachment_id BIGINT UNSIGNED NULL
+  settings JSON            (pta_formula, asymmetry_rule, polyp_scale, etc.)
+  is_active TINYINT(1) DEFAULT 1
+
+site
+  clinic_id, name VARCHAR(160), address..., phone, is_primary TINYINT(1)
+
+user
+  email VARCHAR(190) UNIQUE, email_verified_at DATETIME(6) NULL
+  password_hash VARCHAR(255), password_changed_at DATETIME(6)
+  first_name VARCHAR(80), last_name VARCHAR(80), title VARCHAR(40)
+  specialty VARCHAR(80), license_number VARCHAR(60)
+  signature_attachment_id BIGINT UNSIGNED NULL
+  preferred_locale VARCHAR(10), timezone VARCHAR(64)
+  mfa_secret VARBINARY(255) NULL, mfa_enabled TINYINT(1) DEFAULT 0
+  is_active TINYINT(1), last_login_at DATETIME(6), failed_login_count SMALLINT
+  ix: uq_user__email
+
+role
+  clinic_id NULL (NULL = system role), code VARCHAR(40), name_key VARCHAR(80)
+  is_system TINYINT(1)
+
+permission
+  code VARCHAR(80) UNIQUE      e.g. 'encounter.sign', 'patient.read.all'
+  group_code VARCHAR(40)
+
+role_permission
+  role_id, permission_id     uq: (role_id, permission_id)
+
+user_clinic_role
+  user_id, clinic_id, role_id, site_id NULL
+  starts_on DATE, ends_on DATE NULL
+  uq: (user_id, clinic_id, role_id)
+
+user_session
+  user_id, refresh_token_hash CHAR(64), device_label VARCHAR(120)
+  ip_address VARBINARY(16), user_agent VARCHAR(255)
+  issued_at, expires_at, revoked_at DATETIME(6) NULL
+
+25.2 TERMINOLOGY (the multilingual backbone)
+--------------------------------------------------------------------------------
+
+code_system
+  code VARCHAR(40) UNIQUE       'ICD10', 'INTERNAL', 'SNOMED', 'LOCAL'
+  name VARCHAR(120), version VARCHAR(40), uri VARCHAR(255)
+
+concept
+  code_system_id, code VARCHAR(60)
+  kind VARCHAR(40)      'finding','anatomy','diagnosis','procedure','qualifier',
+                        'laterality','unit','instrument_item','drug','severity'
+  parent_id BIGINT UNSIGNED NULL          (hierarchy: anatomy tree, ENT chapters)
+  numeric_value DECIMAL(10,3) NULL        (for ordinal concepts: grade 0..4)
+  sort_order INT
+  properties JSON        (e.g. {"scorable": true, "lund_kennedy_item": "polyps"})
+  is_active TINYINT(1)
+  clinic_id NULL         (NULL = global concept; non-null = clinic's own term)
+  uq: (code_system_id, code)
+  ix: (kind, parent_id), (clinic_id, kind)
+
+concept_translation
+  concept_id, locale VARCHAR(10)
+  display VARCHAR(255)              short label for pickers and maps
+  full_name VARCHAR(400) NULL       formal name for reports
+  abbreviation VARCHAR(40) NULL
+  patient_friendly VARCHAR(400) NULL   wording for patient documents
+  synonyms JSON NULL                   extra search terms for this locale
+  clinic_id NULL                       clinic-specific override
+  uq: (concept_id, locale, clinic_id)
+  FULLTEXT ix on (display, full_name) for search
+
+concept_relationship
+  source_concept_id, target_concept_id, type VARCHAR(40)
+     'is_a', 'part_of', 'maps_to', 'site_of', 'default_normal_for'
+
+value_set
+  code VARCHAR(60) UNIQUE      'tm.findings', 'nasal.polyp.grade', 'ent.diagnoses'
+  name_key VARCHAR(80), description_key VARCHAR(120)
+
+value_set_member
+  value_set_id, concept_id, sort_order, is_default TINYINT(1)
+  clinic_id NULL               (clinic can restrict or extend a value set)
+  uq: (value_set_id, concept_id, clinic_id)
+
+This is what lets an SVG region declare `valueSetId: "tm.findings"` and get a
+correctly translated, clinic-tunable picker with zero code.
+
+25.3 PATIENT
+--------------------------------------------------------------------------------
+
+patient
+  clinic_id
+  mrn VARCHAR(32)                     medical record number, per clinic
+  first_name VARCHAR(80), last_name VARCHAR(80)
+  first_name_alt VARCHAR(80) NULL, last_name_alt VARCHAR(80) NULL
+        (second script: Arabic name alongside Latin, or vice versa)
+  name_normalized VARCHAR(190)        accent/case-folded for search
+  birth_date DATE, birth_date_is_estimated TINYINT(1) DEFAULT 0
+  sex VARCHAR(10) CHECK IN ('male','female','other','unknown')
+  preferred_locale VARCHAR(10)
+  phone_primary VARCHAR(32), phone_secondary VARCHAR(32), email VARCHAR(190)
+  address_line1/2, city, postal_code, country_code CHAR(2)
+  occupation VARCHAR(120), noise_exposure VARCHAR(40) NULL
+  smoking_status VARCHAR(30), alcohol_status VARCHAR(30)
+  insurance_scheme_id BIGINT UNSIGNED NULL, insurance_number VARCHAR(60)
+  referring_doctor_name VARCHAR(160), referring_doctor_phone VARCHAR(32)
+  referring_doctor_email VARCHAR(190), referring_doctor_locale VARCHAR(10)
+  guardian_name VARCHAR(160) NULL, guardian_relation VARCHAR(40) NULL
+  emergency_contact_name VARCHAR(160), emergency_contact_phone VARCHAR(32)
+  consent_sms TINYINT(1), consent_email TINYINT(1), consent_teaching TINYINT(1)
+  is_deceased TINYINT(1) DEFAULT 0, deceased_date DATE NULL
+  uq: (clinic_id, mrn)
+  ix: (clinic_id, name_normalized), (clinic_id, phone_primary),
+      (clinic_id, birth_date)
+  FULLTEXT: (first_name, last_name, first_name_alt, last_name_alt)
+
+patient_identifier
+  patient_id, type VARCHAR(40)  'national_id','passport','insurance'
+  value VARCHAR(80), issuing_country CHAR(2)
+  (kept separate so identifier types vary by country without schema changes)
+
+patient_allergy
+  patient_id, substance_concept_id, category VARCHAR(30) 'drug','food','other'
+  reaction_concept_id NULL, severity VARCHAR(20) 'mild','moderate','severe'
+  onset_date DATE NULL, is_active TINYINT(1), note TEXT
+  ix: (patient_id, is_active)
+
+patient_medication
+  patient_id, drug_id NULL, free_text_name VARCHAR(160) NULL
+  dose VARCHAR(60), frequency VARCHAR(60), route VARCHAR(30)
+  started_on DATE, stopped_on DATE NULL, is_active TINYINT(1)
+  is_anticoagulant TINYINT(1), is_ototoxic TINYINT(1)
+  source VARCHAR(30) 'prescribed_here','reported','external'
+
+patient_flag                         ← the ENT safety alerts
+  patient_id, flag_code VARCHAR(60)
+      'only_hearing_ear','anticoagulant','ototoxic_therapy','difficult_airway',
+      'tracheostomy','cochlear_implant','pacemaker','immunosuppressed',
+      'pregnancy','pediatric_weight_missing'
+  laterality VARCHAR(10) NULL, severity VARCHAR(20)
+  detail JSON, started_on DATE, ended_on DATE NULL
+  is_auto TINYINT(1)                 raised by a rule vs entered by a human
+  ix: (patient_id, ended_on)
+
+patient_problem
+  patient_id, diagnosis_concept_id, laterality VARCHAR(10)
+  status VARCHAR(20) 'active','resolved','suspected','ruled_out'
+  onset_date DATE NULL, resolved_date DATE NULL
+  first_encounter_id, last_encounter_id
+  note TEXT
+  ix: (patient_id, status)
+
+patient_history
+  patient_id, category VARCHAR(40) 'ent_surgery','other_surgery','medical',
+       'family','social','obstetric'
+  concept_id NULL, free_text VARCHAR(400) NULL
+  laterality VARCHAR(10) NULL, occurred_year SMALLINT NULL, occurred_date DATE NULL
+  detail JSON
+
+patient_merge_log
+  surviving_patient_id, merged_patient_id, merged_by_id, reason TEXT, payload JSON
+
+25.4 SCHEDULING
+--------------------------------------------------------------------------------
+
+appointment_type
+  clinic_id, code VARCHAR(40), name_key VARCHAR(80)
+  default_duration_min SMALLINT, color VARCHAR(12), requires_room TINYINT(1)
+
+appointment
+  clinic_id, site_id, patient_id, user_id (doctor), appointment_type_id
+  starts_at DATETIME(6), ends_at DATETIME(6)
+  status VARCHAR(20) 'scheduled','arrived','in_room','completed','no_show','cancelled'
+  reason_text VARCHAR(255), room VARCHAR(40)
+  created_from_recall_id BIGINT UNSIGNED NULL
+  arrived_at, started_at, ended_at DATETIME(6) NULL
+  cancellation_reason VARCHAR(160) NULL
+  ix: (clinic_id, user_id, starts_at), (clinic_id, patient_id, starts_at),
+      (clinic_id, status, starts_at)
+
+25.5 ENCOUNTER (THE VISIT)
+--------------------------------------------------------------------------------
+
+encounter
+  clinic_id, site_id, patient_id, user_id, appointment_id NULL
+  encounter_type VARCHAR(30) 'consultation','follow_up','procedure','post_op',
+       'result_review','teleconsultation'
+  started_at DATETIME(6), ended_at DATETIME(6) NULL
+  template_id NULL                    the visit template applied
+  chief_complaint_summary VARCHAR(255)
+  history_text MEDIUMTEXT             free-text history
+  assessment_text MEDIUMTEXT          doctor's conclusion
+  plan_text MEDIUMTEXT
+  status VARCHAR(20) 'draft','signed','amended','cancelled'
+  signed_at DATETIME(6) NULL, signed_by_id NULL
+  locked_hash CHAR(64) NULL           hash of the signed content
+  previous_encounter_id NULL          for "copy forward" provenance
+  ix: (clinic_id, patient_id, started_at DESC), (clinic_id, user_id, status)
+
+encounter_complaint
+  encounter_id, concept_id, is_primary TINYINT(1), laterality, duration_text
+  sort_order
+
+encounter_addendum
+  encounter_id, author_id, body MEDIUMTEXT, created_at
+  (the only legal way to change a signed encounter)
+
+encounter_signature
+  encounter_id, user_id, role VARCHAR(30), signed_at, ip_address VARBINARY(16)
+  content_hash CHAR(64)
+
+encounter_template                   ← chief complaint drives the visit
+  clinic_id NULL (NULL = system), user_id NULL (NULL = clinic-wide)
+  code VARCHAR(60), name_key VARCHAR(80)
+  trigger_concept_ids JSON            complaints that activate it
+  config JSON  {
+     historyFields: [...], examSections: [...],
+     suggestedInstruments: ["snot22"], suggestedTests: [...],
+     suggestedDocuments: [...], favoriteDiagnoses: [...],
+     defaultFollowUpDays: 42
+  }
+  version INT, is_active TINYINT(1)
+
+25.6 OBSERVATION (see section 26 for the reasoning)
+--------------------------------------------------------------------------------
+
+observation
+  clinic_id, patient_id, encounter_id NULL
+  concept_id                          WHAT was observed (finding/measurement)
+  body_site_concept_id NULL           WHERE (anatomy concept)
+  map_region_code VARCHAR(80) NULL    'tm.pars-tensa.antero-superior'
+  laterality VARCHAR(10)
+  status VARCHAR(20) 'normal','abnormal','not_examined','unknown'
+  value_type VARCHAR(20) 'code','numeric','boolean','text','range','ordinal'
+  value_concept_id BIGINT UNSIGNED NULL
+  value_numeric DECIMAL(12,4) NULL
+  value_unit VARCHAR(20) NULL
+  value_boolean TINYINT(1) NULL
+  value_text VARCHAR(500) NULL
+  value_low DECIMAL(12,4) NULL, value_high DECIMAL(12,4) NULL
+  ordinal_value SMALLINT NULL         grade 0..4, HB I..VI stored as 1..6
+  qualifiers JSON NULL                {"size_mm":12,"consistency":"firm"}
+  effective_at DATETIME(6)
+  source VARCHAR(30) 'clinician','technician','patient','device','ai_confirmed'
+  recorded_by_id, confirmed_by_id NULL
+  derived_from_observation_id NULL    for computed observations
+  method_concept_id NULL              otoscopy vs microscopy vs endoscopy
+  ix: (clinic_id, patient_id, concept_id, effective_at DESC)
+      (encounter_id, body_site_concept_id)
+      (clinic_id, concept_id, value_concept_id)   for cohort queries
+
+observation_component
+  observation_id, concept_id, value_* columns (same shape as above)
+  (for multi-part findings: a perforation with size AND quadrants AND edges)
+
+examination_snapshot
+  encounter_id, map_id VARCHAR(60), laterality, payload JSON, rendered_svg_id
+  (a denormalized copy of the map state for fast rendering and for reports;
+   the authoritative data remains in observation)
+
+25.7 PROCEDURES
+--------------------------------------------------------------------------------
+
+procedure_record                     ← parent of every procedure done
+  clinic_id, patient_id, encounter_id, procedure_concept_id
+  performed_at DATETIME(6), performed_by_id
+  laterality, anesthesia VARCHAR(30), setting VARCHAR(20) 'office','ot'
+  indication_text VARCHAR(400), tolerance VARCHAR(40)
+  complication_concept_id NULL, complication_note TEXT
+  status VARCHAR(20) 'draft','signed'
+  ix: (clinic_id, patient_id, performed_at DESC), (procedure_concept_id)
+
+endoscopy_exam
+  procedure_record_id, scope_type VARCHAR(40), decongestant_used TINYINT(1)
+  lund_kennedy_right SMALLINT, lund_kennedy_left SMALLINT
+  modified_lk_right SMALLINT, modified_lk_left SMALLINT
+  polyp_grade_right SMALLINT, polyp_grade_left SMALLINT, polyp_scale VARCHAR(20)
+  adenoid_obstruction_pct SMALLINT NULL
+  conclusion_text TEXT
+  (structure-level findings live in observation, keyed by body site)
+
+laryngoscopy_exam
+  procedure_record_id, scope_type VARCHAR(40), stroboscopy_performed TINYINT(1)
+  vf_mobility_right VARCHAR(20), vf_mobility_left VARCHAR(20)
+  vf_position_right VARCHAR(20) NULL, vf_position_left VARCHAR(20) NULL
+  glottic_closure VARCHAR(30), supraglottic_pattern VARCHAR(30) NULL
+  mucosal_wave_right VARCHAR(20) NULL, mucosal_wave_left VARCHAR(20) NULL
+  symmetry VARCHAR(20) NULL, periodicity VARCHAR(20) NULL
+  amplitude_right VARCHAR(20) NULL, amplitude_left VARCHAR(20) NULL
+  rfs_score SMALLINT NULL, grbas_g/r/b/a/s TINYINT NULL
+  pas_score SMALLINT NULL            (if FEES)
+  conclusion_text TEXT
+
+otology_exam
+  procedure_record_id, method VARCHAR(30) 'otoscopy','microscopy'
+  weber VARCHAR(20) NULL, rinne_right VARCHAR(10) NULL, rinne_left VARCHAR(10)
+  fork_frequency_hz SMALLINT NULL
+  mobility_right VARCHAR(20), mobility_left VARCHAR(20)
+
+ear_device                            ← tubes, and the tracking they need
+  clinic_id, patient_id, laterality, device_type VARCHAR(40)
+  inserted_at DATE, inserted_procedure_id, tube_model VARCHAR(80)
+  status VARCHAR(30) 'in_place','blocked','extruded','removed','retained'
+  removed_at DATE NULL, complication VARCHAR(80) NULL
+  next_check_due DATE
+  ix: (clinic_id, status, next_check_due)
+
+office_procedure
+  procedure_record_id, subtype VARCHAR(40)
+  payload JSON                        subtype-specific structured fields
+  removal_due_date DATE NULL          packs, wicks, splints -> creates a recall
+
+25.8 AUDIOLOGY
+--------------------------------------------------------------------------------
+
+audiogram
+  clinic_id, patient_id, encounter_id NULL
+  performed_at DATETIME(6), performed_by_id, equipment VARCHAR(80)
+  calibration_date DATE NULL, transducer VARCHAR(30)
+  method VARCHAR(30) 'standard','play','vra','boa','soundfield'
+  reliability VARCHAR(20) 'good','fair','poor'
+  is_baseline TINYINT(1) DEFAULT 0
+  pta_formula VARCHAR(20)
+  pta_right DECIMAL(5,2), pta_left DECIMAL(5,2)
+  abg_right DECIMAL(5,2), abg_left DECIMAL(5,2)
+  grade_right VARCHAR(30), grade_left VARCHAR(30)      WHO grade
+  loss_type_right VARCHAR(20), loss_type_left VARCHAR(20)
+  configuration_right VARCHAR(30), configuration_left VARCHAR(30)
+  asymmetry_flag TINYINT(1), shift_flag TINYINT(1)
+  baseline_audiogram_id NULL
+  engine_version VARCHAR(20)          which calculation version produced these
+  interpretation_text TEXT
+  status VARCHAR(20) 'draft','final'
+  ix: (clinic_id, patient_id, performed_at DESC)
+
+audiogram_threshold                   ← narrow table, one row per point
+  audiogram_id, ear VARCHAR(5) 'right','left'
+  conduction VARCHAR(5) 'air','bone'
+  frequency_hz SMALLINT
+  level_db SMALLINT NULL              NULL when no response
+  is_masked TINYINT(1), is_no_response TINYINT(1)
+  uq: (audiogram_id, ear, conduction, frequency_hz, is_masked)
+  Rationale: a narrow table makes overlay comparison, per-frequency trend
+  graphs and shift calculations trivial SQL. A wide table with 40 columns
+  would make every one of those queries painful.
+
+speech_audiometry
+  audiogram_id NULL, patient_id, encounter_id NULL, performed_at
+  ear VARCHAR(5), srt_db SMALLINT NULL, sdt_db SMALLINT NULL
+  wrs_percent SMALLINT NULL, wrs_level_db SMALLINT NULL
+  word_list VARCHAR(60), list_locale VARCHAR(10)
+  mcl_db SMALLINT NULL, ucl_db SMALLINT NULL, rollover TINYINT(1) NULL
+
+tympanometry
+  clinic_id, patient_id, encounter_id NULL, performed_at, ear VARCHAR(5)
+  probe_tone_hz SMALLINT DEFAULT 226
+  ecv_ml DECIMAL(5,2), peak_pressure_dapa SMALLINT, compliance_ml DECIMAL(5,2)
+  gradient_dapa SMALLINT NULL
+  jerger_type VARCHAR(5)              suggested by engine, confirmable
+  jerger_type_is_overridden TINYINT(1)
+
+acoustic_reflex
+  tympanometry_id, stimulus_ear VARCHAR(5), mode VARCHAR(10) 'ipsi','contra'
+  frequency_hz SMALLINT, threshold_db SMALLINT NULL, status VARCHAR(20)
+
+oae_result
+  clinic_id, patient_id, performed_at, ear, oae_type VARCHAR(10) 'teoae','dpoae'
+  overall_result VARCHAR(20) 'pass','refer','partial','not_testable'
+  screening_stage VARCHAR(20) NULL, bands JSON
+
+abr_result
+  clinic_id, patient_id, performed_at, ear, stimulus VARCHAR(20)
+  threshold_db SMALLINT NULL
+  wave_i_ms DECIMAL(4,2), wave_iii_ms DECIMAL(4,2), wave_v_ms DECIMAL(4,2)
+  i_iii_ms, iii_v_ms, i_v_ms DECIMAL(4,2)
+  interaural_v_diff_ms DECIMAL(4,2), morphology VARCHAR(40), intensity_db SMALLINT
+
+hearing_device
+  clinic_id, patient_id, ear, device_type VARCHAR(30)
+  brand VARCHAR(60), model VARCHAR(60), serial VARCHAR(60)
+  fitted_on DATE, fitted_by VARCHAR(120), warranty_end DATE
+  last_programmed_on DATE, daily_use_hours DECIMAL(4,1) NULL
+  satisfaction SMALLINT NULL, status VARCHAR(20), notes TEXT
+  implant_activation_date DATE NULL, mri_conditions VARCHAR(160) NULL
+
+audiology_metric                      ← computed values kept for trending
+  audiogram_id, metric_code VARCHAR(40), ear VARCHAR(5) NULL
+  value DECIMAL(10,3), unit VARCHAR(20), formula VARCHAR(80)
+  engine_version VARCHAR(20), computed_at
+  uq: (audiogram_id, metric_code, ear)
+
+25.9 VESTIBULAR
+--------------------------------------------------------------------------------
+
+vestibular_assessment
+  clinic_id, patient_id, encounter_id, performed_at, performed_by_id
+  character VARCHAR(30), timing_pattern VARCHAR(30), episode_duration VARCHAR(30)
+  triggers JSON, auditory_symptoms JSON, neuro_symptoms JSON
+  dhi_response_id NULL
+  spontaneous_nystagmus VARCHAR(40), gaze_nystagmus JSON
+  hit_right VARCHAR(20), hit_left VARCHAR(20), skew VARCHAR(20)
+  head_shaking VARCHAR(30), romberg VARCHAR(30), gait VARCHAR(30)
+  cerebellar_signs JSON
+  suggested_pattern VARCHAR(60) NULL     engine output, doctor confirms
+  confirmed_pattern VARCHAR(60) NULL
+  summary_text TEXT
+
+positional_test
+  vestibular_assessment_id, test VARCHAR(30) 'dix_hallpike','roll','side_lying'
+  side_tested VARCHAR(10), nystagmus_present TINYINT(1)
+  direction VARCHAR(40), latency_s SMALLINT, duration_s SMALLINT
+  fatigable TINYINT(1) NULL, reversal_on_sitting TINYINT(1) NULL
+  symptoms VARCHAR(40)
+
+vestibular_lab_result
+  clinic_id, patient_id, performed_at, test_type VARCHAR(30)
+      'vhit','caloric','cvemp','ovemp','posturography','rotary'
+  payload JSON                          test-specific values
+  unilateral_weakness_pct DECIMAL(5,2) NULL
+  directional_preponderance_pct DECIMAL(5,2) NULL
+  interpretation TEXT
+
+repositioning_maneuver
+  procedure_record_id, maneuver VARCHAR(30), side VARCHAR(10)
+  canal VARCHAR(30), repetitions SMALLINT
+  nystagmus_during VARCHAR(60), immediate_retest VARCHAR(20)
+  outcome_at_followup VARCHAR(30) NULL
+
+25.10 QUESTIONNAIRES
+--------------------------------------------------------------------------------
+
+instrument
+  code VARCHAR(40) UNIQUE  'snot22','nose','thi','dhi','vhi10','rsi','eat10',
+                           'epworth','stopbang','osa18'
+  category VARCHAR(30), respondent VARCHAR(20) 'patient','clinician','parent'
+  scoring_type VARCHAR(30) 'sum','weighted_sum','custom'
+  min_score SMALLINT, max_score SMALLINT
+  mcid DECIMAL(6,2) NULL, license_note VARCHAR(255), reference VARCHAR(255)
+
+instrument_version
+  instrument_id, version VARCHAR(20), effective_from DATE, is_current TINYINT(1)
+  scoring_config JSON       subscales, reverse-scored items, severity bands
+
+instrument_item
+  instrument_version_id, position SMALLINT, code VARCHAR(40)
+  subscale VARCHAR(40) NULL, is_reverse_scored TINYINT(1), weight DECIMAL(5,2)
+
+instrument_option
+  instrument_version_id, item_id NULL   (NULL = shared option set)
+  value SMALLINT, position SMALLINT
+
+instrument_translation
+  instrument_version_id, item_id NULL, option_id NULL, locale VARCHAR(10)
+  text VARCHAR(500)
+  (one table translates the instrument title, its items and its options)
+
+questionnaire_invitation
+  clinic_id, patient_id, instrument_version_id
+  token_hash CHAR(64) UNIQUE, channel VARCHAR(20) 'sms','whatsapp','email','tablet'
+  sent_at, expires_at, opened_at, completed_at DATETIME(6) NULL
+  context VARCHAR(40)   'pre_visit','post_op_3m','post_op_6m','post_op_12m'
+  related_surgery_id NULL, encounter_id NULL, locale VARCHAR(10)
+
+questionnaire_response
+  clinic_id, patient_id, instrument_version_id, encounter_id NULL
+  invitation_id NULL, completed_at, locale VARCHAR(10)
+  entered_by VARCHAR(20) 'patient','staff','clinician'
+  total_score DECIMAL(7,2), subscale_scores JSON, severity_band VARCHAR(40)
+  change_from_previous DECIMAL(7,2) NULL, previous_response_id NULL
+  ix: (clinic_id, patient_id, instrument_version_id, completed_at DESC)
+
+questionnaire_answer
+  questionnaire_response_id, instrument_item_id, value SMALLINT
+  uq: (questionnaire_response_id, instrument_item_id)
+
+25.11 CALCULATIONS, DIAGNOSES, MEDICATION
+--------------------------------------------------------------------------------
+
+calculation_result
+  clinic_id, patient_id NULL, encounter_id NULL
+  calculator_code VARCHAR(60), engine_version VARCHAR(20)
+  inputs JSON, value VARCHAR(80), unit VARCHAR(20)
+  flags JSON, reference VARCHAR(255), computed_at, computed_by_id
+
+diagnosis
+  clinic_id, patient_id, encounter_id, concept_id
+  laterality, status VARCHAR(20) 'suspected','confirmed','ruled_out'
+  certainty VARCHAR(20) NULL, is_primary TINYINT(1)
+  onset_date DATE NULL, note VARCHAR(400)
+  promoted_to_problem_id NULL
+  ix: (clinic_id, concept_id, created_at)   for cohort analytics
+
+drug
+  code VARCHAR(60), inn_name VARCHAR(160)        international name
+  atc_code VARCHAR(20) NULL, drug_class VARCHAR(80)
+  is_ototoxic TINYINT(1), is_anticoagulant TINYINT(1)
+  pregnancy_category VARCHAR(10) NULL
+  (brand names and local labels live in drug_translation or formulary_entry)
+
+drug_form
+  drug_id, form VARCHAR(40) 'tablet','syrup','spray','drops','injection'
+  strength_value DECIMAL(10,3), strength_unit VARCHAR(20)
+  concentration_mg_per_ml DECIMAL(10,3) NULL
+  package_description VARCHAR(120)
+
+formulary_entry
+  clinic_id, drug_form_id, brand_name VARCHAR(120), is_available TINYINT(1)
+  local_code VARCHAR(40), price DECIMAL(12,3) NULL, notes VARCHAR(255)
+  dosing_rules JSON     {"mg_per_kg_per_day": 80, "max_mg_per_day": 3000,
+                         "doses_per_day": 2, "indications": {...}}
+
+prescription
+  clinic_id, patient_id, encounter_id, prescriber_id
+  issued_at, locale VARCHAR(10), status VARCHAR(20) 'draft','issued','cancelled'
+  document_id NULL, notes TEXT
+  weight_kg_at_issue DECIMAL(5,2) NULL       recorded for pediatric traceability
+
+prescription_item
+  prescription_id, drug_form_id NULL, free_text_name VARCHAR(160) NULL
+  dose_amount DECIMAL(10,3), dose_unit VARCHAR(20)
+  volume_ml DECIMAL(8,2) NULL               computed syrup volume
+  route VARCHAR(30), frequency_per_day SMALLINT, interval_hours SMALLINT NULL
+  duration_days SMALLINT, quantity VARCHAR(60)
+  instructions_text VARCHAR(400)
+  taper_schedule JSON NULL                  day-by-day steroid tapers
+  is_renewable TINYINT(1), substitution_allowed TINYINT(1)
+  safety_overrides JSON NULL                what was overridden and why
+  sort_order SMALLINT
+
+prescription_template
+  clinic_id, user_id NULL, code VARCHAR(60), name_key VARCHAR(80)
+  complaint_concept_ids JSON, items JSON, is_pediatric TINYINT(1)
+
+25.12 DOCUMENTS
+--------------------------------------------------------------------------------
+
+document_template
+  clinic_id NULL, code VARCHAR(60), category VARCHAR(40)
+      'consultation_report','endoscopy_report','audiology_report','prescription',
+      'certificate','imaging_request','referral_letter','handout','consent',
+      'quote','operative_note','tumor_board'
+  engine VARCHAR(20) 'html'
+  placeholders JSON        declared, typed, validated at save time
+  is_system TINYINT(1), is_active TINYINT(1)
+
+document_template_version
+  document_template_id, version INT, locale VARCHAR(10)
+  header_html MEDIUMTEXT, body_html MEDIUMTEXT, footer_html MEDIUMTEXT
+  css MEDIUMTEXT, page_setup JSON, direction VARCHAR(3) 'ltr','rtl'
+  created_by_id, published_at DATETIME(6) NULL
+  uq: (document_template_id, version, locale)
+
+document
+  clinic_id, patient_id, encounter_id NULL, template_id, template_version_id
+  category VARCHAR(40), locale VARCHAR(10), title VARCHAR(200)
+  status VARCHAR(20) 'draft','final','cancelled'
+  rendered_attachment_id NULL          the PDF in object storage
+  content_snapshot JSON                the exact data used to render it
+  body_override_html MEDIUMTEXT NULL   doctor's manual edits
+  finalized_at, finalized_by_id, content_hash CHAR(64)
+  ix: (clinic_id, patient_id, created_at DESC), (clinic_id, category, status)
+
+document_recipient
+  document_id, recipient_type VARCHAR(30) 'patient','referrer','insurer','other'
+  name VARCHAR(160), channel VARCHAR(20), address VARCHAR(190)
+  sent_at DATETIME(6) NULL, delivery_status VARCHAR(30), error_text VARCHAR(255)
+
+phrase_library
+  clinic_id, user_id NULL, category VARCHAR(40), shortcut VARCHAR(20)
+  locale VARCHAR(10), body TEXT, usage_count INT DEFAULT 0
+
+25.13 SURGERY
+--------------------------------------------------------------------------------
+
+surgery_case
+  clinic_id, patient_id, primary_surgeon_id, proposed_at, proposed_encounter_id
+  procedure_concept_ids JSON, laterality, urgency VARCHAR(20)
+  anesthesia_type VARCHAR(20), setting VARCHAR(20) 'day_case','inpatient'
+  estimated_duration_min SMALLINT, indication_text TEXT
+  status VARCHAR(30) 'proposed','listed','scheduled','performed','cancelled',
+                     'postponed'
+  scheduled_for DATETIME(6) NULL, site_id NULL, theatre VARCHAR(40)
+  consent_document_id NULL, quote_document_id NULL
+  cancellation_reason VARCHAR(200) NULL
+  ix: (clinic_id, status, scheduled_for), (primary_surgeon_id, status)
+
+surgery_checklist_item
+  surgery_case_id, item_code VARCHAR(60), is_required TINYINT(1)
+  is_done TINYINT(1), done_at, done_by_id, evidence_document_id NULL
+  blocking TINYINT(1)      e.g. pre-op vocal fold check before thyroidectomy
+
+operative_note
+  surgery_case_id, procedure_record_id
+  surgeon_id, assistant_ids JSON, anesthetist_name VARCHAR(120)
+  anesthesia VARCHAR(40), position VARCHAR(40)
+  prophylaxis JSON, findings_text TEXT, technique_text MEDIUMTEXT
+  blood_loss_ml SMALLINT NULL, drains VARCHAR(120) NULL
+  packing VARCHAR(120) NULL, packing_removal_due DATE NULL
+  complications JSON, postop_instructions TEXT
+  structured_fields JSON       procedure-specific (graft type, sinuses opened,
+                               prosthesis length, nerve monitoring signal, ...)
+  signed_at, signed_by_id
+
+implant_used
+  operative_note_id, implant_type VARCHAR(60), brand VARCHAR(80)
+  model VARCHAR(80), lot_number VARCHAR(60), serial VARCHAR(60)
+  laterality, quantity SMALLINT, expiry_date DATE NULL
+  (traceability: if a batch is recalled, you can find every patient in seconds)
+
+specimen
+  clinic_id, patient_id, operative_note_id NULL, procedure_record_id NULL
+  site_concept_id, laterality, container_label VARCHAR(60)
+  sent_to_lab VARCHAR(120), sent_at, expected_at DATE
+  result_received_at DATETIME(6) NULL, result_text TEXT
+  result_attachment_id NULL, histology_concept_id NULL
+  reviewed_with_patient_at DATETIME(6) NULL
+  ix: (clinic_id, result_received_at, reviewed_with_patient_at)
+
+postop_event
+  surgery_case_id, encounter_id NULL, event_type VARCHAR(40)
+  occurred_on DATE, severity VARCHAR(20), concept_id NULL, note TEXT
+
+surgeon_logbook_entry
+  user_id, surgery_case_id, role VARCHAR(20) 'primary','assistant','supervisor'
+  procedure_concept_id, performed_on DATE, complexity VARCHAR(20)
+  had_complication TINYINT(1)
+
+25.14 ONCOLOGY, ALLERGY, SLEEP
+--------------------------------------------------------------------------------
+
+tumor_record
+  clinic_id, patient_id, site_concept_id, subsite_concept_id NULL, laterality
+  diagnosed_on DATE, histology_concept_id, grade VARCHAR(20)
+  hpv_p16_status VARCHAR(20) NULL, ebv_status VARCHAR(20) NULL
+  status VARCHAR(30) 'active','remission','recurrence','palliative','deceased'
+
+staging_record
+  tumor_record_id, staging_type VARCHAR(10) 'clinical','pathological','restage'
+  system VARCHAR(20) 'AJCC', edition VARCHAR(10)
+  t_value VARCHAR(10), n_value VARCHAR(10), m_value VARCHAR(10)
+  stage_group VARCHAR(10), staged_on DATE, engine_version VARCHAR(20)
+
+tumor_board_case
+  tumor_record_id, meeting_date DATE, attendees JSON
+  question_text TEXT, decision_text TEXT, document_id NULL
+
+treatment_record
+  tumor_record_id, modality VARCHAR(30) 'surgery','radiotherapy','chemotherapy',
+     'immunotherapy','palliative'
+  started_on DATE, ended_on DATE NULL, details JSON, center VARCHAR(120)
+  surgery_case_id NULL
+
+surveillance_plan
+  patient_id, tumor_record_id NULL, protocol_id, started_on DATE
+  status VARCHAR(20), next_due DATE
+
+allergy_test
+  clinic_id, patient_id, encounter_id, test_type VARCHAR(20) 'spt','specific_ige',
+     'nasal_provocation'
+  performed_at, panel_code VARCHAR(40)
+  histamine_wheal_mm DECIMAL(4,1) NULL, saline_wheal_mm DECIMAL(4,1) NULL
+  antihistamine_free_confirmed TINYINT(1), reading_minutes SMALLINT
+
+allergy_test_result
+  allergy_test_id, allergen_concept_id
+  wheal_mm DECIMAL(4,1) NULL, flare_mm DECIMAL(4,1) NULL
+  ige_ku_l DECIMAL(8,2) NULL, ige_class SMALLINT NULL
+  is_positive TINYINT(1), threshold_used VARCHAR(40)
+
+immunotherapy_plan
+  clinic_id, patient_id, allergen_concept_ids JSON, route VARCHAR(20)
+  product VARCHAR(120), started_on DATE, planned_end_on DATE
+  phase VARCHAR(20) 'buildup','maintenance', status VARCHAR(20)
+  next_dose_due DATE
+
+immunotherapy_dose
+  immunotherapy_plan_id, dose_number SMALLINT, given_on DATE
+  concentration VARCHAR(40), volume_ml DECIMAL(5,2)
+  reaction VARCHAR(30) 'none','local','systemic', reaction_grade SMALLINT NULL
+  note VARCHAR(255), given_by_id
+
+sleep_study
+  clinic_id, patient_id, study_type VARCHAR(20) 'psg','hsat'
+  performed_on DATE, lab_name VARCHAR(120)
+  total_sleep_min SMALLINT, ahi DECIMAL(5,1), rdi DECIMAL(5,1) NULL
+  odi DECIMAL(5,1) NULL, lowest_spo2 SMALLINT, time_below_90_min SMALLINT
+  supine_ahi DECIMAL(5,1) NULL, nonsupine_ahi DECIMAL(5,1) NULL
+  rem_ahi DECIMAL(5,1) NULL, arousal_index DECIMAL(5,1) NULL
+  severity_band VARCHAR(20), report_attachment_id NULL
+
+dise_finding
+  procedure_record_id, structure VARCHAR(20) 'velum','oropharynx','tongue_base',
+     'epiglottis'
+  degree SMALLINT CHECK (degree BETWEEN 0 AND 2)
+  configuration VARCHAR(20) 'ap','lateral','concentric'
+  position_tested VARCHAR(20), sedation VARCHAR(60)
+
+therapy_adherence
+  clinic_id, patient_id, therapy_type VARCHAR(30) 'cpap','mad','positional'
+  period_start DATE, period_end DATE, usage_hours_per_night DECIMAL(4,1)
+  nights_used_pct SMALLINT, residual_ahi DECIMAL(5,1) NULL
+  pressure_cmh2o DECIMAL(4,1) NULL, issues VARCHAR(255)
+
+25.15 RECALLS AND PROTOCOLS
+--------------------------------------------------------------------------------
+
+protocol
+  clinic_id NULL, code VARCHAR(60), name_key VARCHAR(80)
+  trigger_type VARCHAR(30) 'procedure','diagnosis','finding','surgery','manual'
+  trigger_concept_ids JSON, version INT, is_active TINYINT(1)
+
+protocol_rule
+  protocol_id, sequence SMALLINT
+  offset_days INT, window_days SMALLINT
+  action_type VARCHAR(30) 'visit','test','call','questionnaire','document'
+  action_config JSON     {"instrument":"snot22"} or {"test":"audiogram"}
+  condition JSON NULL    e.g. only if hearing loss present
+  label_key VARCHAR(80)
+
+recall
+  clinic_id, patient_id, protocol_id NULL, protocol_rule_id NULL
+  source_type VARCHAR(30), source_id BIGINT UNSIGNED NULL
+  reason_key VARCHAR(80), reason_text VARCHAR(255)
+  due_on DATE, window_days SMALLINT
+  action_type VARCHAR(30), action_config JSON
+  status VARCHAR(20) 'pending','booked','done','overdue','cancelled','unreachable'
+  appointment_id NULL, completed_encounter_id NULL
+  attempts SMALLINT DEFAULT 0, last_attempt_at DATETIME(6) NULL
+  cancelled_reason VARCHAR(200) NULL
+  assigned_to_id NULL
+  ix: (clinic_id, status, due_on), (clinic_id, patient_id, status)
+
+recall_action
+  recall_id, action VARCHAR(30) 'sms','call','email','whatsapp','booked'
+  performed_at, performed_by_id, outcome VARCHAR(40), note VARCHAR(255)
+
+25.16 MEDIA AND ATTACHMENTS
+--------------------------------------------------------------------------------
+
+attachment
+  clinic_id, patient_id NULL, encounter_id NULL, procedure_record_id NULL
+  category VARCHAR(40) 'endoscopy_image','endoscopy_video','clinical_photo',
+     'audiogram_scan','imaging_report','pathology','external_letter',
+     'document_pdf','signature','logo','voice_recording'
+  storage_key VARCHAR(400)             object storage path, never a public URL
+  filename VARCHAR(255), content_type VARCHAR(100), size_bytes BIGINT
+  checksum_sha256 CHAR(64)
+  width SMALLINT NULL, height SMALLINT NULL, duration_ms INT NULL
+  body_site_concept_id NULL, laterality NULL, map_region_code VARCHAR(80) NULL
+  captured_at DATETIME(6), captured_by_id, device VARCHAR(80) NULL
+  caption VARCHAR(255), is_consented_for_teaching TINYINT(1)
+  virus_scanned_at DATETIME(6) NULL
+  ix: (clinic_id, patient_id, category, captured_at DESC)
+
+attachment_annotation
+  attachment_id, author_id, shape_type VARCHAR(20) 'arrow','circle','freehand',
+     'text','measure'
+  geometry JSON                normalized coordinates, resolution-independent
+  label VARCHAR(120), concept_id NULL, color VARCHAR(12), created_at
+  (originals are never modified; annotations are an overlay)
+
+media_variant
+  attachment_id, variant VARCHAR(20) 'thumb','preview','web','print'
+  storage_key VARCHAR(400), width SMALLINT, height SMALLINT, size_bytes BIGINT
+
+25.17 AUDIT AND OPERATIONS
+--------------------------------------------------------------------------------
+
+audit_log
+  clinic_id, user_id NULL, request_id CHAR(26)
+  action VARCHAR(60) 'create','update','delete','sign','print','export','login',
+      'break_glass','permission_change'
+  entity_type VARCHAR(60), entity_id BIGINT UNSIGNED, entity_public_id CHAR(26)
+  patient_id NULL                      denormalized: "show me everyone who
+                                       opened this patient's chart"
+  before_json JSON NULL, after_json JSON NULL, changed_fields JSON NULL
+  reason VARCHAR(255) NULL             required for break-glass access
+  ip_address VARBINARY(16), user_agent VARCHAR(255)
+  occurred_at DATETIME(6)
+  ix: (clinic_id, patient_id, occurred_at DESC), (clinic_id, user_id, occurred_at),
+      (entity_type, entity_id)
+  Partitioned by month; older partitions archived, never silently dropped.
+
+access_log
+  same shape, read-only events (chart opened, document viewed, image opened).
+  Separated because read volume dwarfs write volume.
+
+job_run
+  job_name VARCHAR(80), idempotency_key VARCHAR(120) UNIQUE
+  status VARCHAR(20), started_at, finished_at, attempts SMALLINT
+  payload JSON, error_text TEXT
+
+notification
+  clinic_id, patient_id NULL, user_id NULL, channel VARCHAR(20)
+  template_code VARCHAR(60), locale VARCHAR(10), payload JSON
+  status VARCHAR(20), scheduled_for, sent_at, provider_message_id VARCHAR(120)
+  error_text VARCHAR(255)
+
+setting
+  clinic_id NULL, user_id NULL, key VARCHAR(80), value JSON, updated_by_id
+  uq: (clinic_id, user_id, key)
+  Resolution order: user -> clinic -> system default.
+
+reference_data_version
+  dataset VARCHAR(60) 'formulary','instruments','protocols','terminology'
+  version VARCHAR(40), applied_at, applied_by_id, notes TEXT
+
+
+--------------------------------------------------------------------------------
+26. THE OBSERVATION MODEL (WHY IT IS BUILT THIS WAY)
+--------------------------------------------------------------------------------
+
+The single most consequential schema decision is how examination findings are
+stored. Three options exist and only one survives contact with ENT.
+
+  Option A: a wide table per exam type, one column per possible finding.
+    tympanic_membrane_exam(right_perforation_quadrant_as, right_perforation_pct,
+    right_retraction_sade, ...). Around 400 columns across the specialty.
+    Fails because: every new finding is a migration, most columns are NULL,
+    cross-exam comparison needs bespoke SQL per column, and adding the larynx
+    map means starting over.
+
+  Option B: a JSON blob per exam. Flexible and fast to build. Fails because:
+    you cannot index it usefully, cohort queries ("all patients with grade 3
+    polyps") become full scans, and there is no referential integrity between
+    a finding and its terminology, so translations and comparisons rot.
+
+  Option C (chosen): a typed observation table, FHIR-shaped.
+    Each row is one finding: what (concept), where (body site + map region),
+    which side, what value (typed), plus provenance. Multi-part findings use
+    observation_component.
+
+Why C wins here:
+  - New findings are new concept rows, not migrations. A clinic can add a
+    finding on a Tuesday afternoon.
+  - Comparison between two visits is one query grouped by body site.
+  - Cohort analytics work: value_concept_id is indexed and joinable.
+  - The anatomical map, the narrative renderer, the comparison view and the
+    analytics all read the same table, so they can never disagree.
+  - Translation is free: the finding is a concept id, rendered in whatever
+    locale the reader needs.
+
+Where C is deliberately NOT used:
+  High-volume, fixed-shape numeric data gets its own narrow table, because
+  the shape genuinely never changes and query performance matters:
+  audiogram_threshold, questionnaire_answer, allergy_test_result,
+  acoustic_reflex. These are dense, regular and queried in bulk.
+
+The rule: fixed and dense -> dedicated table. Sparse, extensible and
+clinician-defined -> observation.
+
+Denormalized read models (examination_snapshot, audiology_metric,
+questionnaire_response.total_score) exist for speed, are always derived, and
+can be rebuilt from the source rows by a maintenance job. They are never the
+source of truth.
+
+
+--------------------------------------------------------------------------------
+27. INDEXING, PARTITIONING AND PERFORMANCE
+--------------------------------------------------------------------------------
+
+  - Every tenant-scoped index starts with clinic_id. A query without it is a
+    bug, and the repository layer prevents it.
+  - Patient search: a normalized column (accent- and case-folded, Arabic
+    diacritics stripped) plus a FULLTEXT index. Search both name columns and
+    the alternate-script columns.
+  - Timeline queries: covering index on (clinic_id, patient_id, occurred_at
+    DESC) for each event-producing table, and a materialized `patient_timeline`
+    read model refreshed by event handlers once volume justifies it.
+  - audiogram_threshold is the highest-row-count clinical table (about 40 rows
+    per audiogram). Index (audiogram_id) and (audiogram_id, ear, conduction).
+  - observation is the second highest. Index as listed, and archive
+    observations from encounters older than the retention window into a
+    history table if volume ever demands it.
+  - audit_log and access_log partitioned by month (RANGE on occurred_at).
+    Keep 24 months hot, archive the rest to cold storage.
+  - No SELECT *. Repositories select explicit columns for list endpoints.
+  - N+1 prevention: eager loading declared in repository methods
+    (selectinload for collections, joinedload for single relations), and a
+    test-time query counter that fails a test exceeding its expected count.
+  - Connection pool sized to the worker count; a slow-query log threshold of
+    200 ms reviewed weekly.
+  - Read replica later if analytics grow; selectors.py is already the only
+    place that would need to point at it.
+
+
+--------------------------------------------------------------------------------
+28. MIGRATIONS, SEEDS AND REFERENCE DATA VERSIONING
+--------------------------------------------------------------------------------
+
+  - Alembic, one migration per change, autogenerate reviewed by hand (it
+    misses index and constraint intent). Migrations are additive-first:
+    add column nullable -> backfill -> enforce NOT NULL in a later migration,
+    so a deploy never locks a clinic out mid-morning.
+  - Every migration must be reversible or explicitly marked irreversible with
+    a documented reason.
+  - Data migrations live in their own migration files and are idempotent.
+  - Seeds are split by purpose:
+      seed_system     code systems, core concepts, value sets, permissions,
+                      roles, system templates, instruments. Required in every
+                      environment, versioned by reference_data_version.
+      seed_demo       one demo clinic with fake patients for sales demos and
+                      for local development.
+      seed_test       deterministic fixtures for the test suite.
+  - Reference data updates ship as versioned seed scripts, not as manual SQL.
+    Applying one records a row in reference_data_version with who and when.
+  - A `make anonymize` script produces a safe development dump: names, phones,
+    identifiers and free text scrubbed, dates shifted by a per-patient offset,
+    structure and volume preserved so performance work is realistic.
+
+
+================================================================================
+PART VI  CROSS-CUTTING
+================================================================================
+
+--------------------------------------------------------------------------------
+29. AUTHENTICATION, AUTHORIZATION AND MULTI-TENANCY
+--------------------------------------------------------------------------------
+
+Authentication
+  - Email plus password (argon2id), optional TOTP second factor.
+  - Short-lived access token (15 min) in memory, refresh token in an
+    HttpOnly, Secure, SameSite=Lax cookie, rotated on every use with reuse
+    detection (a replayed refresh token revokes the whole session family).
+  - Session lock after inactivity, short by default in shared rooms, per-clinic
+    configurable. A locked screen requires the password, not a full login, so a
+    doctor returning from a procedure is back in two seconds.
+  - Login throttling per account and per IP; lockout with admin unlock.
+  - Password reset by single-use, expiring, hashed token.
+
+Authorization, three layers, all enforced server-side
+  1. Permission: does this role have `encounter.sign`?
+  2. Tenant: does this resource belong to the active clinic?
+     Enforced in BaseRepository, not by remembering to add a WHERE clause.
+  3. Patient scope: own patients / clinic patients / break-glass.
+     Break-glass requires a typed reason, grants time-limited access, writes a
+     high-visibility audit row and notifies the clinic admin.
+
+Permission codes are grouped and explicit, for example:
+  patient.read.own, patient.read.clinic, patient.write, patient.merge
+  encounter.create, encounter.write, encounter.sign, encounter.amend
+  prescription.create, prescription.sign
+  audiology.enter, audiology.interpret
+  surgery.schedule, surgery.note.write
+  document.finalize, document.send
+  admin.users, admin.templates, admin.terminology, admin.export
+
+The role matrix (clinic admin, doctor, assistant, audiology technician,
+read-only) is seeded data, so a clinic can create a custom role without code.
+
+Multi-tenancy
+  - Shared schema, clinic_id everywhere. A single MySQL database.
+  - The active clinic comes from the authenticated session, never from a
+    client-supplied header alone; the header only selects among the clinics
+    the user actually belongs to.
+  - A parametrized test iterates every endpoint and asserts cross-tenant reads
+    return 404 (not 403, which would confirm existence).
+
+--------------------------------------------------------------------------------
+30. AUDIT, IMMUTABILITY AND SIGNING
+--------------------------------------------------------------------------------
+
+  - Writes are audited with before and after images and the changed field list.
+  - Reads of clinical records are audited too (who opened which chart).
+  - Signing computes a SHA-256 hash of the canonical content and stores it with
+    the signer, timestamp and IP. Any later verification can prove the record
+    was not altered.
+  - After signing, the record is immutable at the service layer: the only
+    mutation allowed is adding an addendum. The repository refuses updates to
+    signed rows, and a database trigger can be added as a belt-and-braces
+    guard.
+  - Documents store a content snapshot of the data used to render them, so a
+    report printed in 2026 can be reproduced identically in 2031 even after
+    templates change.
+  - Soft delete everywhere. Actual erasure only through a documented legal
+    procedure that writes an erasure record.
+
+--------------------------------------------------------------------------------
+31. ERROR HANDLING CONTRACT
+--------------------------------------------------------------------------------
+
+  - One response shape for every failure: RFC 7807 problem+json with `code`,
+    `context` and `requestId`.
+  - Codes are namespaced and stable: `prescription.allergy_conflict`,
+    `encounter.already_signed`, `audiogram.incomplete_thresholds`.
+  - Validation failures return field-level errors keyed by the same path the
+    frontend form uses, so they map back onto inputs automatically.
+  - Unexpected exceptions return a generic code, log the full trace with the
+    request id, and never leak internals to the client.
+  - The frontend translates by code. Nothing displayed to a doctor is an
+    untranslated server sentence.
+
+--------------------------------------------------------------------------------
+32. LOGGING, TRACING AND METRICS
+--------------------------------------------------------------------------------
+
+  - Structured JSON logs with request_id, user_id, clinic_id, route, duration.
+  - Never log patient identifiers, free-text clinical content, tokens or
+    passwords. A log redaction filter enforces a deny-list.
+  - Correlation: request_id generated at the edge, propagated to jobs and to
+    the frontend (returned in every error) so a doctor's screenshot of an error
+    is enough to find the exact trace.
+  - Metrics worth having from day one: request latency per route, error rate
+    by code, PDF render duration, job queue depth and failure rate, questionnaire
+    completion rate, login failures, slow query count.
+  - Health endpoints: /health/live (process up) and /health/ready (DB, Redis,
+    storage reachable).
+  - Sentry or equivalent for exceptions, with PII scrubbing enabled.
+
+--------------------------------------------------------------------------------
+33. CONFIGURATION AND ENVIRONMENTS
+--------------------------------------------------------------------------------
+
+  - One settings class (pydantic-settings), all values from environment, fails
+    fast at startup on a missing or invalid value. No config file read at
+    runtime, no defaults that silently point at production.
+  - Secrets never in the repository. .env.example lists every key with a
+    comment and a safe dummy value.
+  - Environments: local (docker-compose), staging (production-shaped, seeded
+    with anonymized data), production.
+  - Feature flags in the `feature_flag` table for gradual rollout of modules
+    per clinic. A clinic that has not bought the surgery module simply does not
+    see it.
+  - Clinic-level clinical settings (PTA formula, asymmetry rule, polyp scale,
+    tube recall interval, follow-up defaults) live in `setting`, never in code,
+    and every calculation records which setting it used.
+
+--------------------------------------------------------------------------------
+34. FILE STORAGE AND MEDIA PIPELINE
+--------------------------------------------------------------------------------
+
+  Upload:  client requests a pre-signed upload URL -> uploads directly to
+           object storage -> confirms to the API, which creates the attachment
+           row. Large endoscopy videos never pass through the API process.
+  Process: a job strips EXIF (location data in a clinical photo is a privacy
+           problem), scans for malware, generates thumbnail/preview/print
+           variants, extracts dimensions and duration, computes the checksum.
+  Serve:   short-lived pre-signed download URLs, issued only after the same
+           permission check as any other clinical read, and logged.
+  Keys:    clinic/{clinicId}/patient/{patientPublicId}/{category}/{ulid}.{ext}
+           Never a guessable or sequential path.
+  Retention: variants regenerable, originals never auto-deleted. Lifecycle
+           rules move cold media to cheaper storage after a configured period.
+
+--------------------------------------------------------------------------------
+35. API DESIGN CONVENTIONS
+--------------------------------------------------------------------------------
+
+  - Base path /api/v1. A breaking change means /api/v2, not a silent mutation.
+  - Resource-oriented plural paths, public ids in URLs:
+      GET    /api/v1/patients?search=...&limit=25&cursor=...
+      POST   /api/v1/patients
+      GET    /api/v1/patients/{patientId}
+      PATCH  /api/v1/patients/{patientId}
+      GET    /api/v1/patients/{patientId}/timeline
+      POST   /api/v1/encounters
+      PATCH  /api/v1/encounters/{encounterId}          autosave, partial
+      POST   /api/v1/encounters/{encounterId}/sign     state transitions are
+      POST   /api/v1/encounters/{encounterId}/addenda  sub-resources or verbs,
+      POST   /api/v1/audiograms                        never PATCH status=...
+      POST   /api/v1/calculators/{code}
+      POST   /api/v1/documents/{documentId}/render
+      GET    /api/v1/recalls?status=overdue
+  - JSON is camelCase on the wire, snake_case in Python. Handled by the base
+    schema, not by hand.
+  - Every list response uses the same envelope with a `page` object.
+  - Idempotency-Key header accepted on all POSTs that create clinical records,
+    so a double-tap on a tablet cannot create two audiograms.
+  - If-Match / version field on updates for optimistic concurrency.
+  - Accept-Language decides the locale of any translated content in the
+    response (concept displays, generated narrative).
+  - OpenAPI is generated, checked into packages/contracts, and a CI job fails
+    the build if the committed spec and the code disagree.
+
+--------------------------------------------------------------------------------
+36. SECURITY CHECKLIST
+--------------------------------------------------------------------------------
+
+  Transport      TLS everywhere, HSTS, no mixed content.
+  Headers        CSP, X-Content-Type-Options, Referrer-Policy, frame-ancestors.
+  Input          Pydantic validation on every endpoint; file type and size
+                 limits enforced server-side, not just in the browser.
+  Injection      Only parameterized queries through the ORM. No f-string SQL.
+  XSS            React escapes by default; the only dangerouslySetInnerHTML is
+                 in the document template preview, and that HTML is sanitized
+                 server-side with an allow-list before storage.
+  CSRF           SameSite cookies plus a CSRF token on cookie-authenticated
+                 state-changing requests.
+  Rate limiting  Per IP and per account on login, password reset, questionnaire
+                 token endpoints and export endpoints.
+  Public tokens  Questionnaire links: single-use, hashed at rest, short expiry,
+                 scoped to one instrument and one patient, and they expose no
+                 patient data beyond a first name.
+  Encryption     TLS in transit, disk encryption at rest, application-level
+                 encryption for the few high-sensitivity fields (national ID,
+                 MFA secrets).
+  Backups        Daily automated, encrypted, off-site, with a restore drill
+                 performed and documented quarterly. An untested backup is not
+                 a backup.
+  Dependencies   Automated vulnerability scanning; a monthly patch window.
+  Access review  Quarterly review of user roles and of break-glass events.
+  Data rights    Export and erasure procedures documented and implemented, with
+                 the legal retention period respected for medical records.
+
+--------------------------------------------------------------------------------
+37. CI/CD AND QUALITY GATES
+--------------------------------------------------------------------------------
+
+Pipeline on every pull request:
+  1. Lint and format        ruff + black (Python), eslint + prettier (TS)
+  2. Type check             mypy strict on src/, tsc --noEmit
+  3. Import boundaries      import-linter (backend), eslint boundaries (frontend)
+  4. Unit tests             engines and utils, must be fast
+  5. Clinical known-answer  every calculator against its published reference
+  6. Integration tests      against MySQL in a service container
+  7. API contract           generated OpenAPI matches the committed spec
+  8. Translation check      every key present in every locale, no orphan keys
+  9. Migration check        migrations apply cleanly to an empty DB and to a
+                            snapshot of the previous release's schema
+ 10. Frontend build         Next.js production build
+ 11. E2E                    Playwright, the three killer workflows, in en/fr/ar
+ 12. Security               dependency audit, secret scanning
+
+Coverage thresholds: 100% on engines/, 85% on services, 70% overall. The
+engines number is not negotiable; that is where a wrong answer harms a patient.
+
+Deployment: containerized, migrations run as a separate step before the new
+version starts, health checks gate the rollout, one-command rollback, and a
+maintenance page that never appears during clinic hours.
+
+--------------------------------------------------------------------------------
+38. NAMING CONVENTIONS CHEAT SHEET
+--------------------------------------------------------------------------------
+
+Python
+  modules/packages   snake_case                 audiogram_service.py
+  classes            PascalCase                 AudiogramRepository
+  functions/vars     snake_case                 compute_pure_tone_average
+  constants          UPPER_SNAKE                DEFAULT_FREQUENCIES_HZ
+  private            _leading_underscore
+  Pydantic schemas   <Entity><Action>           AudiogramCreate, AudiogramRead
+  services           <Domain>Service            AudiologyService
+  repositories       <Entity>Repository         AudiogramRepository
+  exceptions         <Thing><Problem>Error      AudiogramNotFoundError
+  events             past tense                 AudiogramCreated
+
+TypeScript
+  components         PascalCase.tsx             AudiogramChart.tsx
+  hooks              useCamelCase.ts            useAudiogram.ts
+  utils/others       camelCase.ts               audiogram.utils.ts
+  types              PascalCase                 type AudiogramView
+  props              <Component>Props           AudiogramChartProps
+  constants          UPPER_SNAKE                FREQUENCIES_HZ
+  booleans           is/has/should/can          isSigned, hasAsymmetry
+  handlers           handleX / onX              handleSubmit, onSelectRegion
+  files in a feature <domain>.<role>.ts         audiology.api.ts
+
+Database
+  tables             singular snake_case        audiogram_threshold
+  columns            snake_case                 level_db, performed_at
+  booleans           is_/has_                   is_masked, has_complication
+  indexes            ix_/uq_/fk_ prefixes       ix_patient__clinic_id_name
+
+API
+  paths              plural kebab or lower      /api/v1/surgery-cases
+  JSON fields        camelCase                  performedAt, ptaRight
+  query params       camelCase                  ?ageMin=18&sort=-createdAt
+
+Translation keys
+  <feature>.<area>.<element>                    audiology.audiogram.title
+  errors.<code>                                 errors.prescription.allergy_conflict
+
+Git
+  branches           type/short-description     feat/audiogram-overlay
+  commits            conventional commits       feat(audiology): add overlay
+
+--------------------------------------------------------------------------------
+39. ANTI-PATTERNS: WHAT WILL KILL THIS PROJECT
+--------------------------------------------------------------------------------
+
+Ranked by how much damage they cause.
+
+  1. Clinical math in the frontend. The moment a PTA is computed in
+     TypeScript, there are two implementations and one of them is wrong. All
+     math on the server, always.
+  2. Findings stored as free text or as JSON blobs. You lose comparison,
+     analytics and translation at once, and it cannot be fixed later without
+     re-entering years of data.
+  3. Hardcoded strings. Every literal in JSX or in a Python response is a
+     language you cannot add later without touching every file.
+  4. Storing scanned PDFs instead of numbers. An audiogram as an image is a
+     dead end. Type the thresholds.
+  5. God service files. `MedicalService` with 3,000 lines. Split by domain.
+  6. Business logic in routers. It becomes untestable and gets duplicated the
+     next time an endpoint needs the same rule.
+  7. Forgetting clinic_id in a query. A cross-tenant data leak in a medical
+     app is not a bug, it is an incident. Enforce it in the base repository.
+  8. Mutable signed records. If a report can change silently after signing,
+     the record has no legal value.
+  9. Deep cross-feature imports. `import { x } from "@/features/a/components/
+     internal/y"` turns the codebase into a ball of mud within a year.
+ 10. Wide exam tables. 400 nullable columns, a migration for every new
+     finding.
+ 11. No pagination. A patient list query that returns 30,000 rows will be
+     written by someone in a hurry. Cap it in the base repository.
+ 12. N+1 queries in the timeline. Twenty visits producing 400 queries makes
+     the app feel broken on clinic wifi.
+ 13. Float for money or for measurements that must be exact.
+ 14. Cascading deletes on clinical tables.
+ 15. Building the AI layer before the structured data layer is solid. The AI
+     is a convenience; the data model is the product.
+
+--------------------------------------------------------------------------------
+40. BUILD ORDER FOR THE SKELETON
+--------------------------------------------------------------------------------
+
+Before any feature, build the spine. Roughly two to three weeks, and it pays
+for itself by the third feature.
+
+  Day 1-2   Monorepo, docker-compose (MySQL, Redis, MinIO), Makefile,
+            settings, health endpoints, CI skeleton.
+  Day 3-4   core/db: Base, mixins, session, unit of work, ULID type.
+            First migration: clinic, user, role, permission.
+  Day 5-6   core/security: password hashing, JWT, session, CurrentUser and
+            permission dependencies. Login, refresh, logout endpoints.
+  Day 7     core/errors, core/context, audit middleware, audit recorder.
+  Day 8-9   core/repository: BaseRepository, filters, pagination.
+            core/schemas: CamelModel, common clinical value objects.
+  Day 10    core/events bus, jobs worker skeleton with one real job.
+  Day 11-12 Terminology feature: concept, translations, value sets, search
+            endpoint, seed script with the first anatomy and finding concepts.
+            This unblocks everything clinical.
+  Day 13-14 Frontend skeleton: Next.js with locale routing, middleware, shadcn
+            installed, AppShell, providers, API client, query keys, generated
+            types, login flow, DataTable, form field library.
+  Day 15    i18n end to end: catalogs for en and fr, pseudo-locale, RTL smoke
+            test with a placeholder ar catalog, format helpers.
+  Day 16-17 Patients feature end to end as the reference implementation:
+            model, repository, service, router, schemas, tests, frontend list,
+            detail, form, search. Every later feature copies its shape.
+  Day 18-19 Documents: template model, HTML to PDF renderer, one real
+            template printed in en, fr and ar. Prove RTL output early.
+  Day 20    Attachments: pre-signed upload, variants job, viewer component.
+
+After that, features ship in the order of the phasing plan in the feature
+specification, and each one is a copy of the patients module's shape with
+different clinical content.
+
+================================================================================
+END OF DOCUMENT
+================================================================================

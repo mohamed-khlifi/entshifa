@@ -1,0 +1,153 @@
+---
+description: Next.js frontend conventions — feature structure, data fetching, forms, i18n, clinical components
+globs: apps/web/**/*.{ts,tsx,css}
+alwaysApply: false
+---
+
+# Frontend rules (Next.js, React, TypeScript)
+
+## The rule that outranks the others
+
+**No clinical calculation runs in the browser.** No PTA, no air-bone gap, no
+questionnaire total, no staging, no drug dose, no severity grade. The server
+computes and returns it. Frontend `utils` files may format, sort, pick a symbol
+or scale an axis, and nothing else. If you are about to write arithmetic on
+clinical values, stop.
+
+## Folder structure
+
+    src/app/          routes only: layout, page composition, data loading
+    src/features/     one folder per clinical domain, mirrors the backend
+    src/components/   shared, feature-agnostic
+      ui/             shadcn primitives (generated, edit sparingly)
+      layout/         AppShell, Sidebar, Topbar, PageHeader
+      data/           DataTable, EmptyState, FilterBar, Pagination
+      forms/          Form, field wrappers, AutosaveIndicator, DirtyGuard
+      clinical/       AnatomicalMap, LateralityToggle, ScoreBadge, FindingChip
+      charts/         chart wrappers
+    src/lib/          api client, i18n, auth, forms, hooks, utils
+    src/providers/
+    src/styles/
+
+Feature folder shape:
+
+    features/<domain>/
+      index.ts          public surface. Others import ONLY from here.
+      api/              typed HTTP calls + query keys
+      hooks/            useQuery / useMutation wrappers
+      components/
+      schemas/          zod schemas for forms
+      types/            view models
+      utils/            display only
+      constants.ts
+
+- A page file over ~80 lines means logic leaked out of a feature.
+- Cross-feature imports go through the barrel. Never
+  `@/features/audiology/components/AudiogramChart/symbols`.
+- The feature dependency graph stays acyclic.
+
+## Server and client components
+
+- Default to Server Components for read-only first paint (patient header,
+  timeline first page, document lists).
+- Add `"use client"` only where interactivity requires it, at the smallest
+  component that needs it, never at the top of a page.
+- Never pass a function, a class instance or a Date across the server/client
+  boundary. Serialize explicitly.
+
+## Data fetching and state
+
+- Server state lives in TanStack Query. Never copy it into `useState`.
+- Client state (open panel, selected side, active tab) is local state, or a
+  small Zustand store per feature when it must be shared. No global store.
+- URL state (filters, pagination, selected tab) lives in the URL so a view can
+  be bookmarked and survives a refresh.
+- Query keys come from the central factory in `lib/api/query-keys.ts`. Never
+  write a key literal inline.
+- Mutations: optimistic update where safe, invalidate precise keys, roll back
+  on error, translated toast.
+- Types come from `lib/api/generated/`. Never hand-write an API response type;
+  regenerate with `make contracts`.
+
+## Forms
+
+- react-hook-form plus zod plus the shared field components. Never a raw
+  `<input>` with manual state.
+- The zod schema lives in the feature's `schemas/`. Validation messages are
+  translation keys, not sentences.
+- Server field errors map back onto inputs automatically through the resolver.
+  Do not display a raw server message.
+- Clinical forms autosave: debounced PATCH of the dirty subset, IndexedDB draft
+  mirror, optimistic concurrency with the record `version`, and a visible state
+  (idle / saving / saved / offline / conflict). Never fail silently.
+- A 409 opens a conflict panel showing both versions. Never overwrite.
+
+## Internationalization
+
+- Every user-visible string goes through `t()`. An eslint rule blocks literals
+  in JSX.
+- Keys are semantic and namespaced by feature:
+  `audiology.audiogram.actions.addThreshold`.
+- Adding a key means adding it to every locale catalog in the same change.
+- ICU format for plurals and interpolation. No string concatenation, no
+  manual `+ "s"`.
+- Dates, numbers and units format through `lib/i18n/format.ts`. Never call
+  `toLocaleDateString()` inline.
+- Clinical terms render from the concept dictionary by `conceptId`, not from a
+  translation key and not from a stored string.
+- Layout uses logical CSS properties (`margin-inline-start`, `inset-inline`) so
+  RTL needs no mirrored stylesheet.
+- Directional icons (back, next, chevron) flip in RTL. Anatomical icons,
+  charts, audiograms and anatomical maps do **not** flip. A mirrored audiogram
+  is a clinical hazard.
+- Never hardcode a unit label; units are constants, not translations.
+
+## Clinical components
+
+- `AnatomicalMap` is data-driven: an SVG plus a JSON region definition with
+  `conceptId` and `valueSetId` per region. Adding a map is adding data, not
+  React code.
+- Audiogram conventions are fixed and not configurable: dB HL descending on Y,
+  log frequency on X, red circles right, blue crosses left, brackets for bone
+  conduction, arrows for no response.
+- Every clinical input supports keyboard entry. Doctors have one hand free
+  during procedures. Arrow keys move between frequencies, a key toggles ear,
+  a key marks no response.
+- Show provenance where a value came from a technician, a device or an accepted
+  AI suggestion.
+
+## Accessibility and UX
+
+- Every interactive element is reachable and operable by keyboard, with a
+  visible focus ring.
+- Labels are real `<label>` elements tied to inputs. Placeholders are not
+  labels.
+- Every list has explicit loading, empty and error states. No bare spinner over
+  the whole page.
+- Target contrast AA. This software is used on cheap screens in bright rooms.
+- Destructive actions confirm and name what will happen.
+
+## TypeScript
+
+- `strict` is on. No `any`, no non-null assertion (`!`) to silence the compiler,
+  no `@ts-ignore` without a comment explaining why and a linked issue.
+- Prefer `type` for unions and props, `interface` only when declaration merging
+  is genuinely needed.
+- Discriminated unions over optional-field soup for variant data.
+- Exhaustive `switch` on unions with a `never` default.
+
+## Styling
+
+- Tailwind utilities plus the design tokens in `styles/tokens.css`. No inline
+  hex colors, no magic pixel values.
+- Compose classes with `cn()`. Do not build class strings by concatenation.
+- Print styles live in `styles/print.css`. Clinical screens must print sensibly.
+
+## Testing
+
+- Component tests for anything with clinical input behaviour, especially
+  `AnatomicalMap` keyboard navigation and `AudiogramGrid` entry.
+- Playwright covers the three killer workflows, run in en, fr and ar to catch
+  RTL and truncation breakage.
+- Test behaviour through the DOM as a user sees it. Never assert on internal
+  state or implementation details.
