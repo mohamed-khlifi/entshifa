@@ -15,5 +15,12 @@
   "home": {
     "welcome": "Bienvenue",
     "signedInAs": "Session active pour la clinique."
+  },
+  "locale": {
+    "label": "Langue",
+    "options": {
+      "en": "English",
+      "fr": "Français"
+    }
   }
 }

@@ -149,6 +149,9 @@ Feature folder shape:
 - **Light mode by default.** The product ships in a bright, clinical light theme
   (`forcedTheme="light"`). Dark mode is not a priority for phase 0; do not
   design screens dark-first.
+- **Locale switcher.** Every screen exposes `LocaleSwitcher` (top bar when
+  logged in; top-end on auth routes). Changing locale updates the URL segment
+  and re-renders copy immediately via next-intl.
 - **Modern and professional.** Calm medical palette (teal / blue-gray), generous
   whitespace, soft elevation (`tokens.css` shadows), rounded-lg/xl surfaces,
   Inter typography. Avoid cluttered layouts, harsh contrast, or consumer-app

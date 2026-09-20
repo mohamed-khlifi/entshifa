@@ -39,6 +39,8 @@ export const testIds = {
     main: testId('layout', 'main'),
     logout: testId('layout', 'logout'),
     homeTitle: testId('layout', 'home-title'),
+    localeSwitcher: testId('layout', 'locale-switcher'),
+    localeSwitcherSelect: testId('layout', 'locale-switcher-select'),
   },
 } as const;
 

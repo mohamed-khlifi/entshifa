@@ -15,5 +15,12 @@
   "home": {
     "welcome": "Welcome",
     "signedInAs": "Signed in to clinic session."
+  },
+  "locale": {
+    "label": "Language",
+    "options": {
+      "en": "English",
+      "fr": "Français"
+    }
   }
 }
