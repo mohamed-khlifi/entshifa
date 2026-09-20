@@ -84,6 +84,22 @@ class AuthService:
         )
         await repo.create_session(session_row)
 
+        from ent.core.audit.recorder import AuditRecorder
+        from ent.core.context import set_clinic_id, set_ip_address, set_user_agent, set_user_id
+
+        set_user_id(user.id)
+        set_clinic_id(clinic.id)
+        set_ip_address(ip_address)
+        set_user_agent(user_agent)
+        AuditRecorder(self.session).record_write(
+            action="login",
+            entity=session_row,
+            before=None,
+            after={"session_public_id": session_row.public_id, "user_id": user.id},
+            changed_fields=None,
+            clinic_id=clinic.id,
+        )
+
         permissions = await repo.load_permission_codes(user.id, clinic.id)
         access_token = create_access_token(
             settings=self.settings,

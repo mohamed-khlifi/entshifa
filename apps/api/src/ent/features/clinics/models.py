@@ -54,6 +54,7 @@ class Clinic(GlobalRecordMixin, Base):
 
 class Site(ClinicalRecordMixin, Base):
     __tablename__ = "site"
+    __audit_writes__ = True
 
     name: Mapped[str] = mapped_column(String(160), nullable=False)
     address_line1: Mapped[str | None] = mapped_column(String(160), nullable=True)

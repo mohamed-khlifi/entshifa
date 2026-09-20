@@ -72,6 +72,11 @@ async def get_current_user(
 
     permissions = await auth_service.load_permissions(user.id, clinic.id)
 
+    from ent.core.context import set_clinic_id, set_user_id
+
+    set_user_id(user.id)
+    set_clinic_id(clinic.id)
+
     return CurrentUser(
         user_id=user.id,
         user_public_id=user.public_id,

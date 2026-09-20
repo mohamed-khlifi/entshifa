@@ -2,14 +2,14 @@
 
 from __future__ import annotations
 
-import uuid
-from collections.abc import AsyncIterator, Awaitable, Callable
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request, Response
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from ent.core.context import set_request_id
+from ent.core.audit.hooks import install_audit_listeners
+from ent.core.audit.middleware import RequestContextMiddleware
 from ent.core.db.session import dispose_engine
 from ent.core.errors.handlers import register_exception_handlers
 from ent.features.auth.router import router as auth_router
@@ -20,12 +20,14 @@ from ent.settings import Settings, load_settings
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
+    install_audit_listeners()
     yield
     await dispose_engine()
     await close_redis()
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
+    install_audit_listeners()
     resolved = settings or load_settings()
     app = FastAPI(
         title="EntShifa API",
@@ -34,6 +36,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     )
     app.state.settings = resolved
 
+    # Starlette runs last-added middleware outermost; CORS should wrap responses.
+    app.add_middleware(RequestContextMiddleware)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=resolved.cors_origins,
@@ -41,15 +45,6 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
-    @app.middleware("http")
-    async def attach_request_id(
-        request: Request,
-        call_next: Callable[[Request], Awaitable[Response]],
-    ) -> Response:
-        incoming = request.headers.get("X-Request-Id")
-        set_request_id(incoming or str(uuid.uuid4()))
-        return await call_next(request)
 
     register_exception_handlers(app)
 

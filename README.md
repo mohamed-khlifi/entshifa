@@ -101,6 +101,6 @@ local development.
 
 ## Phase 0 status
 
-Follow `docs/tickets/phase-0.md` in order. **P0-01**–**P0-04** cover the monorepo
-skeleton, settings/health, database core, and security; do not start Phase 1 until
-Phase 0 is complete and reviewed.
+Follow `docs/tickets/phase-0.md` in order. **P0-01**–**P0-05** cover the monorepo
+skeleton through errors/context/audit; do not start Phase 1 until Phase 0 is
+complete and reviewed.

@@ -85,7 +85,7 @@ phase is the single most expensive mistake available on this project, because
 
 ---
 
-## - [ ] P0-05 Errors, context and audit
+## - [x] P0-05 Errors, context and audit
 
 **Scope**
 - `core/errors/`: the `DomainError` hierarchy, the error code enum, FastAPI

@@ -1,5 +1,6 @@
-"""Domain error types."""
+"""Domain error types and codes."""
 
+from ent.core.errors.codes import ErrorCode
 from ent.core.errors.exceptions import (
     AuthInvalidCredentialsError,
     AuthRateLimitedError,
@@ -22,6 +23,7 @@ __all__ = [
     "ClinicalSafetyError",
     "ConflictError",
     "DomainError",
+    "ErrorCode",
     "NotFoundError",
     "PermissionDeniedError",
     "RecordLockedError",
