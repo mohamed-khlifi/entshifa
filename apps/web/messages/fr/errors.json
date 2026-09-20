@@ -1,0 +1,10 @@
+{
+  "generic": "Une erreur est survenue. Réessayez.",
+  "auth.unauthenticated": "Votre session a expiré. Reconnectez-vous.",
+  "auth.invalid_credentials": "E-mail ou mot de passe incorrect.",
+  "auth.rate_limited": "Trop de tentatives. Patientez quelques minutes.",
+  "auth.session_revoked": "Cette session n'est plus valide. Reconnectez-vous.",
+  "validation_failed": "Vérifiez les champs signalés.",
+  "not_found": "La ressource demandée est introuvable.",
+  "forbidden": "Vous n'avez pas l'autorisation pour cette action."
+}

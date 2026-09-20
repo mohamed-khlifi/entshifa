@@ -1,0 +1,17 @@
+{
+  "app": {
+    "name": "EntShifa",
+    "tagline": "Clinical workspace for ENT practices"
+  },
+  "actions": {
+    "logout": "Sign out",
+    "submit": "Sign in"
+  },
+  "nav": {
+    "home": "Home"
+  },
+  "home": {
+    "welcome": "Welcome",
+    "signedInAs": "Signed in to clinic session."
+  }
+}

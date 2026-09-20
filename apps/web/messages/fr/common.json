@@ -1,0 +1,17 @@
+{
+  "app": {
+    "name": "EntShifa",
+    "tagline": "Espace clinique pour la pratique ORL"
+  },
+  "actions": {
+    "logout": "Se déconnecter",
+    "submit": "Se connecter"
+  },
+  "nav": {
+    "home": "Accueil"
+  },
+  "home": {
+    "welcome": "Bienvenue",
+    "signedInAs": "Session active pour la clinique."
+  }
+}

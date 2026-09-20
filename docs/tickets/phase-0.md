@@ -167,7 +167,7 @@ everything clinical, so do not shortcut it.
 
 ---
 
-## - [ ] P0-09 Frontend skeleton
+## - [x] P0-09 Frontend skeleton
 
 **Scope**
 - Next.js App Router with the `[locale]` segment and `middleware.ts` for locale
