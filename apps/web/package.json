@@ -1,0 +1,12 @@
+{
+  "name": "@entshifa/web",
+  "version": "0.0.0",
+  "private": true,
+  "description": "EntShifa Next.js application (scaffolded in P0-09)",
+  "scripts": {
+    "dev": "echo \"Next.js dev server: implement in P0-09\" && exit 1",
+    "build": "echo \"Next.js build: implement in P0-09\" && exit 1",
+    "lint": "echo \"eslint: implement in P0-14\" && exit 1",
+    "typecheck": "echo \"tsc: implement in P0-09\" && exit 1"
+  }
+}

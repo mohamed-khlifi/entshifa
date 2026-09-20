@@ -1,0 +1,58 @@
+# ---- Secrets ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ---- Python / FastAPI ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+htmlcov/
+.coverage
+.coverage.*
+
+# ---- Node / Next.js ----
+node_modules/
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+.turbo/
+.eslintcache
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---- Testing ----
+playwright-report/
+test-results/
+coverage/
+
+# ---- Local data & uploads ----
+*.sqlite
+*.db
+/data/
+/uploads/
+/storage/
+/minio-data/
+/mysql-data/
+
+# ---- Editors / OS ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+
+# ---- Build artifacts you don't commit ----
+*.log
+tmp/

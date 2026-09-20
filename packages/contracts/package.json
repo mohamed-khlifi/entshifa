@@ -1,0 +1,6 @@
+{
+  "name": "@entshifa/contracts",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Generated OpenAPI specification and TypeScript types (P0-12)"
+}

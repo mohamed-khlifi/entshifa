@@ -1,0 +1,11 @@
+[project]
+name = "ent-worker"
+version = "0.0.0"
+description = "EntShifa background job worker"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

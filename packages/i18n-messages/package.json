@@ -1,0 +1,6 @@
+{
+  "name": "@entshifa/i18n-messages",
+  "version": "0.0.0",
+  "private": true,
+  "description": "UI translation catalogs for en, fr, ar, and future locales"
+}

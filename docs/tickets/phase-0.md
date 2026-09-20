@@ -10,7 +10,7 @@ phase is the single most expensive mistake available on this project, because
 
 ---
 
-## - [ ] P0-01 Monorepo and local environment
+## - [x] P0-01 Monorepo and local environment
 
 **Scope**
 - Create the repo layout: `apps/api`, `apps/web`, `apps/worker`,
@@ -28,7 +28,7 @@ phase is the single most expensive mistake available on this project, because
 
 ---
 
-## - [ ] P0-02 Settings and health endpoints
+## - [x] P0-02 Settings and health endpoints
 
 **Scope**
 - `settings.py` using pydantic-settings. Every value from the environment.
