@@ -1,11 +1,14 @@
 [project]
 name = "ent-worker"
 version = "0.0.0"
-description = "EntShifa background job worker"
+description = "EntShifa background job worker (thin launcher over ent.jobs)"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<3.14"
 dependencies = []
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling==1.26.3"]
 build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]

@@ -129,7 +129,7 @@ phase is the single most expensive mistake available on this project, because
 
 ---
 
-## - [ ] P0-07 Event bus and worker
+## - [x] P0-07 Event bus and worker
 
 **Scope**
 - `core/events/bus.py`: in-process pub/sub, subscribe and publish.

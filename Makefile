@@ -4,7 +4,7 @@
 COMPOSE ?= docker compose
 ENV_FILE ?= .env
 
-.PHONY: dev dev-down dev-logs test lint typecheck migrate migrate-down seed contracts anonymize help
+.PHONY: dev dev-down dev-logs worker test lint typecheck migrate migrate-down seed contracts anonymize help
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*##' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-14s %s\n", $$1, $$2}'
@@ -19,6 +19,9 @@ dev-down: ## Stop local infrastructure
 
 dev-logs: ## Follow infrastructure logs
 	$(COMPOSE) --env-file $(ENV_FILE) logs -f --tail=100
+
+worker: ## Run the background job worker (requires Redis + migrated MySQL)
+	cd apps/api && python -m ent.jobs.worker
 
 test: ## Run backend unit tests (frontend tests land in P0-09)
 	cd apps/api && python -m pytest -m "not integration"

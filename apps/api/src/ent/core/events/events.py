@@ -1,4 +1,4 @@
-"""Minimal domain event types (full bus/worker in P0-07)."""
+"""Domain event types used by the unit of work and event bus."""
 
 from __future__ import annotations
 

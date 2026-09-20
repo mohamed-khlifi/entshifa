@@ -15,12 +15,14 @@ from ent.core.errors.handlers import register_exception_handlers
 from ent.features.auth.router import router as auth_router
 from ent.features.health.router import router as health_router
 from ent.integrations.redis import close_redis
+from ent.jobs.wiring import wire_event_handlers
 from ent.settings import Settings, load_settings
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     install_audit_listeners()
+    wire_event_handlers()
     yield
     await dispose_engine()
     await close_redis()
@@ -28,6 +30,7 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
 
 def create_app(settings: Settings | None = None) -> FastAPI:
     install_audit_listeners()
+    wire_event_handlers()
     resolved = settings or load_settings()
     app = FastAPI(
         title="EntShifa API",
