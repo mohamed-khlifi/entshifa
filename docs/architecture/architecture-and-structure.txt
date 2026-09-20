@@ -33,6 +33,7 @@ TABLE OF CONTENTS
    11. Frontend folder structure
    12. Anatomy of a frontend feature
    13. Reusable frontend building blocks, with code
+      (includes 13.7 test automation hooks)
    14. Form system, table system, chart system
    15. Clinical UI components (maps, audiogram, timeline)
    16. State, caching and data-fetching rules
@@ -938,6 +939,8 @@ apps/web/
 │   │   ├── hooks/                      useDebounce, useMediaQuery, useHotkey,
 │   │   │                               useLocalStorage, usePrevious
 │   │   ├── utils/                      cn, dates, ids, laterality helpers
+│   │   ├── test/
+│   │   │   └── test-id.ts              testId, testIdProps, testIds registry
 │   │   └── constants/
 │   │
 │   ├── providers/                      QueryProvider, ThemeProvider,
@@ -1118,6 +1121,45 @@ loading skeletons and CSV export. Adding a new list is defining columns.
 and `usePermission("prescription.create")` for logic. The server re-checks
 everything; the client gate only avoids showing impossible actions.
 
+13.7 Test automation hooks (`data-testid`)
+--------------------------------------------------------------------------------
+
+The product ships in multiple locales and RTL. Automated tests must not break
+when copy changes or when the suite runs in French or Arabic. Every interactive
+control and every element tests assert on carries a stable `data-testid`
+assigned in one place.
+
+Location (only):
+  apps/web/src/lib/test/test-id.ts     factory + static registry + dynamic helpers
+  apps/web/e2e/                        Playwright helpers that wrap getByTestId
+
+Factory shape:
+
+  testId("auth", "login", "email")           -> "auth.login.email"
+  testIdProps(testIds.auth.login.email)      -> { "data-testid": "auth.login.email" }
+  patientRowTestId(publicId)                 -> "patients.list.row.<publicId>"
+
+Rules:
+  - Dot-separated, lower camel segments mirroring feature area (same discipline
+    as query keys and translation namespaces). No spaces, no translated words.
+  - Static screens: entries in a `testIds` const tree. Dynamic rows/cells: typed
+    helper functions; public ULIDs in the last segment when targeting one record.
+  - Never concatenate test id strings in JSX. Never use visible text, placeholders,
+    or getByRole name as the primary E2E selector.
+  - Shared components own the attribute: TextField applies test id from `name`,
+    DataTable from column id, PageHeader from `titleKey` or explicit `testId`
+    prop. Feature pages pass semantic names, not raw strings.
+  - Coverage: buttons, links, inputs, dialogs, toasts, tabs, nav items, list
+    rows, empty/error/loading states, and layout landmarks (shell, sidebar, main).
+
+Playwright:
+  page.getByTestId(testIds.auth.login.submit).click()
+  The same step definition runs in en, fr, and ar without change.
+
+CI (with P0-14): eslint discourages inline data-testid literals outside the
+factory; optional check that new interactive components in shared folders export
+a test id contract.
+
 
 --------------------------------------------------------------------------------
 14. FORM, TABLE AND CHART SYSTEMS
@@ -1212,13 +1254,19 @@ problem, grouping, lazy loading of older years, click to open the record,
 17. FRONTEND TESTING LAYOUT
 --------------------------------------------------------------------------------
 
-  unit/        pure utils, formatters, laterality helpers, schema validation
+  unit/        pure utils, formatters, laterality helpers, schema validation,
+               and test-id factory helpers (segment joining, dynamic ids)
   components/  React Testing Library for the clinical components, especially
                AnatomicalMap keyboard behaviour and AudiogramGrid entry
   e2e/         Playwright covering the three killer workflows end to end, run
-               in English, French and Arabic to catch layout and RTL breakage
+               in English, French and Arabic to catch layout and RTL breakage.
+               Select elements exclusively with getByTestId and ids from
+               lib/test/test-id.ts—never with button labels or menu text.
   a11y/        axe checks on the main screens; medical software gets used by
                tired people on bad screens, contrast and focus order matter
+
+Component tests may use role/name when the test is explicitly about labelling.
+Cross-locale E2E must not.
 
 
 ================================================================================
@@ -2662,6 +2710,11 @@ Translation keys
   <feature>.<area>.<element>                    audiology.audiogram.title
   errors.<code>                                 errors.prescription.allergy_conflict
 
+Test automation (`data-testid`, via lib/test/test-id.ts only)
+  static                                         auth.login.email
+  dynamic last segment                           patients.list.row.<publicId>
+  props helper                                   testIdProps(testIds.auth.login.email)
+
 Git
   branches           type/short-description     feat/audiogram-overlay
   commits            conventional commits       feat(audiology): add overlay
@@ -2697,9 +2750,12 @@ Ranked by how much damage they cause.
      written by someone in a hurry. Cap it in the base repository.
  12. N+1 queries in the timeline. Twenty visits producing 400 queries makes
      the app feel broken on clinic wifi.
- 13. Float for money or for measurements that must be exact.
- 14. Cascading deletes on clinical tables.
- 15. Building the AI layer before the structured data layer is solid. The AI
+ 13. E2E tests that click by translated button text or menu labels. They pass
+     in English and fail in French, or break on every copy edit. Use
+     data-testid from lib/test/test-id.ts only.
+ 14. Float for money or for measurements that must be exact.
+ 15. Cascading deletes on clinical tables.
+ 16. Building the AI layer before the structured data layer is solid. The AI
      is a convenience; the data model is the product.
 
 --------------------------------------------------------------------------------
@@ -2723,8 +2779,9 @@ for itself by the third feature.
             endpoint, seed script with the first anatomy and finding concepts.
             This unblocks everything clinical.
   Day 13-14 Frontend skeleton: Next.js with locale routing, middleware, shadcn
-            installed, AppShell, providers, API client, query keys, generated
-            types, login flow, DataTable, form field library.
+            installed, AppShell, providers, API client, query keys, test-id
+            factory (lib/test/test-id.ts), generated types, login flow with
+            data-testid on shell and auth, DataTable, form field library.
   Day 15    i18n end to end: catalogs for en and fr, pseudo-locale, RTL smoke
             test with a placeholder ar catalog, format helpers.
   Day 16-17 Patients feature end to end as the reference implementation:

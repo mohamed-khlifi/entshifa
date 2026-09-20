@@ -58,3 +58,10 @@ language must never require a code change.
 Add it to every locale in the same change. If you do not have the French or
 Arabic wording, add the key with the English value and a `# TODO(i18n)` entry
 in the translation coverage list, never leave the key missing.
+
+## E2E and test automation
+
+Translated copy changes per locale; tests must not select by visible text,
+placeholder, or `getByRole` name. Use `data-testid` values from
+`lib/test/test-id.ts` only (see `.cursor/rules/frontend.mdc`). The same test
+runs unchanged in en, fr, and ar.

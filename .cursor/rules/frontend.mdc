@@ -26,6 +26,7 @@ clinical values, stop.
       clinical/       AnatomicalMap, LateralityToggle, ScoreBadge, FindingChip
       charts/         chart wrappers
     src/lib/          api client, i18n, auth, forms, hooks, utils
+    src/lib/test/     test automation hooks (test id factory only)
     src/providers/
     src/styles/
 
@@ -143,11 +144,38 @@ Feature folder shape:
 - Compose classes with `cn()`. Do not build class strings by concatenation.
 - Print styles live in `styles/print.css`. Clinical screens must print sensibly.
 
+## Test automation hooks (`data-testid`)
+
+E2E and component tests must not depend on locale, copy, or CSS class names.
+Every interactive control and every element tests assert on gets a stable
+`data-testid` built only through `lib/test/test-id.ts`.
+
+- **Single factory.** `testId(...segments)` joins dot-separated segments
+  (`auth.login.email`). `testIdProps(id)` returns `{ "data-testid": id }`.
+  Dynamic ids use typed helpers (`patientRowTestId(publicId)`), never string
+  concatenation in JSX.
+- **Registry for static ids.** Export a `testIds` object (same idea as query
+  keys): nested constants for layout, auth, shared components. Features add a
+  namespace (`testIds.patients.list.search`) in the feature or in the central
+  registry—never inline literals in components.
+- **Coverage.** Buttons, links, inputs, selects, dialogs, toasts, tabs, list
+  rows, empty/error/loading states, and page landmarks (shell, sidebar, main).
+  Shared wrappers (`TextField`, `DataTable`, `PageHeader`) set the attribute
+  once from `name`, `id`, or column id props so features do not repeat it.
+- **Locale-safe.** Playwright and RTL tests use `getByTestId` only. Do not use
+  `getByRole(..., { name: translatedLabel })`, visible text, or placeholders
+  as primary selectors. Role queries are allowed for a11y unit tests, not for
+  cross-locale E2E.
+- **Stability.** Ids describe purpose, not styling (`submit`, not `blue-button`).
+  No auto-generated React ids. Public ids (ULIDs) in dynamic segments are fine
+  when the test targets one row or record.
+
 ## Testing
 
 - Component tests for anything with clinical input behaviour, especially
   `AnatomicalMap` keyboard navigation and `AudiogramGrid` entry.
 - Playwright covers the three killer workflows, run in en, fr and ar to catch
-  RTL and truncation breakage.
-- Test behaviour through the DOM as a user sees it. Never assert on internal
-  state or implementation details.
+  RTL and truncation breakage; selectors are `data-testid` only (see above).
+- Assert user-visible outcomes (text, aria, focus), not React state. Prefer
+  `getByTestId` for actions; use `within(...).getByText` only when the assertion
+  is explicitly about translated copy, not for finding the control.

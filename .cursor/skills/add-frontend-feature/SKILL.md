@@ -14,6 +14,9 @@ Mirror the backend feature name. Copy the shape of `features/patients/`.
 2. Decide which parts are Server Components (read-only first paint) and which
    must be Client Components (interactivity).
 3. List the translation keys you will need, and in which catalog file.
+4. List the `testIds` you will need (or extend `lib/test/test-id.ts`) for every
+   interactive and asserted visible element—locale-independent, no copy-based
+   selectors.
 
 ## Steps
 
@@ -37,6 +40,9 @@ keys. Mirror the backend validation; do not relax it.
 Build from `components/ui/`, `components/forms/`, `components/data/` and
 `components/clinical/`. Do not restyle shadcn primitives per feature.
 Lists use `DataTable`. Forms use the shared field components.
+Wire `data-testid` through `testId` / `testIdProps` from `lib/test/test-id.ts`
+(field `name`, table column id, or feature registry). Never hardcode test id
+strings in JSX.
 
 ### 5. Routes
 Add pages under `src/app/[locale]/(app)/...`. Pages compose and load; they
@@ -52,7 +58,8 @@ import only from there.
 
 ### 8. Tests
 Component tests for any clinical input behaviour. Extend the Playwright flow if
-this feature is part of a killer workflow.
+this feature is part of a killer workflow. E2E steps use `getByTestId` only,
+never translated labels or button text.
 
 ## Checklist
 
@@ -63,4 +70,6 @@ this feature is part of a killer workflow.
 - [ ] Loading, empty and error states exist for every list
 - [ ] Keyboard operable, labels tied to inputs, focus visible
 - [ ] Translation keys added to every locale
+- [ ] `data-testid` on every interactive and asserted visible element via
+  `lib/test/test-id.ts` (no inline literals, no copy-based E2E selectors)
 - [ ] Autosave and conflict handling wired if this is a clinical form

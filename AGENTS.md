@@ -118,6 +118,9 @@ converts; never do it by hand.
 - Lint clean (`ruff`, `eslint`), formatted (`black`, `prettier`).
 - Tests written in the same change, not "later". New engine code has
   known-answer tests citing a source.
+- Frontend: every interactive and test-asserted visible element exposes a
+  `data-testid` via `apps/web/src/lib/test/test-id.ts` (no inline literals).
+  Playwright selects by test id only, never by translated UI copy.
 - No new translation key missing from any locale catalog.
 - No hardcoded user-visible string.
 - Tenant scoping verified for any new query.
@@ -154,3 +157,5 @@ converts; never do it by hand.
 - Floats for money or for exact measurements
 - `ON DELETE CASCADE` on clinical tables
 - Building AI features before the structured data layer is solid
+- E2E or RTL tests that locate controls by visible text, placeholder, or
+  translated `getByRole` name instead of `data-testid`

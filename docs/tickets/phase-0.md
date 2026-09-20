@@ -175,13 +175,18 @@ everything clinical, so do not shortcut it.
 - Tailwind, shadcn/ui installed, design tokens in `styles/tokens.css`.
 - `providers/`: query, theme, locale, session, permission, toast.
 - `lib/api/client.ts`, `lib/api/query-keys.ts`, `lib/api/errors.ts`.
+- `lib/test/test-id.ts`: `testId`, `testIdProps`, and a `testIds` registry;
+  dynamic helpers for ids that include public ids.
 - `components/layout/`: AppShell, Sidebar, Topbar, PageHeader.
 - Login flow end to end against P0-04.
+- `data-testid` on login, shell, and error surfaces via the test-id factory only.
 
 **Acceptance**
 - Login works, session persists, logout clears it.
 - An API error renders a translated message resolved from its code.
 - No hardcoded user-visible string exists in the codebase.
+- Playwright (or RTL smoke for login) finds controls by `data-testid` only, not
+  by English or French copy.
 
 ---
 
@@ -200,6 +205,8 @@ everything clinical, so do not shortcut it.
 - A new form field renders label, description, error, required marker, unit and
   RTL correctly with no per-feature CSS.
 - Server field errors map back onto the matching inputs automatically.
+- Shared field and table components apply `data-testid` from field/column ids
+  through `lib/test/test-id.ts` without per-feature duplication.
 
 **Reference:** architecture sections 13.3 to 13.5.
 
