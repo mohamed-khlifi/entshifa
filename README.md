@@ -80,6 +80,7 @@ docs/           Architecture, clinical spec, tickets, database DDL
 | `make lint` | Linters (P0-14) |
 | `make typecheck` | Static typing (P0-03 / P0-09) |
 | `make migrate` | Alembic migrations (P0-03) |
+| `make migrate-down` | Downgrade one Alembic revision |
 | `make seed` | Reference data seeds (P0-08) |
 | `make contracts` | OpenAPI + TS codegen (P0-12) |
 | `make anonymize` | Anonymized dump script stub (full job in P1-11) |
@@ -100,5 +101,6 @@ local development.
 
 ## Phase 0 status
 
-Follow `docs/tickets/phase-0.md` in order. **P0-01** provides the monorepo skeleton
-and Docker stack; do not start Phase 1 until Phase 0 is complete and reviewed.
+Follow `docs/tickets/phase-0.md` in order. **P0-01**–**P0-04** cover the monorepo
+skeleton, settings/health, database core, and security; do not start Phase 1 until
+Phase 0 is complete and reviewed.

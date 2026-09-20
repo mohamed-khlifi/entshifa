@@ -42,7 +42,7 @@ phase is the single most expensive mistake available on this project, because
 
 ---
 
-## - [ ] P0-03 Database core
+## - [x] P0-03 Database core
 
 **Scope**
 - `core/db/base.py`: declarative base with the index naming convention.
@@ -64,7 +64,7 @@ phase is the single most expensive mistake available on this project, because
 
 ---
 
-## - [ ] P0-04 Security core
+## - [x] P0-04 Security core
 
 **Scope**
 - `core/security/passwords.py`: argon2id hashing.

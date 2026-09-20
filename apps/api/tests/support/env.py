@@ -20,7 +20,7 @@ VALID_ENV: dict[str, str] = {
     "MYSQL_ROOT_PASSWORD": "local_dev_mysql_root_change_me",
     "DATABASE_URL": (
         "mysql+aiomysql://entshifa:local_dev_mysql_password_change_me"
-        "@localhost:3306/entshifa?charset=utf8mb4"
+        "@127.0.0.1:3306/entshifa?charset=utf8mb4"
     ),
     "REDIS_HOST": "localhost",
     "REDIS_PORT": "6379",

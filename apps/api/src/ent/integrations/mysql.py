@@ -1,4 +1,4 @@
-"""MySQL connectivity helpers (readiness checks until P0-03 session layer)."""
+"""MySQL connectivity helpers used by readiness checks."""
 
 from __future__ import annotations
 
