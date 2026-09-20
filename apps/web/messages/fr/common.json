@@ -10,7 +10,8 @@
     "submit": "Se connecter"
   },
   "nav": {
-    "home": "Accueil"
+    "home": "Accueil",
+    "uiKit": "Kit UI"
   },
   "home": {
     "welcome": "Bienvenue",

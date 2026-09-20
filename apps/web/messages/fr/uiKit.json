@@ -1,0 +1,50 @@
+{
+  "nav": {
+    "title": "Kit UI",
+    "forms": "Champs de formulaire",
+    "table": "Tableau de données"
+  },
+  "form": {
+    "title": "Champs de formulaire partagés",
+    "description": "Bibliothèque de champs phase 0 : libellé, obligatoire, unité et erreurs.",
+    "lastName": "Nom",
+    "lastNameDescription": "Tel qu'inscrit sur le dossier clinique.",
+    "weightKg": "Poids",
+    "sex": "Sexe",
+    "sexPlaceholder": "Sélectionner…",
+    "sexFemale": "Femme",
+    "sexMale": "Homme",
+    "sexOther": "Autre",
+    "birthDate": "Date de naissance",
+    "side": "Latéralité",
+    "diagnosis": "Constat",
+    "diagnosisPlaceholder": "Sélectionner un constat…",
+    "concepts": {
+      "otitis": "Otite moyenne",
+      "rhinitis": "Rhinite allergique",
+      "vertigo": "Vertige périphérique"
+    },
+    "painScore": "Score de douleur",
+    "submit": "Enregistrer le brouillon",
+    "validation": {
+      "lastNameRequired": "Saisissez un nom.",
+      "weightRequired": "Saisissez un poids.",
+      "sexRequired": "Sélectionnez un sexe.",
+      "birthDateRequired": "Saisissez une date de naissance.",
+      "sideRequired": "Sélectionnez la latéralité.",
+      "diagnosisRequired": "Sélectionnez un constat.",
+      "painRequired": "Sélectionnez un score de douleur."
+    }
+  },
+  "table": {
+    "title": "Tableau de données partagé",
+    "description": "Colonnes seules — tri, filtres et pagination synchronisés avec l'URL.",
+    "columns": {
+      "name": "Nom",
+      "role": "Rôle",
+      "site": "Site"
+    },
+    "emptyTitle": "Aucune ligne de démo",
+    "emptyDescription": "Modifiez la recherche pour afficher des lignes correspondantes."
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "nav": {
+    "title": "UI kit",
+    "forms": "Form fields",
+    "table": "Data table"
+  },
+  "form": {
+    "title": "Shared form fields",
+    "description": "Phase 0 field library: label, required marker, unit, and errors.",
+    "lastName": "Last name",
+    "lastNameDescription": "As recorded on the clinic chart.",
+    "weightKg": "Weight",
+    "sex": "Sex",
+    "sexPlaceholder": "Select…",
+    "sexFemale": "Female",
+    "sexMale": "Male",
+    "sexOther": "Other",
+    "birthDate": "Date of birth",
+    "side": "Laterality",
+    "diagnosis": "Finding",
+    "diagnosisPlaceholder": "Select a finding…",
+    "concepts": {
+      "otitis": "Otitis media",
+      "rhinitis": "Allergic rhinitis",
+      "vertigo": "Peripheral vertigo"
+    },
+    "painScore": "Pain score",
+    "submit": "Save draft",
+    "validation": {
+      "lastNameRequired": "Enter a last name.",
+      "weightRequired": "Enter a weight.",
+      "sexRequired": "Select a sex.",
+      "birthDateRequired": "Enter a date of birth.",
+      "sideRequired": "Select laterality.",
+      "diagnosisRequired": "Select a finding.",
+      "painRequired": "Select a pain score."
+    }
+  },
+  "table": {
+    "title": "Shared data table",
+    "description": "Columns only — sorting, filters, and pagination sync to the URL.",
+    "columns": {
+      "name": "Name",
+      "role": "Role",
+      "site": "Site"
+    },
+    "emptyTitle": "No demo rows",
+    "emptyDescription": "Change the search query to see matching rows."
+  }
+}

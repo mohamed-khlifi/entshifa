@@ -10,7 +10,8 @@
     "submit": "Sign in"
   },
   "nav": {
-    "home": "Home"
+    "home": "Home",
+    "uiKit": "UI kit"
   },
   "home": {
     "welcome": "Welcome",

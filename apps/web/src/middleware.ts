@@ -7,36 +7,31 @@ import { routing } from './i18n/routing';
 
 const intlMiddleware = createMiddleware(routing);
 
-const protectedMatchers = ['/home'];
+function pathWithoutLocale(pathname: string): string {
+  return pathname.replace(/^\/(en|fr)(?=\/|$)/, '') || '/';
+}
 
-function isProtectedPath(pathname: string): boolean {
-  const withoutLocale = pathname.replace(/^\/(en|fr)(?=\/|$)/, '') || '/';
-  return protectedMatchers.some(
-    (segment) =>
-      withoutLocale === segment || withoutLocale.startsWith(`${segment}/`),
-  );
+function isPublicPath(pathname: string): boolean {
+  const path = pathWithoutLocale(pathname);
+  return path === '/login' || path.startsWith('/login/');
 }
 
 export default function middleware(request: NextRequest): NextResponse {
   const pathname = request.nextUrl.pathname;
   const response = intlMiddleware(request);
+  const hasSession = request.cookies.get(SESSION_INDICATOR_COOKIE)?.value === '1';
+  const locale = pathname.split('/')[1] ?? routing.defaultLocale;
 
-  if (isProtectedPath(pathname)) {
-    const hasSession = request.cookies.get(SESSION_INDICATOR_COOKIE)?.value === '1';
+  if (!isPublicPath(pathname) && pathWithoutLocale(pathname) !== '/') {
     if (!hasSession) {
-      const locale = pathname.split('/')[1] ?? routing.defaultLocale;
       const loginUrl = new URL(`/${locale}/login`, request.url);
       loginUrl.searchParams.set('next', pathname);
       return NextResponse.redirect(loginUrl);
     }
   }
 
-  if (pathname.endsWith('/login')) {
-    const hasSession = request.cookies.get(SESSION_INDICATOR_COOKIE)?.value === '1';
-    if (hasSession) {
-      const locale = pathname.split('/')[1] ?? routing.defaultLocale;
-      return NextResponse.redirect(new URL(`/${locale}/home`, request.url));
-    }
+  if (pathname.endsWith('/login') && hasSession) {
+    return NextResponse.redirect(new URL(`/${locale}/home`, request.url));
   }
 
   return response;

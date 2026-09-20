@@ -190,7 +190,7 @@ everything clinical, so do not shortcut it.
 
 ---
 
-## - [ ] P0-10 Shared UI systems
+## - [x] P0-10 Shared UI systems
 
 **Scope**
 - `components/data/DataTable` with server-side sorting and pagination,

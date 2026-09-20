@@ -8,10 +8,13 @@ export default getRequestConfig(async ({ requestLocale }) => {
     locale = routing.defaultLocale;
   }
 
-  const [common, auth, errors] = await Promise.all([
+  const [common, auth, errors, forms, data, uiKit] = await Promise.all([
     import(`../../messages/${locale}/common.json`),
     import(`../../messages/${locale}/auth.json`),
     import(`../../messages/${locale}/errors.json`),
+    import(`../../messages/${locale}/forms.json`),
+    import(`../../messages/${locale}/data.json`),
+    import(`../../messages/${locale}/uiKit.json`),
   ]);
 
   return {
@@ -20,6 +23,9 @@ export default getRequestConfig(async ({ requestLocale }) => {
       common: common.default,
       auth: auth.default,
       errors: errors.default,
+      forms: forms.default,
+      data: data.default,
+      uiKit: uiKit.default,
     },
   };
 });

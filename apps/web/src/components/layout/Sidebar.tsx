@@ -6,11 +6,21 @@ import { Link, usePathname } from '@/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
 import { testIdProps, testIds } from '@/lib/test/test-id';
 
+function navClass(active: boolean): string {
+  return cn(
+    'rounded-md px-3 py-2 text-sm font-medium transition-colors',
+    active
+      ? 'bg-accent text-accent-foreground'
+      : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
+  );
+}
+
 export function Sidebar() {
   const t = useTranslations('common');
   const pathname = usePathname();
 
   const homeActive = pathname === '/home' || pathname.startsWith('/home/');
+  const uiKitActive = pathname === '/ui-kit' || pathname.startsWith('/ui-kit/');
 
   return (
     <aside
@@ -18,16 +28,11 @@ export function Sidebar() {
       {...testIdProps(testIds.layout.sidebar)}
     >
       <nav className="flex flex-col gap-1 p-4">
-        <Link
-          href="/home"
-          className={cn(
-            'rounded-md px-3 py-2 text-sm font-medium transition-colors',
-            homeActive
-              ? 'bg-accent text-accent-foreground'
-              : 'text-muted-foreground hover:bg-accent/50 hover:text-foreground',
-          )}
-        >
+        <Link href="/home" className={navClass(homeActive)}>
           {t('nav.home')}
+        </Link>
+        <Link href="/ui-kit" className={navClass(uiKitActive)}>
+          {t('nav.uiKit')}
         </Link>
       </nav>
     </aside>

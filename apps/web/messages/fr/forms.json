@@ -1,0 +1,19 @@
+{
+  "laterality": {
+    "left": "Gauche",
+    "right": "Droite",
+    "bilateral": "Bilatéral",
+    "unspecified": "Non précisé"
+  },
+  "autosave": {
+    "saving": "Enregistrement…",
+    "saved": "Enregistré",
+    "offline": "Hors ligne — brouillon local conservé",
+    "conflict": "Conflit — vérifiez les deux versions",
+    "error": "Échec de l'enregistrement"
+  },
+  "dirtyGuard": {
+    "message": "Modifications non enregistrées. Quitter cette page ?"
+  },
+  "required": "Obligatoire"
+}

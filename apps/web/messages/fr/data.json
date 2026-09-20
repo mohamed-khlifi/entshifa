@@ -1,0 +1,27 @@
+{
+  "empty": {
+    "title": "Aucun résultat",
+    "description": "Modifiez les filtres ou la recherche."
+  },
+  "error": {
+    "title": "Impossible de charger cette liste",
+    "description": "Actualisez la page ou réessayez dans un instant."
+  },
+  "filter": {
+    "label": "Recherche",
+    "placeholder": "Rechercher…"
+  },
+  "columns": {
+    "label": "Colonnes",
+    "toggle": "Afficher ou masquer…",
+    "hide": "Masquer {id}",
+    "show": "Afficher {id}"
+  },
+  "pagination": {
+    "summary": "{from}–{to} sur {total}",
+    "pageSize": "Lignes par page",
+    "prev": "Page précédente",
+    "next": "Page suivante",
+    "pageOf": "{page} / {totalPages}"
+  }
+}

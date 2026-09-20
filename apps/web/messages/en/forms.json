@@ -1,0 +1,19 @@
+{
+  "laterality": {
+    "left": "Left",
+    "right": "Right",
+    "bilateral": "Bilateral",
+    "unspecified": "Unspecified"
+  },
+  "autosave": {
+    "saving": "Saving…",
+    "saved": "Saved",
+    "offline": "Offline — draft kept locally",
+    "conflict": "Conflict — review both versions",
+    "error": "Could not save"
+  },
+  "dirtyGuard": {
+    "message": "You have unsaved changes. Leave this page?"
+  },
+  "required": "Required"
+}

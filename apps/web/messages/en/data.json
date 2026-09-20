@@ -1,0 +1,27 @@
+{
+  "empty": {
+    "title": "No results",
+    "description": "Try adjusting filters or search."
+  },
+  "error": {
+    "title": "Could not load this list",
+    "description": "Refresh the page or try again in a moment."
+  },
+  "filter": {
+    "label": "Search",
+    "placeholder": "Search…"
+  },
+  "columns": {
+    "label": "Columns",
+    "toggle": "Show or hide…",
+    "hide": "Hide {id}",
+    "show": "Show {id}"
+  },
+  "pagination": {
+    "summary": "{from}–{to} of {total}",
+    "pageSize": "Rows per page",
+    "prev": "Previous page",
+    "next": "Next page",
+    "pageOf": "{page} / {totalPages}"
+  }
+}

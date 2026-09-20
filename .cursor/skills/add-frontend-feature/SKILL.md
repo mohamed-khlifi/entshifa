@@ -40,7 +40,9 @@ keys. Mirror the backend validation; do not relax it.
 Build from `components/ui/`, `components/forms/`, `components/data/` and
 `components/clinical/`. Do not restyle shadcn primitives per feature.
 Match the light, modern clinical look defined in `.cursor/rules/frontend.mdc`
-(tokens, Card, spacing, professional tone). Lists use `DataTable`. Forms use the shared field components.
+(tokens, Card, spacing, professional tone). Lists use `DataTable` from
+`components/data`. Forms use `createClinicalForm` / `useClinicalForm` and the
+shared field components in `components/forms`.
 Wire `data-testid` through `testId` / `testIdProps` from `lib/test/test-id.ts`
 (field `name`, table column id, or feature registry). Never hardcode test id
 strings in JSX.

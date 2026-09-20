@@ -42,6 +42,27 @@ export const testIds = {
     localeSwitcher: testId('layout', 'locale-switcher'),
     localeSwitcherSelect: testId('layout', 'locale-switcher-select'),
   },
+  forms: {
+    autosave: testId('forms', 'autosave'),
+    dirtyGuard: testId('forms', 'dirty-guard'),
+  },
+  data: {
+    table: testId('data', 'table'),
+    empty: testId('data', 'empty'),
+    filterBar: testId('data', 'filter-bar'),
+    filterInput: testId('data', 'filter-input'),
+    pagination: testId('data', 'pagination'),
+    pageSize: testId('data', 'page-size'),
+    pagePrev: testId('data', 'page-prev'),
+    pageNext: testId('data', 'page-next'),
+    columnVisibility: testId('data', 'column-visibility'),
+  },
+  uiKit: {
+    root: testId('ui-kit', 'root'),
+    form: testId('ui-kit', 'form'),
+    formSubmit: testId('ui-kit', 'form-submit'),
+    table: testId('ui-kit', 'table'),
+  },
 } as const;
 
 export function publicIdTestId(scope: string, publicId: string): string {
