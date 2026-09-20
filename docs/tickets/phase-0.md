@@ -145,7 +145,7 @@ phase is the single most expensive mistake available on this project, because
 
 ---
 
-## - [ ] P0-08 Terminology module
+## - [x] P0-08 Terminology module
 
 **Scope**
 - Models: `code_system`, `concept`, `concept_translation`,

@@ -1,4 +1,4 @@
-"""Local development seed (identity + auth only; clinical tables come later)."""
+"""Local development seed (identity, auth, and terminology)."""
 
 from __future__ import annotations
 
@@ -6,8 +6,8 @@ from dataclasses import dataclass
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from ent.features.auth.models import Role
 from ent.core.security.permissions import SYSTEM_ROLE_MATRIX
+from ent.features.auth.models import Role
 from ent.seeds.identity import (
     LOCAL_DEV_PASSWORD,
     SeededUser,
@@ -17,6 +17,7 @@ from ent.seeds.identity import (
     ensure_site,
     ensure_user_with_role,
 )
+from ent.seeds.terminology import TerminologySeedReport, seed_terminology
 
 DEMO_CLINIC_SLUG = "demo-entshifa"
 OTHER_CLINIC_SLUG = "demo-nord"
@@ -30,6 +31,7 @@ class LocalDevSeedReport:
     roles: int
     users: list[SeededUser]
     password: str
+    terminology: TerminologySeedReport
 
 
 async def seed_local_dev(session: AsyncSession) -> LocalDevSeedReport:
@@ -130,6 +132,8 @@ async def seed_local_dev(session: AsyncSession) -> LocalDevSeedReport:
             ),
         )
 
+    terminology = await seed_terminology(session)
+
     return LocalDevSeedReport(
         permissions_created=permissions_created,
         clinics=2,
@@ -137,4 +141,5 @@ async def seed_local_dev(session: AsyncSession) -> LocalDevSeedReport:
         roles=len(roles),
         users=users,
         password=LOCAL_DEV_PASSWORD,
+        terminology=terminology,
     )

@@ -17,10 +17,16 @@ async def _run() -> int:
         report = await seed_local_dev(session)
         await session.commit()
 
-    print("Local dev seed complete (identity + auth only).")
+    print("Local dev seed complete (identity + auth + terminology).")
     print(f"  Permissions newly created: {report.permissions_created}")
     print(f"  Clinics: {report.clinics}  Sites: {report.sites}  Roles: {report.roles}")
     print(f"  Users: {len(report.users)}")
+    print(
+        "  Terminology: "
+        f"{report.terminology.concepts} concepts, "
+        f"{report.terminology.translations} translations, "
+        f"{report.terminology.value_sets} value sets",
+    )
     print(f"  Password (all demo users): {report.password}")
     print("  Sample logins:")
     for user in report.users[:5]:

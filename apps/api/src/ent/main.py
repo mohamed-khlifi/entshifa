@@ -14,6 +14,7 @@ from ent.core.db.session import dispose_engine
 from ent.core.errors.handlers import register_exception_handlers
 from ent.features.auth.router import router as auth_router
 from ent.features.health.router import router as health_router
+from ent.features.terminology.router import router as terminology_router
 from ent.integrations.redis import close_redis
 from ent.jobs.wiring import wire_event_handlers
 from ent.settings import Settings, load_settings
@@ -53,4 +54,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
 
     app.include_router(health_router)
     app.include_router(auth_router)
+    app.include_router(terminology_router)
     return app
