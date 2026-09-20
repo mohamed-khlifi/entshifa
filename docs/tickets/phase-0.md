@@ -106,7 +106,7 @@ phase is the single most expensive mistake available on this project, because
 
 ---
 
-## - [ ] P0-06 Repository and schema base
+## - [x] P0-06 Repository and schema base
 
 **Scope**
 - `core/repository/base.py`: `BaseRepository[Model]` with tenant and

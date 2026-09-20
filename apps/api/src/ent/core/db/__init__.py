@@ -20,6 +20,7 @@ from ent.core.db.types import (
     ULIDType,
     quantity_composite,
 )
+from ent.core.db.unit_of_work import UnitOfWork
 
 __all__ = [
     "NAMING_CONVENTION",
@@ -37,6 +38,7 @@ __all__ = [
     "TenantMixin",
     "TimestampMixin",
     "ULIDType",
+    "UnitOfWork",
     "VersionMixin",
     "metadata",
     "quantity_composite",
