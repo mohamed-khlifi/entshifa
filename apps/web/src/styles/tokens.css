@@ -1,41 +1,28 @@
-/* EntShifa design tokens — extend in later tickets. */
+/* EntShifa design tokens — light-first clinical workspace */
 :root {
-  --background: 210 40% 98%;
-  --foreground: 222 47% 11%;
+  --background: 210 33% 98%;
+  --foreground: 215 28% 17%;
   --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
-  --primary: 199 89% 32%;
+  --card-foreground: 215 28% 17%;
+  --primary: 192 82% 31%;
   --primary-foreground: 0 0% 100%;
   --secondary: 210 40% 96%;
-  --secondary-foreground: 222 47% 11%;
-  --muted: 210 40% 96%;
-  --muted-foreground: 215 16% 47%;
-  --accent: 210 40% 96%;
-  --accent-foreground: 222 47% 11%;
-  --destructive: 0 84% 60%;
+  --secondary-foreground: 215 28% 17%;
+  --muted: 210 32% 95%;
+  --muted-foreground: 215 16% 42%;
+  --accent: 192 45% 94%;
+  --accent-foreground: 192 82% 22%;
+  --destructive: 0 72% 51%;
   --destructive-foreground: 0 0% 100%;
-  --border: 214 32% 91%;
-  --input: 214 32% 91%;
-  --ring: 199 89% 32%;
-  --radius: 0.5rem;
-}
-
-.dark {
-  --background: 222 47% 11%;
-  --foreground: 210 40% 98%;
-  --card: 222 47% 13%;
-  --card-foreground: 210 40% 98%;
-  --primary: 199 89% 48%;
-  --primary-foreground: 222 47% 11%;
-  --secondary: 217 33% 17%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 217 33% 17%;
-  --muted-foreground: 215 20% 65%;
-  --accent: 217 33% 17%;
-  --accent-foreground: 210 40% 98%;
-  --destructive: 0 62% 50%;
-  --destructive-foreground: 210 40% 98%;
-  --border: 217 33% 17%;
-  --input: 217 33% 17%;
-  --ring: 199 89% 48%;
+  --border: 214 24% 88%;
+  --input: 214 24% 88%;
+  --ring: 192 82% 31%;
+  --radius: 0.625rem;
+  --shadow-soft: 0 1px 2px hsl(215 28% 17% / 0.04), 0 8px 24px hsl(215 28% 17% / 0.06);
+  --gradient-brand: linear-gradient(
+    145deg,
+    hsl(192 82% 28%) 0%,
+    hsl(199 70% 36%) 45%,
+    hsl(210 55% 42%) 100%
+  );
 }

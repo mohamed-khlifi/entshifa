@@ -50,15 +50,37 @@ export async function parseApiError(response: Response): Promise<ApiError> {
   });
 }
 
-type ErrorTranslator = (code: string) => string;
+type ErrorTranslator = (messageKey: string) => string;
+
+/**
+ * Maps an API error `code` (e.g. `auth.invalid_credentials`) to a next-intl key
+ * under the `errors` namespace. Dotted API codes use nested message objects, not
+ * flat keys containing ".".
+ */
+export function apiErrorCodeToMessageKey(code: string): string {
+  const dotIndex = code.indexOf('.');
+  if (dotIndex === -1) {
+    return code;
+  }
+  const namespace = code.slice(0, dotIndex);
+  const leaf = code.slice(dotIndex + 1);
+  return `${namespace}.${leaf}`;
+}
 
 export function resolveErrorMessage(
   error: ApiError,
   translate: ErrorTranslator,
+  hasMessageKey: (messageKey: string) => boolean = () => true,
 ): string {
-  const localized = translate(error.code);
-  if (localized !== error.code) {
-    return localized;
+  const messageKey = apiErrorCodeToMessageKey(error.code);
+  if (hasMessageKey(messageKey)) {
+    const localized = translate(messageKey);
+    if (localized !== messageKey) {
+      return localized;
+    }
   }
-  return translate('generic');
+  if (hasMessageKey('generic')) {
+    return translate('generic');
+  }
+  return error.code;
 }

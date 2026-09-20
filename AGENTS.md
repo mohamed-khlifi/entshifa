@@ -86,7 +86,9 @@ Rules:
 - Never hardcode a display string anywhere, including in Python.
 - Never store a clinical term as text. Store a `concept_id`.
 - API errors return a stable `code` plus `context`. The frontend translates by
-  code. The backend never sends a sentence meant to be displayed as is.
+  code. The backend never sends a sentence meant to be displayed as is. Catalog
+  keys must not contain `.`; nest objects to match dotted API codes
+  (`errors.auth.invalid_credentials`).
 - Translation keys are semantic, never the English text:
   `audiology.audiogram.actions.addThreshold`, not `"Add threshold"`.
 - Use ICU message format for plurals and interpolation. Arabic has six plural

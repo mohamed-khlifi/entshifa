@@ -1,7 +1,9 @@
 {
   "app": {
     "name": "EntShifa",
-    "tagline": "Espace clinique pour la pratique ORL"
+    "tagline": "Espace clinique pour la pratique ORL",
+    "clinicalNote": "Examens structurés, audiologie et comptes rendus dans un environnement sécurisé, pensé pour la pratique quotidienne.",
+    "complianceHint": "Données de santé — connectez-vous uniquement sur des appareils de confiance."
   },
   "actions": {
     "logout": "Se déconnecter",

@@ -28,6 +28,18 @@ language must never require a code change.
   typed map. Dynamic keys break the missing-key check.
 - Sort keys alphabetically within each object so diffs stay readable.
 
+## API error codes vs catalog keys
+
+The backend sends stable error `code` strings (often dotted, e.g.
+`auth.invalid_credentials`). **Never use a dot inside a JSON object key.**
+Nest by segment instead:
+
+    errors.json → { "auth": { "invalid_credentials": "…" } }
+
+Resolve with `useTranslations('errors')` and key `auth.invalid_credentials`.
+Map API codes through `apiErrorCodeToMessageKey()` in `lib/api/errors.ts` when
+translating problem details.
+
 ## Values
 
 - ICU message format for plurals, selects and interpolation:

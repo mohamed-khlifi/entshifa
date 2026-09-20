@@ -14,7 +14,7 @@ export function Sidebar() {
 
   return (
     <aside
-      className="hidden w-56 shrink-0 border-e border-border bg-card md:block"
+      className="hidden w-56 shrink-0 border-e border-border bg-card shadow-sm md:block"
       {...testIdProps(testIds.layout.sidebar)}
     >
       <nav className="flex flex-col gap-1 p-4">

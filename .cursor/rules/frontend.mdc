@@ -144,6 +144,22 @@ Feature folder shape:
 - Compose classes with `cn()`. Do not build class strings by concatenation.
 - Print styles live in `styles/print.css`. Clinical screens must print sensibly.
 
+## Visual design
+
+- **Light mode by default.** The product ships in a bright, clinical light theme
+  (`forcedTheme="light"`). Dark mode is not a priority for phase 0; do not
+  design screens dark-first.
+- **Modern and professional.** Calm medical palette (teal / blue-gray), generous
+  whitespace, soft elevation (`tokens.css` shadows), rounded-lg/xl surfaces,
+  Inter typography. Avoid cluttered layouts, harsh contrast, or consumer-app
+  gimmicks.
+- **Clinical context.** Copy and empty states respect that users are clinicians
+  in busy practices; auth and shell should feel trustworthy and calm, not
+  playful.
+- **Consistency.** New screens reuse `Card`, layout shell, and tokens before
+  inventing one-off styling. Feature code does not override shadcn primitives
+  with bespoke colors.
+
 ## Test automation hooks (`data-testid`)
 
 E2E and component tests must not depend on locale, copy, or CSS class names.

@@ -43,10 +43,10 @@ export function LoginForm() {
     } catch (error) {
       if (error instanceof ApiError) {
         setApiError(
-          resolveErrorMessage(error, (code) =>
-            tErrors.has(code as Parameters<typeof tErrors.has>[0])
-              ? tErrors(code as Parameters<typeof tErrors>[0])
-              : code,
+          resolveErrorMessage(
+            error,
+            (key) => tErrors(key as Parameters<typeof tErrors>[0]),
+            (key) => tErrors.has(key as Parameters<typeof tErrors.has>[0]),
           ),
         );
         return;
@@ -56,7 +56,7 @@ export function LoginForm() {
   });
 
   return (
-    <form className="space-y-4" onSubmit={onSubmit} noValidate>
+    <form className="space-y-5" onSubmit={onSubmit} noValidate>
       <div className="space-y-2">
         <Label htmlFor="login-email">{t('login.email')}</Label>
         <Input
@@ -90,17 +90,17 @@ export function LoginForm() {
         ) : null}
       </div>
       {apiError ? (
-        <p
-          className="text-sm text-destructive"
+        <div
+          className="rounded-lg border border-destructive/25 bg-destructive/5 px-3 py-2 text-sm text-destructive"
           role="alert"
           {...testIdProps(testIds.auth.login.error)}
         >
           {apiError}
-        </p>
+        </div>
       ) : null}
       <Button
         type="submit"
-        className="w-full"
+        className="h-11 w-full shadow-sm"
         disabled={isSubmitting}
         {...testIdProps(testIds.auth.login.submit)}
       >

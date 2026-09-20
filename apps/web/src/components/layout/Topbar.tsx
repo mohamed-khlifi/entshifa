@@ -10,7 +10,7 @@ export function Topbar() {
 
   return (
     <header
-      className="flex h-14 items-center justify-between border-b border-border px-4"
+      className="flex h-14 items-center justify-between border-b border-border bg-card px-4 shadow-sm"
       {...testIdProps(testIds.layout.topbar)}
     >
       <span className="text-sm font-semibold">{t('app.name')}</span>

@@ -13,7 +13,10 @@ type AppShellProps = {
 
 export function AppShell({ children }: AppShellProps) {
   return (
-    <div className="flex min-h-screen flex-col" {...testIdProps(testIds.layout.shell)}>
+    <div
+      className="flex min-h-screen flex-col bg-muted/30"
+      {...testIdProps(testIds.layout.shell)}
+    >
       <Topbar />
       <div className="flex flex-1">
         <Sidebar />

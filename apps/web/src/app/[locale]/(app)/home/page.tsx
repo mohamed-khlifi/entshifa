@@ -9,7 +9,7 @@ export default async function HomePage() {
   return (
     <div className="space-y-6">
       <PageHeader title={t('nav.home')} />
-      <section className="rounded-lg border border-border bg-card p-6 text-card-foreground">
+      <section className="rounded-xl border border-border/80 bg-card p-6 text-card-foreground shadow-[var(--shadow-soft)]">
         <h2 className="text-lg font-medium" {...testIdProps(testIds.layout.homeTitle)}>
           {t('home.welcome')}
         </h2>

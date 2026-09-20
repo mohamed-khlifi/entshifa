@@ -1,22 +1,42 @@
 import { getTranslations } from 'next-intl/server';
 
+import { AuthBrandPanel } from '@/features/auth/components/AuthBrandPanel';
 import { LoginForm } from '@/features/auth/components/LoginForm';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { testIdProps, testIds } from '@/lib/test/test-id';
 
 export default async function LoginPage() {
   const t = await getTranslations('auth');
+  const tCommon = await getTranslations('common');
 
   return (
     <main
-      className="flex min-h-screen flex-col items-center justify-center px-4"
+      className="grid min-h-screen lg:grid-cols-2"
       {...testIdProps(testIds.auth.login.root)}
     >
-      <div className="w-full max-w-sm space-y-6">
-        <header className="space-y-1 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">{t('login.title')}</h1>
-        </header>
-        <LoginForm />
-      </div>
+      <AuthBrandPanel />
+      <section className="flex flex-col items-center justify-center px-6 py-12 sm:px-10">
+        <div className="mb-8 flex items-center gap-3 lg:hidden">
+          <span className="text-lg font-semibold tracking-tight text-foreground">
+            {tCommon('app.name')}
+          </span>
+        </div>
+        <Card className="w-full max-w-md border-border/80">
+          <CardHeader>
+            <CardTitle>{t('login.title')}</CardTitle>
+            <CardDescription>{t('login.subtitle')}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <LoginForm />
+          </CardContent>
+        </Card>
+      </section>
     </main>
   );
 }

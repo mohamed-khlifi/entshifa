@@ -1,7 +1,9 @@
 {
   "app": {
     "name": "EntShifa",
-    "tagline": "Clinical workspace for ENT practices"
+    "tagline": "Clinical workspace for ENT practices",
+    "clinicalNote": "Structured examinations, audiology, and reports in one secure environment built for busy clinics.",
+    "complianceHint": "Protected health information — sign in only on trusted devices."
   },
   "actions": {
     "logout": "Sign out",

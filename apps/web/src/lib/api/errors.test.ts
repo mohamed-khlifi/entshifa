@@ -9,8 +9,15 @@ describe('resolveErrorMessage', () => {
       status: 401,
       context: {},
     });
-    const message = resolveErrorMessage(error, (key) =>
-      key === 'auth.invalid_credentials' ? 'Invalid credentials' : key === 'generic' ? 'Something went wrong' : key,
+    const message = resolveErrorMessage(
+      error,
+      (key) =>
+        key === 'auth.invalid_credentials'
+          ? 'Invalid credentials'
+          : key === 'generic'
+            ? 'Something went wrong'
+            : key,
+      (key) => key === 'auth.invalid_credentials' || key === 'generic',
     );
     expect(message).toBe('Invalid credentials');
   });
@@ -21,8 +28,10 @@ describe('resolveErrorMessage', () => {
       status: 400,
       context: {},
     });
-    const message = resolveErrorMessage(error, (key) =>
-      key === 'generic' ? 'Something went wrong' : key,
+    const message = resolveErrorMessage(
+      error,
+      (key) => (key === 'generic' ? 'Something went wrong' : key),
+      (key) => key === 'generic',
     );
     expect(message).toBe('Something went wrong');
   });
