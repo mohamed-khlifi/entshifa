@@ -148,3 +148,61 @@ class UserSession(GlobalRecordMixin, Base):
     )
 
     user: Mapped[User] = relationship(back_populates="sessions")
+
+
+class UserInvitation(ClinicalRecordMixin, Base):
+    """Single-use staff invitation. Raw token is never stored."""
+
+    __tablename__ = "user_invitation"
+    __table_args__ = (
+        Index("ix_user_invitation__clinic_id__email", "clinic_id", "email"),
+    )
+
+    email: Mapped[str] = mapped_column(
+        String(190, collation="utf8mb4_0900_as_cs"),
+        nullable=False,
+    )
+    role_id: Mapped[int] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("role.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=False,
+    )
+    site_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("site.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=True,
+    )
+    token_hash: Mapped[str] = mapped_column(
+        String(64, collation="utf8mb4_0900_as_cs"),
+        nullable=False,
+        unique=True,
+    )
+    expires_at: Mapped[datetime] = mapped_column(datetime6(), nullable=False)
+    accepted_at: Mapped[datetime | None] = mapped_column(datetime6(), nullable=True)
+    invited_by_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("user.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=True,
+    )
+
+
+class PasswordResetToken(GlobalRecordMixin, Base):
+    """Single-use password reset. Raw token is never stored."""
+
+    __tablename__ = "password_reset_token"
+    __table_args__ = (
+        Index("ix_password_reset_token__user_id__expires_at", "user_id", "expires_at"),
+    )
+
+    user_id: Mapped[int] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("user.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=False,
+    )
+    token_hash: Mapped[str] = mapped_column(
+        String(64, collation="utf8mb4_0900_as_cs"),
+        nullable=False,
+        unique=True,
+    )
+    expires_at: Mapped[datetime] = mapped_column(datetime6(), nullable=False)
+    used_at: Mapped[datetime | None] = mapped_column(datetime6(), nullable=True)

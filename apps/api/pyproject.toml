@@ -28,6 +28,7 @@ dependencies = [
     # P0-04 security core.
     "argon2-cffi==23.1.0",
     "pyjwt==2.13.0",
+    "pyotp==2.9.0",
     # P0-13 media processing (EXIF strip + thumbnails).
     "Pillow==12.3.0",
 ]
@@ -102,12 +103,15 @@ source_modules = [
     "ent.features.auth.repository",
     "ent.features.attachments.repository",
     "ent.features.clinics.repository",
+    "ent.features.users.repository",
     "ent.features.terminology.repository",
 ]
 forbidden_modules = [
     "ent.features.auth.service",
     "ent.features.attachments.service",
     "ent.features.clinics.service",
+    "ent.features.users.service",
+    "ent.features.users.access",
     "ent.features.health.service",
     "ent.features.terminology.service",
 ]

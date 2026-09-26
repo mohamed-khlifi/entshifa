@@ -14,7 +14,13 @@ from ent.features.terminology.models import (
     ValueSet,
     ValueSetMember,
 )
-from ent.features.users.models import User, UserClinicRole, UserSession
+from ent.features.users.models import (
+    PasswordResetToken,
+    User,
+    UserClinicRole,
+    UserInvitation,
+    UserSession,
+)
 from ent.jobs.models import JobRun
 
 __all__ = [
@@ -29,12 +35,14 @@ __all__ = [
     "ConceptTranslation",
     "JobRun",
     "MediaVariant",
+    "PasswordResetToken",
     "Permission",
     "Role",
     "RolePermission",
     "Site",
     "User",
     "UserClinicRole",
+    "UserInvitation",
     "UserSession",
     "ValueSet",
     "ValueSetMember",

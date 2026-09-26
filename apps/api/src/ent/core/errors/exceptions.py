@@ -66,3 +66,8 @@ class AuthRateLimitedError(DomainError):
 class AuthSessionRevokedError(DomainError):
     code = ErrorCode.AUTH_SESSION_REVOKED
     http_status = 401
+
+
+class AuthMfaInvalidError(DomainError):
+    code = ErrorCode.AUTH_MFA_INVALID
+    http_status = 401

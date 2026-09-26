@@ -47,6 +47,34 @@ def create_access_token(
     )
 
 
+def create_mfa_challenge_token(*, settings: Settings, user_public_id: str) -> str:
+    now = datetime.now(UTC)
+    expires = now + timedelta(minutes=5)
+    payload: dict[str, Any] = {
+        "sub": user_public_id,
+        "purpose": "mfa",
+        "iss": settings.jwt_issuer,
+        "aud": settings.jwt_audience,
+        "iat": int(now.timestamp()),
+        "exp": int(expires.timestamp()),
+    }
+    return jwt.encode(payload, settings.access_token_secret, algorithm="HS256")
+
+
+def decode_mfa_challenge_token(settings: Settings, token: str) -> str:
+    payload: dict[str, Any] = jwt.decode(
+        token,
+        settings.access_token_secret,
+        algorithms=["HS256"],
+        issuer=settings.jwt_issuer,
+        audience=settings.jwt_audience,
+    )
+    if payload.get("purpose") != "mfa":
+        msg = "not an mfa challenge"
+        raise jwt.InvalidTokenError(msg)
+    return str(payload["sub"])
+
+
 def decode_access_token(settings: Settings, token: str) -> dict[str, Any]:
     payload: dict[str, Any] = jwt.decode(
         token,

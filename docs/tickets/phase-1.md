@@ -29,7 +29,7 @@ clinical requirements.
 
 ---
 
-## - [ ] P1-02 Users, roles and permissions (backend)
+## - [x] P1-02 Users, roles and permissions (backend)
 
 **Scope**
 - `features/users/`: `user`, `user_clinic_role`, invitation flow, password

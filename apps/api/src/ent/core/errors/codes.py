@@ -21,3 +21,4 @@ class ErrorCode(StrEnum):
     AUTH_INVALID_CREDENTIALS = "auth.invalid_credentials"
     AUTH_RATE_LIMITED = "auth.rate_limited"
     AUTH_SESSION_REVOKED = "auth.session_revoked"
+    AUTH_MFA_INVALID = "auth.mfa_invalid"

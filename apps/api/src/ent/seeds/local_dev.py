@@ -81,17 +81,33 @@ async def seed_local_dev(session: AsyncSession) -> LocalDevSeedReport:
         ("Thomas", "Petit"),
         ("Nadia", "Rousseau"),
     ]
+    other_doctor_role = await ensure_role(
+        session,
+        clinic=other,
+        code="doctor",
+        name_key="role.doctor",
+    )
     for index, (first, last) in enumerate(doctor_names, start=1):
+        email = f"doctor{index}@demo.entshifa.local"
         users.append(
             await ensure_user_with_role(
                 session,
                 clinic=demo,
                 role=roles["doctor"],
-                email=f"doctor{index}@demo.entshifa.local",
+                email=email,
                 first_name=first,
                 last_name=last,
             ),
         )
+        if index == 1:
+            await ensure_user_with_role(
+                session,
+                clinic=other,
+                role=other_doctor_role,
+                email=email,
+                first_name=first,
+                last_name=last,
+            )
 
     for index in range(1, 9):
         users.append(

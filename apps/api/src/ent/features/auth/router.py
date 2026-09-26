@@ -20,6 +20,22 @@ from ent.features.auth.dependencies import (
 from ent.features.auth.schemas.requests import LoginRequest
 from ent.features.auth.schemas.responses import LoginResponse, MeResponse
 from ent.features.auth.service import AuthService
+from ent.features.users.access import AccountAccessService
+from ent.features.users.dependencies import (
+    get_account_access_service,
+    get_user_admin_service,
+)
+from ent.features.users.schemas.requests import (
+    ActiveClinicRequest,
+    InvitationAccept,
+    MfaCode,
+    MfaDisable,
+    MfaLogin,
+    PasswordResetConfirm,
+    PasswordResetRequest,
+)
+from ent.features.users.schemas.responses import ClinicMembershipList, MfaEnrollResponse
+from ent.features.users.service import UserAdminService
 from ent.settings import Settings, get_settings
 
 router = APIRouter(prefix="/api/v1/auth", tags=["auth"])
@@ -40,7 +56,8 @@ async def login(
         ip_address=ip_address,
         user_agent=http_request.headers.get("user-agent"),
     )
-    set_refresh_cookie(response, settings=settings, raw_token=raw_refresh)
+    if raw_refresh:
+        set_refresh_cookie(response, settings=settings, raw_token=raw_refresh)
     return payload
 
 
@@ -100,4 +117,99 @@ async def assert_clinic_access(
 async def admin_check(
     _user: CurrentUser = Depends(require(Permission.ADMIN_USERS)),
 ) -> Response:
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.post("/mfa", response_model=LoginResponse)
+async def complete_mfa(
+    body: MfaLogin,
+    response: Response,
+    http_request: Request,
+    auth_service: AuthService = Depends(get_auth_service),
+    settings: Settings = Depends(get_settings),
+    ip_address: str | None = Depends(get_client_ip),
+) -> LoginResponse:
+    payload, raw_refresh = await auth_service.complete_mfa_login(
+        mfa_token=body.mfa_token,
+        code=body.code,
+        ip_address=ip_address,
+        user_agent=http_request.headers.get("user-agent"),
+    )
+    set_refresh_cookie(response, settings=settings, raw_token=raw_refresh)
+    return payload
+
+
+@router.post("/mfa/enroll", response_model=MfaEnrollResponse)
+async def enroll_mfa(
+    user: CurrentUser = Depends(get_current_user),
+    auth_service: AuthService = Depends(get_auth_service),
+) -> MfaEnrollResponse:
+    secret, uri = await auth_service.enroll_mfa(user=user)
+    return MfaEnrollResponse(secret=secret, provisioning_uri=uri)
+
+
+@router.post("/mfa/confirm", status_code=status.HTTP_204_NO_CONTENT)
+async def confirm_mfa(
+    body: MfaCode,
+    user: CurrentUser = Depends(get_current_user),
+    auth_service: AuthService = Depends(get_auth_service),
+) -> Response:
+    await auth_service.confirm_mfa(user=user, code=body.code)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.post("/mfa/disable", status_code=status.HTTP_204_NO_CONTENT)
+async def disable_mfa(
+    body: MfaDisable,
+    user: CurrentUser = Depends(get_current_user),
+    auth_service: AuthService = Depends(get_auth_service),
+) -> Response:
+    await auth_service.disable_mfa(user=user, password=body.password, code=body.code)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.get("/clinics", response_model=ClinicMembershipList)
+async def list_clinics(
+    user: CurrentUser = Depends(get_current_user),
+    users: UserAdminService = Depends(get_user_admin_service),
+) -> ClinicMembershipList:
+    return await users.list_clinics(user=user)
+
+
+@router.post("/active-clinic", response_model=LoginResponse)
+async def switch_clinic(
+    body: ActiveClinicRequest,
+    user: CurrentUser = Depends(get_current_user),
+    auth_service: AuthService = Depends(get_auth_service),
+) -> LoginResponse:
+    return await auth_service.switch_active_clinic(
+        user=user,
+        clinic_public_id=body.clinic_public_id,
+    )
+
+
+@router.post("/password-reset", status_code=status.HTTP_204_NO_CONTENT)
+async def request_password_reset(
+    body: PasswordResetRequest,
+    access: AccountAccessService = Depends(get_account_access_service),
+) -> Response:
+    await access.request_password_reset(body.email)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.post("/password-reset/confirm", status_code=status.HTTP_204_NO_CONTENT)
+async def confirm_password_reset(
+    body: PasswordResetConfirm,
+    access: AccountAccessService = Depends(get_account_access_service),
+) -> Response:
+    await access.confirm_password_reset(body)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.post("/invitations/accept", status_code=status.HTTP_204_NO_CONTENT)
+async def accept_invitation(
+    body: InvitationAccept,
+    access: AccountAccessService = Depends(get_account_access_service),
+) -> Response:
+    await access.accept_invitation(body)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

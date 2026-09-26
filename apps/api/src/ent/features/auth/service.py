@@ -10,10 +10,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from ent.core.errors.exceptions import (
     AuthenticationError,
     AuthInvalidCredentialsError,
+    AuthMfaInvalidError,
     AuthSessionRevokedError,
     NotFoundError,
+    ValidationError,
 )
 from ent.core.security.passwords import verify_password
+from ent.core.security.principal import CurrentUser
 from ent.core.security.throttle import (
     assert_login_allowed,
     clear_login_attempts,
@@ -21,8 +24,15 @@ from ent.core.security.throttle import (
 )
 from ent.core.security.tokens import (
     create_access_token,
+    create_mfa_challenge_token,
+    decode_mfa_challenge_token,
     hash_refresh_token,
     new_refresh_token,
+)
+from ent.core.security.totp import (
+    generate_totp_secret,
+    provisioning_uri,
+    verify_totp,
 )
 from ent.core.utils.ids import new_ulid
 from ent.features.auth.repository import AuthRepository
@@ -57,13 +67,96 @@ class AuthService:
             await record_failed_login(email=email, ip_address=ip_address)
             raise AuthInvalidCredentialsError()
 
+        await clear_login_attempts(email=email, ip_address=ip_address)
+        if user.mfa_enabled:
+            return (
+                LoginResponse(
+                    mfa_required=True,
+                    mfa_token=create_mfa_challenge_token(
+                        settings=self.settings,
+                        user_public_id=user.public_id,
+                    ),
+                ),
+                "",
+            )
+
+        return await self._open_session(
+            user=user,
+            ip_address=ip_address,
+            user_agent=user_agent,
+        )
+
+    async def complete_mfa_login(
+        self,
+        *,
+        mfa_token: str,
+        code: str,
+        ip_address: str | None,
+        user_agent: str | None,
+    ) -> tuple[LoginResponse, str]:
+        try:
+            user_public_id = decode_mfa_challenge_token(self.settings, mfa_token)
+        except Exception as exc:
+            raise AuthMfaInvalidError() from exc
+        user = await self._repo().get_user_by_public_id(user_public_id)
+        if user is None or not user.mfa_enabled or not user.mfa_secret:
+            raise AuthMfaInvalidError()
+        if not verify_totp(secret=user.mfa_secret, code=code):
+            raise AuthMfaInvalidError()
+        return await self._open_session(
+            user=user,
+            ip_address=ip_address,
+            user_agent=user_agent,
+        )
+
+    async def enroll_mfa(self, *, user: CurrentUser) -> tuple[str, str]:
+        row = await self._repo().get_user_by_id(user.user_id)
+        if row is None:
+            raise NotFoundError(resource="user", public_id=user.user_public_id)
+        if row.mfa_enabled:
+            raise ValidationError(reason="mfa_already_enabled")
+        secret = generate_totp_secret()
+        row.mfa_secret = secret
+        row.mfa_enabled = False
+        await self.session.flush()
+        return secret, provisioning_uri(secret=secret, account_name=row.email)
+
+    async def confirm_mfa(self, *, user: CurrentUser, code: str) -> None:
+        row = await self._repo().get_user_by_id(user.user_id)
+        if row is None or not row.mfa_secret:
+            raise ValidationError(reason="mfa_not_pending")
+        if not verify_totp(secret=row.mfa_secret, code=code):
+            raise AuthMfaInvalidError()
+        row.mfa_enabled = True
+        await self.session.flush()
+
+    async def disable_mfa(self, *, user: CurrentUser, password: str, code: str) -> None:
+        row = await self._repo().get_user_by_id(user.user_id)
+        if row is None or not row.mfa_enabled or not row.mfa_secret:
+            raise ValidationError(reason="mfa_not_enabled")
+        if not verify_password(password, row.password_hash):
+            raise AuthInvalidCredentialsError()
+        if not verify_totp(secret=row.mfa_secret, code=code):
+            raise AuthMfaInvalidError()
+        row.mfa_enabled = False
+        row.mfa_secret = None
+        await self.session.flush()
+
+    async def _open_session(
+        self,
+        *,
+        user: User,
+        ip_address: str | None,
+        user_agent: str | None,
+    ) -> tuple[LoginResponse, str]:
+        repo = self._repo()
         clinic = await repo.default_clinic_for_user(user.id)
         if clinic is None:
             raise AuthInvalidCredentialsError()
 
         now = datetime.now(UTC).replace(tzinfo=None)
         await repo.record_successful_login(user.id, at=now)
-        await clear_login_attempts(email=email, ip_address=ip_address)
+        await clear_login_attempts(email=user.email, ip_address=ip_address)
 
         raw_refresh = new_refresh_token()
         refresh_hash = hash_refresh_token(raw_refresh)
@@ -230,6 +323,35 @@ class AuthService:
         if not await self._repo().user_belongs_to_clinic(user_id, clinic.id):
             raise NotFoundError(resource="clinic")
         return clinic
+
+    async def switch_active_clinic(
+        self,
+        *,
+        user: CurrentUser,
+        clinic_public_id: str,
+    ) -> LoginResponse:
+        clinic = await self.assert_clinic_membership_or_not_found(
+            user_id=user.user_id,
+            clinic_public_id=clinic_public_id,
+        )
+        await self.update_session_active_clinic(user.session_id, clinic.id)
+        permissions = await self.load_permissions(user.user_id, clinic.id)
+        access_token = create_access_token(
+            settings=self.settings,
+            user_public_id=user.user_public_id,
+            session_public_id=user.session_public_id,
+            clinic_public_id=clinic.public_id,
+            permissions=permissions,
+        )
+        return LoginResponse(
+            access_token=access_token,
+            expires_in_minutes=self.settings.access_token_ttl_minutes,
+            session=SessionResponse(
+                user_public_id=user.user_public_id,
+                clinic_public_id=clinic.public_id,
+                session_public_id=user.session_public_id,
+            ),
+        )
 
 
 def _encode_ip(ip_address: str | None) -> bytes | None:

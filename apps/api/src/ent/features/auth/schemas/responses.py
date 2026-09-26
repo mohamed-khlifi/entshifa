@@ -12,10 +12,12 @@ class SessionResponse(CamelModel):
 
 
 class LoginResponse(CamelModel):
-    access_token: str
-    token_type: str
-    expires_in_minutes: int
-    session: SessionResponse
+    access_token: str | None = None
+    token_type: str = "bearer"
+    expires_in_minutes: int = 0
+    session: SessionResponse | None = None
+    mfa_required: bool = False
+    mfa_token: str | None = None
 
 
 class MeResponse(CamelModel):

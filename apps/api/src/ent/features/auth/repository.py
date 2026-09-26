@@ -191,6 +191,7 @@ class AuthRepository:
                 UserClinicRole.clinic_id == clinic_id,
                 UserClinicRole.deleted_at.is_(None),
                 Permission.deleted_at.is_(None),
+                RolePermission.deleted_at.is_(None),
                 Role.deleted_at.is_(None),
                 UserClinicRole.starts_on <= today,
                 or_(UserClinicRole.ends_on.is_(None), UserClinicRole.ends_on >= today),
