@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useRouter } from '@/i18n/navigation';
+import { useRouter } from '@/lib/i18n/navigation';
 import { ApiError, resolveErrorMessage } from '@/lib/api/errors';
 import { testIdProps, testIds } from '@/lib/test/test-id';
 import { useSession } from '@/providers/session-provider';

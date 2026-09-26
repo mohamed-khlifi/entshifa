@@ -116,10 +116,10 @@ export function formatPersonName(name: PersonName, locale?: string): string {
   const family = name.family?.trim() ?? '';
   const prefix = name.prefix?.trim() ?? '';
   const suffix = name.suffix?.trim() ?? '';
-  const catalogLocale = getLocaleDefinition(locale ?? DEFAULT_LOCALE).catalogLocale;
+  const localeCode = getLocaleDefinition(locale ?? DEFAULT_LOCALE).code;
 
   const core =
-    catalogLocale === 'ar'
+    localeCode === 'ar'
       ? [family, given].filter(Boolean).join(' ')
       : [given, family].filter(Boolean).join(' ');
 

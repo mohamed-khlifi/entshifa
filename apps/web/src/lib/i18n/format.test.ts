@@ -2,8 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
   DEFAULT_LOCALE,
-  PSEUDO_LOCALE,
-  PRODUCTION_LOCALES,
+  LOCALES,
   getLocaleDirection,
   isRtlLocale,
 } from './config';
@@ -15,12 +14,11 @@ import {
   formatPersonName,
   formatQuantity,
 } from './format';
-import { toPseudoLocaleMessages, toPseudoLocaleString } from './pseudo';
 import { directionalIconClass } from './directional-icon';
 
 describe('i18n config', () => {
-  it('registers production locales including Arabic', () => {
-    expect(PRODUCTION_LOCALES).toEqual(['en', 'fr', 'ar']);
+  it('registers en, fr, and ar', () => {
+    expect(LOCALES).toEqual(['en', 'fr', 'ar']);
     expect(DEFAULT_LOCALE).toBe('en');
   });
 
@@ -28,7 +26,6 @@ describe('i18n config', () => {
     expect(getLocaleDirection('ar')).toBe('rtl');
     expect(isRtlLocale('ar')).toBe(true);
     expect(isRtlLocale('en')).toBe(false);
-    expect(getLocaleDirection(PSEUDO_LOCALE)).toBe('ltr');
   });
 });
 
@@ -57,26 +54,12 @@ describe('format helpers', () => {
   });
 
   it('orders Arabic names family-given', () => {
-    expect(formatPersonName({ given: 'Sara', family: 'Hassan' }, 'ar')).toBe('Hassan Sara');
-    expect(formatPersonName({ given: 'Sara', family: 'Hassan' }, 'en')).toBe('Sara Hassan');
-  });
-});
-
-describe('pseudo locale', () => {
-  it('adds accents and length while preserving placeholders', () => {
-    const result = toPseudoLocaleString('Hello {name}');
-    expect(result).toContain('{name}');
-    expect(result.startsWith('Hélló')).toBe(true);
-    expect(result.length).toBeGreaterThan('Hello {name}'.length);
-  });
-
-  it('transforms nested message trees', () => {
-    const tree = toPseudoLocaleMessages({
-      greeting: 'Welcome',
-      nested: { label: 'Save' },
-    });
-    expect(tree.greeting).not.toBe('Welcome');
-    expect(tree.nested.label).not.toBe('Save');
+    expect(formatPersonName({ given: 'Sara', family: 'Hassan' }, 'ar')).toBe(
+      'Hassan Sara',
+    );
+    expect(formatPersonName({ given: 'Sara', family: 'Hassan' }, 'en')).toBe(
+      'Sara Hassan',
+    );
   });
 });
 

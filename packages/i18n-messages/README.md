@@ -13,8 +13,7 @@ ar/   Arabic (RTL; placeholder quality until clinical review)
 One JSON file per feature/namespace per locale (`common.json`, `auth.json`, …).
 Keys are nested and semantic; never put `.` inside a JSON object key.
 
-The development pseudo-locale `en-XA` is generated at runtime from English
-(accents + ~40% length) — it is not stored here.
+Consumed by `apps/web/src/lib/i18n/request.ts`.
 
 ## Checks
 

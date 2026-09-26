@@ -10,14 +10,14 @@ alwaysApply: false
 
 One file per feature per locale, so merge conflicts stay small:
 
-    messages/<locale>/common.json
-    messages/<locale>/errors.json
-    messages/<locale>/patients.json
-    messages/<locale>/audiology.json
+    packages/i18n-messages/<locale>/common.json
+    packages/i18n-messages/<locale>/errors.json
+    packages/i18n-messages/<locale>/patients.json
+    packages/i18n-messages/<locale>/audiology.json
     ...
 
-Locales at launch: `en`, `fr`. Then `ar` (RTL). The set is open; adding a
-language must never require a code change.
+Locales at launch: `en`, `fr`, `ar` (RTL). The set is open; adding a
+language must never require a code change beyond `lib/i18n/config.ts` and catalogs.
 
 ## Keys
 
@@ -62,8 +62,8 @@ translating problem details.
    A missing key fails the build.
 2. No orphan keys: a key absent from the source code fails the build.
 3. Placeholder sets must match across locales for the same key.
-4. The pseudo-locale (`en-XA`) renders strings with accents and 40% extra
-   length; run the UI in it to catch truncation and hardcoded strings.
+4. Catch truncation and hardcoded strings with real locales (`fr`, `ar`) and
+   layout review — do not ship an unreadable pseudo-locale in the product UI.
 
 ## When adding a key
 

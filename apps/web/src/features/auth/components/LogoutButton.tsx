@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui/button';
-import { useRouter } from '@/i18n/navigation';
+import { useRouter } from '@/lib/i18n/navigation';
 import { testIdProps, testIds } from '@/lib/test/test-id';
 import { useSession } from '@/providers/session-provider';
 

@@ -1392,8 +1392,8 @@ findings does not need 200 lookups.
      the catalogs).
   3. A "translation coverage" admin screen shows untranslated concepts per
      locale, sorted by usage frequency, so the clinic fixes what matters.
-  4. Pseudo-locale (`en-XA`) in dev: renders every string with accents and
-     40% extra length, exposing truncation and hardcoded strings immediately.
+  4. Catch truncation and hardcoded strings by reviewing real locales (`fr`,
+     `ar`) and layout; do not expose an unreadable pseudo-locale in the UI.
   5. Every new language is a data task plus a font, never a code task. If
      adding Spanish requires a developer, the design has failed.
 
@@ -2782,7 +2782,7 @@ for itself by the third feature.
             installed, AppShell, providers, API client, query keys, test-id
             factory (lib/test/test-id.ts), generated types, login flow with
             data-testid on shell and auth, DataTable, form field library.
-  Day 15    i18n end to end: catalogs for en and fr, pseudo-locale, RTL smoke
+  Day 15    i18n end to end: catalogs for en/fr/ar, format helpers, RTL smoke
             test with a placeholder ar catalog, format helpers.
   Day 16-17 Patients feature end to end as the reference implementation:
             model, repository, service, router, schemas, tests, frontend list,

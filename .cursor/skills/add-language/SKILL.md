@@ -54,8 +54,9 @@ translated. Verify the guard blocks incomplete ones.
 - date and number formatting follows the locale
 
 ### 8. Tests
-Run the Playwright suite in the new locale. Run the pseudo-locale pass to catch
-truncation. Print one document of each category and read it.
+Run the Playwright suite in the new locale. Review French and Arabic layouts
+for truncation; do not rely on an unreadable pseudo-locale in the product UI.
+Print one document of each category and read it.
 
 ## Checklist
 

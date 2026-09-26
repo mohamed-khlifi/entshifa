@@ -117,8 +117,7 @@ line by line.
 - The header card is a single component reused on every patient sub-page.
 - The `only_hearing_ear` alert is visually unmissable.
 - The form autosaves drafts and warns on navigation with unsaved changes.
-- Every string is a translation key; the screen is correct in fr and in the
-  pseudo-locale.
+- Every string is a translation key; the screen is correct in `en`, `fr`, and `ar`.
 
 ---
 

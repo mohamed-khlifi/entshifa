@@ -215,16 +215,16 @@ everything clinical, so do not shortcut it.
 ## - [x] P0-11 Internationalization end to end
 
 **Scope**
-- next-intl configured, catalogs for `en` and `fr`, a placeholder `ar` catalog.
+- next-intl configured under `apps/web/src/lib/i18n/` (architecture §11).
+- Catalogs in `packages/i18n-messages` for `en`, `fr`, and placeholder `ar`.
 - `lib/i18n/format.ts` for dates, numbers, units and names.
-- Pseudo-locale `en-XA` available in development.
 - CI check: every key present in every locale, no orphan keys, matching
-  placeholder sets.
+  placeholder sets (`make i18n-check`).
 
 **Acceptance**
 - Switching locale changes the whole UI with no page rebuild.
-- The pseudo-locale exposes any hardcoded string or truncated layout.
 - Setting `dir="rtl"` produces a correct layout with no mirrored stylesheet.
+- Locale switcher offers only real languages (`en`, `fr`, `ar`).
 
 **Reference:** architecture sections 18, 19 and 22.
 

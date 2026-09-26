@@ -2,14 +2,13 @@ import createMiddleware from 'next-intl/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
 
 import { SESSION_INDICATOR_COOKIE } from '@/lib/auth/session-token';
-import { getEnabledLocales } from '@/lib/i18n/config';
-
-import { routing } from './i18n/routing';
+import { LOCALES } from '@/lib/i18n/config';
+import { routing } from '@/lib/i18n/routing';
 
 const intlMiddleware = createMiddleware(routing);
 
 const localePathPattern = new RegExp(
-  `^\\/(${getEnabledLocales().map((locale) => locale.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})(?=\\/|$)`,
+  `^\\/(${LOCALES.join('|')})(?=\\/|$)`,
 );
 
 function pathWithoutLocale(pathname: string): string {
@@ -43,5 +42,5 @@ export default function middleware(request: NextRequest): NextResponse {
 }
 
 export const config = {
-  matcher: ['/', '/(en|fr|ar|en-XA)/:path*'],
+  matcher: ['/', '/(en|fr|ar)/:path*'],
 };

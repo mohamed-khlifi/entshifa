@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 
-import { Link, usePathname } from '@/i18n/navigation';
+import { Link, usePathname } from '@/lib/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
 import { testIdProps, testIds } from '@/lib/test/test-id';
 

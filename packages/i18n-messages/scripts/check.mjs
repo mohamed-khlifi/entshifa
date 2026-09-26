@@ -31,7 +31,6 @@ const ALLOWLISTED_KEYS = new Set([
   'common.locale.options.en',
   'common.locale.options.fr',
   'common.locale.options.ar',
-  'common.locale.options.enXA',
   'forms.laterality.left',
   'forms.laterality.right',
   'forms.laterality.bilateral',

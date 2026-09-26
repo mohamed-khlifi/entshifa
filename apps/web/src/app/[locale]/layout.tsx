@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { hasLocale } from 'next-intl';
 import type { ReactNode } from 'react';
 
-import { routing } from '@/i18n/routing';
+import { routing } from '@/lib/i18n/routing';
 import {
   getLocaleDirection,
   usesArabicFont,
