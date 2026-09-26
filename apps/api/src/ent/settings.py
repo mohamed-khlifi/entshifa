@@ -61,6 +61,27 @@ class Settings(BaseSettings):
     minio_root_password: str = Field(validation_alias="MINIO_ROOT_PASSWORD")
     minio_api_port: int = Field(validation_alias="MINIO_API_PORT")
     minio_console_port: int = Field(validation_alias="MINIO_CONSOLE_PORT")
+    # s3 (default, MinIO/S3) or local (filesystem adapter for unit tests).
+    storage_backend: Literal["s3", "local"] = Field(
+        default="s3",
+        validation_alias="STORAGE_BACKEND",
+    )
+    local_storage_root: str = Field(
+        default="/tmp/entshifa-storage",
+        validation_alias="LOCAL_STORAGE_ROOT",
+    )
+    attachment_upload_url_ttl_seconds: int = Field(
+        default=900,
+        ge=60,
+        le=3600,
+        validation_alias="ATTACHMENT_UPLOAD_URL_TTL_SECONDS",
+    )
+    attachment_download_url_ttl_seconds: int = Field(
+        default=300,
+        ge=30,
+        le=900,
+        validation_alias="ATTACHMENT_DOWNLOAD_URL_TTL_SECONDS",
+    )
 
     jwt_issuer: str = Field(validation_alias="JWT_ISSUER")
     jwt_audience: str = Field(validation_alias="JWT_AUDIENCE")

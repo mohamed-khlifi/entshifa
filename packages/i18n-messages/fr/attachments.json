@@ -1,0 +1,21 @@
+{
+  "viewer": {
+    "title": "Visionneuse de pièces jointes",
+    "description": "Charge une URL de téléchargement courte durée, contrôlée par les permissions.",
+    "load": "Charger la pièce jointe",
+    "loading": "Chargement…",
+    "filename": "Nom de fichier",
+    "status": "Traitement",
+    "imageAlt": "Aperçu de pièce jointe clinique",
+    "statusValues": {
+      "pending": "En attente",
+      "processing": "En cours",
+      "ready": "Prêt",
+      "failed": "Échec"
+    },
+    "errors": {
+      "unauthenticated": "Connectez-vous pour voir les pièces jointes.",
+      "load_failed": "Impossible de charger cette pièce jointe."
+    }
+  }
+}

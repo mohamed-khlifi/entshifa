@@ -28,6 +28,8 @@ dependencies = [
     # P0-04 security core.
     "argon2-cffi==23.1.0",
     "pyjwt==2.10.1",
+    # P0-13 media processing (EXIF strip + thumbnails).
+    "Pillow==11.1.0",
 ]
 
 [project.optional-dependencies]
@@ -75,5 +77,7 @@ module = [
     "botocore.*",
     "jwt",
     "jwt.*",
+    "PIL",
+    "PIL.*",
 ]
 ignore_missing_imports = true

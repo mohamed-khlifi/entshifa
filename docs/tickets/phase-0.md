@@ -243,7 +243,7 @@ everything clinical, so do not shortcut it.
 
 ---
 
-## - [ ] P0-13 Storage and attachments core
+## - [x] P0-13 Storage and attachments core
 
 **Scope**
 - `integrations/storage/`: the port plus S3/MinIO and local adapters.

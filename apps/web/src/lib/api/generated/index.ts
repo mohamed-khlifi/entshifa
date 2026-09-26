@@ -23,3 +23,11 @@ export type ConceptSearchResponse = Schemas['ConceptSearchResponse'];
 export type ConceptDictionaryResponse = Schemas['ConceptDictionaryResponse'];
 export type ValueSetRead = Schemas['ValueSetRead'];
 export type ResolvedConcept = Schemas['ResolvedConcept'];
+
+export type AttachmentUploadUrlRequest = Schemas['AttachmentUploadUrlRequest'];
+export type AttachmentUploadUrlResponse = Schemas['AttachmentUploadUrlResponse'];
+export type AttachmentConfirmRequest = Schemas['AttachmentConfirmRequest'];
+export type AttachmentRead = Schemas['AttachmentRead'];
+export type AttachmentDownloadUrlResponse = Schemas['AttachmentDownloadUrlResponse'];
+export type MediaVariantRead = Schemas['MediaVariantRead'];
+export type PresignedUrlResponse = Schemas['PresignedUrlResponse'];

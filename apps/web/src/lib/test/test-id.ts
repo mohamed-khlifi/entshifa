@@ -63,6 +63,13 @@ export const testIds = {
     formSubmit: testId('ui-kit', 'form-submit'),
     table: testId('ui-kit', 'table'),
   },
+  attachments: {
+    viewer: testId('attachments', 'viewer'),
+    viewerLoad: testId('attachments', 'viewer', 'load'),
+    viewerError: testId('attachments', 'viewer', 'error'),
+    viewerMeta: testId('attachments', 'viewer', 'meta'),
+    viewerImage: testId('attachments', 'viewer', 'image'),
+  },
 } as const;
 
 export function publicIdTestId(scope: string, publicId: string): string {

@@ -1,0 +1,21 @@
+{
+  "viewer": {
+    "title": "Attachment viewer",
+    "description": "Loads a short-lived, permission-checked download URL for clinical media.",
+    "load": "Load attachment",
+    "loading": "Loading…",
+    "filename": "Filename",
+    "status": "Processing",
+    "imageAlt": "Clinical attachment preview",
+    "statusValues": {
+      "pending": "Pending",
+      "processing": "Processing",
+      "ready": "Ready",
+      "failed": "Failed"
+    },
+    "errors": {
+      "unauthenticated": "Sign in to view attachments.",
+      "load_failed": "Could not load this attachment."
+    }
+  }
+}

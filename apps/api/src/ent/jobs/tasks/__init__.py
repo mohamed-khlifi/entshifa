@@ -1,4 +1,4 @@
-"""Concrete background jobs (one real end-to-end job for P0-07)."""
+"""Concrete background jobs."""
 
 from __future__ import annotations
 
@@ -7,10 +7,23 @@ from typing import Any
 from ent.integrations.redis import ping_redis
 from ent.jobs.base import register_job
 from ent.jobs.queue import record_side_effect
+from ent.jobs.tasks.process_attachment import (  # noqa: F401 — register job
+    JOB_PROCESS_ATTACHMENT,
+    process_attachment,
+)
 from ent.settings import get_settings
 
 JOB_HANDLE_DOMAIN_EVENT = "jobs.handle_domain_event"
 JOB_PING_DEPENDENCIES = "jobs.ping_dependencies"
+
+__all__ = [
+    "JOB_HANDLE_DOMAIN_EVENT",
+    "JOB_PING_DEPENDENCIES",
+    "JOB_PROCESS_ATTACHMENT",
+    "handle_domain_event",
+    "ping_dependencies",
+    "process_attachment",
+]
 
 
 @register_job(JOB_HANDLE_DOMAIN_EVENT, max_attempts=5)

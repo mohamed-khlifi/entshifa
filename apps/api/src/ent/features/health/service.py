@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
 
 from ent.features.health.schemas.responses import (
@@ -9,7 +10,7 @@ from ent.features.health.schemas.responses import (
 )
 from ent.integrations.mysql import ping_mysql
 from ent.integrations.redis import ping_redis
-from ent.integrations.storage.s3 import ping_storage
+from ent.integrations.storage import get_object_storage
 from ent.settings import Settings
 
 
@@ -23,14 +24,22 @@ class HealthService:
     async def ready(self) -> tuple[ReadyHealthResponse, bool]:
         checks: list[ReadinessCheck] = []
         all_ok = True
+        storage = get_object_storage(self.settings)
 
-        for name, checker in (
-            ("mysql", ping_mysql),
-            ("redis", ping_redis),
-            ("storage", ping_storage),
-        ):
+        async def check_mysql() -> None:
+            await ping_mysql(self.settings)
+
+        async def check_redis() -> None:
+            await ping_redis(self.settings)
+
+        probes: list[tuple[str, Callable[[], Awaitable[None]]]] = [
+            ("mysql", check_mysql),
+            ("redis", check_redis),
+            ("storage", storage.ping),
+        ]
+        for name, checker in probes:
             try:
-                await checker(self.settings)
+                await checker()
                 checks.append(ReadinessCheck(name=name, status="ok"))
             except Exception:
                 all_ok = False

@@ -41,6 +41,7 @@ export const MESSAGE_NAMESPACES = [
   'forms',
   'data',
   'uiKit',
+  'attachments',
 ] as const;
 
 export type MessageNamespace = (typeof MESSAGE_NAMESPACES)[number];

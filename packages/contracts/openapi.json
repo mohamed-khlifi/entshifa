@@ -1,6 +1,279 @@
 {
   "components": {
     "schemas": {
+      "AttachmentConfirmRequest": {
+        "description": "Confirm that the client finished uploading to object storage.",
+        "properties": {
+          "uploadToken": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Uploadtoken",
+            "type": "string"
+          }
+        },
+        "required": [
+          "uploadToken"
+        ],
+        "title": "AttachmentConfirmRequest",
+        "type": "object"
+      },
+      "AttachmentDownloadUrlResponse": {
+        "properties": {
+          "attachmentPublicId": {
+            "title": "Attachmentpublicid",
+            "type": "string"
+          },
+          "download": {
+            "$ref": "#/components/schemas/PresignedUrlResponse"
+          },
+          "variant": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Variant"
+          }
+        },
+        "required": [
+          "attachmentPublicId",
+          "variant",
+          "download"
+        ],
+        "title": "AttachmentDownloadUrlResponse",
+        "type": "object"
+      },
+      "AttachmentRead": {
+        "properties": {
+          "caption": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Caption"
+          },
+          "capturedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Capturedat"
+          },
+          "category": {
+            "title": "Category",
+            "type": "string"
+          },
+          "checksumSha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Checksumsha256"
+          },
+          "contentType": {
+            "title": "Contenttype",
+            "type": "string"
+          },
+          "durationMs": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Durationms"
+          },
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Height"
+          },
+          "patientPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Patientpublicid"
+          },
+          "processingStatus": {
+            "title": "Processingstatus",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "sizeBytes": {
+            "title": "Sizebytes",
+            "type": "integer"
+          },
+          "variants": {
+            "items": {
+              "$ref": "#/components/schemas/MediaVariantRead"
+            },
+            "title": "Variants",
+            "type": "array"
+          },
+          "virusScannedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Virusscannedat"
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Width"
+          }
+        },
+        "required": [
+          "publicId",
+          "category",
+          "filename",
+          "contentType",
+          "sizeBytes",
+          "checksumSha256",
+          "width",
+          "height",
+          "durationMs",
+          "caption",
+          "processingStatus",
+          "patientPublicId",
+          "virusScannedAt",
+          "capturedAt",
+          "variants"
+        ],
+        "title": "AttachmentRead",
+        "type": "object"
+      },
+      "AttachmentUploadUrlRequest": {
+        "description": "Client asks for a pre-signed PUT URL; file bytes never hit the API.",
+        "properties": {
+          "caption": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Caption"
+          },
+          "category": {
+            "maxLength": 40,
+            "minLength": 3,
+            "title": "Category",
+            "type": "string"
+          },
+          "contentType": {
+            "maxLength": 100,
+            "minLength": 3,
+            "title": "Contenttype",
+            "type": "string"
+          },
+          "filename": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Filename",
+            "type": "string"
+          },
+          "patientPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Patientpublicid"
+          },
+          "sizeBytes": {
+            "maximum": 2147483648.0,
+            "minimum": 1.0,
+            "title": "Sizebytes",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "category",
+          "filename",
+          "contentType",
+          "sizeBytes"
+        ],
+        "title": "AttachmentUploadUrlRequest",
+        "type": "object"
+      },
+      "AttachmentUploadUrlResponse": {
+        "properties": {
+          "storageKey": {
+            "title": "Storagekey",
+            "type": "string"
+          },
+          "upload": {
+            "$ref": "#/components/schemas/PresignedUrlResponse"
+          },
+          "uploadToken": {
+            "title": "Uploadtoken",
+            "type": "string"
+          }
+        },
+        "required": [
+          "uploadToken",
+          "storageKey",
+          "upload"
+        ],
+        "title": "AttachmentUploadUrlResponse",
+        "type": "object"
+      },
       "ConceptDictionaryResponse": {
         "description": "Bulk concept map for frontend caching (keyed by publicId).",
         "properties": {
@@ -145,6 +418,58 @@
         "title": "MeResponse",
         "type": "object"
       },
+      "MediaVariantRead": {
+        "properties": {
+          "contentType": {
+            "title": "Contenttype",
+            "type": "string"
+          },
+          "height": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Height"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "sizeBytes": {
+            "title": "Sizebytes",
+            "type": "integer"
+          },
+          "variant": {
+            "title": "Variant",
+            "type": "string"
+          },
+          "width": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Width"
+          }
+        },
+        "required": [
+          "publicId",
+          "variant",
+          "width",
+          "height",
+          "sizeBytes",
+          "contentType"
+        ],
+        "title": "MediaVariantRead",
+        "type": "object"
+      },
       "PageMeta": {
         "description": "Pagination envelope metadata.",
         "properties": {
@@ -190,6 +515,37 @@
           "limit"
         ],
         "title": "PageMeta",
+        "type": "object"
+      },
+      "PresignedUrlResponse": {
+        "properties": {
+          "expiresInSeconds": {
+            "title": "Expiresinseconds",
+            "type": "integer"
+          },
+          "headers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Headers",
+            "type": "object"
+          },
+          "method": {
+            "title": "Method",
+            "type": "string"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "method",
+          "expiresInSeconds",
+          "headers"
+        ],
+        "title": "PresignedUrlResponse",
         "type": "object"
       },
       "ReadinessCheck": {
@@ -437,6 +793,277 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/v1/attachments/confirm": {
+      "post": {
+        "operationId": "confirm_upload_api_v1_attachments_confirm_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttachmentConfirmRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttachmentRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Confirm Upload",
+        "tags": [
+          "attachments"
+        ]
+      }
+    },
+    "/api/v1/attachments/upload-url": {
+      "post": {
+        "operationId": "create_upload_url_api_v1_attachments_upload_url_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttachmentUploadUrlRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttachmentUploadUrlResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Upload Url",
+        "tags": [
+          "attachments"
+        ]
+      }
+    },
+    "/api/v1/attachments/{public_id}": {
+      "get": {
+        "operationId": "get_attachment_api_v1_attachments__public_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "public_id",
+            "required": true,
+            "schema": {
+              "title": "Public Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttachmentRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Attachment",
+        "tags": [
+          "attachments"
+        ]
+      }
+    },
+    "/api/v1/attachments/{public_id}/download-url": {
+      "get": {
+        "operationId": "create_download_url_api_v1_attachments__public_id__download_url_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "public_id",
+            "required": true,
+            "schema": {
+              "title": "Public Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "variant",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 20,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Variant"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AttachmentDownloadUrlResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Download Url",
+        "tags": [
+          "attachments"
+        ]
+      }
+    },
     "/api/v1/auth/admin-check": {
       "get": {
         "operationId": "admin_check_api_v1_auth_admin_check_get",

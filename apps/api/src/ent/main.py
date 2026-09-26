@@ -12,6 +12,7 @@ from ent.core.audit.hooks import install_audit_listeners
 from ent.core.audit.middleware import RequestContextMiddleware
 from ent.core.db.session import dispose_engine
 from ent.core.errors.handlers import register_exception_handlers
+from ent.features.attachments.router import router as attachments_router
 from ent.features.auth.router import router as auth_router
 from ent.features.health.router import router as health_router
 from ent.features.terminology.router import router as terminology_router
@@ -55,4 +56,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(health_router)
     app.include_router(auth_router)
     app.include_router(terminology_router)
+    app.include_router(attachments_router)
     return app

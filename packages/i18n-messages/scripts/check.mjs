@@ -21,7 +21,7 @@ const REPO_ROOT = path.resolve(PACKAGE_ROOT, '../..');
 const WEB_SRC = path.join(REPO_ROOT, 'apps/web/src');
 const DEFAULT_LOCALE = 'en';
 const LOCALES = ['en', 'fr', 'ar'];
-const NAMESPACES = ['common', 'auth', 'errors', 'forms', 'data', 'uiKit'];
+const NAMESPACES = ['common', 'auth', 'errors', 'forms', 'data', 'uiKit', 'attachments'];
 
 /**
  * Keys resolved only through typed maps or API error codes (never a literal
@@ -35,6 +35,12 @@ const ALLOWLISTED_KEYS = new Set([
   'forms.laterality.right',
   'forms.laterality.bilateral',
   'forms.laterality.unspecified',
+  'attachments.viewer.statusValues.pending',
+  'attachments.viewer.statusValues.processing',
+  'attachments.viewer.statusValues.ready',
+  'attachments.viewer.statusValues.failed',
+  'attachments.viewer.errors.unauthenticated',
+  'attachments.viewer.errors.load_failed',
 ]);
 
 /** Entire namespace looked up from API `code` via apiErrorCodeToMessageKey. */

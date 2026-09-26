@@ -9,6 +9,74 @@
  */
 
 export interface paths {
+    "/api/v1/attachments/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm Upload */
+        post: operations["confirm_upload_api_v1_attachments_confirm_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/attachments/upload-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Upload Url */
+        post: operations["create_upload_url_api_v1_attachments_upload_url_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/attachments/{public_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Attachment */
+        get: operations["get_attachment_api_v1_attachments__public_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/attachments/{public_id}/download-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Create Download Url */
+        get: operations["create_download_url_api_v1_attachments__public_id__download_url_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/admin-check": {
         parameters: {
             query?: never;
@@ -201,6 +269,81 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         /**
+         * AttachmentConfirmRequest
+         * @description Confirm that the client finished uploading to object storage.
+         */
+        AttachmentConfirmRequest: {
+            /** Uploadtoken */
+            uploadToken: string;
+        };
+        /** AttachmentDownloadUrlResponse */
+        AttachmentDownloadUrlResponse: {
+            /** Attachmentpublicid */
+            attachmentPublicId: string;
+            download: components["schemas"]["PresignedUrlResponse"];
+            /** Variant */
+            variant: string | null;
+        };
+        /** AttachmentRead */
+        AttachmentRead: {
+            /** Caption */
+            caption: string | null;
+            /** Capturedat */
+            capturedAt: string | null;
+            /** Category */
+            category: string;
+            /** Checksumsha256 */
+            checksumSha256: string | null;
+            /** Contenttype */
+            contentType: string;
+            /** Durationms */
+            durationMs: number | null;
+            /** Filename */
+            filename: string;
+            /** Height */
+            height: number | null;
+            /** Patientpublicid */
+            patientPublicId: string | null;
+            /** Processingstatus */
+            processingStatus: string;
+            /** Publicid */
+            publicId: string;
+            /** Sizebytes */
+            sizeBytes: number;
+            /** Variants */
+            variants: components["schemas"]["MediaVariantRead"][];
+            /** Virusscannedat */
+            virusScannedAt: string | null;
+            /** Width */
+            width: number | null;
+        };
+        /**
+         * AttachmentUploadUrlRequest
+         * @description Client asks for a pre-signed PUT URL; file bytes never hit the API.
+         */
+        AttachmentUploadUrlRequest: {
+            /** Caption */
+            caption?: string | null;
+            /** Category */
+            category: string;
+            /** Contenttype */
+            contentType: string;
+            /** Filename */
+            filename: string;
+            /** Patientpublicid */
+            patientPublicId?: string | null;
+            /** Sizebytes */
+            sizeBytes: number;
+        };
+        /** AttachmentUploadUrlResponse */
+        AttachmentUploadUrlResponse: {
+            /** Storagekey */
+            storageKey: string;
+            upload: components["schemas"]["PresignedUrlResponse"];
+            /** Uploadtoken */
+            uploadToken: string;
+        };
+        /**
          * ConceptDictionaryResponse
          * @description Bulk concept map for frontend caching (keyed by publicId).
          */
@@ -257,6 +400,21 @@ export interface components {
             /** Userpublicid */
             userPublicId: string;
         };
+        /** MediaVariantRead */
+        MediaVariantRead: {
+            /** Contenttype */
+            contentType: string;
+            /** Height */
+            height: number | null;
+            /** Publicid */
+            publicId: string;
+            /** Sizebytes */
+            sizeBytes: number;
+            /** Variant */
+            variant: string;
+            /** Width */
+            width: number | null;
+        };
         /**
          * PageMeta
          * @description Pagination envelope metadata.
@@ -270,6 +428,19 @@ export interface components {
             offset?: number | null;
             /** Total */
             total?: number | null;
+        };
+        /** PresignedUrlResponse */
+        PresignedUrlResponse: {
+            /** Expiresinseconds */
+            expiresInSeconds: number;
+            /** Headers */
+            headers: {
+                [key: string]: string;
+            };
+            /** Method */
+            method: string;
+            /** Url */
+            url: string;
         };
         /** ReadinessCheck */
         ReadinessCheck: {
@@ -356,6 +527,144 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    confirm_upload_api_v1_attachments_confirm_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AttachmentConfirmRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AttachmentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_upload_url_api_v1_attachments_upload_url_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AttachmentUploadUrlRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AttachmentUploadUrlResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_attachment_api_v1_attachments__public_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                public_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AttachmentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_download_url_api_v1_attachments__public_id__download_url_get: {
+        parameters: {
+            query?: {
+                variant?: string | null;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                public_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AttachmentDownloadUrlResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     admin_check_api_v1_auth_admin_check_get: {
         parameters: {
             query?: never;

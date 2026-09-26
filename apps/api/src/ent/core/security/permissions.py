@@ -22,6 +22,8 @@ class Permission(StrEnum):
     SURGERY_NOTE_WRITE = "surgery.note.write"
     DOCUMENT_FINALIZE = "document.finalize"
     DOCUMENT_SEND = "document.send"
+    ATTACHMENT_READ = "attachment.read"
+    ATTACHMENT_WRITE = "attachment.write"
     ADMIN_USERS = "admin.users"
     ADMIN_TEMPLATES = "admin.templates"
     ADMIN_TERMINOLOGY = "admin.terminology"
@@ -47,6 +49,8 @@ SYSTEM_ROLE_MATRIX: dict[str, frozenset[Permission]] = {
             Permission.SURGERY_NOTE_WRITE,
             Permission.DOCUMENT_FINALIZE,
             Permission.DOCUMENT_SEND,
+            Permission.ATTACHMENT_READ,
+            Permission.ATTACHMENT_WRITE,
             Permission.AUTH_SESSION_READ,
         }
     ),
@@ -57,6 +61,8 @@ SYSTEM_ROLE_MATRIX: dict[str, frozenset[Permission]] = {
             Permission.ENCOUNTER_CREATE,
             Permission.ENCOUNTER_WRITE,
             Permission.AUDIOLOGY_ENTER,
+            Permission.ATTACHMENT_READ,
+            Permission.ATTACHMENT_WRITE,
             Permission.AUTH_SESSION_READ,
         }
     ),
@@ -64,12 +70,15 @@ SYSTEM_ROLE_MATRIX: dict[str, frozenset[Permission]] = {
         {
             Permission.PATIENT_READ_CLINIC,
             Permission.AUDIOLOGY_ENTER,
+            Permission.ATTACHMENT_READ,
+            Permission.ATTACHMENT_WRITE,
             Permission.AUTH_SESSION_READ,
         }
     ),
     "read_only": frozenset(
         {
             Permission.PATIENT_READ_CLINIC,
+            Permission.ATTACHMENT_READ,
             Permission.AUTH_SESSION_READ,
         }
     ),
