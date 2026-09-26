@@ -107,12 +107,6 @@ export const testIds = {
     pageNext: testId("data", "page-next"),
     columnVisibility: testId("data", "column-visibility"),
   },
-  uiKit: {
-    root: testId("ui-kit", "root"),
-    form: testId("ui-kit", "form"),
-    formSubmit: testId("ui-kit", "form-submit"),
-    table: testId("ui-kit", "table"),
-  },
   attachments: {
     viewer: testId("attachments", "viewer"),
     viewerLoad: testId("attachments", "viewer", "load"),

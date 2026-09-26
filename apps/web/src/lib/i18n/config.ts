@@ -40,7 +40,6 @@ export const MESSAGE_NAMESPACES = [
   "errors",
   "forms",
   "data",
-  "uiKit",
   "attachments",
   "clinics",
   "users",

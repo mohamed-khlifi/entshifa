@@ -25,7 +25,6 @@ export function Sidebar() {
   const canAdminTerminology = usePermission(Permission.ADMIN_TERMINOLOGY);
 
   const homeActive = pathname === "/home" || pathname.startsWith("/home/");
-  const uiKitActive = pathname === "/ui-kit" || pathname.startsWith("/ui-kit/");
   const clinicActive =
     pathname.startsWith("/admin/clinic") || pathname === "/admin/clinic";
   const usersActive = pathname.startsWith("/admin/users");
@@ -40,9 +39,6 @@ export function Sidebar() {
       <nav className="flex flex-col gap-1 p-4">
         <Link href="/home" className={navClass(homeActive)}>
           {t("nav.home")}
-        </Link>
-        <Link href="/ui-kit" className={navClass(uiKitActive)}>
-          {t("nav.uiKit")}
         </Link>
         <Link href="/settings/security" className={navClass(securityActive)}>
           {t("nav.security")}

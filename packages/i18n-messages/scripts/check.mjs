@@ -21,7 +21,7 @@ const REPO_ROOT = path.resolve(PACKAGE_ROOT, '../..');
 const WEB_SRC = path.join(REPO_ROOT, 'apps/web/src');
 const DEFAULT_LOCALE = 'en';
 const LOCALES = ['en', 'fr', 'ar'];
-const NAMESPACES = ['common', 'auth', 'errors', 'forms', 'data', 'uiKit', 'attachments'];
+const NAMESPACES = ['common', 'auth', 'errors', 'forms', 'data', 'attachments'];
 
 /**
  * Keys resolved only through typed maps or API error codes (never a literal
