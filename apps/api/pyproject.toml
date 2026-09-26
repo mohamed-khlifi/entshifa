@@ -103,6 +103,7 @@ source_modules = [
     "ent.features.auth.repository",
     "ent.features.attachments.repository",
     "ent.features.clinics.repository",
+    "ent.features.patients.repository",
     "ent.features.users.repository",
     "ent.features.terminology.repository",
 ]
@@ -110,6 +111,7 @@ forbidden_modules = [
     "ent.features.auth.service",
     "ent.features.attachments.service",
     "ent.features.clinics.service",
+    "ent.features.patients.service",
     "ent.features.users.service",
     "ent.features.users.access",
     "ent.features.health.service",

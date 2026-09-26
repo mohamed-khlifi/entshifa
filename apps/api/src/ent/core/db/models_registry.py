@@ -6,6 +6,17 @@ from ent.core.audit.models import AccessLog, AuditLog
 from ent.features.attachments.models import Attachment, MediaVariant
 from ent.features.auth.models import Permission, Role, RolePermission
 from ent.features.clinics.models import Clinic, Setting, Site
+from ent.features.patients.models import (
+    Patient,
+    PatientAllergy,
+    PatientFlag,
+    PatientHistory,
+    PatientIdentifier,
+    PatientMedication,
+    PatientMergeLog,
+    PatientProblem,
+    PatientRequestIdempotency,
+)
 from ent.features.terminology.models import (
     CodeSystem,
     Concept,
@@ -36,6 +47,15 @@ __all__ = [
     "JobRun",
     "MediaVariant",
     "PasswordResetToken",
+    "Patient",
+    "PatientAllergy",
+    "PatientFlag",
+    "PatientHistory",
+    "PatientIdentifier",
+    "PatientMedication",
+    "PatientMergeLog",
+    "PatientProblem",
+    "PatientRequestIdempotency",
     "Permission",
     "Role",
     "RolePermission",

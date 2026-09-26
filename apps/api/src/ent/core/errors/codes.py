@@ -22,3 +22,9 @@ class ErrorCode(StrEnum):
     AUTH_RATE_LIMITED = "auth.rate_limited"
     AUTH_SESSION_REVOKED = "auth.session_revoked"
     AUTH_MFA_INVALID = "auth.mfa_invalid"
+
+    PATIENT_POSSIBLE_DUPLICATE = "patient.possible_duplicate"
+    PATIENT_MRN_CONFLICT = "patient.mrn_conflict"
+    PATIENT_VERSION_CONFLICT = "patient.version_conflict"
+    PATIENT_IDEMPOTENCY_MISMATCH = "patient.idempotency_mismatch"
+    PATIENT_MERGE_INVALID = "patient.merge_invalid"

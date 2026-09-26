@@ -78,8 +78,11 @@ class Attachment(ClinicalRecordMixin, Base):
         ),
     )
 
-    # patient_id is nullable until the patients feature lands; FK deferred.
-    patient_id: Mapped[int | None] = mapped_column(unsigned_bigint(), nullable=True)
+    patient_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("patient.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=True,
+    )
     encounter_id: Mapped[int | None] = mapped_column(unsigned_bigint(), nullable=True)
     procedure_record_id: Mapped[int | None] = mapped_column(
         unsigned_bigint(), nullable=True

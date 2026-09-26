@@ -20,6 +20,14 @@ class AttachmentRepository(BaseRepository[Attachment]):
         result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
 
+    async def list_for_patient(
+        self, patient_id: int, *, limit: int = 500
+    ) -> list[Attachment]:
+        result = await self.session.scalars(
+            self._base_query().where(Attachment.patient_id == patient_id).limit(limit),
+        )
+        return list(result.all())
+
     async def get_by_storage_key(self, storage_key: str) -> Attachment | None:
         result = await self.session.execute(
             self._base_query().where(Attachment.storage_key == storage_key),

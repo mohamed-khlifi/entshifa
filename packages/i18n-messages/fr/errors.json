@@ -9,6 +9,13 @@
   "generic": "Une erreur est survenue. Réessayez.",
   "internal_error": "Une erreur est survenue. Réessayez.",
   "not_found": "La ressource demandée est introuvable.",
+  "patient": {
+    "idempotency_mismatch": "Cette clé d'idempotence a déjà servi pour une autre demande.",
+    "merge_invalid": "Ces patients ne peuvent pas être fusionnés.",
+    "mrn_conflict": "Ce numéro de dossier est déjà utilisé.",
+    "possible_duplicate": "Un patient existant correspond peut-être à cette identité.",
+    "version_conflict": "Ce patient a été modifié. Rechargez puis réessayez."
+  },
   "conflict": "Cette modification entre en conflit avec des données existantes.",
   "validation_failed": "Vérifiez les champs signalés."
 }

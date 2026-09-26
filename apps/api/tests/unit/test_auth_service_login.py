@@ -70,7 +70,7 @@ async def test_login_without_clinic(
     mock_repo_cls: MagicMock,
     *_mocks: object,
 ) -> None:
-    user = MagicMock(id=1, password_hash="hash")
+    user = MagicMock(id=1, password_hash="hash", mfa_enabled=False)
     repo = AsyncMock()
     repo.get_user_by_email.return_value = user
     repo.default_clinic_for_user.return_value = None

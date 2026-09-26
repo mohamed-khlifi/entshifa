@@ -74,7 +74,7 @@ clinical requirements.
 
 ---
 
-## - [ ] P1-05 Patients (backend) — the reference implementation
+## - [x] P1-05 Patients (backend) — the reference implementation
 
 This is the module every later feature copies. Build it carefully and review it
 line by line.

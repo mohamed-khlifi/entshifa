@@ -9,6 +9,13 @@
   "generic": "Something went wrong. Try again.",
   "internal_error": "Something went wrong. Try again.",
   "not_found": "The requested resource was not found.",
+  "patient": {
+    "idempotency_mismatch": "This idempotency key was already used for a different request.",
+    "merge_invalid": "These patients cannot be merged.",
+    "mrn_conflict": "That medical record number is already in use.",
+    "possible_duplicate": "A possible existing patient matches this identity.",
+    "version_conflict": "This patient was updated by someone else. Reload and try again."
+  },
   "conflict": "This change conflicts with existing data.",
   "validation_failed": "Check the highlighted fields."
 }
