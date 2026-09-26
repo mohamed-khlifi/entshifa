@@ -74,7 +74,8 @@ async def ensure_clinic(
         postal_code="75014",
         phone="+33100000000",
         email=f"contact@{slug}.local",
-        settings={"pta_formula": "iso7029"},
+        # Clinical tunables live in `setting` rows (P1-01), not clinic.settings.
+        settings={},
     )
     session.add(clinic)
     await session.flush()

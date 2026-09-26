@@ -13,7 +13,7 @@ clinical requirements.
 
 ---
 
-## - [ ] P1-01 Clinics and sites (backend)
+## - [x] P1-01 Clinics and sites (backend)
 
 **Scope**
 - `features/clinics/`: models `clinic`, `site`.

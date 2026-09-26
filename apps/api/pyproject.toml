@@ -107,6 +107,7 @@ source_modules = [
 forbidden_modules = [
     "ent.features.auth.service",
     "ent.features.attachments.service",
+    "ent.features.clinics.service",
     "ent.features.health.service",
     "ent.features.terminology.service",
 ]

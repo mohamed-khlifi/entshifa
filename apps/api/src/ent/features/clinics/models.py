@@ -1,10 +1,10 @@
-"""Clinic and site ORM models (architecture §25.1)."""
+"""Clinic, site and setting ORM models (architecture §25.1 / §25.17)."""
 
 from __future__ import annotations
 
 from typing import Any
 
-from sqlalchemy import Boolean, String, text
+from sqlalchemy import Boolean, ForeignKey, String, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ent.core.db.base import Base
@@ -36,7 +36,7 @@ class Clinic(GlobalRecordMixin, Base):
     website: Mapped[str | None] = mapped_column(String(160), nullable=True)
     tax_id: Mapped[str | None] = mapped_column(String(40), nullable=True)
     registration_number: Mapped[str | None] = mapped_column(String(40), nullable=True)
-    # FK to attachment deferred until P0-13.
+    # FK to attachment deferred until logo upload wiring in P1-03.
     logo_attachment_id: Mapped[int | None] = mapped_column(
         unsigned_bigint(),
         nullable=True,
@@ -70,3 +70,33 @@ class Site(ClinicalRecordMixin, Base):
     )
 
     clinic: Mapped[Clinic] = relationship(back_populates="sites")
+
+
+class Setting(GlobalRecordMixin, Base):
+    """Scoped clinical / operational settings (architecture §25.17).
+
+    Resolution order: user (clinic_id + user_id) -> clinic (clinic_id, user_id
+    NULL) -> system (both NULL). Clinical defaults live only as rows here —
+    never as Python fallback literals in engines or services.
+    """
+
+    __tablename__ = "setting"
+    __audit_writes__ = True
+
+    clinic_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("clinic.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=True,
+        index=True,
+    )
+    user_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("user.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=True,
+        index=True,
+    )
+    key: Mapped[str] = mapped_column(
+        String(80, collation="utf8mb4_0900_as_cs"),
+        nullable=False,
+    )
+    value: Mapped[Any] = mapped_column(mysql_json(), nullable=False)

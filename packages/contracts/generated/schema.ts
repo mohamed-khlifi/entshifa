@@ -179,6 +179,79 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/clinic": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Clinic */
+        get: operations["get_clinic_api_v1_clinic_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Patch Clinic */
+        patch: operations["patch_clinic_api_v1_clinic_patch"];
+        trace?: never;
+    };
+    "/api/v1/settings/clinical": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Clinical Settings */
+        get: operations["get_clinical_settings_api_v1_settings_clinical_get"];
+        /** Put Clinical Settings */
+        put: operations["put_clinical_settings_api_v1_settings_clinical_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/sites": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Sites */
+        get: operations["list_sites_api_v1_sites_get"];
+        put?: never;
+        /** Create Site */
+        post: operations["create_site_api_v1_sites_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/sites/{site_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Site */
+        get: operations["get_site_api_v1_sites__site_id__get"];
+        put?: never;
+        post?: never;
+        /** Delete Site */
+        delete: operations["delete_site_api_v1_sites__site_id__delete"];
+        options?: never;
+        head?: never;
+        /** Patch Site */
+        patch: operations["patch_site_api_v1_sites__site_id__patch"];
+        trace?: never;
+    };
     "/api/v1/terminology/concepts/search": {
         parameters: {
             query?: never;
@@ -343,6 +416,120 @@ export interface components {
             /** Uploadtoken */
             uploadToken: string;
         };
+        /** ClinicRead */
+        ClinicRead: {
+            /** Addressline1 */
+            addressLine1?: string | null;
+            /** Addressline2 */
+            addressLine2?: string | null;
+            /** City */
+            city?: string | null;
+            /** Countrycode */
+            countryCode: string;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /** Currency */
+            currency: string;
+            /** Defaultlocale */
+            defaultLocale: string;
+            /** Email */
+            email?: string | null;
+            /** Isactive */
+            isActive: boolean;
+            /** Legalname */
+            legalName?: string | null;
+            /** Name */
+            name: string;
+            /** Phone */
+            phone?: string | null;
+            /** Postalcode */
+            postalCode?: string | null;
+            /** Publicid */
+            publicId: string;
+            /** Registrationnumber */
+            registrationNumber?: string | null;
+            /** Settings */
+            settings: Record<string, never>;
+            /** Slug */
+            slug: string;
+            /** Supportedlocales */
+            supportedLocales: unknown[];
+            /** Taxid */
+            taxId?: string | null;
+            /** Timezone */
+            timezone: string;
+            /**
+             * Updatedat
+             * Format: date-time
+             */
+            updatedAt: string;
+            /** Website */
+            website?: string | null;
+        };
+        /** ClinicUpdate */
+        ClinicUpdate: {
+            /** Addressline1 */
+            addressLine1?: string | null;
+            /** Addressline2 */
+            addressLine2?: string | null;
+            /** City */
+            city?: string | null;
+            /** Countrycode */
+            countryCode?: string | null;
+            /** Currency */
+            currency?: string | null;
+            /** Defaultlocale */
+            defaultLocale?: string | null;
+            /** Email */
+            email?: string | null;
+            /** Isactive */
+            isActive?: boolean | null;
+            /** Legalname */
+            legalName?: string | null;
+            /** Name */
+            name?: string | null;
+            /** Phone */
+            phone?: string | null;
+            /** Postalcode */
+            postalCode?: string | null;
+            /** Registrationnumber */
+            registrationNumber?: string | null;
+            /** Settings */
+            settings?: Record<string, never> | null;
+            /** Slug */
+            slug?: string | null;
+            /** Supportedlocales */
+            supportedLocales?: string[] | null;
+            /** Taxid */
+            taxId?: string | null;
+            /** Timezone */
+            timezone?: string | null;
+            /** Website */
+            website?: string | null;
+        };
+        /** ClinicalSettingItem */
+        ClinicalSettingItem: {
+            /** Key */
+            key: string;
+            /** Value */
+            value: unknown;
+        };
+        /**
+         * ClinicalSettingsPut
+         * @description Replace or upsert clinic-scoped clinical settings.
+         */
+        ClinicalSettingsPut: {
+            /** Items */
+            items: components["schemas"]["ClinicalSettingItem"][];
+        };
+        /** ClinicalSettingsRead */
+        ClinicalSettingsRead: {
+            /** Items */
+            items: components["schemas"]["ResolvedSettingRead"][];
+        };
         /**
          * ConceptDictionaryResponse
          * @description Bulk concept map for frontend caching (keyed by publicId).
@@ -429,6 +616,12 @@ export interface components {
             /** Total */
             total?: number | null;
         };
+        /** PageSchema[SiteRead] */
+        PageSchema_SiteRead_: {
+            /** Items */
+            items: components["schemas"]["SiteRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
         /** PresignedUrlResponse */
         PresignedUrlResponse: {
             /** Expiresinseconds */
@@ -487,6 +680,18 @@ export interface components {
              */
             translationMissing: boolean;
         };
+        /** ResolvedSettingRead */
+        ResolvedSettingRead: {
+            /** Key */
+            key: string;
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "user" | "clinic" | "system";
+            /** Value */
+            value: unknown;
+        };
         /** SessionResponse */
         SessionResponse: {
             /** Clinicpublicid */
@@ -495,6 +700,72 @@ export interface components {
             sessionPublicId: string;
             /** Userpublicid */
             userPublicId: string;
+        };
+        /** SiteCreate */
+        SiteCreate: {
+            /** Addressline1 */
+            addressLine1?: string | null;
+            /** Addressline2 */
+            addressLine2?: string | null;
+            /** City */
+            city?: string | null;
+            /**
+             * Isprimary
+             * @default false
+             */
+            isPrimary: boolean;
+            /** Name */
+            name: string;
+            /** Phone */
+            phone?: string | null;
+            /** Postalcode */
+            postalCode?: string | null;
+        };
+        /** SiteRead */
+        SiteRead: {
+            /** Addressline1 */
+            addressLine1?: string | null;
+            /** Addressline2 */
+            addressLine2?: string | null;
+            /** City */
+            city?: string | null;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /** Isprimary */
+            isPrimary: boolean;
+            /** Name */
+            name: string;
+            /** Phone */
+            phone?: string | null;
+            /** Postalcode */
+            postalCode?: string | null;
+            /** Publicid */
+            publicId: string;
+            /**
+             * Updatedat
+             * Format: date-time
+             */
+            updatedAt: string;
+        };
+        /** SiteUpdate */
+        SiteUpdate: {
+            /** Addressline1 */
+            addressLine1?: string | null;
+            /** Addressline2 */
+            addressLine2?: string | null;
+            /** City */
+            city?: string | null;
+            /** Isprimary */
+            isPrimary?: boolean | null;
+            /** Name */
+            name?: string | null;
+            /** Phone */
+            phone?: string | null;
+            /** Postalcode */
+            postalCode?: string | null;
         };
         /** ValidationError */
         ValidationError: {
@@ -842,6 +1113,312 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LoginResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_clinic_api_v1_clinic_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClinicRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    patch_clinic_api_v1_clinic_patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ClinicUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClinicRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_clinical_settings_api_v1_settings_clinical_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClinicalSettingsRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    put_clinical_settings_api_v1_settings_clinical_put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ClinicalSettingsPut"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClinicalSettingsRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_sites_api_v1_sites_get: {
+        parameters: {
+            query?: {
+                search?: string | null;
+                is_primary?: boolean | null;
+                city?: string | null;
+                sort?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_SiteRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_site_api_v1_sites_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SiteCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SiteRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_site_api_v1_sites__site_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                site_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SiteRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_site_api_v1_sites__site_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                site_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    patch_site_api_v1_sites__site_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                site_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SiteUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SiteRead"];
                 };
             };
             /** @description Validation Error */

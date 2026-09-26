@@ -28,6 +28,7 @@ class Permission(StrEnum):
     ADMIN_TEMPLATES = "admin.templates"
     ADMIN_TERMINOLOGY = "admin.terminology"
     ADMIN_EXPORT = "admin.export"
+    ADMIN_CLINIC = "admin.clinic"
     AUTH_SESSION_READ = "auth.session.read"
 
 
