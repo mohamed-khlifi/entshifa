@@ -140,11 +140,24 @@ function collectReferencedKeys(sourceRoot) {
       namespaceBindings.set(match[1], match[2]);
     }
 
-    // Typed translator factories: createLoginSchema(t: ReturnType<typeof useTranslations<'auth'>>)
+    // Files that only pass a translator in (labels, schemas) type it as
+    // `t: ReturnType<typeof useTranslations<'patients'>>` or a type alias
+    // that contains that generic. Do not overwrite a real
+    // `const t = useTranslations('auth')` when the same file also mentions
+    // useTranslations<'errors'> in a helper signature.
     for (const match of source.matchAll(
-      /useTranslations\s*<\s*['"]([\w]+)['"]\s*>/g,
+      /(\w+)\s*:\s*ReturnType<\s*typeof\s+useTranslations\s*<\s*['"](\w+)['"]\s*>/g,
     )) {
-      namespaceBindings.set('t', match[1]);
+      if (!namespaceBindings.has(match[1])) {
+        namespaceBindings.set(match[1], match[2]);
+      }
+    }
+    if (!namespaceBindings.has('t')) {
+      for (const match of source.matchAll(
+        /useTranslations\s*<\s*['"]([\w]+)['"]\s*>/g,
+      )) {
+        namespaceBindings.set('t', match[1]);
+      }
     }
 
     for (const match of source.matchAll(

@@ -13,8 +13,7 @@ export function useClinicMembershipsQuery() {
 
   return useQuery({
     queryKey: queryKeys.auth.clinics(),
-    queryFn: () =>
-      fetchClinicMemberships(locale, session!.clinicPublicId),
+    queryFn: () => fetchClinicMemberships(locale, session!.clinicPublicId),
     enabled: Boolean(session?.clinicPublicId),
     staleTime: 60_000,
   });

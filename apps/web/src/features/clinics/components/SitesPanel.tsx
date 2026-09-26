@@ -45,7 +45,11 @@ export function SitesPanel() {
   );
 
   const onCreate = async () => {
-    await createSite.mutateAsync({ name, city: city || null, isPrimary: false });
+    await createSite.mutateAsync({
+      name,
+      city: city || null,
+      isPrimary: false,
+    });
     setName("");
     setCity("");
     setShowCreate(false);

@@ -1,7 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
-import { ClinicAdminGate } from "@/features/clinics/components/ClinicAdminGate";
-import { ClinicProfilePanel } from "@/features/clinics/components/ClinicProfilePanel";
+import { ClinicAdminGate, ClinicProfilePanel } from "@/features/clinics";
 
 export default async function AdminClinicPage() {
   const t = await getTranslations("clinics");
@@ -12,7 +11,9 @@ export default async function AdminClinicPage() {
         <h1 className="text-2xl font-semibold tracking-tight">
           {t("profile.title")}
         </h1>
-        <p className="text-sm text-muted-foreground">{t("profile.description")}</p>
+        <p className="text-sm text-muted-foreground">
+          {t("profile.description")}
+        </p>
       </div>
       <ClinicProfilePanel />
     </ClinicAdminGate>

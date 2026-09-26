@@ -22,17 +22,24 @@ export function InviteAcceptForm({ token }: Props) {
   const [password, setPassword] = useState("");
   const [done, setDone] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [nameError, setNameError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
+    if (firstName.trim().length === 0) {
+      setNameError(t("validation.firstNameRequired"));
+      return;
+    }
+    if (lastName.trim().length === 0) {
+      setNameError(t("validation.lastNameRequired"));
+      return;
+    }
+    setNameError(null);
     setBusy(true);
     try {
-      await acceptInvitation(
-        { token, firstName, lastName, password },
-        locale,
-      );
+      await acceptInvitation({ token, firstName, lastName, password }, locale);
       setDone(true);
     } catch (err) {
       setError(
@@ -89,6 +96,11 @@ export function InviteAcceptForm({ token }: Props) {
           />
         </div>
       </div>
+      {nameError ? (
+        <p className="text-sm text-destructive" role="alert">
+          {nameError}
+        </p>
+      ) : null}
       <div className="space-y-2">
         <Label htmlFor="invite-password">{t("invite.password")}</Label>
         <Input
@@ -102,7 +114,9 @@ export function InviteAcceptForm({ token }: Props) {
         />
       </div>
       {error ? (
-        <p className="text-sm text-destructive" role="alert">{error}</p>
+        <p className="text-sm text-destructive" role="alert">
+          {error}
+        </p>
       ) : null}
       <Button
         type="submit"

@@ -19,7 +19,7 @@ import {
   logoutRequest,
   refreshSession,
   switchActiveClinic,
-} from "@/features/auth/api/auth.api";
+} from "@/features/auth";
 import { queryKeys } from "@/lib/api/query-keys";
 import type { MeResponse } from "@/lib/api/generated";
 import {
@@ -35,8 +35,7 @@ type SessionState = {
 };
 
 type LoginResult =
-  | { status: "ok" }
-  | { status: "mfa_required"; mfaToken: string };
+  { status: "ok" } | { status: "mfa_required"; mfaToken: string };
 
 type SessionContextValue = {
   session: SessionState | null;

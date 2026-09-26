@@ -3,8 +3,7 @@
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 
-import { useMeQuery } from "@/features/auth/hooks/use-me-query";
-import { confirmMfa, disableMfa, enrollMfa } from "@/features/auth/api/auth.api";
+import { confirmMfa, disableMfa, enrollMfa, useMeQuery } from "@/features/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -109,19 +108,22 @@ export function MfaSecurityPanel() {
   };
 
   return (
-    <Card className="border-border/80 shadow-sm" {...testIdProps(testIds.settings.securityRoot)}>
+    <Card
+      className="border-border/80 shadow-sm"
+      {...testIdProps(testIds.settings.securityRoot)}
+    >
       <CardHeader>
         <CardTitle>{t("security.mfaTitle")}</CardTitle>
         <CardDescription>{t("security.mfaDescription")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <p className="text-sm text-muted-foreground">
-          {mfaEnabled
-            ? t("security.mfaEnabled")
-            : t("security.mfaDisabled")}
+          {mfaEnabled ? t("security.mfaEnabled") : t("security.mfaDisabled")}
         </p>
         {error ? (
-          <p className="text-sm text-destructive" role="alert">{error}</p>
+          <p className="text-sm text-destructive" role="alert">
+            {error}
+          </p>
         ) : null}
 
         {!mfaEnabled && !enroll ? (
@@ -170,7 +172,9 @@ export function MfaSecurityPanel() {
           <div className="space-y-4 rounded-lg border border-border p-4">
             <p className="text-sm font-medium">{t("security.disableTitle")}</p>
             <div className="space-y-2">
-              <Label htmlFor="mfa-disable-pw">{t("security.disablePassword")}</Label>
+              <Label htmlFor="mfa-disable-pw">
+                {t("security.disablePassword")}
+              </Label>
               <Input
                 id="mfa-disable-pw"
                 type="password"
@@ -180,7 +184,9 @@ export function MfaSecurityPanel() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="mfa-disable-code">{t("security.disableCode")}</Label>
+              <Label htmlFor="mfa-disable-code">
+                {t("security.disableCode")}
+              </Label>
               <Input
                 id="mfa-disable-code"
                 inputMode="numeric"

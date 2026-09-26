@@ -1,8 +1,10 @@
 import { getTranslations } from "next-intl/server";
 
 import { PageHeader } from "@/components/layout/PageHeader";
-import { TerminologyAdminGate } from "@/features/terminology/components/TerminologyAdminGate";
-import { TerminologyCoveragePanel } from "@/features/terminology/components/TerminologyCoveragePanel";
+import {
+  TerminologyAdminGate,
+  TerminologyCoveragePanel,
+} from "@/features/terminology";
 
 export default async function TerminologyCoveragePage() {
   const t = await getTranslations("terminology");

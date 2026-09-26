@@ -63,10 +63,16 @@ export function TerminologyValueSetsPanel() {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <Link href="/admin/terminology" className="text-sm text-primary hover:underline">
+      <Link
+        href="/admin/terminology"
+        className="text-sm text-primary hover:underline"
+      >
         {t("nav.concepts")}
       </Link>
-      <Card className="border-border/80 shadow-sm" {...testIdProps(testIds.terminology.valueSets.root)}>
+      <Card
+        className="border-border/80 shadow-sm"
+        {...testIdProps(testIds.terminology.valueSets.root)}
+      >
         <CardHeader>
           <CardTitle>{t("valueSets.title")}</CardTitle>
           <CardDescription>{t("valueSets.description")}</CardDescription>
@@ -90,7 +96,10 @@ export function TerminologyValueSetsPanel() {
           </div>
           <ul className="space-y-2 text-sm">
             {(members.data?.members ?? []).map((member) => (
-              <li key={member.publicId} className="rounded-md border border-border px-3 py-2">
+              <li
+                key={member.publicId}
+                className="rounded-md border border-border px-3 py-2"
+              >
                 {member.code} — {member.display}
               </li>
             ))}

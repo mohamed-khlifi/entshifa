@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
-import { useClinicMembershipsQuery } from "@/features/auth/hooks/use-clinic-memberships";
+import { useClinicMembershipsQuery } from "@/features/auth";
 import { testIdProps, testIds } from "@/lib/test/test-id";
 import { useSession } from "@/providers/session-provider";
 
@@ -13,7 +13,7 @@ export function ClinicSwitcher() {
   const { data, isLoading } = useClinicMembershipsQuery();
   const [busy, setBusy] = useState(false);
 
-  const items = data?.items ?? [];
+  const items = useMemo(() => data?.items ?? [], [data?.items]);
   const visible = items.length > 1;
 
   const options = useMemo(

@@ -506,50 +506,17 @@ def _child(
 
 
 def downgrade() -> None:
+    # InnoDB uses a composite index whose leftmost column is the foreign-key
+    # column as that constraint's index. DROP INDEX then raises 1553 while the
+    # constraint still exists. DROP TABLE removes the constraint and indexes
+    # together, so these indexes are not dropped on their own.
     op.drop_table("patient_request_idempotency")
-    op.drop_index(
-        "ix_patient_merge_log__clinic_id__created_at", table_name="patient_merge_log"
-    )
     op.drop_table("patient_merge_log")
-    op.drop_index(
-        "ix_patient_history__clinic_id__patient_id__category",
-        table_name="patient_history",
-    )
     op.drop_table("patient_history")
-    op.drop_index(
-        "ix_patient_problem__clinic_id__patient_id__status",
-        table_name="patient_problem",
-    )
     op.drop_table("patient_problem")
-    op.drop_index(
-        "ix_patient_flag__clinic_id__flag_code__ended_on", table_name="patient_flag"
-    )
-    op.drop_index(
-        "ix_patient_flag__clinic_id__patient_id__ended_on", table_name="patient_flag"
-    )
     op.drop_table("patient_flag")
-    op.drop_index(
-        "ix_patient_medication__clinic_id__patient_id__is_active",
-        table_name="patient_medication",
-    )
     op.drop_table("patient_medication")
-    op.drop_index(
-        "ix_patient_allergy__clinic_id__patient_id__is_active",
-        table_name="patient_allergy",
-    )
     op.drop_table("patient_allergy")
-    op.drop_index(
-        "ix_patient_identifier__clinic_id__type__value",
-        table_name="patient_identifier",
-    )
-    op.drop_index(
-        "ix_patient_identifier__clinic_id__patient_id",
-        table_name="patient_identifier",
-    )
     op.drop_table("patient_identifier")
     op.drop_constraint("fk_attachment__patient", "attachment", type_="foreignkey")
-    op.drop_index("ft_patient__names", table_name="patient")
-    op.drop_index("ix_patient__clinic_id__birth_date", table_name="patient")
-    op.drop_index("ix_patient__clinic_id__phone_primary", table_name="patient")
-    op.drop_index("ix_patient__clinic_id__name_normalized", table_name="patient")
     op.drop_table("patient")

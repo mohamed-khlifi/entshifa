@@ -483,9 +483,9 @@ class TerminologyService:
                             full_name=row.full_name,
                             abbreviation=row.abbreviation,
                             patient_friendly=row.patient_friendly,
-                            synonyms=row.synonyms
-                            if isinstance(row.synonyms, list)
-                            else None,
+                            synonyms=(
+                                row.synonyms if isinstance(row.synonyms, list) else None
+                            ),
                             clinic_owned=row.clinic_id is not None,
                         )
                         for row in rows

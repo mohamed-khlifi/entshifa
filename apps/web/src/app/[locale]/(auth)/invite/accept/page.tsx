@@ -1,7 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
-import { AuthCardPage } from "@/features/auth/components/AuthCardPage";
-import { InviteAcceptForm } from "@/features/auth/components/InviteAcceptForm";
+import { AuthCardPage, InviteAcceptForm } from "@/features/auth";
 import { testIds } from "@/lib/test/test-id";
 
 type Props = {

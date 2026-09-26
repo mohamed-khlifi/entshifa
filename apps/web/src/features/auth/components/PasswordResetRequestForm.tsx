@@ -46,7 +46,9 @@ export function PasswordResetRequestForm() {
   if (sent) {
     return (
       <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">{t("passwordReset.sent")}</p>
+        <p className="text-sm text-muted-foreground">
+          {t("passwordReset.sent")}
+        </p>
         <Link
           href="/login"
           className="text-sm font-medium text-primary hover:underline"
@@ -72,7 +74,9 @@ export function PasswordResetRequestForm() {
         />
       </div>
       {error ? (
-        <p className="text-sm text-destructive" role="alert">{error}</p>
+        <p className="text-sm text-destructive" role="alert">
+          {error}
+        </p>
       ) : null}
       <Button
         type="submit"

@@ -28,8 +28,7 @@ export function useCurrentClinicQuery() {
 
   return useQuery({
     queryKey: queryKeys.clinics.current(),
-    queryFn: () =>
-      fetchCurrentClinic(locale, clinicPublicId!),
+    queryFn: () => fetchCurrentClinic(locale, clinicPublicId!),
     enabled: Boolean(clinicPublicId),
     staleTime: 30_000,
   });
@@ -59,8 +58,7 @@ export function useSitesQuery(params?: { limit?: number; offset?: number }) {
 
   return useQuery({
     queryKey: queryKeys.clinics.sites(params),
-    queryFn: () =>
-      fetchSites(locale, session!.clinicPublicId, params),
+    queryFn: () => fetchSites(locale, session!.clinicPublicId, params),
     enabled: Boolean(session?.clinicPublicId),
   });
 }

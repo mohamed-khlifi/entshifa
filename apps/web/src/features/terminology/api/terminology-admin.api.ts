@@ -87,10 +87,13 @@ export async function fetchValueSets(
   locale: string,
   clinicPublicId: string,
 ): Promise<ValueSetSummaryRead[]> {
-  return apiFetch<ValueSetSummaryRead[]>("/api/v1/terminology/admin/value-sets", {
-    locale,
-    clinicPublicId,
-  });
+  return apiFetch<ValueSetSummaryRead[]>(
+    "/api/v1/terminology/admin/value-sets",
+    {
+      locale,
+      clinicPublicId,
+    },
+  );
 }
 
 export async function fetchValueSet(

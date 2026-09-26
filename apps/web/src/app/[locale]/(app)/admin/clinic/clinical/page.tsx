@@ -1,7 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
-import { ClinicAdminGate } from "@/features/clinics/components/ClinicAdminGate";
-import { ClinicalSettingsPanel } from "@/features/clinics/components/ClinicalSettingsPanel";
+import { ClinicAdminGate, ClinicalSettingsPanel } from "@/features/clinics";
 import { PageHeader } from "@/components/layout/PageHeader";
 
 export default async function AdminClinicalSettingsPage() {

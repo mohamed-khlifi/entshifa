@@ -1,7 +1,6 @@
 import { getTranslations } from "next-intl/server";
 
-import { ClinicAdminGate } from "@/features/clinics/components/ClinicAdminGate";
-import { SitesPanel } from "@/features/clinics/components/SitesPanel";
+import { ClinicAdminGate, SitesPanel } from "@/features/clinics";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Link } from "@/lib/i18n/navigation";
 

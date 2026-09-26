@@ -20,3 +20,5 @@ export { LoginForm } from "./components/LoginForm";
 export { LogoutButton } from "./components/LogoutButton";
 export { PasswordResetConfirmForm } from "./components/PasswordResetConfirmForm";
 export { PasswordResetRequestForm } from "./components/PasswordResetRequestForm";
+export { useClinicMembershipsQuery } from "./hooks/use-clinic-memberships";
+export { useMeQuery } from "./hooks/use-me-query";

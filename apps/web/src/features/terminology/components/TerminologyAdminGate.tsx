@@ -11,7 +11,9 @@ export function TerminologyAdminGate({ children }: { children: ReactNode }) {
   return (
     <Can
       permission={Permission.ADMIN_TERMINOLOGY}
-      fallback={<p className="text-sm text-muted-foreground">{t("forbidden")}</p>}
+      fallback={
+        <p className="text-sm text-muted-foreground">{t("forbidden")}</p>
+      }
     >
       {children}
     </Can>

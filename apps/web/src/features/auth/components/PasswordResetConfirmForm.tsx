@@ -75,7 +75,9 @@ export function PasswordResetConfirmForm({ token }: Props) {
         />
       </div>
       {error ? (
-        <p className="text-sm text-destructive" role="alert">{error}</p>
+        <p className="text-sm text-destructive" role="alert">
+          {error}
+        </p>
       ) : null}
       <Button
         type="submit"

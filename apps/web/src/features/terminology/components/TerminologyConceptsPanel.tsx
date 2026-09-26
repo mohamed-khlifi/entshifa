@@ -71,7 +71,9 @@ export function TerminologyConceptsPanel() {
         session!.clinicPublicId,
       ),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: queryKeys.terminology.all });
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.terminology.all,
+      });
       toast.success(t("concepts.created"));
       setShowCreate(false);
       setCode("");
@@ -89,7 +91,9 @@ export function TerminologyConceptsPanel() {
         session!.clinicPublicId,
       ),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: queryKeys.terminology.all });
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.terminology.all,
+      });
       toast.success(t("concepts.renamed"));
     },
   });
@@ -102,13 +106,16 @@ export function TerminologyConceptsPanel() {
         id: "owned",
         header: t("concepts.scope"),
         cell: ({ row }) =>
-          row.original.clinicOwned ? t("concepts.clinic") : t("concepts.global"),
+          row.original.clinicOwned
+            ? t("concepts.clinic")
+            : t("concepts.global"),
       },
       {
         id: "label",
         header: t("concepts.display"),
         cell: ({ row }) =>
-          row.original.translations.find((item) => item.locale === locale)?.display ??
+          row.original.translations.find((item) => item.locale === locale)
+            ?.display ??
           row.original.translations[0]?.display ??
           "",
       },
@@ -119,20 +126,33 @@ export function TerminologyConceptsPanel() {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <div className="flex flex-wrap gap-3 text-sm">
-        <Link href="/admin/terminology/translation-coverage" className="text-primary hover:underline">
+        <Link
+          href="/admin/terminology/translation-coverage"
+          className="text-primary hover:underline"
+        >
           {t("nav.coverage")}
         </Link>
-        <Link href="/admin/terminology/value-sets" className="text-primary hover:underline">
+        <Link
+          href="/admin/terminology/value-sets"
+          className="text-primary hover:underline"
+        >
           {t("nav.valueSets")}
         </Link>
       </div>
-      <Card className="border-border/80 shadow-sm" {...testIdProps(testIds.terminology.concepts.root)}>
+      <Card
+        className="border-border/80 shadow-sm"
+        {...testIdProps(testIds.terminology.concepts.root)}
+      >
         <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-4">
           <div>
             <CardTitle>{t("concepts.title")}</CardTitle>
             <CardDescription>{t("concepts.description")}</CardDescription>
           </div>
-          <Button type="button" onClick={() => setShowCreate((value) => !value)} {...testIdProps(testIds.terminology.concepts.createOpen)}>
+          <Button
+            type="button"
+            onClick={() => setShowCreate((value) => !value)}
+            {...testIdProps(testIds.terminology.concepts.createOpen)}
+          >
             {t("concepts.create")}
           </Button>
         </CardHeader>
@@ -141,13 +161,28 @@ export function TerminologyConceptsPanel() {
             <div className="grid gap-4 rounded-lg border border-border bg-muted/20 p-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="concept-code">{t("concepts.code")}</Label>
-                <Input id="concept-code" value={code} onChange={(e) => setCode(e.target.value)} {...testIdProps(testIds.terminology.concepts.code)} />
+                <Input
+                  id="concept-code"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                  {...testIdProps(testIds.terminology.concepts.code)}
+                />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="concept-display">{t("concepts.display")}</Label>
-                <Input id="concept-display" value={display} onChange={(e) => setDisplay(e.target.value)} {...testIdProps(testIds.terminology.concepts.display)} />
+                <Input
+                  id="concept-display"
+                  value={display}
+                  onChange={(e) => setDisplay(e.target.value)}
+                  {...testIdProps(testIds.terminology.concepts.display)}
+                />
               </div>
-              <Button type="button" disabled={!code || !display || create.isPending} onClick={() => void create.mutateAsync()} {...testIdProps(testIds.terminology.concepts.createSubmit)}>
+              <Button
+                type="button"
+                disabled={!code || !display || create.isPending}
+                onClick={() => void create.mutateAsync()}
+                {...testIdProps(testIds.terminology.concepts.createSubmit)}
+              >
                 {t("concepts.createSubmit")}
               </Button>
             </div>
@@ -168,9 +203,14 @@ export function TerminologyConceptsPanel() {
               className="h-10 rounded-md border border-input bg-background px-3 text-sm"
               value={selected?.publicId ?? ""}
               onChange={(event) => {
-                const next = query.data?.items.find((item) => item.publicId === event.target.value) ?? null;
+                const next =
+                  query.data?.items.find(
+                    (item) => item.publicId === event.target.value,
+                  ) ?? null;
                 setSelected(next);
-                const current = next?.translations.find((item) => item.locale === locale && item.clinicOwned);
+                const current = next?.translations.find(
+                  (item) => item.locale === locale && item.clinicOwned,
+                );
                 setOverrideDisplay(current?.display ?? "");
               }}
               {...testIdProps(testIds.terminology.concepts.select)}
@@ -182,8 +222,17 @@ export function TerminologyConceptsPanel() {
                 </option>
               ))}
             </select>
-            <Input value={overrideDisplay} onChange={(e) => setOverrideDisplay(e.target.value)} {...testIdProps(testIds.terminology.concepts.override)} />
-            <Button type="button" disabled={!selected || !overrideDisplay || rename.isPending} onClick={() => void rename.mutateAsync()} {...testIdProps(testIds.terminology.concepts.renameSubmit)}>
+            <Input
+              value={overrideDisplay}
+              onChange={(e) => setOverrideDisplay(e.target.value)}
+              {...testIdProps(testIds.terminology.concepts.override)}
+            />
+            <Button
+              type="button"
+              disabled={!selected || !overrideDisplay || rename.isPending}
+              onClick={() => void rename.mutateAsync()}
+              {...testIdProps(testIds.terminology.concepts.renameSubmit)}
+            >
               {t("concepts.renameSubmit")}
             </Button>
           </div>

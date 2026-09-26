@@ -49,10 +49,16 @@ export function TerminologyCoveragePanel() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <Link href="/admin/terminology" className="text-sm text-primary hover:underline">
+      <Link
+        href="/admin/terminology"
+        className="text-sm text-primary hover:underline"
+      >
         {t("nav.concepts")}
       </Link>
-      <Card className="border-border/80 shadow-sm" {...testIdProps(testIds.terminology.coverage.root)}>
+      <Card
+        className="border-border/80 shadow-sm"
+        {...testIdProps(testIds.terminology.coverage.root)}
+      >
         <CardHeader>
           <CardTitle>{t("coverage.title")}</CardTitle>
           <CardDescription>{t("coverage.description")}</CardDescription>

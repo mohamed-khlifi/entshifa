@@ -9,10 +9,10 @@ import {
   useUpdateClinicMutation,
 } from "@/features/clinics/hooks/use-clinic-queries";
 import {
+  AttachmentViewer,
   confirmAttachmentUpload,
   requestAttachmentUploadUrl,
-} from "@/features/attachments/api/attachments.api";
-import { AttachmentViewer } from "@/features/attachments";
+} from "@/features/attachments";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -118,13 +118,18 @@ export function ClinicProfilePanel() {
 
   if (isLoading || !clinic) {
     return (
-      <p className="text-sm text-muted-foreground">{t("profile.description")}</p>
+      <p className="text-sm text-muted-foreground">
+        {t("profile.description")}
+      </p>
     );
   }
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-6">
-      <Card className="border-border/80 shadow-sm" {...testIdProps(testIds.clinics.profileForm)}>
+      <Card
+        className="border-border/80 shadow-sm"
+        {...testIdProps(testIds.clinics.profileForm)}
+      >
         <CardHeader>
           <CardTitle>{t("profile.title")}</CardTitle>
           <CardDescription>{t("profile.description")}</CardDescription>
@@ -195,7 +200,9 @@ export function ClinicProfilePanel() {
             )}
             <div className="space-y-2">
               <Label htmlFor="clinic-logo">{t("branding.uploadLogo")}</Label>
-              <p className="text-xs text-muted-foreground">{t("branding.logoHint")}</p>
+              <p className="text-xs text-muted-foreground">
+                {t("branding.logoHint")}
+              </p>
               <Input
                 id="clinic-logo"
                 type="file"
@@ -228,7 +235,11 @@ export function ClinicProfilePanel() {
               {...testIdProps(testIds.clinics.documentFooter)}
             />
           </div>
-          <Button type="button" onClick={onSaveProfile} disabled={updateClinic.isPending}>
+          <Button
+            type="button"
+            onClick={onSaveProfile}
+            disabled={updateClinic.isPending}
+          >
             {t("profile.save")}
           </Button>
         </CardContent>
