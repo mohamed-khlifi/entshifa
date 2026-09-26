@@ -262,7 +262,7 @@ everything clinical, so do not shortcut it.
 
 ---
 
-## - [ ] P0-14 CI pipeline
+## - [x] P0-14 CI pipeline
 
 **Scope**
 All twelve gates from architecture section 37: lint, format, type check, import

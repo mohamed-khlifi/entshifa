@@ -158,10 +158,14 @@ class AttachmentService:
         redis = await get_redis()
         raw = await redis.get(f"{_PENDING_UPLOAD_PREFIX}{body.upload_token}")
         if raw is None:
-            raise NotFoundError(resource="attachment_upload", public_id=body.upload_token)
+            raise NotFoundError(
+                resource="attachment_upload", public_id=body.upload_token
+            )
         pending: dict[str, Any] = json.loads(raw)
         if int(pending["clinic_id"]) != user.clinic_id:
-            raise NotFoundError(resource="attachment_upload", public_id=body.upload_token)
+            raise NotFoundError(
+                resource="attachment_upload", public_id=body.upload_token
+            )
 
         storage_key = str(pending["storage_key"])
         if not await self._storage.object_exists(key=storage_key):
@@ -231,11 +235,17 @@ class AttachmentService:
         filename = attachment.filename
         if variant:
             match = next(
-                (v for v in attachment.variants if v.variant == variant and v.deleted_at is None),
+                (
+                    v
+                    for v in attachment.variants
+                    if v.variant == variant and v.deleted_at is None
+                ),
                 None,
             )
             if match is None:
-                raise NotFoundError(resource="media_variant", public_id=f"{public_id}:{variant}")
+                raise NotFoundError(
+                    resource="media_variant", public_id=f"{public_id}:{variant}"
+                )
             storage_key = match.storage_key
             stem = attachment.filename.rsplit(".", 1)[0]
             filename = f"{stem}_{variant}.jpg"

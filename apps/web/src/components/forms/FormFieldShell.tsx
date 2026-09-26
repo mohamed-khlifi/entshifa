@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
-import { Label } from '@/components/ui/label';
-import { fieldErrorTestId } from '@/lib/forms/field-test-id';
-import { cn } from '@/lib/utils/cn';
-import { testIdProps } from '@/lib/test/test-id';
+import { Label } from "@/components/ui/label";
+import { fieldErrorTestId } from "@/lib/forms/field-test-id";
+import { cn } from "@/lib/utils/cn";
+import { testIdProps } from "@/lib/test/test-id";
 
 export type FormFieldShellProps = {
   name: string;
@@ -31,7 +31,7 @@ export function FormFieldShell({
   htmlFor,
 }: FormFieldShellProps) {
   return (
-    <div className={cn('space-y-2', className)}>
+    <div className={cn("space-y-2", className)}>
       <div className="flex items-baseline justify-between gap-2">
         <Label htmlFor={htmlFor} className="text-sm font-medium">
           {label}
@@ -42,7 +42,9 @@ export function FormFieldShell({
           ) : null}
         </Label>
         {unit ? (
-          <span className="text-xs font-medium text-muted-foreground">{unit}</span>
+          <span className="text-xs font-medium text-muted-foreground">
+            {unit}
+          </span>
         ) : null}
       </div>
       {description ? (

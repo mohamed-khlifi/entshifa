@@ -149,9 +149,7 @@ def load_settings() -> Settings:
             raise SystemExit(f"Configuration error: {exc}") from exc
         if isinstance(exc, ValidationError):
             missing = [
-                err["loc"][0]
-                for err in exc.errors()
-                if err["type"] == "missing"
+                err["loc"][0] for err in exc.errors() if err["type"] == "missing"
             ]
             if missing:
                 names = ", ".join(str(name) for name in missing)

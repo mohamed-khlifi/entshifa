@@ -71,7 +71,9 @@ class TerminologyService:
         ordered = [
             m.concept
             for m in members
-            if m.concept is not None and m.concept.deleted_at is None and m.concept.is_active
+            if m.concept is not None
+            and m.concept.deleted_at is None
+            and m.concept.is_active
         ]
         resolved = await self._resolve_many(
             repo,
@@ -117,7 +119,9 @@ class TerminologyService:
         )
 
     async def _clinic(self, clinic_id: int) -> Clinic:
-        result = await self._session.execute(select(Clinic).where(Clinic.id == clinic_id))
+        result = await self._session.execute(
+            select(Clinic).where(Clinic.id == clinic_id)
+        )
         clinic = result.scalar_one_or_none()
         if clinic is None:
             raise NotFoundError(resource="clinic")
@@ -131,7 +135,9 @@ class TerminologyService:
         locale: str,
         clinic_default_locale: str,
     ) -> list[ResolvedConcept]:
-        translations = await repo.load_translations_for_concepts([c.id for c in concepts])
+        translations = await repo.load_translations_for_concepts(
+            [c.id for c in concepts]
+        )
         items: list[ResolvedConcept] = []
         for concept in concepts:
             display = repo.resolve_display(

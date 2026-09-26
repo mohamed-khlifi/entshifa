@@ -25,9 +25,7 @@ class Permission(GlobalRecordMixin, Base):
 
 class Role(GlobalRecordMixin, Base):
     __tablename__ = "role"
-    __table_args__ = (
-        Index("ix_role__clinic_id__code", "clinic_id", "code"),
-    )
+    __table_args__ = (Index("ix_role__clinic_id__code", "clinic_id", "code"),)
 
     # NULL = system role; not TenantMixin (clinic_id is optional).
     clinic_id: Mapped[int | None] = mapped_column(

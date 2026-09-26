@@ -1,7 +1,7 @@
 from functools import lru_cache
 
 from ent.features.health.service import HealthService
-from ent.settings import Settings, get_settings
+from ent.settings import get_settings
 
 
 @lru_cache

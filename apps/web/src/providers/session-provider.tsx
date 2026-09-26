@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   createContext,
@@ -8,18 +8,23 @@ import {
   useMemo,
   useState,
   type ReactNode,
-} from 'react';
-import { useLocale } from 'next-intl';
-import { useQueryClient } from '@tanstack/react-query';
+} from "react";
+import { useLocale } from "next-intl";
+import { useQueryClient } from "@tanstack/react-query";
 
-import { fetchMe, loginRequest, logoutRequest, refreshSession } from '@/features/auth/api/auth.api';
-import { queryKeys } from '@/lib/api/query-keys';
-import type { MeResponse } from '@/lib/api/generated';
+import {
+  fetchMe,
+  loginRequest,
+  logoutRequest,
+  refreshSession,
+} from "@/features/auth";
+import { queryKeys } from "@/lib/api/query-keys";
+import type { MeResponse } from "@/lib/api/generated";
 import {
   clearSessionIndicatorCookie,
   setAccessToken,
   setSessionIndicatorCookie,
-} from '@/lib/auth/session-token';
+} from "@/lib/auth/session-token";
 
 type SessionState = {
   userPublicId: string;
@@ -106,13 +111,15 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     [session, isLoading, login, logout, loadSession],
   );
 
-  return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
+  return (
+    <SessionContext.Provider value={value}>{children}</SessionContext.Provider>
+  );
 }
 
 export function useSession(): SessionContextValue {
   const context = useContext(SessionContext);
   if (context === null) {
-    throw new Error('useSession requires SessionProvider');
+    throw new Error("useSession requires SessionProvider");
   }
   return context;
 }

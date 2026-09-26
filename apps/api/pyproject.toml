@@ -34,10 +34,14 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
+    "black==26.1.0",
     "httpx==0.28.1",
+    "import-linter==2.15",
     "mypy==1.15.0",
+    "pip-audit==2.9.0",
     "pytest==8.3.4",
     "pytest-asyncio==0.24.0",
+    "pytest-cov==7.0.0",
     "ruff==0.11.2",
     "types-PyMySQL==1.1.0.20250916",
 ]
@@ -56,11 +60,70 @@ testpaths = ["tests"]
 pythonpath = ["src", "."]
 markers = [
     "integration: tests that require the local Docker stack",
+    "clinical: known-answer tests citing a published reference",
 ]
 
 [tool.ruff]
 line-length = 88
 target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+ignore = ["E501"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.black]
+line-length = 88
+target-version = ["py312"]
+
+[tool.coverage.run]
+branch = true
+source = ["ent"]
+omit = [
+    "*/ent/seeds/*",
+    "*/ent/cli/*",
+    "*/ent/jobs/worker.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_empty = true
+
+[tool.importlinter]
+root_package = "ent"
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "Repositories do not import services"
+type = "forbidden"
+source_modules = [
+    "ent.features.auth.repository",
+    "ent.features.attachments.repository",
+    "ent.features.clinics.repository",
+    "ent.features.terminology.repository",
+]
+forbidden_modules = [
+    "ent.features.auth.service",
+    "ent.features.attachments.service",
+    "ent.features.health.service",
+    "ent.features.terminology.service",
+]
+
+[[tool.importlinter.contracts]]
+name = "Engines stay pure"
+type = "forbidden"
+source_modules = ["ent.engines"]
+forbidden_modules = [
+    "ent.features",
+    "ent.integrations",
+    "ent.jobs",
+    "sqlalchemy",
+    "fastapi",
+    "httpx",
+    "redis",
+]
 
 [tool.mypy]
 python_version = "3.12"

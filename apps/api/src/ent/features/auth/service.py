@@ -8,9 +8,9 @@ from datetime import UTC, datetime, timedelta
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ent.core.errors.exceptions import (
+    AuthenticationError,
     AuthInvalidCredentialsError,
     AuthSessionRevokedError,
-    AuthenticationError,
     NotFoundError,
 )
 from ent.core.security.passwords import verify_password
@@ -85,7 +85,12 @@ class AuthService:
         await repo.create_session(session_row)
 
         from ent.core.audit.recorder import AuditRecorder
-        from ent.core.context import set_clinic_id, set_ip_address, set_user_agent, set_user_id
+        from ent.core.context import (
+            set_clinic_id,
+            set_ip_address,
+            set_user_agent,
+            set_user_id,
+        )
 
         set_user_id(user.id)
         set_clinic_id(clinic.id)
@@ -208,7 +213,9 @@ class AuthService:
     async def load_permissions(self, user_id: int, clinic_id: int) -> frozenset[str]:
         return await self._repo().load_permission_codes(user_id, clinic_id)
 
-    async def update_session_active_clinic(self, session_id: int, clinic_id: int) -> None:
+    async def update_session_active_clinic(
+        self, session_id: int, clinic_id: int
+    ) -> None:
         await self._repo().update_session_active_clinic(session_id, clinic_id)
 
     async def assert_clinic_membership_or_not_found(

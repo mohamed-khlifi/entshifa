@@ -49,13 +49,17 @@ async def test_site_create_writes_audit_row() -> None:
         await session.commit()
 
         rows = (
-            await session.execute(
-                select(AuditLog).where(
-                    AuditLog.entity_type == "site",
-                    AuditLog.entity_public_id == site.public_id,
-                ),
+            (
+                await session.execute(
+                    select(AuditLog).where(
+                        AuditLog.entity_type == "site",
+                        AuditLog.entity_public_id == site.public_id,
+                    ),
+                )
             )
-        ).scalars().all()
+            .scalars()
+            .all()
+        )
         assert len(rows) == 1
         assert rows[0].action == "create"
         assert rows[0].after_json is not None
@@ -91,10 +95,14 @@ async def test_login_writes_audit_and_me_sets_context() -> None:
 
     async with factory() as session:
         login_rows = (
-            await session.execute(
-                select(AuditLog).where(AuditLog.action == "login"),
+            (
+                await session.execute(
+                    select(AuditLog).where(AuditLog.action == "login"),
+                )
             )
-        ).scalars().all()
+            .scalars()
+            .all()
+        )
         assert any(row.entity_type == "user_session" for row in login_rows)
 
 

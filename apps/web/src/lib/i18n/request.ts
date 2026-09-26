@@ -1,11 +1,11 @@
-import { getRequestConfig } from 'next-intl/server';
+import { getRequestConfig } from "next-intl/server";
 
 import {
   DEFAULT_LOCALE,
   MESSAGE_NAMESPACES,
   isAppLocale,
   type MessageNamespace,
-} from '@/lib/i18n/config';
+} from "@/lib/i18n/config";
 
 type MessageTree = Record<string, unknown>;
 
@@ -14,10 +14,10 @@ async function loadNamespace(
   namespace: MessageNamespace,
 ): Promise<MessageTree> {
   // Canonical catalogs live in packages/i18n-messages (architecture §4 / P0-11).
-  const module = await import(
+  const catalog = await import(
     `../../../../../packages/i18n-messages/${locale}/${namespace}.json`
   );
-  return module.default as MessageTree;
+  return catalog.default as MessageTree;
 }
 
 async function loadMessages(

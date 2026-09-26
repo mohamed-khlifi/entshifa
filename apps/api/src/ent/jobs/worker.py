@@ -58,7 +58,9 @@ async def process_one(
     elif run.status == "dead":
         logger.error("Job %s key=%s moved to dead letter", job_name, idempotency_key)
     elif result.skipped:
-        logger.info("Skipped job %s key=%s (status=%s)", job_name, idempotency_key, run.status)
+        logger.info(
+            "Skipped job %s key=%s (status=%s)", job_name, idempotency_key, run.status
+        )
     else:
         logger.info("Succeeded job %s key=%s", job_name, idempotency_key)
 

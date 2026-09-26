@@ -12,14 +12,20 @@ from ent.integrations.storage import get_object_storage
 from ent.integrations.storage.keys import variant_storage_key
 from ent.integrations.storage.malware import scan_bytes
 from ent.jobs.base import register_job
-from ent.jobs.tasks.media import is_processable_image, process_clinical_image, sha256_hex
+from ent.jobs.tasks.media import (
+    is_processable_image,
+    process_clinical_image,
+    sha256_hex,
+)
 from ent.settings import get_settings
 
 JOB_PROCESS_ATTACHMENT = "jobs.process_attachment"
 
 
 @register_job(JOB_PROCESS_ATTACHMENT, max_attempts=5)
-async def process_attachment(*, attachment_public_id: str, **_extra: Any) -> dict[str, Any]:
+async def process_attachment(
+    *, attachment_public_id: str, **_extra: Any
+) -> dict[str, Any]:
     """
     Strip EXIF, scan malware, compute checksum, write thumb/preview variants.
 

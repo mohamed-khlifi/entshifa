@@ -1,11 +1,16 @@
-'use client';
+"use client";
 
-import { Controller, useFormContext, type FieldPath, type FieldValues } from 'react-hook-form';
+import {
+  Controller,
+  useFormContext,
+  type FieldPath,
+  type FieldValues,
+} from "react-hook-form";
 
-import { FormFieldShell } from '@/components/forms/FormFieldShell';
-import { Input } from '@/components/ui/input';
-import { fieldTestId } from '@/lib/forms/field-test-id';
-import { testIdProps } from '@/lib/test/test-id';
+import { FormFieldShell } from "@/components/forms/FormFieldShell";
+import { Input } from "@/components/ui/input";
+import { fieldTestId } from "@/lib/forms/field-test-id";
+import { testIdProps } from "@/lib/test/test-id";
 
 export type NumberFieldProps<T extends FieldValues> = {
   name: FieldPath<T>;
@@ -63,10 +68,14 @@ export function NumberField<T extends FieldValues>({
             name={field.name}
             ref={field.ref}
             onBlur={field.onBlur}
-            value={field.value === undefined || field.value === null ? '' : String(field.value)}
+            value={
+              field.value === undefined || field.value === null
+                ? ""
+                : String(field.value)
+            }
             onChange={(event) => {
               const raw = event.target.value;
-              if (raw === '') {
+              if (raw === "") {
                 field.onChange(undefined);
                 return;
               }

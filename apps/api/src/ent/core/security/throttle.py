@@ -27,7 +27,9 @@ async def assert_login_allowed(*, email: str, ip_address: str | None) -> None:
 
 async def record_failed_login(*, email: str, ip_address: str | None) -> None:
     client = await get_redis()
-    await _increment(client, f"auth:login:account:{email.lower()}", _ACCOUNT_WINDOW_SECONDS)
+    await _increment(
+        client, f"auth:login:account:{email.lower()}", _ACCOUNT_WINDOW_SECONDS
+    )
     if ip_address:
         await _increment(client, f"auth:login:ip:{ip_address}", _IP_WINDOW_SECONDS)
 

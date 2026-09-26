@@ -1,11 +1,15 @@
-export { AutosaveIndicator } from './AutosaveIndicator';
-export { ConceptField } from './ConceptField';
-export { DateField } from './DateField';
-export { DirtyGuard } from './DirtyGuard';
-export { Form } from './Form';
-export { FormFieldShell } from './FormFieldShell';
-export { LateralityField, LATERALITY_VALUES, type LateralityValue } from './LateralityField';
-export { NumberField } from './NumberField';
-export { ScaleField } from './ScaleField';
-export { SelectField, type SelectOption } from './SelectField';
-export { TextField } from './TextField';
+export { AutosaveIndicator } from "./AutosaveIndicator";
+export { ConceptField } from "./ConceptField";
+export { DateField } from "./DateField";
+export { DirtyGuard } from "./DirtyGuard";
+export { Form } from "./Form";
+export { FormFieldShell } from "./FormFieldShell";
+export {
+  LateralityField,
+  LATERALITY_VALUES,
+  type LateralityValue,
+} from "./LateralityField";
+export { NumberField } from "./NumberField";
+export { ScaleField } from "./ScaleField";
+export { SelectField, type SelectOption } from "./SelectField";
+export { TextField } from "./TextField";

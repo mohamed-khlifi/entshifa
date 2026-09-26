@@ -7,13 +7,11 @@ from datetime import datetime
 from sqlalchemy import (
     Boolean,
     CheckConstraint,
-    DateTime,
     ForeignKey,
     Index,
     Integer,
     SmallInteger,
     String,
-    Text,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -57,9 +55,7 @@ class Attachment(ClinicalRecordMixin, Base):
     __audit_writes__ = True
     __table_args__ = (
         CheckConstraint(
-            "category IN ("
-            + ",".join(f"'{c}'" for c in ATTACHMENT_CATEGORIES)
-            + ")",
+            "category IN (" + ",".join(f"'{c}'" for c in ATTACHMENT_CATEGORIES) + ")",
             name="ck_attachment__category",
         ),
         CheckConstraint(
@@ -74,13 +70,20 @@ class Attachment(ClinicalRecordMixin, Base):
             "category",
             "captured_at",
         ),
-        Index("ix_attachment__clinic_id__storage_key", "clinic_id", "storage_key", unique=True),
+        Index(
+            "ix_attachment__clinic_id__storage_key",
+            "clinic_id",
+            "storage_key",
+            unique=True,
+        ),
     )
 
     # patient_id is nullable until the patients feature lands; FK deferred.
     patient_id: Mapped[int | None] = mapped_column(unsigned_bigint(), nullable=True)
     encounter_id: Mapped[int | None] = mapped_column(unsigned_bigint(), nullable=True)
-    procedure_record_id: Mapped[int | None] = mapped_column(unsigned_bigint(), nullable=True)
+    procedure_record_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(), nullable=True
+    )
 
     category: Mapped[str] = mapped_column(String(40), nullable=False)
     storage_key: Mapped[str] = mapped_column(String(400), nullable=False)
@@ -94,7 +97,9 @@ class Attachment(ClinicalRecordMixin, Base):
     width: Mapped[int | None] = mapped_column(SmallInteger(), nullable=True)
     height: Mapped[int | None] = mapped_column(SmallInteger(), nullable=True)
     duration_ms: Mapped[int | None] = mapped_column(Integer(), nullable=True)
-    body_site_concept_id: Mapped[int | None] = mapped_column(unsigned_bigint(), nullable=True)
+    body_site_concept_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(), nullable=True
+    )
     laterality: Mapped[str | None] = mapped_column(LateralityType(), nullable=True)
     map_region_code: Mapped[str | None] = mapped_column(String(80), nullable=True)
     captured_at: Mapped[datetime | None] = mapped_column(datetime6(), nullable=True)
@@ -107,7 +112,9 @@ class Attachment(ClinicalRecordMixin, Base):
         default=False,
         server_default="0",
     )
-    virus_scanned_at: Mapped[datetime | None] = mapped_column(datetime6(), nullable=True)
+    virus_scanned_at: Mapped[datetime | None] = mapped_column(
+        datetime6(), nullable=True
+    )
     processing_status: Mapped[str] = mapped_column(
         String(20),
         nullable=False,
@@ -158,4 +165,6 @@ class MediaVariant(ClinicalRecordMixin, Base):
     size_bytes: Mapped[int] = mapped_column(unsigned_bigint(), nullable=False)
     content_type: Mapped[str] = mapped_column(String(100), nullable=False)
 
-    attachment: Mapped[Attachment] = relationship("Attachment", back_populates="variants")
+    attachment: Mapped[Attachment] = relationship(
+        "Attachment", back_populates="variants"
+    )

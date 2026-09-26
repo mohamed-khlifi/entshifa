@@ -38,7 +38,9 @@ class RequestContextMiddleware:
 
         async def send_with_request_id(message: Message) -> None:
             if message["type"] == "http.response.start":
-                raw_headers: list[tuple[bytes, bytes]] = list(message.get("headers", []))
+                raw_headers: list[tuple[bytes, bytes]] = list(
+                    message.get("headers", [])
+                )
                 raw_headers.append((b"x-request-id", request_id.encode("latin-1")))
                 message = {**message, "headers": raw_headers}
             await send(message)

@@ -15,7 +15,7 @@ export class ApiError extends Error {
 
   constructor(payload: AppError) {
     super(payload.code);
-    this.name = 'ApiError';
+    this.name = "ApiError";
     this.code = payload.code;
     this.status = payload.status;
     this.context = payload.context;
@@ -29,12 +29,12 @@ export async function parseApiError(response: Response): Promise<ApiError> {
     body = await response.json();
   } catch {
     return new ApiError({
-      code: 'internal_error',
+      code: "internal_error",
       status: response.status,
       context: {},
     });
   }
-  if (typeof body === 'object' && body !== null && 'code' in body) {
+  if (typeof body === "object" && body !== null && "code" in body) {
     const record = body as Record<string, unknown>;
     return new ApiError({
       code: String(record.code),
@@ -44,7 +44,7 @@ export async function parseApiError(response: Response): Promise<ApiError> {
     });
   }
   return new ApiError({
-    code: 'internal_error',
+    code: "internal_error",
     status: response.status,
     context: {},
   });
@@ -58,7 +58,7 @@ type ErrorTranslator = (messageKey: string) => string;
  * flat keys containing ".".
  */
 export function apiErrorCodeToMessageKey(code: string): string {
-  const dotIndex = code.indexOf('.');
+  const dotIndex = code.indexOf(".");
   if (dotIndex === -1) {
     return code;
   }
@@ -79,8 +79,8 @@ export function resolveErrorMessage(
       return localized;
     }
   }
-  if (hasMessageKey('generic')) {
-    return translate('generic');
+  if (hasMessageKey("generic")) {
+    return translate("generic");
   }
   return error.code;
 }

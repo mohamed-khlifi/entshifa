@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { QueryClientProvider } from '@tanstack/react-query';
-import { ThemeProvider } from 'next-themes';
-import { useState, type ReactNode } from 'react';
-import { Toaster } from 'sonner';
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "next-themes";
+import { useState, type ReactNode } from "react";
+import { Toaster } from "sonner";
 
-import { createQueryClient } from '@/lib/api/query-client';
+import { createQueryClient } from "@/lib/api/query-client";
 
-import { PermissionProvider } from './permission-provider';
-import { SessionProvider, useSession } from './session-provider';
+import { PermissionProvider } from "./permission-provider";
+import { SessionProvider, useSession } from "./session-provider";
 
 function PermissionBridge({ children }: { children: ReactNode }) {
   const { session } = useSession();

@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   flexRender,
@@ -7,19 +7,22 @@ import {
   type ColumnDef,
   type RowSelectionState,
   type VisibilityState,
-} from '@tanstack/react-table';
-import { ArrowDown, ArrowUp, ArrowUpDown } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useMemo, useState, type ReactNode } from 'react';
+} from "@tanstack/react-table";
+import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useMemo, useState, type ReactNode } from "react";
 
-import { EmptyState } from '@/components/data/EmptyState';
-import { FilterBar } from '@/components/data/FilterBar';
-import { Pagination } from '@/components/data/Pagination';
-import { useTableUrlState, type TableSortDir } from '@/components/data/useTableUrlState';
-import { Button } from '@/components/ui/button';
-import { columnTestId, tableRowTestId } from '@/lib/forms/field-test-id';
-import { cn } from '@/lib/utils/cn';
-import { testIdProps, testIds } from '@/lib/test/test-id';
+import { EmptyState } from "@/components/data/EmptyState";
+import { FilterBar } from "@/components/data/FilterBar";
+import { Pagination } from "@/components/data/Pagination";
+import {
+  useTableUrlState,
+  type TableSortDir,
+} from "@/components/data/useTableUrlState";
+import { Button } from "@/components/ui/button";
+import { columnTestId, tableRowTestId } from "@/lib/forms/field-test-id";
+import { cn } from "@/lib/utils/cn";
+import { testIdProps, testIds } from "@/lib/test/test-id";
 
 export type DataTableColumnMeta = {
   /** Hide from column visibility toggle when false. */
@@ -49,7 +52,7 @@ function SortIcon({ active, dir }: { active: boolean; dir: TableSortDir }) {
   if (!active) {
     return <ArrowUpDown className="size-3.5 opacity-50" aria-hidden />;
   }
-  return dir === 'asc' ? (
+  return dir === "asc" ? (
     <ArrowUp className="size-3.5" aria-hidden />
   ) : (
     <ArrowDown className="size-3.5" aria-hidden />
@@ -70,10 +73,10 @@ export function DataTable<TData>({
   toolbar,
   className,
   defaultSortBy,
-  defaultSortDir = 'asc',
+  defaultSortDir = "asc",
   defaultPageSize = 20,
 }: DataTableProps<TData>) {
-  const t = useTranslations('data');
+  const t = useTranslations("data");
   const { state, setState } = useTableUrlState({
     defaultPageSize,
     defaultSortBy,
@@ -101,7 +104,7 @@ export function DataTable<TData>({
       columnVisibility,
       rowSelection,
       sorting: state.sortBy
-        ? [{ id: state.sortBy, desc: state.sortDir === 'desc' }]
+        ? [{ id: state.sortBy, desc: state.sortDir === "desc" }]
         : [],
       pagination: {
         pageIndex: state.page - 1,
@@ -112,7 +115,7 @@ export function DataTable<TData>({
     onRowSelectionChange: setRowSelection,
     onColumnVisibilityChange: (updater) => {
       const next =
-        typeof updater === 'function' ? updater(columnVisibility) : updater;
+        typeof updater === "function" ? updater(columnVisibility) : updater;
       const visibility: Record<string, boolean> = {};
       for (const [id, visible] of Object.entries(next)) {
         if (visible === false) {
@@ -123,9 +126,9 @@ export function DataTable<TData>({
     },
     onSortingChange: (updater) => {
       const current = state.sortBy
-        ? [{ id: state.sortBy, desc: state.sortDir === 'desc' }]
+        ? [{ id: state.sortBy, desc: state.sortDir === "desc" }]
         : [];
-      const next = typeof updater === 'function' ? updater(current) : updater;
+      const next = typeof updater === "function" ? updater(current) : updater;
       const first = next[0];
       if (!first) {
         setState({ sortBy: null, page: 1 });
@@ -133,7 +136,7 @@ export function DataTable<TData>({
       }
       setState({
         sortBy: first.id,
-        sortDir: first.desc ? 'desc' : 'asc',
+        sortDir: first.desc ? "desc" : "asc",
         page: 1,
       });
     },
@@ -141,19 +144,19 @@ export function DataTable<TData>({
 
   const hideableColumns = table
     .getAllColumns()
-    .filter((column) => column.getCanHide() && column.id !== 'select');
+    .filter((column) => column.getCanHide() && column.id !== "select");
 
   return (
-    <div className={cn('space-y-4', className)} {...testIdProps(testIds.data.table)}>
+    <div
+      className={cn("space-y-4", className)}
+      {...testIdProps(testIds.data.table)}
+    >
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <FilterBar
-          value={state.q}
-          onChange={(q) => setState({ q, page: 1 })}
-        />
+        <FilterBar value={state.q} onChange={(q) => setState({ q, page: 1 })} />
         <div className="flex flex-wrap items-center gap-2">
           {hideableColumns.length > 0 ? (
             <label className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>{t('columns.label')}</span>
+              <span>{t("columns.label")}</span>
               <select
                 className="h-9 rounded-lg border border-input bg-card px-2 text-sm"
                 value=""
@@ -168,13 +171,13 @@ export function DataTable<TData>({
                 {...testIdProps(testIds.data.columnVisibility)}
               >
                 <option value="" disabled>
-                  {t('columns.toggle')}
+                  {t("columns.toggle")}
                 </option>
                 {hideableColumns.map((column) => (
                   <option key={column.id} value={column.id}>
                     {column.getIsVisible()
-                      ? t('columns.hide', { id: column.id })
-                      : t('columns.show', { id: column.id })}
+                      ? t("columns.hide", { id: column.id })
+                      : t("columns.show", { id: column.id })}
                   </option>
                 ))}
               </select>
@@ -213,7 +216,7 @@ export function DataTable<TData>({
                             )}
                             <SortIcon
                               active={Boolean(sorted)}
-                              dir={sorted === 'desc' ? 'desc' : 'asc'}
+                              dir={sorted === "desc" ? "desc" : "asc"}
                             />
                           </Button>
                         ) : (
@@ -231,7 +234,10 @@ export function DataTable<TData>({
             <tbody>
               {isLoading ? (
                 Array.from({ length: 5 }).map((_, index) => (
-                  <tr key={`skeleton-${index}`} className="border-b border-border">
+                  <tr
+                    key={`skeleton-${index}`}
+                    className="border-b border-border"
+                  >
                     {columns.map((_, colIndex) => (
                       <td key={colIndex} className="px-4 py-3">
                         <div className="h-4 animate-pulse rounded bg-muted" />
@@ -243,8 +249,8 @@ export function DataTable<TData>({
                 <tr>
                   <td colSpan={columns.length} className="p-0">
                     <EmptyState
-                      title={t('error.title')}
-                      description={errorMessage ?? t('error.description')}
+                      title={t("error.title")}
+                      description={errorMessage ?? t("error.description")}
                     />
                   </td>
                 </tr>
@@ -252,8 +258,8 @@ export function DataTable<TData>({
                 <tr>
                   <td colSpan={columns.length} className="p-0">
                     <EmptyState
-                      title={emptyTitle ?? t('empty.title')}
-                      description={emptyDescription ?? t('empty.description')}
+                      title={emptyTitle ?? t("empty.title")}
+                      description={emptyDescription ?? t("empty.description")}
                     />
                   </td>
                 </tr>
@@ -266,7 +272,10 @@ export function DataTable<TData>({
                   >
                     {row.getVisibleCells().map((cell) => (
                       <td key={cell.id} className="px-4 py-3 text-foreground">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
                       </td>
                     ))}
                   </tr>

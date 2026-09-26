@@ -82,3 +82,27 @@ async def test_login_refresh_logout_and_permissions(app) -> None:
 
         logout = await client.post("/api/v1/auth/logout", cookies=new_cookies)
         assert logout.status_code == 204
+
+
+@pytest.mark.integration
+@pytest.mark.asyncio
+async def test_login_rejects_invalid_password(app) -> None:
+    from ent.core.db.session import get_session_factory
+    from tests.support.auth_seed import seed_auth_fixtures
+
+    factory = get_session_factory()
+    async with factory() as session:
+        try:
+            fixtures = await seed_auth_fixtures(session)
+            await session.commit()
+        except Exception as exc:
+            pytest.skip(f"Database not ready: {exc}")
+
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.post(
+            "/api/v1/auth/login",
+            json={"email": fixtures["email"], "password": "not-the-real-password"},
+        )
+    assert response.status_code == 401
+    assert response.json()["code"] == "auth.invalid_credentials"

@@ -58,5 +58,7 @@ async def get_dictionary(
     user: CurrentUser = Depends(require(Permission.AUTH_SESSION_READ)),
     service: TerminologyService = Depends(get_terminology_service),
 ) -> ConceptDictionaryResponse:
-    kind_list = [part.strip() for part in kinds.split(",") if part.strip()] if kinds else None
+    kind_list = (
+        [part.strip() for part in kinds.split(",") if part.strip()] if kinds else None
+    )
     return await service.get_dictionary(user=user, locale=locale, kinds=kind_list)

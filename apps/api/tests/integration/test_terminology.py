@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import pytest
 from sqlalchemy import select
-
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ent.core.db.session import get_session_factory
@@ -18,7 +17,9 @@ from tests.support.auth_seed import seed_auth_fixtures
 
 async def _user_for_clinic(session: AsyncSession, clinic_public_id: str) -> CurrentUser:
     clinic = (
-        await session.execute(select(Clinic).where(Clinic.public_id == clinic_public_id))
+        await session.execute(
+            select(Clinic).where(Clinic.public_id == clinic_public_id)
+        )
     ).scalar_one()
     return CurrentUser(
         user_id=1,
@@ -116,13 +117,17 @@ async def test_missing_translation_falls_back_to_code_marker() -> None:
         ).scalar_one()
         # Remove French translation to force missing path for locale=ar default=en.
         fr_rows = (
-            await session.execute(
-                select(ConceptTranslation).where(
-                    ConceptTranslation.concept_id == concept.id,
-                    ConceptTranslation.locale == "fr",
-                ),
+            (
+                await session.execute(
+                    select(ConceptTranslation).where(
+                        ConceptTranslation.concept_id == concept.id,
+                        ConceptTranslation.locale == "fr",
+                    ),
+                )
             )
-        ).scalars().all()
+            .scalars()
+            .all()
+        )
         for row in fr_rows:
             await session.delete(row)
         await session.commit()

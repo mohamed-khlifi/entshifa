@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { Search } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useEffect, useState, type ReactNode } from 'react';
+import { Search } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useEffect, useState, type ReactNode } from "react";
 
-import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils/cn';
-import { testIdProps, testIds } from '@/lib/test/test-id';
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils/cn";
+import { testIdProps, testIds } from "@/lib/test/test-id";
 
 export type FilterBarProps = {
   value: string;
@@ -25,7 +25,7 @@ export function FilterBar({
   trailing,
   debounceMs = 300,
 }: FilterBarProps) {
-  const t = useTranslations('data');
+  const t = useTranslations("data");
   const [local, setLocal] = useState(value);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export function FilterBar({
 
   return (
     <div
-      className={cn('flex flex-wrap items-center gap-3', className)}
+      className={cn("flex flex-wrap items-center gap-3", className)}
       {...testIdProps(testIds.data.filterBar)}
     >
       <div className="relative min-w-[12rem] flex-1">
@@ -55,9 +55,9 @@ export function FilterBar({
           type="search"
           value={local}
           onChange={(event) => setLocal(event.target.value)}
-          placeholder={placeholder ?? t('filter.placeholder')}
+          placeholder={placeholder ?? t("filter.placeholder")}
           className="ps-9"
-          aria-label={t('filter.label')}
+          aria-label={t("filter.label")}
           {...testIdProps(testIds.data.filterInput)}
         />
       </div>

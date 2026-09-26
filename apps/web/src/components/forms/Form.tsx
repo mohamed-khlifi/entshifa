@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 import {
   FormProvider,
   type FieldValues,
   type UseFormReturn,
-} from 'react-hook-form';
+} from "react-hook-form";
 
-import { cn } from '@/lib/utils/cn';
+import { cn } from "@/lib/utils/cn";
 
 type FormProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -25,7 +25,7 @@ export function Form<T extends FieldValues>({
   return (
     <FormProvider {...form}>
       <form
-        className={cn('space-y-5', className)}
+        className={cn("space-y-5", className)}
         onSubmit={(event) => {
           event.preventDefault();
           void onSubmit(event);

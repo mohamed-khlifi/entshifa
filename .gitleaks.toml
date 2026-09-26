@@ -1,0 +1,8 @@
+title = "EntShifa gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Documented local-only placeholders in .env.example"
+paths = ['''\.env\.example$''']

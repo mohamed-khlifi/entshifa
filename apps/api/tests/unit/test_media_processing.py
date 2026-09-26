@@ -38,7 +38,9 @@ def test_local_storage_roundtrip(tmp_path) -> None:
     key = "clinic/01ARZ3NDEKTSV4RRFFQ69G5FAV/patient/_none/logo/01ARZ3NDEKTSV4RRFFQ69G5FB1.png"
 
     async def _run() -> None:
-        await storage.put_object_bytes(key=key, data=b"png-bytes", content_type="image/png")
+        await storage.put_object_bytes(
+            key=key, data=b"png-bytes", content_type="image/png"
+        )
         assert await storage.object_exists(key=key)
         assert await storage.get_object_bytes(key=key) == b"png-bytes"
         upload = await storage.create_presigned_upload(

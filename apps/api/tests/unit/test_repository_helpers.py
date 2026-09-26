@@ -37,7 +37,9 @@ def test_apply_sort_accepts_camel_and_descending() -> None:
 
 
 def test_cursor_mode_clears_offset() -> None:
-    resolved = normalize_pagination(PaginationParams(limit=10, offset=5, cursor="01JCURSOR"))
+    resolved = normalize_pagination(
+        PaginationParams(limit=10, offset=5, cursor="01JCURSOR")
+    )
     assert resolved.cursor == "01JCURSOR"
     assert resolved.offset is None
     assert resolved.limit == 10

@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useTranslations } from 'next-intl';
-import { useCallback, useMemo, useState } from 'react';
-import { toast } from 'sonner';
+import { useTranslations } from "next-intl";
+import { useCallback, useMemo, useState } from "react";
+import { toast } from "sonner";
 
 import {
   AutosaveIndicator,
@@ -15,29 +15,35 @@ import {
   ScaleField,
   SelectField,
   TextField,
-} from '@/components/forms';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useClinicalForm } from '@/lib/forms/createForm';
-import { MEDICAL_UNITS } from '@/lib/i18n/format';
-import { testIdProps, testIds } from '@/lib/test/test-id';
+} from "@/components/forms";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useClinicalForm } from "@/lib/forms/createForm";
+import { MEDICAL_UNITS } from "@/lib/i18n/format";
+import { testIdProps, testIds } from "@/lib/test/test-id";
 
-import { createUiKitDemoSchema } from '../schemas/demo.schema';
+import { createUiKitDemoSchema } from "../schemas/demo.schema";
 
 export function UiKitFormDemo() {
-  const t = useTranslations('uiKit');
+  const t = useTranslations("uiKit");
   const [version, setVersion] = useState(1);
 
   const schema = useMemo(
     () =>
       createUiKitDemoSchema({
-        lastNameRequired: t('form.validation.lastNameRequired'),
-        weightRequired: t('form.validation.weightRequired'),
-        sexRequired: t('form.validation.sexRequired'),
-        birthDateRequired: t('form.validation.birthDateRequired'),
-        sideRequired: t('form.validation.sideRequired'),
-        diagnosisRequired: t('form.validation.diagnosisRequired'),
-        painRequired: t('form.validation.painRequired'),
+        lastNameRequired: t("form.validation.lastNameRequired"),
+        weightRequired: t("form.validation.weightRequired"),
+        sexRequired: t("form.validation.sexRequired"),
+        birthDateRequired: t("form.validation.birthDateRequired"),
+        sideRequired: t("form.validation.sideRequired"),
+        diagnosisRequired: t("form.validation.diagnosisRequired"),
+        painRequired: t("form.validation.painRequired"),
       }),
     [t],
   );
@@ -53,22 +59,22 @@ export function UiKitFormDemo() {
   );
 
   const onSubmit = useCallback(async () => {
-    toast.success(t('form.submit'));
+    toast.success(t("form.submit"));
   }, [t]);
 
   const { form, handleSubmit, autosaveStatus } = useClinicalForm({
     schema,
     defaultValues: {
-      lastName: '',
+      lastName: "",
       weightKg: undefined,
-      sex: '',
-      birthDate: '',
+      sex: "",
+      birthDate: "",
       side: undefined,
-      diagnosis: '',
+      diagnosis: "",
       painScore: undefined,
     },
     autosave: {
-      key: 'ui-kit-demo-form',
+      key: "ui-kit-demo-form",
       version,
       delayMs: 2000,
       onSave,
@@ -77,23 +83,23 @@ export function UiKitFormDemo() {
   });
 
   const sexOptions = [
-    { value: 'female', label: t('form.sexFemale') },
-    { value: 'male', label: t('form.sexMale') },
-    { value: 'other', label: t('form.sexOther') },
+    { value: "female", label: t("form.sexFemale") },
+    { value: "male", label: t("form.sexMale") },
+    { value: "other", label: t("form.sexOther") },
   ];
 
   const conceptOptions = [
-    { value: 'concept-otitis', label: t('form.concepts.otitis') },
-    { value: 'concept-rhinitis', label: t('form.concepts.rhinitis') },
-    { value: 'concept-vertigo', label: t('form.concepts.vertigo') },
+    { value: "concept-otitis", label: t("form.concepts.otitis") },
+    { value: "concept-rhinitis", label: t("form.concepts.rhinitis") },
+    { value: "concept-vertigo", label: t("form.concepts.vertigo") },
   ];
 
   return (
     <Card {...testIdProps(testIds.uiKit.form)}>
       <CardHeader className="flex flex-row items-start justify-between gap-4 space-y-0">
         <div className="space-y-1.5">
-          <CardTitle>{t('form.title')}</CardTitle>
-          <CardDescription>{t('form.description')}</CardDescription>
+          <CardTitle>{t("form.title")}</CardTitle>
+          <CardDescription>{t("form.description")}</CardDescription>
         </div>
         <AutosaveIndicator status={autosaveStatus} />
       </CardHeader>
@@ -103,13 +109,13 @@ export function UiKitFormDemo() {
             <div className="grid gap-5 sm:grid-cols-2">
               <TextField
                 name="lastName"
-                label={t('form.lastName')}
-                description={t('form.lastNameDescription')}
+                label={t("form.lastName")}
+                description={t("form.lastNameDescription")}
                 required
               />
               <NumberField
                 name="weightKg"
-                label={t('form.weightKg')}
+                label={t("form.weightKg")}
                 unit={MEDICAL_UNITS.kg}
                 min={0.5}
                 max={300}
@@ -118,27 +124,41 @@ export function UiKitFormDemo() {
               />
               <SelectField
                 name="sex"
-                label={t('form.sex')}
+                label={t("form.sex")}
                 options={sexOptions}
-                placeholder={t('form.sexPlaceholder')}
+                placeholder={t("form.sexPlaceholder")}
                 required
               />
-              <DateField name="birthDate" label={t('form.birthDate')} required />
-              <LateralityField name="side" label={t('form.side')} required />
+              <DateField
+                name="birthDate"
+                label={t("form.birthDate")}
+                required
+              />
+              <LateralityField name="side" label={t("form.side")} required />
               <ConceptField
                 name="diagnosis"
-                label={t('form.diagnosis')}
+                label={t("form.diagnosis")}
                 options={conceptOptions}
                 valueSet="ent-demo-findings"
-                placeholder={t('form.diagnosisPlaceholder')}
+                placeholder={t("form.diagnosisPlaceholder")}
                 required
               />
               <div className="sm:col-span-2">
-                <ScaleField name="painScore" label={t('form.painScore')} min={0} max={10} required />
+                <ScaleField
+                  name="painScore"
+                  label={t("form.painScore")}
+                  min={0}
+                  max={10}
+                  required
+                />
               </div>
             </div>
-            <Button type="submit" className="mt-6" {...testIdProps(testIds.uiKit.formSubmit)}>
-              {t('form.submit')}
+            <Button
+              type="submit"
+              className="mt-6"
+              {...testIdProps(testIds.uiKit.formSubmit)}
+            >
+              {t("form.submit")}
             </Button>
           </DirtyGuard>
         </Form>

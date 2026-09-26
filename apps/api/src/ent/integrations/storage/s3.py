@@ -36,7 +36,9 @@ class S3ObjectStorage:
 
     async def ping(self) -> None:
         session = get_session()
-        async with session.create_client("s3", **_client_kwargs(self._settings)) as client:
+        async with session.create_client(
+            "s3", **_client_kwargs(self._settings)
+        ) as client:
             await client.head_bucket(Bucket=self._bucket)
 
     async def create_presigned_upload(
@@ -47,7 +49,9 @@ class S3ObjectStorage:
         expires_in_seconds: int,
     ) -> PresignedUrl:
         session = get_session()
-        async with session.create_client("s3", **_client_kwargs(self._settings)) as client:
+        async with session.create_client(
+            "s3", **_client_kwargs(self._settings)
+        ) as client:
             url = await client.generate_presigned_url(
                 "put_object",
                 Params={
@@ -76,7 +80,9 @@ class S3ObjectStorage:
         if filename:
             params["ResponseContentDisposition"] = f'inline; filename="{filename}"'
         session = get_session()
-        async with session.create_client("s3", **_client_kwargs(self._settings)) as client:
+        async with session.create_client(
+            "s3", **_client_kwargs(self._settings)
+        ) as client:
             url = await client.generate_presigned_url(
                 "get_object",
                 Params=params,
@@ -92,7 +98,9 @@ class S3ObjectStorage:
 
     async def object_exists(self, *, key: str) -> bool:
         session = get_session()
-        async with session.create_client("s3", **_client_kwargs(self._settings)) as client:
+        async with session.create_client(
+            "s3", **_client_kwargs(self._settings)
+        ) as client:
             try:
                 await client.head_object(Bucket=self._bucket, Key=key)
             except ClientError as exc:
@@ -104,7 +112,9 @@ class S3ObjectStorage:
 
     async def get_object_bytes(self, *, key: str) -> bytes:
         session = get_session()
-        async with session.create_client("s3", **_client_kwargs(self._settings)) as client:
+        async with session.create_client(
+            "s3", **_client_kwargs(self._settings)
+        ) as client:
             response = await client.get_object(Bucket=self._bucket, Key=key)
             body = response["Body"]
             payload = await body.read()
@@ -118,7 +128,9 @@ class S3ObjectStorage:
         content_type: str,
     ) -> None:
         session = get_session()
-        async with session.create_client("s3", **_client_kwargs(self._settings)) as client:
+        async with session.create_client(
+            "s3", **_client_kwargs(self._settings)
+        ) as client:
             await client.put_object(
                 Bucket=self._bucket,
                 Key=key,
@@ -128,7 +140,9 @@ class S3ObjectStorage:
 
     async def delete_object(self, *, key: str) -> None:
         session = get_session()
-        async with session.create_client("s3", **_client_kwargs(self._settings)) as client:
+        async with session.create_client(
+            "s3", **_client_kwargs(self._settings)
+        ) as client:
             await client.delete_object(Bucket=self._bucket, Key=key)
 
 

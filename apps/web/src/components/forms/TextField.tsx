@@ -1,11 +1,16 @@
-'use client';
+"use client";
 
-import { Controller, useFormContext, type FieldPath, type FieldValues } from 'react-hook-form';
+import {
+  Controller,
+  useFormContext,
+  type FieldPath,
+  type FieldValues,
+} from "react-hook-form";
 
-import { FormFieldShell } from '@/components/forms/FormFieldShell';
-import { Input } from '@/components/ui/input';
-import { fieldTestId } from '@/lib/forms/field-test-id';
-import { testIdProps } from '@/lib/test/test-id';
+import { FormFieldShell } from "@/components/forms/FormFieldShell";
+import { Input } from "@/components/ui/input";
+import { fieldTestId } from "@/lib/forms/field-test-id";
+import { testIdProps } from "@/lib/test/test-id";
 
 export type TextFieldProps<T extends FieldValues> = {
   name: FieldPath<T>;
@@ -13,7 +18,7 @@ export type TextFieldProps<T extends FieldValues> = {
   description?: string;
   required?: boolean;
   unit?: string;
-  type?: 'text' | 'email' | 'password' | 'tel' | 'search';
+  type?: "text" | "email" | "password" | "tel" | "search";
   autoComplete?: string;
   disabled?: boolean;
   className?: string;
@@ -25,7 +30,7 @@ export function TextField<T extends FieldValues>({
   description,
   required,
   unit,
-  type = 'text',
+  type = "text",
   autoComplete,
   disabled,
   className,
@@ -56,7 +61,7 @@ export function TextField<T extends FieldValues>({
             aria-invalid={fieldState.invalid}
             {...testIdProps(inputId)}
             {...field}
-            value={field.value ?? ''}
+            value={field.value ?? ""}
           />
         </FormFieldShell>
       )}

@@ -17,6 +17,7 @@ venv/
 htmlcov/
 .coverage
 .coverage.*
+coverage.json
 
 # ---- Node / Next.js ----
 node_modules/

@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import sys
 from pathlib import Path
 
 from ent.main import create_app
@@ -28,7 +27,9 @@ def export_openapi(out_path: Path) -> Path:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Export EntShifa OpenAPI to packages/contracts.")
+    parser = argparse.ArgumentParser(
+        description="Export EntShifa OpenAPI to packages/contracts."
+    )
     parser.add_argument(
         "--out",
         type=Path,

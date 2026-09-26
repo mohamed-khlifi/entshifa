@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   useForm,
   type DefaultValues,
   type FieldValues,
   type UseFormReturn,
-} from 'react-hook-form';
-import type { z } from 'zod';
+} from "react-hook-form";
+import type { z } from "zod";
 
-import { ApiError } from '@/lib/api/errors';
+import { ApiError } from "@/lib/api/errors";
 import {
   AUTOSAVE_DEFAULT_DELAY_MS,
   AUTOSAVE_DEFAULT_MAX_WAIT_MS,
@@ -20,8 +20,8 @@ import {
   writeDraftSnapshot,
   type AutosaveConfig,
   type AutosaveStatus,
-} from '@/lib/forms/autosave';
-import { applyServerFieldErrors } from '@/lib/forms/apply-server-field-errors';
+} from "@/lib/forms/autosave";
+import { applyServerFieldErrors } from "@/lib/forms/apply-server-field-errors";
 
 export type CreateClinicalFormConfig<S extends z.ZodTypeAny> = {
   schema: S;
@@ -46,10 +46,10 @@ export function useClinicalForm<S extends z.ZodTypeAny>(
   const form = useForm<Values>({
     resolver: zodResolver(config.schema),
     defaultValues: config.defaultValues,
-    mode: 'onBlur',
+    mode: "onBlur",
   });
 
-  const [autosaveStatus, setAutosaveStatus] = useState<AutosaveStatus>('idle');
+  const [autosaveStatus, setAutosaveStatus] = useState<AutosaveStatus>("idle");
   const versionRef = useRef(config.autosave?.version ?? 0);
   const firstDirtyAtRef = useRef<number | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -89,8 +89,8 @@ export function useClinicalForm<S extends z.ZodTypeAny>(
     if (!autosave) {
       return;
     }
-    if (typeof navigator !== 'undefined' && !navigator.onLine) {
-      setAutosaveStatus('offline');
+    if (typeof navigator !== "undefined" && !navigator.onLine) {
+      setAutosaveStatus("offline");
       return;
     }
 
@@ -102,11 +102,11 @@ export function useClinicalForm<S extends z.ZodTypeAny>(
       >,
     );
     if (Object.keys(dirty).length === 0) {
-      setAutosaveStatus('idle');
+      setAutosaveStatus("idle");
       return;
     }
 
-    setAutosaveStatus('saving');
+    setAutosaveStatus("saving");
     try {
       await writeDraftSnapshot(autosave.key, values);
       const result = await autosave.onSave({
@@ -116,18 +116,18 @@ export function useClinicalForm<S extends z.ZodTypeAny>(
       versionRef.current = result.version;
       form.reset(form.getValues(), { keepValues: true });
       await clearDraftSnapshot(autosave.key);
-      setAutosaveStatus('saved');
+      setAutosaveStatus("saved");
       firstDirtyAtRef.current = null;
     } catch (error) {
       if (error instanceof ApiError && error.status === 409) {
-        setAutosaveStatus('conflict');
+        setAutosaveStatus("conflict");
         autosave.onConflict?.({
           local: dirty,
           serverVersion: Number(error.context.version ?? versionRef.current),
         });
         return;
       }
-      setAutosaveStatus('error');
+      setAutosaveStatus("error");
     }
   }, [form]);
 
@@ -149,7 +149,9 @@ export function useClinicalForm<S extends z.ZodTypeAny>(
       const autosave = autosaveRef.current;
       const delay = autosave?.delayMs ?? AUTOSAVE_DEFAULT_DELAY_MS;
       const maxWait = autosave?.maxWaitMs ?? AUTOSAVE_DEFAULT_MAX_WAIT_MS;
-      const elapsed = firstDirtyAtRef.current ? now - firstDirtyAtRef.current : 0;
+      const elapsed = firstDirtyAtRef.current
+        ? now - firstDirtyAtRef.current
+        : 0;
       const wait = Math.min(delay, Math.max(0, maxWait - elapsed));
       timerRef.current = setTimeout(() => {
         void flushAutosave();
@@ -170,12 +172,12 @@ export function useClinicalForm<S extends z.ZodTypeAny>(
     const onOnline = () => {
       void flushAutosave();
     };
-    const onOffline = () => setAutosaveStatus('offline');
-    window.addEventListener('online', onOnline);
-    window.addEventListener('offline', onOffline);
+    const onOffline = () => setAutosaveStatus("offline");
+    window.addEventListener("online", onOnline);
+    window.addEventListener("offline", onOffline);
     return () => {
-      window.removeEventListener('online', onOnline);
-      window.removeEventListener('offline', onOffline);
+      window.removeEventListener("online", onOnline);
+      window.removeEventListener("offline", onOffline);
     };
   }, [flushAutosave]);
 
@@ -193,7 +195,7 @@ export function useClinicalForm<S extends z.ZodTypeAny>(
       if (autosaveRef.current) {
         await clearDraftSnapshot(autosaveRef.current.key);
       }
-      setAutosaveStatus('idle');
+      setAutosaveStatus("idle");
     } catch (error) {
       if (error instanceof ApiError) {
         applyApiError(error);

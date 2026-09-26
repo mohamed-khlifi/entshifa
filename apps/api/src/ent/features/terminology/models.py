@@ -90,11 +90,11 @@ class CodeSystem(
 class Concept(_ReferenceMixins, Base):
     __tablename__ = "concept"
     __table_args__ = (
-        UniqueConstraint("code_system_id", "code", name="uq_concept__code_system_id__code"),
+        UniqueConstraint(
+            "code_system_id", "code", name="uq_concept__code_system_id__code"
+        ),
         CheckConstraint(
-            "kind IN ("
-            + ",".join(f"'{k}'" for k in CONCEPT_KINDS)
-            + ")",
+            "kind IN (" + ",".join(f"'{k}'" for k in CONCEPT_KINDS) + ")",
             name="ck_concept__kind",
         ),
         Index("ix_concept__kind__parent_id", "kind", "parent_id"),
@@ -117,8 +117,12 @@ class Concept(_ReferenceMixins, Base):
         nullable=True,
     )
     numeric_value: Mapped[Decimal | None] = mapped_column(Numeric(10, 3), nullable=True)
-    sort_order: Mapped[int] = mapped_column(Integer, nullable=False, default=0, server_default="0")
-    properties: Mapped[dict[str, Any] | None] = mapped_column(mysql_json(), nullable=True)
+    sort_order: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0, server_default="0"
+    )
+    properties: Mapped[dict[str, Any] | None] = mapped_column(
+        mysql_json(), nullable=True
+    )
     is_active: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
@@ -133,7 +137,9 @@ class Concept(_ReferenceMixins, Base):
     )
 
     code_system: Mapped[CodeSystem] = relationship(back_populates="concepts")
-    translations: Mapped[list[ConceptTranslation]] = relationship(back_populates="concept")
+    translations: Mapped[list[ConceptTranslation]] = relationship(
+        back_populates="concept"
+    )
 
 
 class ConceptTranslation(_ReferenceMixins, Base):
@@ -216,7 +222,9 @@ class ValueSet(_ReferenceMixins, Base):
     members: Mapped[list[ValueSetMember]] = relationship(back_populates="value_set")
 
 
-class ValueSetMember(SurrogatePkMixin, PublicIdMixin, TimestampMixin, SoftDeleteMixin, Base):
+class ValueSetMember(
+    SurrogatePkMixin, PublicIdMixin, TimestampMixin, SoftDeleteMixin, Base
+):
     __tablename__ = "value_set_member"
     __table_args__ = (
         UniqueConstraint(
@@ -225,7 +233,11 @@ class ValueSetMember(SurrogatePkMixin, PublicIdMixin, TimestampMixin, SoftDelete
             "clinic_scope",
             name="uq_value_set_member__value_set_id__concept_id__clinic_scope",
         ),
-        Index("ix_value_set_member__value_set_id__sort_order", "value_set_id", "sort_order"),
+        Index(
+            "ix_value_set_member__value_set_id__sort_order",
+            "value_set_id",
+            "sort_order",
+        ),
     )
 
     value_set_id: Mapped[int] = mapped_column(
@@ -238,7 +250,9 @@ class ValueSetMember(SurrogatePkMixin, PublicIdMixin, TimestampMixin, SoftDelete
         ForeignKey("concept.id", ondelete="RESTRICT", onupdate="RESTRICT"),
         nullable=False,
     )
-    sort_order: Mapped[int] = mapped_column(Integer, nullable=False, default=0, server_default="0")
+    sort_order: Mapped[int] = mapped_column(
+        Integer, nullable=False, default=0, server_default="0"
+    )
     is_default: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,

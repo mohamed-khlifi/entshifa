@@ -38,7 +38,9 @@ async def ensure_all_permissions(session: AsyncSession) -> int:
         ).scalar_one_or_none()
         if existing is not None:
             continue
-        await repo.ensure_permission_row(perm.value, perm.value.split(".", maxsplit=1)[0])
+        await repo.ensure_permission_row(
+            perm.value, perm.value.split(".", maxsplit=1)[0]
+        )
         created += 1
     return created
 

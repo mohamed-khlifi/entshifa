@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslations } from 'next-intl';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useRouter } from '@/lib/i18n/navigation';
-import { ApiError, resolveErrorMessage } from '@/lib/api/errors';
-import { testIdProps, testIds } from '@/lib/test/test-id';
-import { useSession } from '@/providers/session-provider';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useRouter } from "@/lib/i18n/navigation";
+import { ApiError, resolveErrorMessage } from "@/lib/api/errors";
+import { testIdProps, testIds } from "@/lib/test/test-id";
+import { useSession } from "@/providers/session-provider";
 
 import {
   createLoginSchema,
   type LoginFormValues,
-} from '../schemas/login.schema';
+} from "../schemas/login.schema";
 
 export function LoginForm() {
-  const t = useTranslations('auth');
-  const tErrors = useTranslations('errors');
+  const t = useTranslations("auth");
+  const tErrors = useTranslations("errors");
   const router = useRouter();
   const { login } = useSession();
   const [apiError, setApiError] = useState<string | null>(null);
@@ -32,14 +32,14 @@ export function LoginForm() {
     formState: { errors, isSubmitting },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { email: '', password: '' },
+    defaultValues: { email: "", password: "" },
   });
 
   const onSubmit = handleSubmit(async (values) => {
     setApiError(null);
     try {
       await login(values.email, values.password);
-      router.replace('/home');
+      router.replace("/home");
     } catch (error) {
       if (error instanceof ApiError) {
         setApiError(
@@ -51,21 +51,21 @@ export function LoginForm() {
         );
         return;
       }
-      setApiError(tErrors('generic'));
+      setApiError(tErrors("generic"));
     }
   });
 
   return (
     <form className="space-y-5" onSubmit={onSubmit} noValidate>
       <div className="space-y-2">
-        <Label htmlFor="login-email">{t('login.email')}</Label>
+        <Label htmlFor="login-email">{t("login.email")}</Label>
         <Input
           id="login-email"
           type="email"
           autoComplete="username"
           disabled={isSubmitting}
           {...testIdProps(testIds.auth.login.email)}
-          {...register('email')}
+          {...register("email")}
         />
         {errors.email ? (
           <p className="text-sm text-destructive" role="alert">
@@ -74,14 +74,14 @@ export function LoginForm() {
         ) : null}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="login-password">{t('login.password')}</Label>
+        <Label htmlFor="login-password">{t("login.password")}</Label>
         <Input
           id="login-password"
           type="password"
           autoComplete="current-password"
           disabled={isSubmitting}
           {...testIdProps(testIds.auth.login.password)}
-          {...register('password')}
+          {...register("password")}
         />
         {errors.password ? (
           <p className="text-sm text-destructive" role="alert">
@@ -104,7 +104,7 @@ export function LoginForm() {
         disabled={isSubmitting}
         {...testIdProps(testIds.auth.login.submit)}
       >
-        {t('login.submit')}
+        {t("login.submit")}
       </Button>
     </form>
   );

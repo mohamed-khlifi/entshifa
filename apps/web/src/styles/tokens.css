@@ -18,7 +18,8 @@
   --input: 214 24% 88%;
   --ring: 192 82% 31%;
   --radius: 0.625rem;
-  --shadow-soft: 0 1px 2px hsl(215 28% 17% / 0.04), 0 8px 24px hsl(215 28% 17% / 0.06);
+  --shadow-soft:
+    0 1px 2px hsl(215 28% 17% / 0.04), 0 8px 24px hsl(215 28% 17% / 0.06);
   --gradient-brand: linear-gradient(
     145deg,
     hsl(192 82% 28%) 0%,

@@ -22,7 +22,12 @@ class AuditLog(SurrogatePkMixin, Base):
     __tablename__ = "audit_log"
     __table_args__ = (
         Index("ix_audit_log__clinic_id__occurred_at", "clinic_id", "occurred_at"),
-        Index("ix_audit_log__clinic_id__user_id__occurred_at", "clinic_id", "user_id", "occurred_at"),
+        Index(
+            "ix_audit_log__clinic_id__user_id__occurred_at",
+            "clinic_id",
+            "user_id",
+            "occurred_at",
+        ),
         Index("ix_audit_log__entity_type__entity_id", "entity_type", "entity_id"),
         Index(
             "ix_audit_log__clinic_id__patient_id__occurred_at",
@@ -76,7 +81,12 @@ class AccessLog(SurrogatePkMixin, Base):
     __tablename__ = "access_log"
     __table_args__ = (
         Index("ix_access_log__clinic_id__occurred_at", "clinic_id", "occurred_at"),
-        Index("ix_access_log__clinic_id__user_id__occurred_at", "clinic_id", "user_id", "occurred_at"),
+        Index(
+            "ix_access_log__clinic_id__user_id__occurred_at",
+            "clinic_id",
+            "user_id",
+            "occurred_at",
+        ),
         Index("ix_access_log__entity_type__entity_id", "entity_type", "entity_id"),
         Index(
             "ix_access_log__clinic_id__patient_id__occurred_at",

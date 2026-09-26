@@ -42,7 +42,7 @@ def _column_names(model: type[object]) -> set[str]:
 
 def test_clinic_mixin_columns_match_section_23() -> None:
     cols = _column_names(Clinic)
-    assert SECTION_23_COLUMNS <= cols
+    assert cols >= SECTION_23_COLUMNS
     assert "clinic_id" not in cols
 
 

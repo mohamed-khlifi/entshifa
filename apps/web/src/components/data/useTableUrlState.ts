@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { usePathname, useRouter } from '@/lib/i18n/navigation';
-import { useSearchParams } from 'next/navigation';
-import { useCallback, useMemo } from 'react';
+import { usePathname, useRouter } from "@/lib/i18n/navigation";
+import { useSearchParams } from "next/navigation";
+import { useCallback, useMemo } from "react";
 
-export type TableSortDir = 'asc' | 'desc';
+export type TableSortDir = "asc" | "desc";
 
 export type TableUrlState = {
   page: number;
@@ -22,9 +22,9 @@ function parseVisibility(raw: string | null): Record<string, boolean> {
     return {};
   }
   const out: Record<string, boolean> = {};
-  for (const part of raw.split(',')) {
+  for (const part of raw.split(",")) {
     const id = part.trim();
-    if (id.startsWith('-') && id.length > 1) {
+    if (id.startsWith("-") && id.length > 1) {
       out[id.slice(1)] = false;
     } else if (id.length > 0) {
       out[id] = true;
@@ -33,11 +33,13 @@ function parseVisibility(raw: string | null): Record<string, boolean> {
   return out;
 }
 
-function serializeVisibility(visibility: Record<string, boolean>): string | null {
+function serializeVisibility(
+  visibility: Record<string, boolean>,
+): string | null {
   const parts = Object.entries(visibility)
     .filter(([, visible]) => !visible)
     .map(([id]) => `-${id}`);
-  return parts.length > 0 ? parts.join(',') : null;
+  return parts.length > 0 ? parts.join(",") : null;
 }
 
 export function useTableUrlState(options?: {
@@ -54,45 +56,54 @@ export function useTableUrlState(options?: {
   const defaultPageSize = options?.defaultPageSize ?? DEFAULT_PAGE_SIZE;
 
   const state = useMemo<TableUrlState>(() => {
-    const page = Math.max(1, Number(searchParams.get('page') ?? '1') || 1);
+    const page = Math.max(1, Number(searchParams.get("page") ?? "1") || 1);
     const pageSize = Math.max(
       1,
-      Math.min(100, Number(searchParams.get('pageSize') ?? String(defaultPageSize)) || defaultPageSize),
+      Math.min(
+        100,
+        Number(searchParams.get("pageSize") ?? String(defaultPageSize)) ||
+          defaultPageSize,
+      ),
     );
-    const sortBy = searchParams.get('sortBy') ?? options?.defaultSortBy ?? null;
-    const sortDirRaw = searchParams.get('sortDir');
+    const sortBy = searchParams.get("sortBy") ?? options?.defaultSortBy ?? null;
+    const sortDirRaw = searchParams.get("sortDir");
     const sortDir: TableSortDir =
-      sortDirRaw === 'desc' || sortDirRaw === 'asc'
+      sortDirRaw === "desc" || sortDirRaw === "asc"
         ? sortDirRaw
-        : (options?.defaultSortDir ?? 'asc');
-    const q = searchParams.get('q') ?? '';
-    const visibility = parseVisibility(searchParams.get('cols'));
+        : (options?.defaultSortDir ?? "asc");
+    const q = searchParams.get("q") ?? "";
+    const visibility = parseVisibility(searchParams.get("cols"));
     return { page, pageSize, sortBy, sortDir, q, visibility };
-  }, [defaultPageSize, options?.defaultSortBy, options?.defaultSortDir, searchParams]);
+  }, [
+    defaultPageSize,
+    options?.defaultSortBy,
+    options?.defaultSortDir,
+    searchParams,
+  ]);
 
   const setState = useCallback(
     (patch: Partial<TableUrlState>) => {
       const next: TableUrlState = { ...state, ...patch };
       const params = new URLSearchParams(searchParams.toString());
-      params.set('page', String(next.page));
-      params.set('pageSize', String(next.pageSize));
+      params.set("page", String(next.page));
+      params.set("pageSize", String(next.pageSize));
       if (next.sortBy) {
-        params.set('sortBy', next.sortBy);
-        params.set('sortDir', next.sortDir);
+        params.set("sortBy", next.sortBy);
+        params.set("sortDir", next.sortDir);
       } else {
-        params.delete('sortBy');
-        params.delete('sortDir');
+        params.delete("sortBy");
+        params.delete("sortDir");
       }
       if (next.q) {
-        params.set('q', next.q);
+        params.set("q", next.q);
       } else {
-        params.delete('q');
+        params.delete("q");
       }
       const cols = serializeVisibility(next.visibility);
       if (cols) {
-        params.set('cols', cols);
+        params.set("cols", cols);
       } else {
-        params.delete('cols');
+        params.delete("cols");
       }
       router.replace(`${pathname}?${params.toString()}`);
     },

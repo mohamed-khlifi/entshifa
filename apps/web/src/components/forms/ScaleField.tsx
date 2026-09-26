@@ -1,11 +1,16 @@
-'use client';
+"use client";
 
-import { Controller, useFormContext, type FieldPath, type FieldValues } from 'react-hook-form';
+import {
+  Controller,
+  useFormContext,
+  type FieldPath,
+  type FieldValues,
+} from "react-hook-form";
 
-import { FormFieldShell } from '@/components/forms/FormFieldShell';
-import { fieldNameSegments, fieldTestId } from '@/lib/forms/field-test-id';
-import { cn } from '@/lib/utils/cn';
-import { testId, testIdProps } from '@/lib/test/test-id';
+import { FormFieldShell } from "@/components/forms/FormFieldShell";
+import { fieldNameSegments, fieldTestId } from "@/lib/forms/field-test-id";
+import { cn } from "@/lib/utils/cn";
+import { testId, testIdProps } from "@/lib/test/test-id";
 
 export type ScaleFieldProps<T extends FieldValues> = {
   name: FieldPath<T>;
@@ -30,7 +35,10 @@ export function ScaleField<T extends FieldValues>({
 }: ScaleFieldProps<T>) {
   const { control } = useFormContext<T>();
   const groupId = fieldTestId(name);
-  const values = Array.from({ length: max - min + 1 }, (_, index) => min + index);
+  const values = Array.from(
+    { length: max - min + 1 },
+    (_, index) => min + index,
+  );
 
   return (
     <Controller
@@ -55,8 +63,8 @@ export function ScaleField<T extends FieldValues>({
           >
             {values.map((value) => {
               const optionId = testId(
-                'forms',
-                'field',
+                "forms",
+                "field",
                 ...fieldNameSegments(name),
                 `n${value < 0 ? `m${Math.abs(value)}` : String(value)}`,
               );
@@ -66,11 +74,11 @@ export function ScaleField<T extends FieldValues>({
                   key={value}
                   htmlFor={optionId}
                   className={cn(
-                    'inline-flex size-9 cursor-pointer items-center justify-center rounded-lg border text-sm font-medium transition-colors',
+                    "inline-flex size-9 cursor-pointer items-center justify-center rounded-lg border text-sm font-medium transition-colors",
                     selected
-                      ? 'border-primary bg-primary text-primary-foreground'
-                      : 'border-input bg-card hover:bg-accent/40',
-                    disabled && 'cursor-not-allowed opacity-50',
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-input bg-card hover:bg-accent/40",
+                    disabled && "cursor-not-allowed opacity-50",
                   )}
                 >
                   <input

@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
-import { testIdProps, testIds } from '@/lib/test/test-id';
+import { testIdProps, testIds } from "@/lib/test/test-id";
 
-import { Sidebar } from './Sidebar';
-import { Topbar } from './Topbar';
+import { Sidebar } from "./Sidebar";
+import { Topbar } from "./Topbar";
 
 type AppShellProps = {
   children: ReactNode;

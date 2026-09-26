@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { createContext, useContext, useMemo, type ReactNode } from 'react';
+import { createContext, useContext, useMemo, type ReactNode } from "react";
 
 type PermissionContextValue = {
   permissions: ReadonlySet<string>;
@@ -24,7 +24,9 @@ export function PermissionProvider({
     [permissions],
   );
   return (
-    <PermissionContext.Provider value={value}>{children}</PermissionContext.Provider>
+    <PermissionContext.Provider value={value}>
+      {children}
+    </PermissionContext.Provider>
   );
 }
 
@@ -39,7 +41,7 @@ export function usePermission(permission: string): boolean {
 export function usePermissions(): PermissionContextValue {
   const context = useContext(PermissionContext);
   if (context === null) {
-    throw new Error('usePermissions requires PermissionProvider');
+    throw new Error("usePermissions requires PermissionProvider");
   }
   return context;
 }

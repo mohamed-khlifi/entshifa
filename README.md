@@ -76,9 +76,16 @@ docs/           Architecture, clinical spec, tickets, database DDL
 |---------|-------------|
 | `make dev` | Start local infrastructure |
 | `make dev-down` | Stop infrastructure |
-| `make test` | Tests (P0-03+) |
-| `make lint` | Linters (P0-14) |
-| `make typecheck` | Static typing (P0-03 / P0-09) |
+| `make test` | Fast unit tests (no Docker) |
+| `make test-cov` | Full suite + coverage thresholds |
+| `make test-integration` | Tests requiring MySQL/Redis |
+| `make lint` | Linters (ruff, black, eslint, prettier) |
+| `make import-check` | Backend import boundaries |
+| `make typecheck` | mypy + `tsc` |
+| `make migrate-check` | Alembic empty DB + incremental upgrade |
+| `make build-web` | Next.js production build |
+| `make e2e` | Playwright smoke (en / fr / ar) |
+| `make security` | pip-audit + npm audit |
 | `make migrate` | Alembic migrations (P0-03) |
 | `make migrate-down` | Downgrade one Alembic revision |
 | `make seed` | Reference data seeds (P0-08) |
@@ -103,6 +110,6 @@ local development.
 
 ## Phase 0 status
 
-Follow `docs/tickets/phase-0.md` in order. **P0-01**–**P0-05** cover the monorepo
-skeleton through errors/context/audit; do not start Phase 1 until Phase 0 is
-complete and reviewed.
+Phase 0 (**P0-01**–**P0-14**) is complete when every ticket in
+`docs/tickets/phase-0.md` is checked and CI is green on `main`. Do not start
+Phase 1 until that review gate passes.

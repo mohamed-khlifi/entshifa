@@ -1,11 +1,16 @@
-'use client';
+"use client";
 
-import { Controller, useFormContext, type FieldPath, type FieldValues } from 'react-hook-form';
+import {
+  Controller,
+  useFormContext,
+  type FieldPath,
+  type FieldValues,
+} from "react-hook-form";
 
-import { FormFieldShell } from '@/components/forms/FormFieldShell';
-import { Input } from '@/components/ui/input';
-import { fieldTestId } from '@/lib/forms/field-test-id';
-import { testIdProps } from '@/lib/test/test-id';
+import { FormFieldShell } from "@/components/forms/FormFieldShell";
+import { Input } from "@/components/ui/input";
+import { fieldTestId } from "@/lib/forms/field-test-id";
+import { testIdProps } from "@/lib/test/test-id";
 
 export type DateFieldProps<T extends FieldValues> = {
   name: FieldPath<T>;
@@ -56,7 +61,7 @@ export function DateField<T extends FieldValues>({
             name={field.name}
             ref={field.ref}
             onBlur={field.onBlur}
-            value={field.value ?? ''}
+            value={field.value ?? ""}
             onChange={(event) => field.onChange(event.target.value)}
           />
         </FormFieldShell>

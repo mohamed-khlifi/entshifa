@@ -6,11 +6,11 @@ import concurrent.futures
 from pathlib import Path
 
 import pytest
-from alembic import command
-from alembic.config import Config
 from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import Session
 
+from alembic import command
+from alembic.config import Config
 from ent.core.utils.ids import new_ulid
 from ent.settings import get_settings
 
@@ -54,7 +54,7 @@ def test_migration_upgrade_and_downgrade() -> None:
     command.upgrade(cfg, "head")
 
     inspector = inspect(engine)
-    assert IDENTITY_TABLES <= set(inspector.get_table_names())
+    assert set(inspector.get_table_names()) >= IDENTITY_TABLES
 
     command.downgrade(cfg, "base")
     inspector = inspect(engine)
@@ -86,8 +86,7 @@ def test_ulid_unique_under_concurrent_insert() -> None:
                 public_id = new_ulid()
                 ids.append(public_id)
                 session.execute(
-                    text(
-                        """
+                    text("""
                         INSERT INTO permission (
                             public_id, code, group_code,
                             created_at, updated_at, version
@@ -95,8 +94,7 @@ def test_ulid_unique_under_concurrent_insert() -> None:
                             :public_id, :code, 'test',
                             UTC_TIMESTAMP(6), UTC_TIMESTAMP(6), 1
                         )
-                        """
-                    ),
+                        """),
                     {"public_id": public_id, "code": f"test.{public_id}"},
                 )
             session.commit()
@@ -110,9 +108,13 @@ def test_ulid_unique_under_concurrent_insert() -> None:
     assert len(set(all_ids)) == len(all_ids)
 
     with Session(engine) as session:
-        rows = session.execute(
-            text("SELECT public_id FROM permission WHERE group_code = 'test'"),
-        ).scalars().all()
+        rows = (
+            session.execute(
+                text("SELECT public_id FROM permission WHERE group_code = 'test'"),
+            )
+            .scalars()
+            .all()
+        )
         assert len(rows) == len(all_ids)
         assert len(set(rows)) == len(rows)
         session.execute(text("DELETE FROM permission WHERE group_code = 'test'"))

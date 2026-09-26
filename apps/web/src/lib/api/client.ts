@@ -1,5 +1,5 @@
-import { ApiError, parseApiError } from '@/lib/api/errors';
-import { getAccessToken } from '@/lib/auth/session-token';
+import { ApiError, parseApiError } from "@/lib/api/errors";
+import { getAccessToken } from "@/lib/auth/session-token";
 
 export type ApiFetchOptions = RequestInit & {
   locale?: string;
@@ -8,10 +8,10 @@ export type ApiFetchOptions = RequestInit & {
 };
 
 function apiBase(): string {
-  if (typeof window !== 'undefined') {
-    return '';
+  if (typeof window !== "undefined") {
+    return "";
   }
-  return process.env.API_URL ?? 'http://127.0.0.1:8000';
+  return process.env.API_URL ?? "http://127.0.0.1:8000";
 }
 
 export async function apiFetch<T>(
@@ -22,12 +22,12 @@ export async function apiFetch<T>(
   const token = auth ? getAccessToken() : null;
   const response = await fetch(`${apiBase()}${path}`, {
     ...rest,
-    credentials: 'include',
+    credentials: "include",
     headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      ...(locale ? { 'Accept-Language': locale } : {}),
-      ...(clinicPublicId ? { 'X-Clinic-Id': clinicPublicId } : {}),
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      ...(locale ? { "Accept-Language": locale } : {}),
+      ...(clinicPublicId ? { "X-Clinic-Id": clinicPublicId } : {}),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },

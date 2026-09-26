@@ -1,6 +1,6 @@
 """Database package: Base, session, mixins, and custom types."""
 
-from ent.core.db.base import Base, NAMING_CONVENTION, metadata
+from ent.core.db.base import NAMING_CONVENTION, Base, metadata
 from ent.core.db.mixins import (
     AuditMixin,
     ClinicalRecordMixin,

@@ -59,7 +59,9 @@ class TerminologyRepository:
         return result.scalar_one_or_none()
 
     async def list_concepts_by_kinds(self, kinds: list[str] | None) -> list[Concept]:
-        stmt = self._visible_concepts().order_by(Concept.kind, Concept.sort_order, Concept.code)
+        stmt = self._visible_concepts().order_by(
+            Concept.kind, Concept.sort_order, Concept.code
+        )
         if kinds:
             stmt = stmt.where(Concept.kind.in_(kinds))
         result = await self.session.execute(stmt)
@@ -131,7 +133,9 @@ class TerminologyRepository:
                 ).bindparams(ft=f"{term}*"),
             )
 
-        translation_visibility: ColumnElement[bool] = ConceptTranslation.clinic_id.is_(None)
+        translation_visibility: ColumnElement[bool] = ConceptTranslation.clinic_id.is_(
+            None
+        )
         if self.clinic_id is not None:
             translation_visibility = or_(
                 ConceptTranslation.clinic_id.is_(None),
@@ -158,12 +162,16 @@ class TerminologyRepository:
         ).scalar_one()
 
         rows = (
-            await self.session.execute(
-                filtered.order_by(Concept.kind, Concept.sort_order, Concept.code)
-                .offset(offset)
-                .limit(limit),
+            (
+                await self.session.execute(
+                    filtered.order_by(Concept.kind, Concept.sort_order, Concept.code)
+                    .offset(offset)
+                    .limit(limit),
+                )
             )
-        ).scalars().all()
+            .scalars()
+            .all()
+        )
         return list(rows), int(total)
 
     async def load_translations_for_concepts(
@@ -200,7 +208,9 @@ class TerminologyRepository:
     ) -> ResolvedDisplay:
         """Architecture §20 resolution order."""
 
-        def pick(wanted_locale: str, clinic_only: bool | None) -> ConceptTranslation | None:
+        def pick(
+            wanted_locale: str, clinic_only: bool | None
+        ) -> ConceptTranslation | None:
             candidates = [t for t in translations if t.locale == wanted_locale]
             if clinic_only is True:
                 candidates = [t for t in candidates if t.clinic_id == self.clinic_id]
@@ -208,7 +218,9 @@ class TerminologyRepository:
                 candidates = [t for t in candidates if t.clinic_id is None]
             # Prefer clinic override when both exist and clinic_only is None.
             if clinic_only is None and self.clinic_id is not None:
-                override = next((t for t in candidates if t.clinic_id == self.clinic_id), None)
+                override = next(
+                    (t for t in candidates if t.clinic_id == self.clinic_id), None
+                )
                 if override is not None:
                     return override
                 return next((t for t in candidates if t.clinic_id is None), None)

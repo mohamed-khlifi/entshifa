@@ -39,8 +39,7 @@ class ObjectStorage(Protocol):
     ) -> PresignedUrl:
         """Short-lived GET URL after permission checks."""
 
-    async def object_exists(self, *, key: str) -> bool:
-        ...
+    async def object_exists(self, *, key: str) -> bool: ...
 
     async def get_object_bytes(self, *, key: str) -> bytes:
         """Server-side read for worker processing (not an HTTP response path)."""
@@ -54,5 +53,4 @@ class ObjectStorage(Protocol):
     ) -> None:
         """Server-side write for processed variants."""
 
-    async def delete_object(self, *, key: str) -> None:
-        ...
+    async def delete_object(self, *, key: str) -> None: ...

@@ -84,7 +84,9 @@ ANATOMY: tuple[_ConceptSeed, ...] = (
         relationship="part_of",
         translations=(
             _Translation("en", "Tympanic membrane", "Tympanic membrane", ("eardrum",)),
-            _Translation("fr", "Membrane tympanique", "Membrane tympanique", ("tympan",)),
+            _Translation(
+                "fr", "Membrane tympanique", "Membrane tympanique", ("tympan",)
+            ),
         ),
     ),
     _ConceptSeed(
@@ -188,7 +190,9 @@ async def seed_terminology(session: AsyncSession) -> TerminologySeedReport:
         by_code[seed.code] = concept
         if created:
             concepts_created += 1
-        translations_created += await _ensure_translations(session, concept, seed.translations)
+        translations_created += await _ensure_translations(
+            session, concept, seed.translations
+        )
 
     relationships = 0
     for seed in (*ANATOMY, *FINDINGS):

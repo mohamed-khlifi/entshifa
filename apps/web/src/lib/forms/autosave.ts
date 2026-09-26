@@ -1,10 +1,5 @@
 export type AutosaveStatus =
-  | 'idle'
-  | 'saving'
-  | 'saved'
-  | 'offline'
-  | 'conflict'
-  | 'error';
+  "idle" | "saving" | "saved" | "offline" | "conflict" | "error";
 
 export type AutosaveConfig<TValues extends Record<string, unknown>> = {
   /** Draft key for IndexedDB (e.g. encounter public id). */
@@ -26,18 +21,19 @@ export type AutosaveConfig<TValues extends Record<string, unknown>> = {
 export const AUTOSAVE_DEFAULT_DELAY_MS = 2000;
 export const AUTOSAVE_DEFAULT_MAX_WAIT_MS = 15000;
 
-const DRAFT_DB = 'entshifa-drafts';
-const DRAFT_STORE = 'drafts';
+const DRAFT_DB = "entshifa-drafts";
+const DRAFT_STORE = "drafts";
 
 function openDraftDb(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DRAFT_DB, 1);
-    request.onerror = () => reject(request.error ?? new Error('indexedDB open failed'));
+    request.onerror = () =>
+      reject(request.error ?? new Error("indexedDB open failed"));
     request.onsuccess = () => resolve(request.result);
     request.onupgradeneeded = () => {
       const db = request.result;
       if (!db.objectStoreNames.contains(DRAFT_STORE)) {
-        db.createObjectStore(DRAFT_STORE, { keyPath: 'key' });
+        db.createObjectStore(DRAFT_STORE, { keyPath: "key" });
       }
     };
   });
@@ -47,51 +43,52 @@ export async function writeDraftSnapshot<T>(
   key: string,
   values: T,
 ): Promise<void> {
-  if (typeof indexedDB === 'undefined') {
+  if (typeof indexedDB === "undefined") {
     return;
   }
   const db = await openDraftDb();
   await new Promise<void>((resolve, reject) => {
-    const tx = db.transaction(DRAFT_STORE, 'readwrite');
+    const tx = db.transaction(DRAFT_STORE, "readwrite");
     tx.objectStore(DRAFT_STORE).put({
       key,
       values,
       updatedAt: Date.now(),
     });
     tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error ?? new Error('draft write failed'));
+    tx.onerror = () => reject(tx.error ?? new Error("draft write failed"));
   });
   db.close();
 }
 
 export async function readDraftSnapshot<T>(key: string): Promise<T | null> {
-  if (typeof indexedDB === 'undefined') {
+  if (typeof indexedDB === "undefined") {
     return null;
   }
   const db = await openDraftDb();
   const result = await new Promise<T | null>((resolve, reject) => {
-    const tx = db.transaction(DRAFT_STORE, 'readonly');
+    const tx = db.transaction(DRAFT_STORE, "readonly");
     const request = tx.objectStore(DRAFT_STORE).get(key);
     request.onsuccess = () => {
       const row = request.result as { values: T } | undefined;
       resolve(row?.values ?? null);
     };
-    request.onerror = () => reject(request.error ?? new Error('draft read failed'));
+    request.onerror = () =>
+      reject(request.error ?? new Error("draft read failed"));
   });
   db.close();
   return result;
 }
 
 export async function clearDraftSnapshot(key: string): Promise<void> {
-  if (typeof indexedDB === 'undefined') {
+  if (typeof indexedDB === "undefined") {
     return;
   }
   const db = await openDraftDb();
   await new Promise<void>((resolve, reject) => {
-    const tx = db.transaction(DRAFT_STORE, 'readwrite');
+    const tx = db.transaction(DRAFT_STORE, "readwrite");
     tx.objectStore(DRAFT_STORE).delete(key);
     tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error ?? new Error('draft clear failed'));
+    tx.onerror = () => reject(tx.error ?? new Error("draft clear failed"));
   });
   db.close();
 }

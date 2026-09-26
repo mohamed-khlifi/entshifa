@@ -6,7 +6,7 @@ import hashlib
 import hmac
 import time
 from pathlib import Path
-from urllib.parse import quote, urlencode
+from urllib.parse import urlencode
 
 from ent.integrations.storage.port import PresignedUrl
 
@@ -19,7 +19,9 @@ class LocalObjectStorage:
     ``consume_presigned_put`` / ``consume_presigned_get``. Production uses S3.
     """
 
-    def __init__(self, root: Path, *, signing_secret: str = "local-dev-storage") -> None:
+    def __init__(
+        self, root: Path, *, signing_secret: str = "local-dev-storage"
+    ) -> None:
         self._root = root
         self._root.mkdir(parents=True, exist_ok=True)
         self._secret = signing_secret.encode("utf-8")

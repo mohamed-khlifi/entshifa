@@ -162,8 +162,12 @@ async def test_scheduler_tick_enqueues_ping_job() -> None:
 
     async with factory() as session:
         rows = (
-            await session.execute(
-                select(JobRun).where(JobRun.job_name == JOB_PING_DEPENDENCIES),
+            (
+                await session.execute(
+                    select(JobRun).where(JobRun.job_name == JOB_PING_DEPENDENCIES),
+                )
             )
-        ).scalars().all()
+            .scalars()
+            .all()
+        )
         assert any(row.status == "succeeded" for row in rows)

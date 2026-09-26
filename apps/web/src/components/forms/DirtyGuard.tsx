@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useTranslations } from 'next-intl';
-import { useEffect, type ReactNode } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useTranslations } from "next-intl";
+import { useEffect, type ReactNode } from "react";
+import { useFormContext } from "react-hook-form";
 
-import { testIdProps, testIds } from '@/lib/test/test-id';
+import { testIdProps, testIds } from "@/lib/test/test-id";
 
 export type DirtyGuardProps = {
   /** When true, blocks browser unload if the form is dirty. */
@@ -18,7 +18,7 @@ export type DirtyGuardProps = {
  */
 export function DirtyGuard({ enabled = true, children }: DirtyGuardProps) {
   const { formState } = useFormContext();
-  const t = useTranslations('forms');
+  const t = useTranslations("forms");
   const isDirty = formState.isDirty;
 
   useEffect(() => {
@@ -27,14 +27,17 @@ export function DirtyGuard({ enabled = true, children }: DirtyGuardProps) {
     }
     const onBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault();
-      event.returnValue = t('dirtyGuard.message');
+      event.returnValue = t("dirtyGuard.message");
     };
-    window.addEventListener('beforeunload', onBeforeUnload);
-    return () => window.removeEventListener('beforeunload', onBeforeUnload);
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
   }, [enabled, isDirty, t]);
 
   return (
-    <div {...testIdProps(testIds.forms.dirtyGuard)} data-dirty={isDirty ? 'true' : 'false'}>
+    <div
+      {...testIdProps(testIds.forms.dirtyGuard)}
+      data-dirty={isDirty ? "true" : "false"}
+    >
       {children}
     </div>
   );

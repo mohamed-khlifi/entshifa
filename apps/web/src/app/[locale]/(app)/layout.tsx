@@ -1,7 +1,11 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
-import { AppShell } from '@/components/layout/AppShell';
+import { AppShell } from "@/components/layout/AppShell";
 
-export default function AuthenticatedLayout({ children }: { children: ReactNode }) {
+export default function AuthenticatedLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
   return <AppShell>{children}</AppShell>;
 }

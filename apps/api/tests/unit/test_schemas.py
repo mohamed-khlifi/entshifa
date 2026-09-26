@@ -5,7 +5,11 @@ from __future__ import annotations
 from datetime import date
 from decimal import Decimal
 
-from ent.core.repository.pagination import DEFAULT_PAGE_LIMIT, MAX_PAGE_LIMIT, normalize_pagination
+from ent.core.repository.pagination import (
+    DEFAULT_PAGE_LIMIT,
+    MAX_PAGE_LIMIT,
+    normalize_pagination,
+)
 from ent.core.schemas.base import CamelModel, PageMeta, PageSchema, PaginationParams
 from ent.core.schemas.common import (
     Attachment,

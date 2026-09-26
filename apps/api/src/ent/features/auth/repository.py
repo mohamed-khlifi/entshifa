@@ -74,7 +74,9 @@ class AuthRepository:
         )
         return (await self._session.execute(stmt)).scalar_one_or_none()
 
-    async def revoke_session_family(self, session_family_id: str, *, at: datetime) -> None:
+    async def revoke_session_family(
+        self, session_family_id: str, *, at: datetime
+    ) -> None:
         stmt = (
             update(UserSession)
             .where(
@@ -175,7 +177,9 @@ class AuthRepository:
         result = await self._session.execute(stmt)
         return result.scalar_one_or_none() is not None
 
-    async def load_permission_codes(self, user_id: int, clinic_id: int) -> frozenset[str]:
+    async def load_permission_codes(
+        self, user_id: int, clinic_id: int
+    ) -> frozenset[str]:
         today = date.today()
         stmt = (
             select(Permission.code)

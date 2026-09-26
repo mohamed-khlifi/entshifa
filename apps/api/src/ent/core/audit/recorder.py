@@ -39,7 +39,9 @@ class AuditRecorder:
         patient_id: int | None = None,
         reason: str | None = None,
     ) -> AuditLog:
-        resolved_clinic_id = clinic_id or get_clinic_id() or getattr(entity, "clinic_id", None)
+        resolved_clinic_id = (
+            clinic_id or get_clinic_id() or getattr(entity, "clinic_id", None)
+        )
         if resolved_clinic_id is None:
             msg = "audit write requires clinic_id"
             raise RuntimeError(msg)
@@ -47,7 +49,9 @@ class AuditRecorder:
         after_payload = after if after is not None else row_to_audit_dict(entity)
         fields = changed_fields
         if fields is None and before is not None:
-            fields = sorted(k for k in after_payload if before.get(k) != after_payload.get(k))
+            fields = sorted(
+                k for k in after_payload if before.get(k) != after_payload.get(k)
+            )
 
         row = AuditLog(
             public_id=new_ulid(),
@@ -107,7 +111,9 @@ class AuditRecorder:
         self._session.add(row)
         return row
 
-    def record_entity_create(self, entity: object, *, clinic_id: int | None = None) -> AuditLog:
+    def record_entity_create(
+        self, entity: object, *, clinic_id: int | None = None
+    ) -> AuditLog:
         return self.record_write(
             action="create",
             entity=entity,
@@ -117,19 +123,22 @@ class AuditRecorder:
             clinic_id=clinic_id,
         )
 
-    def record_entity_update(self, entity: object, *, before: dict[str, Any]) -> AuditLog:
+    def record_entity_update(
+        self, entity: object, *, before: dict[str, Any]
+    ) -> AuditLog:
         after = row_to_audit_dict(entity)
         return self.record_write(
             action="update",
             entity=entity,
             before=before,
             after=after,
-            changed_fields=changed_field_names(entity) or sorted(
-                k for k in after if before.get(k) != after.get(k)
-            ),
+            changed_fields=changed_field_names(entity)
+            or sorted(k for k in after if before.get(k) != after.get(k)),
         )
 
-    def record_entity_delete(self, entity: object, *, before: dict[str, Any]) -> AuditLog:
+    def record_entity_delete(
+        self, entity: object, *, before: dict[str, Any]
+    ) -> AuditLog:
         return self.record_write(
             action="delete",
             entity=entity,

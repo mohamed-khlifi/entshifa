@@ -46,7 +46,9 @@ class EventBus:
                 from ent.jobs.queue import enqueue_job
 
                 public_id = event.payload.get("public_id")
-                idempotency_key = f"{event.name}:{public_id or event.occurred_at.isoformat()}"
+                idempotency_key = (
+                    f"{event.name}:{public_id or event.occurred_at.isoformat()}"
+                )
                 payload = {"event_name": event.name, **event.payload}
                 await enqueue_job(
                     job_name=sub.background_job,

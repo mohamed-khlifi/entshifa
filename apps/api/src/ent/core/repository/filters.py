@@ -12,15 +12,24 @@ from ent.core.schemas.base import CamelModel
 
 
 def Eq(column: str) -> Any:
-    return Field(default=None, json_schema_extra={"ent_filter": {"op": "eq", "columns": [column]}})
+    return Field(
+        default=None,
+        json_schema_extra={"ent_filter": {"op": "eq", "columns": [column]}},
+    )
 
 
 def Gte(column: str) -> Any:
-    return Field(default=None, json_schema_extra={"ent_filter": {"op": "gte", "columns": [column]}})
+    return Field(
+        default=None,
+        json_schema_extra={"ent_filter": {"op": "gte", "columns": [column]}},
+    )
 
 
 def Lte(column: str) -> Any:
-    return Field(default=None, json_schema_extra={"ent_filter": {"op": "lte", "columns": [column]}})
+    return Field(
+        default=None,
+        json_schema_extra={"ent_filter": {"op": "lte", "columns": [column]}},
+    )
 
 
 def SearchOn(*columns: str, normalize: bool = False) -> Any:
@@ -55,7 +64,11 @@ def apply_filters(
         value = getattr(filters, name)
         if value is None:
             continue
-        meta = (field.json_schema_extra or {}) if isinstance(field.json_schema_extra, dict) else {}
+        meta = (
+            (field.json_schema_extra or {})
+            if isinstance(field.json_schema_extra, dict)
+            else {}
+        )
         spec = meta.get("ent_filter")
         if not isinstance(spec, dict):
             continue

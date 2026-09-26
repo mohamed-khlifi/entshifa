@@ -61,8 +61,8 @@ def apply_sort(
 
     if not sort:
         if hasattr(model, "created_at"):
-            return stmt.order_by(desc(getattr(model, "created_at")), desc(getattr(model, "id")))
-        return stmt.order_by(desc(getattr(model, "id")))
+            return stmt.order_by(desc(model.created_at), desc(model.id))
+        return stmt.order_by(desc(model.id))
 
     descending = sort.startswith("-")
     field_name = sort[1:] if descending else sort
@@ -71,7 +71,7 @@ def apply_sort(
     if not hasattr(model, snake):
         snake = "id"
     column = getattr(model, snake)
-    return stmt.order_by(desc(column) if descending else asc(column), desc(getattr(model, "id")))
+    return stmt.order_by(desc(column) if descending else asc(column), desc(model.id))
 
 
 def apply_pagination(stmt: Select[Any], page: PaginationParams) -> Select[Any]:
@@ -80,8 +80,8 @@ def apply_pagination(stmt: Select[Any], page: PaginationParams) -> Select[Any]:
         # Cursor is the last seen public_id; results are ordered by public_id asc.
         model = stmt.column_descriptions[0]["entity"]
         if hasattr(model, "public_id"):
-            stmt = stmt.where(getattr(model, "public_id") > resolved.cursor)
-            stmt = stmt.order_by(asc(getattr(model, "public_id")))
+            stmt = stmt.where(model.public_id > resolved.cursor)
+            stmt = stmt.order_by(asc(model.public_id))
         stmt = stmt.limit(resolved.limit)
         return stmt
     offset = resolved.offset or 0

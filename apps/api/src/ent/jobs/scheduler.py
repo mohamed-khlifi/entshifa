@@ -54,7 +54,9 @@ async def tick_scheduler(*, now: datetime | None = None) -> list[str]:
             due = moment - last >= schedule.interval
         if not due:
             continue
-        idempotency_key = f"schedule:{schedule.name}:{moment.strftime('%Y%m%d%H%M')}:{new_ulid()[:8]}"
+        idempotency_key = (
+            f"schedule:{schedule.name}:{moment.strftime('%Y%m%d%H%M')}:{new_ulid()[:8]}"
+        )
         await enqueue_job(
             job_name=schedule.job_name,
             idempotency_key=idempotency_key,

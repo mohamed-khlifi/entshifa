@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 
-import '@/styles/globals.css';
+import "@/styles/globals.css";
 
 /**
  * Root layout is a passthrough. `<html>` / `<body>` live in `[locale]/layout`

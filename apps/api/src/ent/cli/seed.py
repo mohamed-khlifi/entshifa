@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import asyncio
-import sys
 
 from ent.core.db.session import dispose_engine, get_session_factory
 from ent.seeds.local_dev import seed_local_dev
@@ -34,7 +33,11 @@ async def _run() -> int:
     print("    - ... more @demo.entshifa.local users in the database")
     print()
     print("  Login: POST /api/v1/auth/login")
-    print('  Body: {"email":"admin@demo.entshifa.local","password":"' + report.password + '"}')
+    print(
+        '  Body: {"email":"admin@demo.entshifa.local","password":"'
+        + report.password
+        + '"}'
+    )
     await dispose_engine()
     return 0
 

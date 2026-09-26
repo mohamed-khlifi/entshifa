@@ -41,7 +41,9 @@ def build_storage_key(
         raise ValueError(msg)
 
     patient_segment = patient_public_id or CLINIC_SCOPED_PATIENT_SEGMENT
-    if patient_segment != CLINIC_SCOPED_PATIENT_SEGMENT and not _ULID.match(patient_segment):
+    if patient_segment != CLINIC_SCOPED_PATIENT_SEGMENT and not _ULID.match(
+        patient_segment
+    ):
         msg = "patient_public_id must be a ULID"
         raise ValueError(msg)
 

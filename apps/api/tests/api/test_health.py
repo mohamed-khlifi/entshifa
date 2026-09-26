@@ -7,7 +7,6 @@ from httpx import ASGITransport, AsyncClient
 
 from ent.features.health.dependencies import get_health_service_for_request
 from ent.features.health.schemas.responses import (
-    LiveHealthResponse,
     ReadinessCheck,
     ReadyHealthResponse,
 )

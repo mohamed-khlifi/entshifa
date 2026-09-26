@@ -2,10 +2,9 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter
-
-from httpx import ASGITransport, AsyncClient
 import pytest
+from fastapi import APIRouter
+from httpx import ASGITransport, AsyncClient
 
 from ent.core.errors.exceptions import NotFoundError
 from ent.main import create_app

@@ -61,7 +61,9 @@ class BaseRepository(Generic[ModelT]):
         resolved = normalize_pagination(page)
         stmt = apply_filters(self._base_query(), self.model, filters)
         total = (
-            await self.session.execute(select(func.count()).select_from(stmt.subquery()))
+            await self.session.execute(
+                select(func.count()).select_from(stmt.subquery())
+            )
         ).scalar_one()
         stmt = apply_sort(stmt, self.model, sort)
         stmt = apply_pagination(stmt, resolved)
@@ -80,7 +82,7 @@ class BaseRepository(Generic[ModelT]):
             and hasattr(entity, "clinic_id")
             and getattr(entity, "clinic_id", None) is None
         ):
-            setattr(entity, "clinic_id", self.clinic_id)
+            entity.clinic_id = self.clinic_id
         self.session.add(entity)
         await self.session.flush()
         return entity

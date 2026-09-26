@@ -29,7 +29,9 @@ async def test_site_repository_cannot_return_other_clinic_rows() -> None:
     async with factory() as session:
         fixtures = await seed_auth_fixtures(session)
         clinic_a = await _clinic_by_public_id(session, fixtures["clinic_public_id"])
-        clinic_b = await _clinic_by_public_id(session, fixtures["other_clinic_public_id"])
+        clinic_b = await _clinic_by_public_id(
+            session, fixtures["other_clinic_public_id"]
+        )
 
         site_a = Site(
             public_id=new_ulid(),
@@ -97,7 +99,9 @@ async def test_site_filter_and_soft_delete_are_tenant_scoped() -> None:
     async with factory() as session:
         fixtures = await seed_auth_fixtures(session)
         clinic_a = await _clinic_by_public_id(session, fixtures["clinic_public_id"])
-        clinic_b = await _clinic_by_public_id(session, fixtures["other_clinic_public_id"])
+        clinic_b = await _clinic_by_public_id(
+            session, fixtures["other_clinic_public_id"]
+        )
 
         target = Site(
             public_id=new_ulid(),
@@ -142,7 +146,9 @@ async def test_unit_of_work_publishes_events_only_after_commit() -> None:
 
     async with UnitOfWork(factory, event_bus=bus) as uow:
         fixtures = await seed_auth_fixtures(uow.require_session)
-        clinic = await _clinic_by_public_id(uow.require_session, fixtures["clinic_public_id"])
+        clinic = await _clinic_by_public_id(
+            uow.require_session, fixtures["clinic_public_id"]
+        )
         site = Site(
             public_id=new_ulid(),
             clinic_id=clinic.id,
@@ -151,7 +157,9 @@ async def test_unit_of_work_publishes_events_only_after_commit() -> None:
         )
         repo = SiteRepository(uow.require_session, clinic_id=clinic.id)
         await repo.add(site)
-        uow.emit(DomainEvent(name="site.created", payload={"public_id": site.public_id}))
+        uow.emit(
+            DomainEvent(name="site.created", payload={"public_id": site.public_id})
+        )
 
     assert any(event.name == "site.created" for event in bus.published)
 
@@ -170,7 +178,9 @@ async def test_unit_of_work_publishes_events_only_after_commit() -> None:
                 is_primary=False,
             )
             await SiteRepository(uow.require_session, clinic_id=clinic.id).add(site)
-            uow.emit(DomainEvent(name="site.created", payload={"public_id": site.public_id}))
+            uow.emit(
+                DomainEvent(name="site.created", payload={"public_id": site.public_id})
+            )
             raise RuntimeError("boom")
 
     assert bus.published == []

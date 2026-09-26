@@ -1,1 +1,1 @@
-export { AttachmentViewer } from './components/AttachmentViewer';
+export { AttachmentViewer } from "./components/AttachmentViewer";

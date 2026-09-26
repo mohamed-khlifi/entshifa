@@ -11,7 +11,6 @@ from sqlalchemy.orm.attributes import get_history
 from ent.core.audit.recorder import AuditRecorder
 from ent.core.audit.serialize import row_to_audit_dict
 
-
 _PENDING_KEY = "_ent_audit_pending"
 
 
@@ -60,7 +59,7 @@ def install_audit_listeners() -> None:
             elif action == "delete" and before is not None:
                 recorder.record_entity_delete(obj, before=before)
 
-    setattr(install_audit_listeners, "_installed", True)
+    install_audit_listeners._installed = True
 
 
 def _snapshot_before(obj: object) -> dict[str, Any]:

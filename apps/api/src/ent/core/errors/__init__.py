@@ -2,10 +2,10 @@
 
 from ent.core.errors.codes import ErrorCode
 from ent.core.errors.exceptions import (
+    AuthenticationError,
     AuthInvalidCredentialsError,
     AuthRateLimitedError,
     AuthSessionRevokedError,
-    AuthenticationError,
     ClinicalSafetyError,
     ConflictError,
     DomainError,
