@@ -9,5 +9,6 @@
   "generic": "Une erreur est survenue. Réessayez.",
   "internal_error": "Une erreur est survenue. Réessayez.",
   "not_found": "La ressource demandée est introuvable.",
+  "conflict": "Cette modification entre en conflit avec des données existantes.",
   "validation_failed": "Vérifiez les champs signalés."
 }

@@ -64,3 +64,14 @@ export type MfaEnrollResponse = Schemas["MfaEnrollResponse"];
 export type ActiveClinicRequest = Schemas["ActiveClinicRequest"];
 export type ClinicMembershipList = Schemas["ClinicMembershipList"];
 export type ClinicMembershipRead = Schemas["ClinicMembershipRead"];
+
+export type ConceptAdminRead = Schemas["ConceptAdminRead"];
+export type ConceptCreate = Schemas["ConceptCreate"];
+export type ConceptUpdate = Schemas["ConceptUpdate"];
+export type ConceptTranslationUpsert = Schemas["ConceptTranslationUpsert"];
+export type PageSchemaConceptAdminRead = Schemas["PageSchema_ConceptAdminRead_"];
+export type TranslationCoverageItem = Schemas["TranslationCoverageItem"];
+export type PageSchemaTranslationCoverageItem =
+  Schemas["PageSchema_TranslationCoverageItem_"];
+export type ValueSetMemberCreate = Schemas["ValueSetMemberCreate"];
+export type ValueSetSummaryRead = Schemas["ValueSetSummaryRead"];

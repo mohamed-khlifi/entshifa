@@ -1,0 +1,42 @@
+{
+  "nav": {
+    "concepts": "Concepts",
+    "valueSets": "Value sets",
+    "coverage": "Translation coverage"
+  },
+  "concepts": {
+    "title": "Terminology",
+    "description": "Clinic-owned concepts and local display names.",
+    "code": "Code",
+    "kind": "Kind",
+    "scope": "Scope",
+    "display": "Display",
+    "clinic": "Clinic",
+    "global": "Shared",
+    "create": "New concept",
+    "createSubmit": "Create",
+    "created": "Concept created.",
+    "rename": "Local display name",
+    "renameSubmit": "Save local name",
+    "renamed": "Local name saved.",
+    "emptyTitle": "No concepts"
+  },
+  "valueSets": {
+    "title": "Value sets",
+    "description": "Add clinic-specific members to a shared value set.",
+    "select": "Value set",
+    "conceptId": "Concept id",
+    "add": "Add member",
+    "added": "Member added."
+  },
+  "coverage": {
+    "title": "Translation coverage",
+    "description": "Concepts missing a translation for the selected locale, busiest first.",
+    "locale": "Locale",
+    "code": "Code",
+    "kind": "Kind",
+    "display": "Current label",
+    "usage": "Usage",
+    "emptyTitle": "Nothing missing"
+  }
+}

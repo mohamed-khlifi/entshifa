@@ -22,12 +22,14 @@ export function Sidebar() {
   const pathname = usePathname();
   const canAdminClinic = usePermission(Permission.ADMIN_CLINIC);
   const canAdminUsers = usePermission(Permission.ADMIN_USERS);
+  const canAdminTerminology = usePermission(Permission.ADMIN_TERMINOLOGY);
 
   const homeActive = pathname === "/home" || pathname.startsWith("/home/");
   const uiKitActive = pathname === "/ui-kit" || pathname.startsWith("/ui-kit/");
   const clinicActive =
     pathname.startsWith("/admin/clinic") || pathname === "/admin/clinic";
   const usersActive = pathname.startsWith("/admin/users");
+  const terminologyActive = pathname.startsWith("/admin/terminology");
   const securityActive = pathname.startsWith("/settings/security");
 
   return (
@@ -45,7 +47,7 @@ export function Sidebar() {
         <Link href="/settings/security" className={navClass(securityActive)}>
           {t("nav.security")}
         </Link>
-        {canAdminClinic || canAdminUsers ? (
+        {canAdminClinic || canAdminUsers || canAdminTerminology ? (
           <p className="px-3 pt-4 pb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {t("nav.admin")}
           </p>
@@ -58,6 +60,11 @@ export function Sidebar() {
         {canAdminUsers ? (
           <Link href="/admin/users" className={navClass(usersActive)}>
             {t("nav.users")}
+          </Link>
+        ) : null}
+        {canAdminTerminology ? (
+          <Link href="/admin/terminology" className={navClass(terminologyActive)}>
+            {t("nav.terminology")}
           </Link>
         ) : null}
       </nav>

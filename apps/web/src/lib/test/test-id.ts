@@ -120,6 +120,28 @@ export const testIds = {
     viewerMeta: testId("attachments", "viewer", "meta"),
     viewerImage: testId("attachments", "viewer", "image"),
   },
+  terminology: {
+    concepts: {
+      root: testId("terminology", "concepts", "root"),
+      createOpen: testId("terminology", "concepts", "create-open"),
+      code: testId("terminology", "concepts", "code"),
+      display: testId("terminology", "concepts", "display"),
+      createSubmit: testId("terminology", "concepts", "create-submit"),
+      select: testId("terminology", "concepts", "select"),
+      override: testId("terminology", "concepts", "override"),
+      renameSubmit: testId("terminology", "concepts", "rename-submit"),
+    },
+    valueSets: {
+      root: testId("terminology", "value-sets", "root"),
+      select: testId("terminology", "value-sets", "select"),
+      conceptId: testId("terminology", "value-sets", "concept-id"),
+      add: testId("terminology", "value-sets", "add"),
+    },
+    coverage: {
+      root: testId("terminology", "coverage", "root"),
+      locale: testId("terminology", "coverage", "locale"),
+    },
+  },
 } as const;
 
 export function publicIdTestId(scope: string, publicId: string): string {

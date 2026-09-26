@@ -60,7 +60,7 @@ clinical requirements.
 
 ---
 
-## - [ ] P1-04 Terminology admin (backend and frontend)
+## - [x] P1-04 Terminology admin (backend and frontend)
 
 **Scope**
 - Extend the P0-08 module: concept CRUD for clinic-owned concepts, translation

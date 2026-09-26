@@ -15,7 +15,8 @@
     "clinic": "Clinique",
     "users": "Équipe",
     "settings": "Paramètres",
-    "security": "Sécurité"
+    "security": "Sécurité",
+    "terminology": "Terminologie"
   },
   "clinicSwitcher": {
     "label": "Clinique active"

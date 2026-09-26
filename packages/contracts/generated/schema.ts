@@ -474,6 +474,129 @@ export interface paths {
         patch: operations["patch_site_api_v1_sites__site_id__patch"];
         trace?: never;
     };
+    "/api/v1/terminology/admin/concepts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Admin Concepts */
+        get: operations["list_admin_concepts_api_v1_terminology_admin_concepts_get"];
+        put?: never;
+        /** Create Clinic Concept */
+        post: operations["create_clinic_concept_api_v1_terminology_admin_concepts_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/terminology/admin/concepts/{concept_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Admin Concept */
+        get: operations["get_admin_concept_api_v1_terminology_admin_concepts__concept_id__get"];
+        put?: never;
+        post?: never;
+        /** Delete Clinic Concept */
+        delete: operations["delete_clinic_concept_api_v1_terminology_admin_concepts__concept_id__delete"];
+        options?: never;
+        head?: never;
+        /** Update Clinic Concept */
+        patch: operations["update_clinic_concept_api_v1_terminology_admin_concepts__concept_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/terminology/admin/concepts/{concept_id}/translations/{locale}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Upsert Clinic Translation */
+        put: operations["upsert_clinic_translation_api_v1_terminology_admin_concepts__concept_id__translations__locale__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/terminology/admin/translation-coverage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Translation Coverage */
+        get: operations["translation_coverage_api_v1_terminology_admin_translation_coverage_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/terminology/admin/value-sets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Value Sets */
+        get: operations["list_value_sets_api_v1_terminology_admin_value_sets_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/terminology/admin/value-sets/{code}/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add Value Set Member */
+        post: operations["add_value_set_member_api_v1_terminology_admin_value_sets__code__members_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/terminology/admin/value-sets/{code}/members/{concept_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Remove Value Set Member */
+        delete: operations["remove_value_set_member_api_v1_terminology_admin_value_sets__code__members__concept_id__delete"];
+        options?: never;
+        head?: never;
+        /** Update Value Set Member */
+        patch: operations["update_value_set_member_api_v1_terminology_admin_value_sets__code__members__concept_id__patch"];
+        trace?: never;
+    };
     "/api/v1/terminology/concepts/search": {
         parameters: {
             query?: never;
@@ -844,6 +967,45 @@ export interface components {
             /** Items */
             items: components["schemas"]["ResolvedSettingRead"][];
         };
+        /** ConceptAdminRead */
+        ConceptAdminRead: {
+            /** Clinicowned */
+            clinicOwned: boolean;
+            /** Code */
+            code: string;
+            /** Isactive */
+            isActive: boolean;
+            /** Kind */
+            kind: string;
+            /** Publicid */
+            publicId: string;
+            /** Sortorder */
+            sortOrder: number;
+            /** Translations */
+            translations: components["schemas"]["ConceptTranslationRead"][];
+        };
+        /** ConceptCreate */
+        ConceptCreate: {
+            /** Abbreviation */
+            abbreviation?: string | null;
+            /** Code */
+            code: string;
+            /** Display */
+            display: string;
+            /** Fullname */
+            fullName?: string | null;
+            /** Kind */
+            kind: string;
+            /** Locale */
+            locale: string;
+            /** Patientfriendly */
+            patientFriendly?: string | null;
+            /**
+             * Sortorder
+             * @default 0
+             */
+            sortOrder: number;
+        };
         /**
          * ConceptDictionaryResponse
          * @description Bulk concept map for frontend caching (keyed by publicId).
@@ -864,6 +1026,43 @@ export interface components {
             /** Items */
             items: components["schemas"]["ResolvedConcept"][];
             page: components["schemas"]["PageMeta"];
+        };
+        /** ConceptTranslationRead */
+        ConceptTranslationRead: {
+            /** Abbreviation */
+            abbreviation?: string | null;
+            /** Clinicowned */
+            clinicOwned: boolean;
+            /** Display */
+            display: string;
+            /** Fullname */
+            fullName?: string | null;
+            /** Locale */
+            locale: string;
+            /** Patientfriendly */
+            patientFriendly?: string | null;
+            /** Synonyms */
+            synonyms?: string[] | null;
+        };
+        /** ConceptTranslationUpsert */
+        ConceptTranslationUpsert: {
+            /** Abbreviation */
+            abbreviation?: string | null;
+            /** Display */
+            display: string;
+            /** Fullname */
+            fullName?: string | null;
+            /** Patientfriendly */
+            patientFriendly?: string | null;
+            /** Synonyms */
+            synonyms?: string[] | null;
+        };
+        /** ConceptUpdate */
+        ConceptUpdate: {
+            /** Isactive */
+            isActive?: boolean | null;
+            /** Sortorder */
+            sortOrder?: number | null;
         };
         /** CustomRoleCreate */
         CustomRoleCreate: {
@@ -1019,10 +1218,22 @@ export interface components {
             /** Total */
             total?: number | null;
         };
+        /** PageSchema[ConceptAdminRead] */
+        PageSchema_ConceptAdminRead_: {
+            /** Items */
+            items: components["schemas"]["ConceptAdminRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
         /** PageSchema[SiteRead] */
         PageSchema_SiteRead_: {
             /** Items */
             items: components["schemas"]["SiteRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[TranslationCoverageItem] */
+        PageSchema_TranslationCoverageItem_: {
+            /** Items */
+            items: components["schemas"]["TranslationCoverageItem"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[UserRead] */
@@ -1215,6 +1426,19 @@ export interface components {
             /** Postalcode */
             postalCode?: string | null;
         };
+        /** TranslationCoverageItem */
+        TranslationCoverageItem: {
+            /** Code */
+            code: string;
+            /** Display */
+            display: string;
+            /** Kind */
+            kind: string;
+            /** Publicid */
+            publicId: string;
+            /** Usagecount */
+            usageCount: number;
+        };
         /** UserRead */
         UserRead: {
             /** Email */
@@ -1270,6 +1494,28 @@ export interface components {
             /** Error Type */
             type: string;
         };
+        /** ValueSetMemberCreate */
+        ValueSetMemberCreate: {
+            /** Conceptpublicid */
+            conceptPublicId: string;
+            /**
+             * Isdefault
+             * @default false
+             */
+            isDefault: boolean;
+            /**
+             * Sortorder
+             * @default 0
+             */
+            sortOrder: number;
+        };
+        /** ValueSetMemberUpdate */
+        ValueSetMemberUpdate: {
+            /** Isdefault */
+            isDefault?: boolean | null;
+            /** Sortorder */
+            sortOrder?: number | null;
+        };
         /** ValueSetRead */
         ValueSetRead: {
             /** Code */
@@ -1280,6 +1526,15 @@ export interface components {
             locale: string;
             /** Members */
             members: components["schemas"]["ResolvedConcept"][];
+            /** Namekey */
+            nameKey: string;
+        };
+        /** ValueSetSummaryRead */
+        ValueSetSummaryRead: {
+            /** Code */
+            code: string;
+            /** Descriptionkey */
+            descriptionKey?: string | null;
             /** Namekey */
             nameKey: string;
         };
@@ -2384,6 +2639,392 @@ export interface operations {
             };
         };
     };
+    list_admin_concepts_api_v1_terminology_admin_concepts_get: {
+        parameters: {
+            query?: {
+                q?: string | null;
+                kind?: string | null;
+                clinic_owned_only?: boolean;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_ConceptAdminRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_clinic_concept_api_v1_terminology_admin_concepts_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConceptCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConceptAdminRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_admin_concept_api_v1_terminology_admin_concepts__concept_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                concept_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConceptAdminRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_clinic_concept_api_v1_terminology_admin_concepts__concept_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                concept_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_clinic_concept_api_v1_terminology_admin_concepts__concept_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                concept_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConceptUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConceptAdminRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    upsert_clinic_translation_api_v1_terminology_admin_concepts__concept_id__translations__locale__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                concept_id: string;
+                locale: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ConceptTranslationUpsert"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConceptAdminRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    translation_coverage_api_v1_terminology_admin_translation_coverage_get: {
+        parameters: {
+            query: {
+                locale: string;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_TranslationCoverageItem_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_value_sets_api_v1_terminology_admin_value_sets_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValueSetSummaryRead"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_value_set_member_api_v1_terminology_admin_value_sets__code__members_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ValueSetMemberCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValueSetRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_value_set_member_api_v1_terminology_admin_value_sets__code__members__concept_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                code: string;
+                concept_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValueSetRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_value_set_member_api_v1_terminology_admin_value_sets__code__members__concept_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                code: string;
+                concept_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ValueSetMemberUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ValueSetRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     search_concepts_api_v1_terminology_concepts_search_get: {
         parameters: {
             query: {
@@ -2496,6 +3137,7 @@ export interface operations {
             query?: {
                 limit?: number;
                 offset?: number;
+                search?: string | null;
             };
             header?: {
                 "X-Clinic-Id"?: string | null;

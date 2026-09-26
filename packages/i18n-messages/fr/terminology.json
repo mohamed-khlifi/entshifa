@@ -1,0 +1,42 @@
+{
+  "nav": {
+    "concepts": "Concepts",
+    "valueSets": "Jeux de valeurs",
+    "coverage": "Couverture des traductions"
+  },
+  "concepts": {
+    "title": "Terminologie",
+    "description": "Concepts propres à la clinique et libellés locaux.",
+    "code": "Code",
+    "kind": "Type",
+    "scope": "Portée",
+    "display": "Libellé",
+    "clinic": "Clinique",
+    "global": "Partagé",
+    "create": "Nouveau concept",
+    "createSubmit": "Créer",
+    "created": "Concept créé.",
+    "rename": "Libellé local",
+    "renameSubmit": "Enregistrer",
+    "renamed": "Libellé local enregistré.",
+    "emptyTitle": "Aucun concept"
+  },
+  "valueSets": {
+    "title": "Jeux de valeurs",
+    "description": "Ajouter des membres propres à la clinique.",
+    "select": "Jeu de valeurs",
+    "conceptId": "Identifiant du concept",
+    "add": "Ajouter",
+    "added": "Membre ajouté."
+  },
+  "coverage": {
+    "title": "Couverture des traductions",
+    "description": "Concepts sans traduction pour la langue choisie, les plus utilisés d'abord.",
+    "locale": "Langue",
+    "code": "Code",
+    "kind": "Type",
+    "display": "Libellé actuel",
+    "usage": "Usage",
+    "emptyTitle": "Rien à traduire"
+  }
+}

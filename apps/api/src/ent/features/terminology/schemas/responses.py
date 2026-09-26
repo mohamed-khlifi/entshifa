@@ -38,3 +38,37 @@ class ConceptDictionaryResponse(CamelModel):
 
     locale: str
     concepts: dict[str, ResolvedConcept]
+
+
+class ConceptTranslationRead(CamelModel):
+    locale: str
+    display: str
+    full_name: str | None = None
+    abbreviation: str | None = None
+    patient_friendly: str | None = None
+    synonyms: list[str] | None = None
+    clinic_owned: bool
+
+
+class ConceptAdminRead(CamelModel):
+    public_id: str
+    code: str
+    kind: str
+    is_active: bool
+    clinic_owned: bool
+    sort_order: int
+    translations: list[ConceptTranslationRead]
+
+
+class TranslationCoverageItem(CamelModel):
+    public_id: str
+    code: str
+    kind: str
+    usage_count: int
+    display: str
+
+
+class ValueSetSummaryRead(CamelModel):
+    code: str
+    name_key: str
+    description_key: str | None = None

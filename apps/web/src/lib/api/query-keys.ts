@@ -21,4 +21,17 @@ export const queryKeys = {
     roles: () => [...queryKeys.users.all, "roles"] as const,
     permissions: () => [...queryKeys.users.all, "permissions"] as const,
   },
+  terminology: {
+    all: ["terminology"] as const,
+    adminConcepts: (params?: {
+      q?: string;
+      limit?: number;
+      offset?: number;
+    }) => [...queryKeys.terminology.all, "admin-concepts", params ?? {}] as const,
+    valueSets: () => [...queryKeys.terminology.all, "value-sets"] as const,
+    valueSet: (code: string) =>
+      [...queryKeys.terminology.all, "value-set", code] as const,
+    coverage: (locale: string) =>
+      [...queryKeys.terminology.all, "coverage", locale] as const,
+  },
 } as const;

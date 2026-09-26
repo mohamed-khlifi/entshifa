@@ -81,3 +81,95 @@ async def test_terminology_endpoints_for_authenticated_user(app) -> None:
         )
         assert missing.status_code == 404
         assert missing.json()["code"] == "not_found"
+
+
+@pytest.mark.integration
+@pytest.mark.asyncio
+async def test_terminology_admin_clinic_override_and_coverage(app) -> None:
+    from tests.support.clinic_seed import seed_clinic_admin_fixtures
+
+    factory = get_session_factory()
+    async with factory() as session:
+        try:
+            fixtures = await seed_clinic_admin_fixtures(session)
+            await seed_terminology(session)
+            await session.commit()
+        except Exception as exc:
+            pytest.skip(f"Database not ready: {exc}")
+
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        login = await client.post(
+            "/api/v1/auth/login",
+            json={"email": fixtures["admin_email"], "password": fixtures["password"]},
+        )
+        assert login.status_code == 200
+        headers = {"Authorization": f"Bearer {login.json()['accessToken']}"}
+
+        created = await client.post(
+            "/api/v1/terminology/admin/concepts",
+            headers=headers,
+            json={
+                "code": f"LOCAL.{fixtures['admin_email'].split('+')[1].split('@')[0]}",
+                "kind": "finding",
+                "locale": "en",
+                "display": "Clinic finding",
+            },
+        )
+        assert created.status_code == 201
+        public_id = created.json()["publicId"]
+        assert created.json()["clinicOwned"] is True
+
+        search = await client.get(
+            "/api/v1/terminology/concepts/search",
+            headers=headers,
+            params={"q": "tympanic", "locale": "en", "kind": "anatomy"},
+        )
+        assert search.status_code == 200
+        anatomy = next(
+            item for item in search.json()["items"] if item["code"] == "ANAT.TM"
+        )
+
+        override = await client.put(
+            f"/api/v1/terminology/admin/concepts/{anatomy['publicId']}/translations/en",
+            headers=headers,
+            json={"display": "Local tympanic name"},
+        )
+        assert override.status_code == 200
+        assert any(
+            row["display"] == "Local tympanic name" and row["clinicOwned"]
+            for row in override.json()["translations"]
+        )
+
+        member = await client.post(
+            "/api/v1/terminology/admin/value-sets/tm.findings/members",
+            headers=headers,
+            json={"conceptPublicId": public_id, "sortOrder": 9, "isDefault": False},
+        )
+        assert member.status_code == 201
+        assert any(item["publicId"] == public_id for item in member.json()["members"])
+
+        blocked = await client.delete(
+            f"/api/v1/terminology/admin/concepts/{public_id}",
+            headers=headers,
+        )
+        assert blocked.status_code == 409
+        assert blocked.json()["context"]["reason"] == "concept_in_use"
+
+        deactivated = await client.patch(
+            f"/api/v1/terminology/admin/concepts/{public_id}",
+            headers=headers,
+            json={"isActive": False},
+        )
+        assert deactivated.status_code == 200
+        assert deactivated.json()["isActive"] is False
+
+        coverage = await client.get(
+            "/api/v1/terminology/admin/translation-coverage",
+            headers=headers,
+            params={"locale": "ar", "limit": 50},
+        )
+        assert coverage.status_code == 200
+        assert coverage.json()["page"]["total"] >= 1
+        counts = [item["usageCount"] for item in coverage.json()["items"]]
+        assert counts == sorted(counts, reverse=True)

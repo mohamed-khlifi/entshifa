@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from ent.features.terminology.models import (
+    CodeSystem,
     Concept,
     ConceptTranslation,
     ValueSet,
@@ -251,3 +252,141 @@ class TerminologyRepository:
             locale=chosen.locale,
             translation_missing=False,
         )
+
+    def _admin_visible(self, *, include_inactive: bool) -> Select[tuple[Concept]]:
+        stmt = select(Concept).where(Concept.deleted_at.is_(None))
+        if not include_inactive:
+            stmt = stmt.where(Concept.is_active.is_(True))
+        if self.clinic_id is not None:
+            stmt = stmt.where(
+                or_(Concept.clinic_id.is_(None), Concept.clinic_id == self.clinic_id),
+            )
+        else:
+            stmt = stmt.where(Concept.clinic_id.is_(None))
+        return stmt
+
+    async def get_admin_concept(self, public_id: str) -> Concept | None:
+        result = await self.session.execute(
+            self._admin_visible(include_inactive=True).where(
+                Concept.public_id == public_id
+            ),
+        )
+        return result.scalar_one_or_none()
+
+    async def get_internal_code_system(self) -> CodeSystem | None:
+        result = await self.session.execute(
+            select(CodeSystem).where(
+                CodeSystem.code == "INTERNAL",
+                CodeSystem.deleted_at.is_(None),
+            ),
+        )
+        return result.scalar_one_or_none()
+
+    async def find_concept_by_code(
+        self, *, code_system_id: int, code: str
+    ) -> Concept | None:
+        result = await self.session.execute(
+            select(Concept).where(
+                Concept.code_system_id == code_system_id,
+                Concept.code == code,
+                Concept.deleted_at.is_(None),
+            ),
+        )
+        return result.scalar_one_or_none()
+
+    async def list_admin_concepts(
+        self,
+        *,
+        q: str | None,
+        kind: str | None,
+        clinic_owned_only: bool,
+        limit: int,
+        offset: int,
+    ) -> tuple[list[Concept], int]:
+        stmt = self._admin_visible(include_inactive=True)
+        if clinic_owned_only and self.clinic_id is not None:
+            stmt = stmt.where(Concept.clinic_id == self.clinic_id)
+        if kind:
+            stmt = stmt.where(Concept.kind == kind)
+        if q:
+            like = f"%{q.strip()}%"
+            stmt = stmt.where(or_(Concept.code.like(like), Concept.kind.like(like)))
+        total = (
+            await self.session.execute(
+                select(func.count()).select_from(stmt.order_by(None).subquery()),
+            )
+        ).scalar_one()
+        rows = (
+            (
+                await self.session.execute(
+                    stmt.order_by(Concept.kind, Concept.sort_order, Concept.code)
+                    .offset(offset)
+                    .limit(limit),
+                )
+            )
+            .scalars()
+            .all()
+        )
+        return list(rows), int(total)
+
+    async def reference_counts(self, concept_ids: list[int]) -> dict[int, int]:
+        counts = {cid: 0 for cid in concept_ids}
+        if not concept_ids:
+            return counts
+        member_rows = (
+            await self.session.execute(
+                select(ValueSetMember.concept_id, func.count())
+                .where(
+                    ValueSetMember.concept_id.in_(concept_ids),
+                    ValueSetMember.deleted_at.is_(None),
+                )
+                .group_by(ValueSetMember.concept_id),
+            )
+        ).all()
+        for concept_id, count in member_rows:
+            counts[int(concept_id)] = counts.get(int(concept_id), 0) + int(count)
+        return counts
+
+    async def find_clinic_translation(
+        self,
+        *,
+        concept_id: int,
+        locale: str,
+    ) -> ConceptTranslation | None:
+        if self.clinic_id is None:
+            return None
+        result = await self.session.execute(
+            select(ConceptTranslation).where(
+                ConceptTranslation.concept_id == concept_id,
+                ConceptTranslation.locale == locale,
+                ConceptTranslation.clinic_id == self.clinic_id,
+                ConceptTranslation.deleted_at.is_(None),
+            ),
+        )
+        return result.scalar_one_or_none()
+
+    async def list_value_sets(self) -> list[ValueSet]:
+        result = await self.session.execute(
+            select(ValueSet)
+            .where(ValueSet.deleted_at.is_(None))
+            .order_by(ValueSet.code),
+        )
+        return list(result.scalars().all())
+
+    async def find_clinic_member(
+        self,
+        *,
+        value_set_id: int,
+        concept_id: int,
+    ) -> ValueSetMember | None:
+        if self.clinic_id is None:
+            return None
+        result = await self.session.execute(
+            select(ValueSetMember).where(
+                ValueSetMember.value_set_id == value_set_id,
+                ValueSetMember.concept_id == concept_id,
+                ValueSetMember.clinic_id == self.clinic_id,
+                ValueSetMember.deleted_at.is_(None),
+            ),
+        )
+        return result.scalar_one_or_none()

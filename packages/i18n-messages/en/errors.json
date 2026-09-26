@@ -9,5 +9,6 @@
   "generic": "Something went wrong. Try again.",
   "internal_error": "Something went wrong. Try again.",
   "not_found": "The requested resource was not found.",
+  "conflict": "This change conflicts with existing data.",
   "validation_failed": "Check the highlighted fields."
 }
