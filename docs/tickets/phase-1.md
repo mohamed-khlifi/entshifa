@@ -45,7 +45,7 @@ clinical requirements.
 
 ---
 
-## - [ ] P1-03 Users and clinic admin UI (frontend)
+## - [x] P1-03 Users and clinic admin UI (frontend)
 
 **Scope**
 - Login, password reset, TOTP enrolment screens.

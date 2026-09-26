@@ -27,6 +27,11 @@ class ClinicUpdate(CamelModel):
     website: str | None = Field(default=None, max_length=160)
     tax_id: str | None = Field(default=None, max_length=40)
     registration_number: str | None = Field(default=None, max_length=40)
+    logo_attachment_public_id: str | None = Field(
+        default=None,
+        min_length=26,
+        max_length=26,
+    )
     settings: dict[str, Any] | None = None
     is_active: bool | None = None
 

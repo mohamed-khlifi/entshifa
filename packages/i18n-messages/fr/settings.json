@@ -1,0 +1,24 @@
+{
+  "security": {
+    "title": "Sécurité",
+    "description": "Protégez votre compte avec l'authentification à deux facteurs.",
+    "mfaTitle": "Application d'authentification",
+    "mfaDescription": "Utilisez une application TOTP pour une étape de connexion supplémentaire.",
+    "mfaEnabled": "L'authentification à deux facteurs est activée.",
+    "mfaDisabled": "L'authentification à deux facteurs n'est pas activée.",
+    "enroll": "Configurer",
+    "scanQr": "Scannez le code QR, puis saisissez le code de vérification.",
+    "secretLabel": "Clé manuelle",
+    "confirmCode": "Code de vérification",
+    "confirmSubmit": "Activer",
+    "disableTitle": "Désactiver la 2FA",
+    "disablePassword": "Mot de passe actuel",
+    "disableCode": "Code d'authentification",
+    "disableSubmit": "Désactiver",
+    "enrollSuccess": "Authentification à deux facteurs activée.",
+    "disableSuccess": "Authentification à deux facteurs désactivée."
+  },
+  "nav": {
+    "security": "Sécurité"
+  }
+}

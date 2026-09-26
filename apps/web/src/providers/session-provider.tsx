@@ -13,11 +13,13 @@ import { useLocale } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
 
 import {
+  completeMfaLogin,
   fetchMe,
   loginRequest,
   logoutRequest,
   refreshSession,
-} from "@/features/auth";
+  switchActiveClinic,
+} from "@/features/auth/api/auth.api";
 import { queryKeys } from "@/lib/api/query-keys";
 import type { MeResponse } from "@/lib/api/generated";
 import {
@@ -32,12 +34,18 @@ type SessionState = {
   permissions: string[];
 };
 
+type LoginResult =
+  | { status: "ok" }
+  | { status: "mfa_required"; mfaToken: string };
+
 type SessionContextValue = {
   session: SessionState | null;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<LoginResult>;
+  completeMfa: (mfaToken: string, code: string) => Promise<void>;
   logout: () => Promise<void>;
   refresh: () => Promise<void>;
+  switchClinic: (clinicPublicId: string) => Promise<void>;
 };
 
 const SessionContext = createContext<SessionContextValue | null>(null);
@@ -50,6 +58,25 @@ function toSession(me: MeResponse): SessionState {
   };
 }
 
+async function applyLoginResponse(
+  response: {
+    accessToken?: string | null;
+    session?: { clinicPublicId: string } | null;
+  },
+  locale: string,
+  queryClient: ReturnType<typeof useQueryClient>,
+  setSession: (s: SessionState | null) => void,
+) {
+  if (!response.accessToken || !response.session) {
+    return;
+  }
+  setAccessToken(response.accessToken);
+  setSessionIndicatorCookie();
+  const me = await fetchMe(locale, response.session.clinicPublicId);
+  setSession(toSession(me));
+  await queryClient.invalidateQueries({ queryKey: queryKeys.auth.all });
+}
+
 export function SessionProvider({ children }: { children: ReactNode }) {
   const locale = useLocale();
   const queryClient = useQueryClient();
@@ -59,11 +86,15 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const loadSession = useCallback(async () => {
     try {
       const refreshed = await refreshSession(locale);
-      setAccessToken(refreshed.accessToken);
-      setSessionIndicatorCookie();
-      const me = await fetchMe(locale, refreshed.session.clinicPublicId);
-      setSession(toSession(me));
-      await queryClient.invalidateQueries({ queryKey: queryKeys.auth.me() });
+      await applyLoginResponse(
+        {
+          accessToken: refreshed.accessToken,
+          session: refreshed.session,
+        },
+        locale,
+        queryClient,
+        setSession,
+      );
     } catch {
       setAccessToken(null);
       clearSessionIndicatorCookie();
@@ -78,13 +109,37 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, [loadSession]);
 
   const login = useCallback(
-    async (email: string, password: string) => {
+    async (email: string, password: string): Promise<LoginResult> => {
       const response = await loginRequest({ email, password }, locale);
-      setAccessToken(response.accessToken);
-      setSessionIndicatorCookie();
-      const me = await fetchMe(locale, response.session.clinicPublicId);
-      setSession(toSession(me));
-      await queryClient.invalidateQueries({ queryKey: queryKeys.auth.me() });
+      if (response.mfaRequired && response.mfaToken) {
+        return { status: "mfa_required", mfaToken: response.mfaToken };
+      }
+      await applyLoginResponse(
+        {
+          accessToken: response.accessToken,
+          session: response.session,
+        },
+        locale,
+        queryClient,
+        setSession,
+      );
+      return { status: "ok" };
+    },
+    [locale, queryClient],
+  );
+
+  const completeMfa = useCallback(
+    async (mfaToken: string, code: string) => {
+      const response = await completeMfaLogin({ mfaToken, code }, locale);
+      await applyLoginResponse(
+        {
+          accessToken: response.accessToken,
+          session: response.session,
+        },
+        locale,
+        queryClient,
+        setSession,
+      );
     },
     [locale, queryClient],
   );
@@ -96,19 +151,44 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       setAccessToken(null);
       clearSessionIndicatorCookie();
       setSession(null);
-      await queryClient.invalidateQueries({ queryKey: queryKeys.auth.me() });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.auth.all });
     }
   }, [queryClient]);
+
+  const switchClinic = useCallback(
+    async (clinicPublicId: string) => {
+      if (!session) {
+        return;
+      }
+      const response = await switchActiveClinic(
+        { clinicPublicId },
+        locale,
+        session.clinicPublicId,
+      );
+      await applyLoginResponse(
+        {
+          accessToken: response.accessToken,
+          session: response.session,
+        },
+        locale,
+        queryClient,
+        setSession,
+      );
+    },
+    [locale, queryClient, session],
+  );
 
   const value = useMemo<SessionContextValue>(
     () => ({
       session,
       isLoading,
       login,
+      completeMfa,
       logout,
       refresh: loadSession,
+      switchClinic,
     }),
-    [session, isLoading, login, logout, loadSession],
+    [session, isLoading, login, completeMfa, logout, loadSession, switchClinic],
   );
 
   return (

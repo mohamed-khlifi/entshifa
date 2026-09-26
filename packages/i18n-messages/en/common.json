@@ -10,7 +10,15 @@
   },
   "nav": {
     "home": "Home",
-    "uiKit": "UI kit"
+    "uiKit": "UI kit",
+    "admin": "Administration",
+    "clinic": "Clinic",
+    "users": "Team",
+    "settings": "Settings",
+    "security": "Security"
+  },
+  "clinicSwitcher": {
+    "label": "Active clinic"
   },
   "home": {
     "welcome": "Welcome",

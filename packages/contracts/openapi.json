@@ -409,6 +409,17 @@
             ],
             "title": "Legalname"
           },
+          "logoAttachmentPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logoattachmentpublicid"
+          },
           "name": {
             "title": "Name",
             "type": "string"
@@ -623,6 +634,19 @@
               }
             ],
             "title": "Legalname"
+          },
+          "logoAttachmentPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logoattachmentpublicid"
           },
           "name": {
             "anyOf": [
@@ -1113,6 +1137,11 @@
           "clinicPublicId": {
             "title": "Clinicpublicid",
             "type": "string"
+          },
+          "mfaEnabled": {
+            "default": false,
+            "title": "Mfaenabled",
+            "type": "boolean"
           },
           "permissions": {
             "items": {

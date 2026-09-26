@@ -24,3 +24,4 @@ class MeResponse(CamelModel):
     user_public_id: str
     clinic_public_id: str
     permissions: list[str]
+    mfa_enabled: bool = False

@@ -10,7 +10,15 @@
   },
   "nav": {
     "home": "الرئيسية",
-    "uiKit": "عدة الواجهة"
+    "uiKit": "عدة الواجهة",
+    "admin": "الإدارة",
+    "clinic": "العيادة",
+    "users": "الفريق",
+    "settings": "الإعدادات",
+    "security": "الأمان"
+  },
+  "clinicSwitcher": {
+    "label": "العيادة النشطة"
   },
   "home": {
     "welcome": "مرحباً",

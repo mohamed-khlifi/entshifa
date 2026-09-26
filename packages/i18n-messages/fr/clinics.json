@@ -1,0 +1,75 @@
+{
+  "profile": {
+    "title": "Profil de la clinique",
+    "description": "Identité, coordonnées et paramètres régionaux de la clinique.",
+    "name": "Nom affiché",
+    "legalName": "Raison sociale",
+    "slug": "Identifiant URL",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "website": "Site web",
+    "timezone": "Fuseau horaire",
+    "countryCode": "Pays",
+    "currency": "Devise",
+    "defaultLocale": "Langue par défaut",
+    "addressLine1": "Adresse ligne 1",
+    "addressLine2": "Adresse ligne 2",
+    "city": "Ville",
+    "postalCode": "Code postal",
+    "save": "Enregistrer",
+    "saved": "Profil mis à jour."
+  },
+  "branding": {
+    "title": "Image de marque et documents",
+    "description": "Logo et en-tête/pied de page pour les documents imprimés.",
+    "logo": "Logo",
+    "logoHint": "PNG ou JPEG, 5 Mo max.",
+    "uploadLogo": "Téléverser le logo",
+    "documentHeader": "En-tête de document",
+    "documentFooter": "Pied de page",
+    "headerPlaceholder": "Texte ou HTML optionnel en haut des documents.",
+    "footerPlaceholder": "Texte ou HTML optionnel en bas des documents."
+  },
+  "sites": {
+    "title": "Sites",
+    "description": "Lieux physiques de la clinique.",
+    "name": "Nom du site",
+    "city": "Ville",
+    "phone": "Téléphone",
+    "primary": "Principal",
+    "add": "Ajouter un site",
+    "createTitle": "Nouveau site",
+    "createSubmit": "Créer",
+    "saved": "Site enregistré.",
+    "created": "Site créé."
+  },
+  "clinical": {
+    "title": "Paramètres cliniques",
+    "description": "Surcharges audiology et suivi. Les valeurs système s'appliquent sinon.",
+    "source": "Source : {source}",
+    "save": "Enregistrer",
+    "saved": "Paramètres mis à jour.",
+    "keys": {
+      "pta_formula": "Formule PTA",
+      "asymmetry_rule": "Règle d'asymétrie",
+      "polyp_scale": "Échelle polypes",
+      "tube_recall_interval_months": "Rappel tubes (mois)",
+      "follow_up_defaults": "Suivi par défaut"
+    },
+    "ptaOptions": {
+      "3freq": "3 fréquences",
+      "4freq_who": "4 fréquences (OMS)",
+      "high_freq": "Hautes fréquences",
+      "fletcher": "Fletcher"
+    },
+    "polypOptions": {
+      "meltzer": "Meltzer",
+      "lund_kennedy": "Lund–Kennedy"
+    }
+  },
+  "nav": {
+    "profile": "Profil",
+    "sites": "Sites",
+    "clinical": "Clinique"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "profile": {
+    "title": "ملف العيادة",
+    "description": "الهوية وبيانات الاتصال والإعدادات الإقليمية.",
+    "name": "الاسم المعروض",
+    "legalName": "الاسم القانوني",
+    "slug": "معرّف الرابط",
+    "email": "البريد الإلكتروني",
+    "phone": "الهاتف",
+    "website": "الموقع",
+    "timezone": "المنطقة الزمنية",
+    "countryCode": "البلد",
+    "currency": "العملة",
+    "defaultLocale": "اللغة الافتراضية",
+    "addressLine1": "العنوان 1",
+    "addressLine2": "العنوان 2",
+    "city": "المدينة",
+    "postalCode": "الرمز البريدي",
+    "save": "حفظ",
+    "saved": "تم تحديث الملف."
+  },
+  "branding": {
+    "title": "الهوية والمستندات",
+    "description": "الشعار ونص الترويسة/التذييل للمستندات المطبوعة.",
+    "logo": "شعار العيادة",
+    "logoHint": "PNG أو JPEG، حتى 5 ميجابايت.",
+    "uploadLogo": "رفع الشعار",
+    "documentHeader": "ترويسة المستند",
+    "documentFooter": "تذييل المستند",
+    "headerPlaceholder": "نص أو HTML اختياري أعلى المستندات.",
+    "footerPlaceholder": "نص أو HTML اختياري أسفل المستندات."
+  },
+  "sites": {
+    "title": "المواقع",
+    "description": "المواقع الفعلية للعيادة.",
+    "name": "اسم الموقع",
+    "city": "المدينة",
+    "phone": "الهاتف",
+    "primary": "رئيسي",
+    "add": "إضافة موقع",
+    "createTitle": "موقع جديد",
+    "createSubmit": "إنشاء",
+    "saved": "تم الحفظ.",
+    "created": "تم الإنشاء."
+  },
+  "clinical": {
+    "title": "الإعدادات السريرية",
+    "description": "تجاوزات السمع والمتابعة. تُطبَّق قيم النظام عند عدم التعيين.",
+    "source": "المصدر: {source}",
+    "save": "حفظ",
+    "saved": "تم التحديث.",
+    "keys": {
+      "pta_formula": "صيغة PTA",
+      "asymmetry_rule": "قاعدة الت asymmetry",
+      "polyp_scale": "مقياس السلائل",
+      "tube_recall_interval_months": "استدعاء الأنابيب (أشهر)",
+      "follow_up_defaults": "المتابعة الافتراضية"
+    },
+    "ptaOptions": {
+      "3freq": "3 ترددات",
+      "4freq_who": "4 ترددات (WHO)",
+      "high_freq": "ترددات عالية",
+      "fletcher": "Fletcher"
+    },
+    "polypOptions": {
+      "meltzer": "Meltzer",
+      "lund_kennedy": "Lund–Kennedy"
+    }
+  },
+  "nav": {
+    "profile": "الملف",
+    "sites": "المواقع",
+    "clinical": "سريري"
+  }
+}

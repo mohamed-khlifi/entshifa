@@ -35,12 +35,14 @@ router = APIRouter(tags=["users"])
 async def list_users(
     limit: int = Query(default=25, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
+    search: str | None = Query(default=None, min_length=1, max_length=160),
     user: CurrentUser = Depends(require(Permission.ADMIN_USERS)),
     service: UserAdminService = Depends(get_user_admin_service),
 ) -> PageSchema[UserRead]:
     return await service.list_users(
         user=user,
         page=PaginationParams(limit=limit, offset=offset),
+        search=search,
     )
 
 

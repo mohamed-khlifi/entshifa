@@ -1,0 +1,75 @@
+{
+  "profile": {
+    "title": "Clinic profile",
+    "description": "Identity, contact details, and regional defaults for this clinic.",
+    "name": "Display name",
+    "legalName": "Legal name",
+    "slug": "URL slug",
+    "email": "Email",
+    "phone": "Phone",
+    "website": "Website",
+    "timezone": "Timezone",
+    "countryCode": "Country",
+    "currency": "Currency",
+    "defaultLocale": "Default language",
+    "addressLine1": "Address line 1",
+    "addressLine2": "Address line 2",
+    "city": "City",
+    "postalCode": "Postal code",
+    "save": "Save changes",
+    "saved": "Clinic profile updated."
+  },
+  "branding": {
+    "title": "Branding & documents",
+    "description": "Logo and printable header/footer text for generated documents.",
+    "logo": "Clinic logo",
+    "logoHint": "PNG or JPEG, up to 5 MB.",
+    "uploadLogo": "Upload logo",
+    "documentHeader": "Document header",
+    "documentFooter": "Document footer",
+    "headerPlaceholder": "Optional text or HTML shown at the top of printed documents.",
+    "footerPlaceholder": "Optional text or HTML shown at the bottom of printed documents."
+  },
+  "sites": {
+    "title": "Sites",
+    "description": "Physical locations belonging to this clinic.",
+    "name": "Site name",
+    "city": "City",
+    "phone": "Phone",
+    "primary": "Primary",
+    "add": "Add site",
+    "createTitle": "New site",
+    "createSubmit": "Create site",
+    "saved": "Site saved.",
+    "created": "Site created."
+  },
+  "clinical": {
+    "title": "Clinical defaults",
+    "description": "Clinic overrides for audiology and follow-up rules. System defaults apply when not set.",
+    "source": "Source: {source}",
+    "save": "Save clinical settings",
+    "saved": "Clinical settings updated.",
+    "keys": {
+      "pta_formula": "PTA formula",
+      "asymmetry_rule": "Asymmetry rule",
+      "polyp_scale": "Polyp grading scale",
+      "tube_recall_interval_months": "Tube recall (months)",
+      "follow_up_defaults": "Follow-up defaults"
+    },
+    "ptaOptions": {
+      "3freq": "3-frequency",
+      "4freq_who": "4-frequency (WHO)",
+      "high_freq": "High frequency",
+      "fletcher": "Fletcher"
+    },
+    "polypOptions": {
+      "meltzer": "Meltzer",
+      "lund_kennedy": "Lund–Kennedy"
+    }
+  },
+  "nav": {
+    "profile": "Clinic profile",
+    "sites": "Sites",
+    "clinical": "Clinical defaults"
+  }
+}

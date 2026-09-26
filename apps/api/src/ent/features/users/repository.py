@@ -35,6 +35,7 @@ class UserAdminRepository:
         *,
         clinic_id: int,
         page: PaginationParams | None,
+        search: str | None = None,
     ) -> Page[User]:
         resolved = normalize_pagination(page)
         today = date.today()
@@ -48,6 +49,15 @@ class UserAdminRepository:
             )
             .distinct()
         )
+        if search:
+            term = f"%{search.strip()}%"
+            base = base.where(
+                or_(
+                    User.email.ilike(term),
+                    User.first_name.ilike(term),
+                    User.last_name.ilike(term),
+                ),
+            )
         total = (
             await self.session.execute(
                 select(func.count()).select_from(base.subquery()),

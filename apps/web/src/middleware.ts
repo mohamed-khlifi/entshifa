@@ -15,7 +15,16 @@ function pathWithoutLocale(pathname: string): string {
 
 function isPublicPath(pathname: string): boolean {
   const path = pathWithoutLocale(pathname);
-  return path === "/login" || path.startsWith("/login/");
+  if (path === "/login" || path.startsWith("/login/")) {
+    return true;
+  }
+  if (path === "/password-reset" || path.startsWith("/password-reset/")) {
+    return true;
+  }
+  if (path === "/invite/accept" || path.startsWith("/invite/")) {
+    return true;
+  }
+  return false;
 }
 
 export default function middleware(request: NextRequest): NextResponse {

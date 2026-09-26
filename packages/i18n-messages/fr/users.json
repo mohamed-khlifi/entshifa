@@ -1,0 +1,25 @@
+{
+  "list": {
+    "title": "Équipe",
+    "description": "Invitations et rôles pour cette clinique.",
+    "email": "E-mail",
+    "name": "Nom",
+    "roles": "Rôles",
+    "mfa": "2FA",
+    "status": "Statut",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "mfaOn": "Oui",
+    "mfaOff": "Non",
+    "emptyTitle": "Aucun utilisateur",
+    "emptyDescription": "Invitez un premier membre de l'équipe."
+  },
+  "invite": {
+    "action": "Inviter",
+    "title": "Inviter un collègue",
+    "email": "Adresse e-mail",
+    "role": "Rôle",
+    "submit": "Envoyer l'invitation",
+    "success": "Invitation envoyée."
+  }
+}

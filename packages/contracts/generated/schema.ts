@@ -751,6 +751,8 @@ export interface components {
             isActive: boolean;
             /** Legalname */
             legalName?: string | null;
+            /** Logoattachmentpublicid */
+            logoAttachmentPublicId?: string | null;
             /** Name */
             name: string;
             /** Phone */
@@ -799,6 +801,8 @@ export interface components {
             isActive?: boolean | null;
             /** Legalname */
             legalName?: string | null;
+            /** Logoattachmentpublicid */
+            logoAttachmentPublicId?: string | null;
             /** Name */
             name?: string | null;
             /** Phone */
@@ -950,6 +954,11 @@ export interface components {
         MeResponse: {
             /** Clinicpublicid */
             clinicPublicId: string;
+            /**
+             * Mfaenabled
+             * @default false
+             */
+            mfaEnabled: boolean;
             /** Permissions */
             permissions: string[];
             /** Userpublicid */

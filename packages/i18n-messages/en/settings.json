@@ -1,0 +1,24 @@
+{
+  "security": {
+    "title": "Security",
+    "description": "Protect your account with two-factor authentication.",
+    "mfaTitle": "Authenticator app",
+    "mfaDescription": "Use a TOTP app (Google Authenticator, 1Password, etc.) for an extra sign-in step.",
+    "mfaEnabled": "Two-factor authentication is enabled.",
+    "mfaDisabled": "Two-factor authentication is not enabled.",
+    "enroll": "Set up authenticator",
+    "scanQr": "Scan this QR code with your authenticator app, then enter the verification code.",
+    "secretLabel": "Manual entry key",
+    "confirmCode": "Verification code",
+    "confirmSubmit": "Confirm and enable",
+    "disableTitle": "Disable two-factor authentication",
+    "disablePassword": "Current password",
+    "disableCode": "Authenticator code",
+    "disableSubmit": "Disable MFA",
+    "enrollSuccess": "Two-factor authentication is now enabled.",
+    "disableSuccess": "Two-factor authentication has been disabled."
+  },
+  "nav": {
+    "security": "Security"
+  }
+}

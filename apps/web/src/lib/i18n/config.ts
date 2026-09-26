@@ -42,6 +42,9 @@ export const MESSAGE_NAMESPACES = [
   "data",
   "uiKit",
   "attachments",
+  "clinics",
+  "users",
+  "settings",
 ] as const;
 
 export type MessageNamespace = (typeof MESSAGE_NAMESPACES)[number];

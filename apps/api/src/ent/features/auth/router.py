@@ -92,11 +92,14 @@ async def logout(
 @router.get("/me", response_model=MeResponse)
 async def read_session(
     user: CurrentUser = Depends(require(Permission.AUTH_SESSION_READ)),
+    auth_service: AuthService = Depends(get_auth_service),
 ) -> MeResponse:
+    row = await auth_service.get_user_by_public_id(user.user_public_id)
     return MeResponse(
         user_public_id=user.user_public_id,
         clinic_public_id=user.clinic_public_id,
         permissions=sorted(user.permissions),
+        mfa_enabled=bool(row and row.mfa_enabled),
     )
 
 

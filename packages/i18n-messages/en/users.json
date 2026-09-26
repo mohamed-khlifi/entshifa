@@ -1,0 +1,25 @@
+{
+  "list": {
+    "title": "Team members",
+    "description": "Invite colleagues and manage roles for this clinic.",
+    "email": "Email",
+    "name": "Name",
+    "roles": "Roles",
+    "mfa": "MFA",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "mfaOn": "On",
+    "mfaOff": "Off",
+    "emptyTitle": "No users yet",
+    "emptyDescription": "Invite your first team member to get started."
+  },
+  "invite": {
+    "action": "Invite user",
+    "title": "Invite a team member",
+    "email": "Email address",
+    "role": "Role",
+    "submit": "Send invitation",
+    "success": "Invitation sent."
+  }
+}

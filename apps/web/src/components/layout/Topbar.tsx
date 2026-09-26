@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 
 import { LogoutButton } from "@/features/auth";
+import { ClinicSwitcher } from "@/components/layout/ClinicSwitcher";
 import { LocaleSwitcher } from "@/components/layout/LocaleSwitcher";
 import { testIdProps, testIds } from "@/lib/test/test-id";
 
@@ -16,6 +17,7 @@ export function Topbar() {
     >
       <span className="text-sm font-semibold">{t("app.name")}</span>
       <div className="flex items-center gap-2 sm:gap-3">
+        <ClinicSwitcher />
         <LocaleSwitcher />
         <LogoutButton />
       </div>

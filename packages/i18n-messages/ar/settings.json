@@ -1,0 +1,24 @@
+{
+  "security": {
+    "title": "الأمان",
+    "description": "احمِ حسابك بالمصادقة الثنائية.",
+    "mfaTitle": "تطبيق المصادقة",
+    "mfaDescription": "استخدم تطبيق TOTP لخطوة تسجيل دخول إضافية.",
+    "mfaEnabled": "المصادقة الثنائية مفعّلة.",
+    "mfaDisabled": "المصادقة الثنائية غير مفعّلة.",
+    "enroll": "إعداد المصادقة",
+    "scanQr": "امسح رمز QR ثم أدخل رمز التحقق.",
+    "secretLabel": "المفتاح اليدوي",
+    "confirmCode": "رمز التحقق",
+    "confirmSubmit": "تفعيل",
+    "disableTitle": "تعطيل المصادقة الثنائية",
+    "disablePassword": "كلمة المرور الحالية",
+    "disableCode": "رمز المصادقة",
+    "disableSubmit": "تعطيل",
+    "enrollSuccess": "تم تفعيل المصادقة الثنائية.",
+    "disableSuccess": "تم تعطيل المصادقة الثنائية."
+  },
+  "nav": {
+    "security": "الأمان"
+  }
+}

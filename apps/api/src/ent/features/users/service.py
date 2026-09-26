@@ -39,8 +39,13 @@ class UserAdminService:
         *,
         user: CurrentUser,
         page: PaginationParams | None,
+        search: str | None = None,
     ) -> PageSchema[UserRead]:
-        result = await self._repo.list_members(clinic_id=user.clinic_id, page=page)
+        result = await self._repo.list_members(
+            clinic_id=user.clinic_id,
+            page=page,
+            search=search,
+        )
         items: list[UserRead] = []
         for row in result.items:
             codes = await self._repo.active_role_codes(

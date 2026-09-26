@@ -12,6 +12,7 @@ describe("generated API types", () => {
       accessToken: "token",
       tokenType: "bearer",
       expiresInMinutes: 15,
+      mfaRequired: false,
       session: {
         userPublicId: "01USER",
         clinicPublicId: "01CLINIC",
@@ -19,9 +20,10 @@ describe("generated API types", () => {
       },
     };
     const me: MeResponse = {
-      userPublicId: loginResponse.session.userPublicId,
-      clinicPublicId: loginResponse.session.clinicPublicId,
+      userPublicId: loginResponse.session!.userPublicId,
+      clinicPublicId: loginResponse.session!.clinicPublicId,
       permissions: ["auth.session.read"],
+      mfaEnabled: false,
     };
 
     expect(loginRequest.email).toContain("@");

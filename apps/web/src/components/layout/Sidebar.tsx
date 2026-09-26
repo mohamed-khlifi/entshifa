@@ -3,8 +3,10 @@
 import { useTranslations } from "next-intl";
 
 import { Link, usePathname } from "@/lib/i18n/navigation";
+import { Permission } from "@/lib/permissions";
 import { cn } from "@/lib/utils/cn";
 import { testIdProps, testIds } from "@/lib/test/test-id";
+import { usePermission } from "@/providers/permission-provider";
 
 function navClass(active: boolean): string {
   return cn(
@@ -18,9 +20,15 @@ function navClass(active: boolean): string {
 export function Sidebar() {
   const t = useTranslations("common");
   const pathname = usePathname();
+  const canAdminClinic = usePermission(Permission.ADMIN_CLINIC);
+  const canAdminUsers = usePermission(Permission.ADMIN_USERS);
 
   const homeActive = pathname === "/home" || pathname.startsWith("/home/");
   const uiKitActive = pathname === "/ui-kit" || pathname.startsWith("/ui-kit/");
+  const clinicActive =
+    pathname.startsWith("/admin/clinic") || pathname === "/admin/clinic";
+  const usersActive = pathname.startsWith("/admin/users");
+  const securityActive = pathname.startsWith("/settings/security");
 
   return (
     <aside
@@ -34,6 +42,24 @@ export function Sidebar() {
         <Link href="/ui-kit" className={navClass(uiKitActive)}>
           {t("nav.uiKit")}
         </Link>
+        <Link href="/settings/security" className={navClass(securityActive)}>
+          {t("nav.security")}
+        </Link>
+        {canAdminClinic || canAdminUsers ? (
+          <p className="px-3 pt-4 pb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            {t("nav.admin")}
+          </p>
+        ) : null}
+        {canAdminClinic ? (
+          <Link href="/admin/clinic" className={navClass(clinicActive)}>
+            {t("nav.clinic")}
+          </Link>
+        ) : null}
+        {canAdminUsers ? (
+          <Link href="/admin/users" className={navClass(usersActive)}>
+            {t("nav.users")}
+          </Link>
+        ) : null}
       </nav>
     </aside>
   );

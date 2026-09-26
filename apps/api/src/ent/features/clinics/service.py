@@ -11,6 +11,7 @@ from ent.core.repository.pagination import Page
 from ent.core.schemas.base import PageSchema, PaginationParams
 from ent.core.security.principal import CurrentUser
 from ent.core.utils.ids import new_ulid
+from ent.features.attachments.repository import AttachmentRepository
 from ent.features.clinics.models import Clinic, Site
 from ent.features.clinics.repository import (
     ClinicRepository,
@@ -37,8 +38,17 @@ from ent.features.clinics.setting_keys import (
 )
 
 
-def _clinic_read(clinic: Clinic) -> ClinicRead:
-    return ClinicRead.model_validate(clinic)
+async def _clinic_read(session: AsyncSession, clinic: Clinic) -> ClinicRead:
+    logo_public_id: str | None = None
+    if clinic.logo_attachment_id is not None:
+        attachment = await AttachmentRepository(
+            session,
+            clinic_id=clinic.id,
+        ).get(clinic.logo_attachment_id)
+        if attachment is not None:
+            logo_public_id = attachment.public_id
+    base = ClinicRead.model_validate(clinic)
+    return base.model_copy(update={"logo_attachment_public_id": logo_public_id})
 
 
 def _site_read(site: Site) -> SiteRead:
@@ -60,7 +70,7 @@ class ClinicService:
         clinic = await self._clinics.get(user.clinic_id)
         if clinic is None:
             raise NotFoundError(resource="clinic", public_id=user.clinic_public_id)
-        return _clinic_read(clinic)
+        return await _clinic_read(self._session, clinic)
 
     async def update_current_clinic(
         self,
@@ -96,6 +106,22 @@ class ClinicService:
                     defaultLocale=data["default_locale"],
                 )
 
+        if "logo_attachment_public_id" in data:
+            logo_public_id = data.pop("logo_attachment_public_id")
+            if logo_public_id is None:
+                clinic.logo_attachment_id = None
+            else:
+                attachment = await AttachmentRepository(
+                    self._session,
+                    clinic_id=user.clinic_id,
+                ).get_by_public_id(logo_public_id)
+                if attachment is None or attachment.category != "logo":
+                    raise NotFoundError(
+                        resource="attachment",
+                        public_id=logo_public_id,
+                    )
+                clinic.logo_attachment_id = attachment.id
+
         before = row_to_audit_dict(clinic)
         for field, value in data.items():
             setattr(clinic, field, value)
@@ -109,7 +135,7 @@ class ClinicService:
         )
         await self._session.commit()
         await self._session.refresh(clinic)
-        return _clinic_read(clinic)
+        return await _clinic_read(self._session, clinic)
 
     async def list_sites(
         self,

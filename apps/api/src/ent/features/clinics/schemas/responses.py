@@ -27,6 +27,7 @@ class ClinicRead(ORMModel):
     website: str | None = None
     tax_id: str | None = None
     registration_number: str | None = None
+    logo_attachment_public_id: str | None = None
     settings: dict[str, Any]
     is_active: bool
     created_at: datetime
