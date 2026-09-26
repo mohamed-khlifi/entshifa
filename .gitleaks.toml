@@ -4,5 +4,15 @@ title = "EntShifa gitleaks config"
 useDefault = true
 
 [allowlist]
-description = "Documented local-only placeholders in .env.example"
-paths = ['''\.env\.example$''']
+description = "Placeholders, CI dummies, tests (ULIDs trip generic-api-key), vendor trees"
+paths = [
+  '''(?i)\.env\.example$''',
+  '''(?i)\.github/workflows/''',
+  '''(?i)apps/api/scripts/pip_audit_allowlist\.txt$''',
+  '''(?i)apps/api/tests/''',
+  '''(?i)apps/web/e2e/''',
+  '''(?i)node_modules/''',
+  '''(?i)\.next/''',
+  '''(?i)\.venv/''',
+  '''(?i)package-lock\.json$''',
+]

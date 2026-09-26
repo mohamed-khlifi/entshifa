@@ -74,6 +74,16 @@ function applyBanner(body) {
   return body;
 }
 
+function resolvePython() {
+  for (const command of ['python', 'python3']) {
+    const probe = spawnSync(command, ['--version'], { encoding: 'utf8' });
+    if (probe.status === 0) {
+      return command;
+    }
+  }
+  return 'python';
+}
+
 function main() {
   if (!fs.existsSync(OPENAPI_PATH)) {
     fail(`Missing committed OpenAPI at ${OPENAPI_PATH}. Run make contracts.`);
@@ -85,11 +95,18 @@ function main() {
   const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'entshifa-contracts-'));
   const liveOpenApi = path.join(tmpDir, 'openapi.json');
   const liveSchema = path.join(tmpDir, 'schema.ts');
+  const python = resolvePython();
 
   try {
-    run('python', ['-m', 'ent.cli.export_openapi', '--out', liveOpenApi], {
+    run(python, ['-m', 'ent.cli.export_openapi', '--out', liveOpenApi], {
       cwd: API_ROOT,
       shell: process.platform === 'win32',
+      env: {
+        ...process.env,
+        PYTHONPATH: [path.join(API_ROOT, 'src'), process.env.PYTHONPATH]
+          .filter(Boolean)
+          .join(path.delimiter),
+      },
     });
 
     const committedOpenApi = normalizeNewlines(fs.readFileSync(OPENAPI_PATH, 'utf8'));
