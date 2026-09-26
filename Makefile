@@ -95,7 +95,7 @@ e2e: ## Playwright smoke (en / fr / ar)
 	cd $(WEB_DIR) && npm run e2e
 
 security: ## Dependency and secret scanning (API + web)
-	cd $(API_DIR) && python -m pip_audit --ignore-vuln PYSEC-2026-2280 --ignore-vuln PYSEC-2026-2281
+	cd $(API_DIR) && python scripts/pip_audit_check.py
 	cd $(WEB_DIR) && npm audit --audit-level=critical
 
 anonymize: ## Build an anonymized development database dump (implemented in P1-11)

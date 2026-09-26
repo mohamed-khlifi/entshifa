@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import secrets
 from datetime import UTC, datetime, timedelta
-from typing import Any, cast
+from typing import Any
 
 import jwt
 
@@ -48,13 +48,11 @@ def create_access_token(
 
 
 def decode_access_token(settings: Settings, token: str) -> dict[str, Any]:
-    return cast(
-        dict[str, Any],
-        jwt.decode(
-            token,
-            settings.access_token_secret,
-            algorithms=["HS256"],
-            issuer=settings.jwt_issuer,
-            audience=settings.jwt_audience,
-        ),
+    payload: dict[str, Any] = jwt.decode(
+        token,
+        settings.access_token_secret,
+        algorithms=["HS256"],
+        issuer=settings.jwt_issuer,
+        audience=settings.jwt_audience,
     )
+    return payload

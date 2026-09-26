@@ -12,6 +12,7 @@ from ent.core.audit.recorder import AuditRecorder
 from ent.core.audit.serialize import row_to_audit_dict
 
 _PENDING_KEY = "_ent_audit_pending"
+_LISTENERS_INSTALLED = False
 
 
 def is_audited_model(obj: object) -> bool:
@@ -21,7 +22,8 @@ def is_audited_model(obj: object) -> bool:
 def install_audit_listeners() -> None:
     """Register once at process start; safe to call repeatedly."""
 
-    if getattr(install_audit_listeners, "_installed", False):
+    global _LISTENERS_INSTALLED
+    if _LISTENERS_INSTALLED:
         return
 
     @event.listens_for(Session, "before_flush")
@@ -59,7 +61,7 @@ def install_audit_listeners() -> None:
             elif action == "delete" and before is not None:
                 recorder.record_entity_delete(obj, before=before)
 
-    install_audit_listeners._installed = True
+    _LISTENERS_INSTALLED = True
 
 
 def _snapshot_before(obj: object) -> dict[str, Any]:

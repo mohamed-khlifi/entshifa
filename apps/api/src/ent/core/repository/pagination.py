@@ -59,10 +59,13 @@ def apply_sort(
 ) -> Select[Any]:
     """Sort string like ``createdAt`` or ``-createdAt`` (camel or snake)."""
 
+    # Clinical models always expose ``id``; DeclarativeBase itself does not.
+    id_column = getattr(model, "id")
+
     if not sort:
         if hasattr(model, "created_at"):
-            return stmt.order_by(desc(model.created_at), desc(model.id))
-        return stmt.order_by(desc(model.id))
+            return stmt.order_by(desc(getattr(model, "created_at")), desc(id_column))
+        return stmt.order_by(desc(id_column))
 
     descending = sort.startswith("-")
     field_name = sort[1:] if descending else sort
@@ -71,7 +74,7 @@ def apply_sort(
     if not hasattr(model, snake):
         snake = "id"
     column = getattr(model, snake)
-    return stmt.order_by(desc(column) if descending else asc(column), desc(model.id))
+    return stmt.order_by(desc(column) if descending else asc(column), desc(id_column))
 
 
 def apply_pagination(stmt: Select[Any], page: PaginationParams) -> Select[Any]:
