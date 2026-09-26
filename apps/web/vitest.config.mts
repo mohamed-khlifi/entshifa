@@ -13,6 +13,10 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(rootDir, './src'),
+      '@entshifa/contracts': path.resolve(
+        rootDir,
+        '../../packages/contracts/generated/schema.ts',
+      ),
     },
   },
 });

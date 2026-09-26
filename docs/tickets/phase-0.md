@@ -230,7 +230,7 @@ everything clinical, so do not shortcut it.
 
 ---
 
-## - [ ] P0-12 Contracts pipeline
+## - [x] P0-12 Contracts pipeline
 
 **Scope**
 - Generate OpenAPI from FastAPI into `packages/contracts`.

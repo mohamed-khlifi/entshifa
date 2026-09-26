@@ -14,7 +14,7 @@ import { useQueryClient } from '@tanstack/react-query';
 
 import { fetchMe, loginRequest, logoutRequest, refreshSession } from '@/features/auth/api/auth.api';
 import { queryKeys } from '@/lib/api/query-keys';
-import type { MeResponse } from '@/lib/api/types/auth';
+import type { MeResponse } from '@/lib/api/generated';
 import {
   clearSessionIndicatorCookie,
   setAccessToken,

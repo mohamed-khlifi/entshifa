@@ -4,7 +4,8 @@
     "jsx": "preserve",
     "plugins": [{ "name": "next" }],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@entshifa/contracts": ["../../packages/contracts/generated/schema.ts"]
     },
     "incremental": true,
     "allowJs": true

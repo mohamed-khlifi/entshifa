@@ -1,5 +1,5 @@
 import { apiFetch } from '@/lib/api/client';
-import type { LoginRequest, LoginResponse, MeResponse } from '@/lib/api/types/auth';
+import type { LoginRequest, LoginResponse, MeResponse } from '@/lib/api/generated';
 
 export async function loginRequest(
   body: LoginRequest,

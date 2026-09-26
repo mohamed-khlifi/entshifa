@@ -2,5 +2,17 @@
   "name": "@entshifa/contracts",
   "version": "0.0.0",
   "private": true,
-  "description": "Generated OpenAPI specification and TypeScript types (P0-12)"
+  "description": "Generated OpenAPI specification and TypeScript types",
+  "type": "module",
+  "exports": {
+    ".": "./generated/schema.ts",
+    "./openapi.json": "./openapi.json"
+  },
+  "scripts": {
+    "generate": "node ./scripts/generate.mjs",
+    "check": "node ./scripts/check.mjs"
+  },
+  "devDependencies": {
+    "openapi-typescript": "7.13.0"
+  }
 }

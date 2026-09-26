@@ -4,7 +4,7 @@
 COMPOSE ?= docker compose
 ENV_FILE ?= .env
 
-.PHONY: dev dev-down dev-logs worker test lint typecheck migrate migrate-down seed contracts anonymize i18n-check help
+.PHONY: dev dev-down dev-logs worker test lint typecheck migrate migrate-down seed contracts contracts-check anonymize i18n-check help
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*##' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-14s %s\n", $$1, $$2}'
@@ -42,9 +42,12 @@ migrate-down: ## Downgrade one Alembic revision
 seed: ## Load local dev identity/auth seed (demo users; run after migrate)
 	cd apps/api && python -m ent.cli.seed
 
-contracts: ## Regenerate OpenAPI spec and TypeScript types (implemented in P0-12)
-	@echo "contracts: not implemented until P0-12."
-	@exit 1
+contracts: ## Export OpenAPI from FastAPI and generate TypeScript types
+	cd apps/api && python -m ent.cli.export_openapi
+	node packages/contracts/scripts/generate.mjs
+
+contracts-check: ## Fail if committed OpenAPI/types disagree with the API
+	node packages/contracts/scripts/check.mjs
 
 i18n-check: ## Verify translation catalogs (key parity, placeholders, no orphans)
 	node packages/i18n-messages/scripts/check.mjs
