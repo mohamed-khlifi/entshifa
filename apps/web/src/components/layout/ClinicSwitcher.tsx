@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
+import { Select } from "@/components/ui/select";
 import { useClinicMembershipsQuery } from "@/features/auth";
 import { testIdProps, testIds } from "@/lib/test/test-id";
 import { useSession } from "@/providers/session-provider";
@@ -37,9 +38,9 @@ export function ClinicSwitcher() {
       <label className="sr-only" htmlFor="clinic-switcher">
         {t("clinicSwitcher.label")}
       </label>
-      <select
+      <Select
         id="clinic-switcher"
-        className="h-9 max-w-[12rem] truncate rounded-md border border-input bg-background px-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="h-10 max-w-[14rem]"
         disabled={isLoading || busy}
         value={session.clinicPublicId}
         onChange={(event) => {
@@ -57,7 +58,7 @@ export function ClinicSwitcher() {
             {option.label}
           </option>
         ))}
-      </select>
+      </Select>
     </div>
   );
 }

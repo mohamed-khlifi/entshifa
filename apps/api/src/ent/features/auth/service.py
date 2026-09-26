@@ -287,7 +287,10 @@ class AuthService:
         if session_row is None or session_row.revoked_at is not None:
             return None
         now = datetime.now(UTC).replace(tzinfo=None)
-        if session_row.expires_at <= now:
+        expires_at = session_row.expires_at
+        if expires_at.tzinfo is not None:
+            expires_at = expires_at.astimezone(UTC).replace(tzinfo=None)
+        if expires_at <= now:
             return None
         return session_row
 

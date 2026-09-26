@@ -27,8 +27,24 @@ import type {
   PatientMedicationCreate,
   PatientProblemCreate,
 } from "@/lib/api/generated";
+import { ApiError, resolveErrorMessage } from "@/lib/api/errors";
 import { queryKeys } from "@/lib/api/query-keys";
 import { useSession } from "@/providers/session-provider";
+
+function useChartErrorToast(): (error: unknown) => void {
+  const tErrors = useTranslations("errors");
+  return (error: unknown) => {
+    const message =
+      error instanceof ApiError
+        ? resolveErrorMessage(
+            error,
+            (key) => tErrors(key as Parameters<typeof tErrors>[0]),
+            (key) => tErrors.has(key as Parameters<typeof tErrors.has>[0]),
+          )
+        : tErrors("generic");
+    toast.error(message);
+  };
+}
 
 function useScope() {
   const locale = useLocale();
@@ -111,6 +127,7 @@ function useChartMutation<TBody>(
   const scope = useScope();
   const queryClient = useQueryClient();
   const t = useTranslations("patients");
+  const onError = useChartErrorToast();
   return useMutation({
     mutationFn: (input: { patientId: string; body: TBody }) =>
       mutate(
@@ -125,6 +142,7 @@ function useChartMutation<TBody>(
       });
       toast.success(t("chart.saved"));
     },
+    onError,
   });
 }
 
@@ -156,6 +174,7 @@ export function useEndFlagMutation() {
   const scope = useScope();
   const queryClient = useQueryClient();
   const t = useTranslations("patients");
+  const onError = useChartErrorToast();
   return useMutation({
     mutationFn: (input: {
       patientId: string;
@@ -172,5 +191,6 @@ export function useEndFlagMutation() {
       });
       toast.success(t("chart.saved"));
     },
+    onError,
   });
 }

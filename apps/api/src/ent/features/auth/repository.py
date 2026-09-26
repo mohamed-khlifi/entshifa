@@ -127,6 +127,24 @@ class AuthRepository:
     async def create_session(self, session: UserSession) -> UserSession:
         self._session.add(session)
         await self._session.flush()
+        # The JWT must carry the public id that was stored. Match the row by
+        # the refresh hash from this insert, not by a possibly stale identity key.
+        stored = (
+            await self._session.execute(
+                select(UserSession.id, UserSession.public_id).where(
+                    UserSession.refresh_token_hash == session.refresh_token_hash,
+                ),
+            )
+        ).one()
+        if session.id != stored.id:
+            await self._session.refresh(session)
+            return (
+                await self._session.execute(
+                    select(UserSession).where(UserSession.id == stored.id),
+                )
+            ).scalar_one()
+        if session.public_id != stored.public_id:
+            session.public_id = str(stored.public_id)
         return session
 
     async def record_failed_login(self, user_id: int) -> None:
@@ -160,7 +178,7 @@ class AuthRepository:
                 UserClinicRole.starts_on <= today,
                 or_(UserClinicRole.ends_on.is_(None), UserClinicRole.ends_on >= today),
             )
-            .order_by(UserClinicRole.starts_on.desc())
+            .order_by(UserClinicRole.starts_on.desc(), UserClinicRole.id.desc())
             .limit(1)
         )
         return (await self._session.execute(stmt)).scalar_one_or_none()

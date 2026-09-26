@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select } from "@/components/ui/select";
 import { ConceptSearchField } from "../components/ConceptSearchField";
 import {
   ALLERGY_CATEGORIES,
@@ -40,8 +41,11 @@ import { Permission } from "@/lib/permissions";
 import { testIdProps, testIds } from "@/lib/test/test-id";
 import { usePermission } from "@/providers/permission-provider";
 
-const selectClass =
-  "flex h-10 w-full rounded-lg border border-input bg-card px-3 text-sm";
+const sectionClass =
+  "space-y-4 rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]";
+const fieldClass = "space-y-1.5";
+const rowClass =
+  "flex flex-wrap items-center justify-between gap-2 rounded-lg bg-muted/60 px-3 py-2 text-sm";
 
 function conceptText(
   concept: {
@@ -120,15 +124,17 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
   const [historyError, setHistoryError] = useState(false);
 
   return (
-    <div className="space-y-8" {...testIdProps(testIds.patients.chart)}>
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">{t("chart.identifiers")}</h2>
+    <div className="space-y-5" {...testIdProps(testIds.patients.chart)}>
+      <section className={sectionClass}>
+        <h2 className="text-base font-semibold tracking-tight">
+          {t("chart.identifiers")}
+        </h2>
         {patient.identifiers.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("chart.empty")}</p>
         ) : (
           <ul className="space-y-1 text-sm">
             {patient.identifiers.map((row) => (
-              <li key={row.publicId}>
+              <li key={row.publicId} className={rowClass}>
                 {identifierTypeLabel(t, row.type)}: {row.value}
               </li>
             ))}
@@ -136,10 +142,14 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
         )}
         {canWrite ? (
           <form
-            className="grid gap-3 sm:grid-cols-2"
+            className="grid items-end gap-3 sm:grid-cols-2"
             onSubmit={(event) => {
               event.preventDefault();
-              if (!identifierValue.trim()) {
+              const country = issuingCountry.trim().toUpperCase();
+              if (
+                !identifierValue.trim() ||
+                (country.length > 0 && country.length !== 2)
+              ) {
                 return;
               }
               void addIdentifier
@@ -148,21 +158,19 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                   body: {
                     type: identifierType,
                     value: identifierValue.trim(),
-                    issuingCountry: issuingCountry.trim()
-                      ? issuingCountry.trim().toUpperCase()
-                      : null,
+                    issuingCountry: country.length === 2 ? country : null,
                   },
                 })
                 .then(() => {
                   setIdentifierValue("");
                   setIssuingCountry("");
-                });
+                })
+                .catch(() => undefined);
             }}
           >
-            <label className="space-y-1 text-sm">
+            <div className={fieldClass}>
               <Label>{t("chart.identifierType")}</Label>
-              <select
-                className={selectClass}
+              <Select
                 value={identifierType}
                 onChange={(event) =>
                   setIdentifierType(event.target.value as typeof identifierType)
@@ -173,38 +181,48 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                     {identifierTypeLabel(t, value)}
                   </option>
                 ))}
-              </select>
-            </label>
-            <label className="space-y-1 text-sm">
+              </Select>
+            </div>
+            <div className={fieldClass}>
               <Label>{t("chart.identifierValue")}</Label>
               <Input
                 value={identifierValue}
                 onChange={(event) => setIdentifierValue(event.target.value)}
               />
-            </label>
-            <label className="space-y-1 text-sm">
+            </div>
+            <div className={fieldClass}>
               <Label>{t("chart.issuingCountry")}</Label>
               <Input
                 value={issuingCountry}
                 onChange={(event) => setIssuingCountry(event.target.value)}
                 maxLength={2}
               />
-            </label>
+              {issuingCountry.trim().length > 0 &&
+              issuingCountry.trim().length !== 2 ? (
+                <p className="text-sm text-destructive">
+                  {t("validation.countryCode")}
+                </p>
+              ) : null}
+            </div>
             <div className="flex items-end">
-              <Button type="submit">{t("chart.addIdentifier")}</Button>
+              <Button type="submit" size="lg">
+                {t("chart.addIdentifier")}
+              </Button>
             </div>
           </form>
         ) : null}
       </section>
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">{t("chart.allergies")}</h2>
+      <section className={sectionClass}>
+        <h2 className="text-base font-semibold tracking-tight">
+          {t("chart.allergies")}
+        </h2>
         {patient.allergies.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("chart.empty")}</p>
         ) : (
           <ul className="space-y-1 text-sm">
             {patient.allergies.map((row) => (
-              <li key={row.publicId}>
+              <li key={row.publicId} className={rowClass}>
                 {conceptText(row.substance)} (
                 {allergyCategoryLabel(t, row.category)}
                 {row.severity ? `, ${severityLabel(t, row.severity)}` : ""})
@@ -215,7 +233,7 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
         )}
         {canWrite ? (
           <form
-            className="grid gap-3 sm:grid-cols-2"
+            className="grid items-end gap-3 sm:grid-cols-2"
             onSubmit={(event) => {
               event.preventDefault();
               if (substanceId.length !== 26) {
@@ -235,7 +253,8 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                   setSubstanceId("");
                   setSubstanceDisplay("");
                   setSeverity("");
-                });
+                })
+                .catch(() => undefined);
             }}
           >
             <ConceptSearchField
@@ -248,10 +267,9 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                 setSubstanceDisplay(concept.display);
               }}
             />
-            <label className="space-y-1 text-sm">
+            <div className={fieldClass}>
               <Label>{t("chart.category")}</Label>
-              <select
-                className={selectClass}
+              <Select
                 value={category}
                 onChange={(event) =>
                   setCategory(event.target.value as typeof category)
@@ -262,12 +280,11 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                     {allergyCategoryLabel(t, value)}
                   </option>
                 ))}
-              </select>
-            </label>
-            <label className="space-y-1 text-sm">
+              </Select>
+            </div>
+            <div className={fieldClass}>
               <Label>{t("chart.severity")}</Label>
-              <select
-                className={selectClass}
+              <Select
                 value={severity}
                 onChange={(event) =>
                   setSeverity(event.target.value as typeof severity)
@@ -279,23 +296,27 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                     {severityLabel(t, value)}
                   </option>
                 ))}
-              </select>
-            </label>
+              </Select>
+            </div>
             <div className="flex items-end">
-              <Button type="submit">{t("chart.addAllergy")}</Button>
+              <Button type="submit" size="lg">
+                {t("chart.addAllergy")}
+              </Button>
             </div>
           </form>
         ) : null}
       </section>
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">{t("chart.medications")}</h2>
+      <section className={sectionClass}>
+        <h2 className="text-base font-semibold tracking-tight">
+          {t("chart.medications")}
+        </h2>
         {patient.medications.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("chart.empty")}</p>
         ) : (
           <ul className="space-y-1 text-sm">
             {patient.medications.map((row) => (
-              <li key={row.publicId}>
+              <li key={row.publicId} className={rowClass}>
                 {row.freeTextName}
                 {row.isAnticoagulant ? ` (${t("chart.anticoagulant")})` : ""}
                 {row.isOtotoxic ? ` (${t("chart.ototoxic")})` : ""}
@@ -306,7 +327,7 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
         )}
         {canWrite ? (
           <form
-            className="grid gap-3 sm:grid-cols-2"
+            className="grid items-end gap-3 sm:grid-cols-2"
             onSubmit={(event) => {
               event.preventDefault();
               if (!medName.trim()) {
@@ -329,27 +350,27 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                   setMedDose("");
                   setIsAnticoagulant(false);
                   setIsOtotoxic(false);
-                });
+                })
+                .catch(() => undefined);
             }}
           >
-            <label className="space-y-1 text-sm">
+            <div className={fieldClass}>
               <Label>{t("chart.medicationName")}</Label>
               <Input
                 value={medName}
                 onChange={(event) => setMedName(event.target.value)}
               />
-            </label>
-            <label className="space-y-1 text-sm">
+            </div>
+            <div className={fieldClass}>
               <Label>{t("chart.dose")}</Label>
               <Input
                 value={medDose}
                 onChange={(event) => setMedDose(event.target.value)}
               />
-            </label>
-            <label className="space-y-1 text-sm">
+            </div>
+            <div className={fieldClass}>
               <Label>{t("chart.source")}</Label>
-              <select
-                className={selectClass}
+              <Select
                 value={medSource}
                 onChange={(event) =>
                   setMedSource(event.target.value as typeof medSource)
@@ -360,42 +381,45 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                     {medicationSourceLabel(t, value)}
                   </option>
                 ))}
-              </select>
-            </label>
-            <label className="flex items-center gap-2 text-sm">
+              </Select>
+            </div>
+            <label className="flex h-11 items-center gap-2 rounded-lg border border-border bg-muted/40 px-3 text-sm">
               <input
                 type="checkbox"
+                className="h-4 w-4 accent-primary"
                 checked={isAnticoagulant}
                 onChange={(event) => setIsAnticoagulant(event.target.checked)}
               />
               {t("chart.anticoagulant")}
             </label>
-            <label className="flex items-center gap-2 text-sm">
+            <label className="flex h-11 items-center gap-2 rounded-lg border border-border bg-muted/40 px-3 text-sm">
               <input
                 type="checkbox"
+                className="h-4 w-4 accent-primary"
                 checked={isOtotoxic}
                 onChange={(event) => setIsOtotoxic(event.target.checked)}
               />
               {t("chart.ototoxic")}
             </label>
             <div>
-              <Button type="submit">{t("chart.addMedication")}</Button>
+              <Button type="submit" size="lg">
+                {t("chart.addMedication")}
+              </Button>
             </div>
           </form>
         ) : null}
       </section>
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">{t("chart.flags")}</h2>
+      <section className={sectionClass}>
+        <h2 className="text-base font-semibold tracking-tight">
+          {t("chart.flags")}
+        </h2>
         {patient.flags.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("chart.empty")}</p>
         ) : (
           <ul className="space-y-2 text-sm">
             {patient.flags.map((row) => (
-              <li
-                key={row.publicId}
-                className="flex flex-wrap items-center gap-2"
-              >
+              <li key={row.publicId} className={rowClass}>
                 <span>
                   {flagLabel(t, row.flagCode)}
                   {isFlagActive(row)
@@ -408,11 +432,16 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                     size="sm"
                     variant="secondary"
                     onClick={() => {
-                      void endFlag.mutateAsync({
-                        patientId: patient.publicId,
-                        flagId: row.publicId,
-                        body: { version: row.version, endedOn: localIsoDate() },
-                      });
+                      void endFlag
+                        .mutateAsync({
+                          patientId: patient.publicId,
+                          flagId: row.publicId,
+                          body: {
+                            version: row.version,
+                            endedOn: localIsoDate(),
+                          },
+                        })
+                        .catch(() => undefined);
                     }}
                   >
                     {t("chart.endFlag")}
@@ -427,20 +456,21 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
             className="flex flex-wrap items-end gap-3"
             onSubmit={(event) => {
               event.preventDefault();
-              void addFlag.mutateAsync({
-                patientId: patient.publicId,
-                body: {
-                  flagCode,
-                  startedOn: localIsoDate(),
-                  isAuto: false,
-                },
-              });
+              void addFlag
+                .mutateAsync({
+                  patientId: patient.publicId,
+                  body: {
+                    flagCode,
+                    startedOn: localIsoDate(),
+                    isAuto: false,
+                  },
+                })
+                .catch(() => undefined);
             }}
           >
-            <label className="space-y-1 text-sm">
+            <div className={`${fieldClass} min-w-64 flex-1`}>
               <Label>{t("chart.flag")}</Label>
-              <select
-                className={selectClass}
+              <Select
                 value={flagCode}
                 onChange={(event) =>
                   setFlagCode(event.target.value as typeof flagCode)
@@ -451,21 +481,25 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                     {flagLabel(t, code)}
                   </option>
                 ))}
-              </select>
-            </label>
-            <Button type="submit">{t("chart.addFlag")}</Button>
+              </Select>
+            </div>
+            <Button type="submit" size="lg">
+              {t("chart.addFlag")}
+            </Button>
           </form>
         ) : null}
       </section>
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">{t("chart.problems")}</h2>
+      <section className={sectionClass}>
+        <h2 className="text-base font-semibold tracking-tight">
+          {t("chart.problems")}
+        </h2>
         {patient.problems.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("chart.empty")}</p>
         ) : (
           <ul className="space-y-1 text-sm">
             {patient.problems.map((row) => (
-              <li key={row.publicId}>
+              <li key={row.publicId} className={rowClass}>
                 {conceptText(row.diagnosis)} (
                 {problemStatusLabel(t, row.status)},{" "}
                 {lateralityLabel(tForms, t, row.laterality)})
@@ -475,7 +509,7 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
         )}
         {canWrite ? (
           <form
-            className="grid gap-3 sm:grid-cols-2"
+            className="grid items-end gap-3 sm:grid-cols-2"
             onSubmit={(event) => {
               event.preventDefault();
               if (diagnosisId.length !== 26) {
@@ -493,7 +527,8 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                 .then(() => {
                   setDiagnosisId("");
                   setDiagnosisDisplay("");
-                });
+                })
+                .catch(() => undefined);
             }}
           >
             <ConceptSearchField
@@ -506,10 +541,9 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                 setDiagnosisDisplay(concept.display);
               }}
             />
-            <label className="space-y-1 text-sm">
+            <div className={fieldClass}>
               <Label>{t("chart.status")}</Label>
-              <select
-                className={selectClass}
+              <Select
                 value={problemStatus}
                 onChange={(event) =>
                   setProblemStatus(event.target.value as typeof problemStatus)
@@ -520,12 +554,11 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                     {problemStatusLabel(t, value)}
                   </option>
                 ))}
-              </select>
-            </label>
-            <label className="space-y-1 text-sm">
+              </Select>
+            </div>
+            <div className={fieldClass}>
               <Label>{t("chart.laterality")}</Label>
-              <select
-                className={selectClass}
+              <Select
                 value={laterality}
                 onChange={(event) =>
                   setLaterality(event.target.value as typeof laterality)
@@ -536,23 +569,27 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                     {lateralityLabel(tForms, t, value)}
                   </option>
                 ))}
-              </select>
-            </label>
+              </Select>
+            </div>
             <div className="flex items-end">
-              <Button type="submit">{t("chart.addProblem")}</Button>
+              <Button type="submit" size="lg">
+                {t("chart.addProblem")}
+              </Button>
             </div>
           </form>
         ) : null}
       </section>
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">{t("chart.history")}</h2>
+      <section className={sectionClass}>
+        <h2 className="text-base font-semibold tracking-tight">
+          {t("chart.history")}
+        </h2>
         {patient.history.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("chart.empty")}</p>
         ) : (
           <ul className="space-y-1 text-sm">
             {patient.history.map((row) => (
-              <li key={row.publicId}>
+              <li key={row.publicId} className={rowClass}>
                 {historyCategoryLabel(t, row.category)}:{" "}
                 {row.freeText || conceptText(row.concept)}
               </li>
@@ -561,7 +598,7 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
         )}
         {canWrite ? (
           <form
-            className="grid gap-3 sm:grid-cols-2"
+            className="grid items-end gap-3 sm:grid-cols-2"
             onSubmit={(event) => {
               event.preventDefault();
               if (!historyText.trim()) {
@@ -577,13 +614,13 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                     freeText: historyText.trim(),
                   },
                 })
-                .then(() => setHistoryText(""));
+                .then(() => setHistoryText(""))
+                .catch(() => undefined);
             }}
           >
-            <label className="space-y-1 text-sm">
+            <div className={fieldClass}>
               <Label>{t("chart.category")}</Label>
-              <select
-                className={selectClass}
+              <Select
                 value={historyCategory}
                 onChange={(event) =>
                   setHistoryCategory(
@@ -596,22 +633,24 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
                     {historyCategoryLabel(t, value)}
                   </option>
                 ))}
-              </select>
-            </label>
-            <label className="space-y-1 text-sm">
+              </Select>
+            </div>
+            <div className={fieldClass}>
               <Label>{t("chart.freeText")}</Label>
               <Input
                 value={historyText}
                 onChange={(event) => setHistoryText(event.target.value)}
               />
-            </label>
+            </div>
             {historyError ? (
               <p className="text-sm text-destructive sm:col-span-2">
                 {t("chart.historyNeedsText")}
               </p>
             ) : null}
             <div>
-              <Button type="submit">{t("chart.addHistory")}</Button>
+              <Button type="submit" size="lg">
+                {t("chart.addHistory")}
+              </Button>
             </div>
           </form>
         ) : null}

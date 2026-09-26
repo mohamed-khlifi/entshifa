@@ -37,21 +37,26 @@ export function PatientHeaderCard({ patient }: PatientHeaderCardProps) {
       className="rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]"
       {...testIdProps(testIds.patients.header)}
     >
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h2 className="text-xl font-semibold">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="space-y-2">
+          <h2 className="text-2xl font-semibold tracking-tight">
             {formatPersonName(
               { given: patient.firstName, family: patient.lastName },
               locale,
             )}
           </h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="inline-flex rounded-full bg-muted px-3 py-1 text-xs font-medium tracking-wide text-muted-foreground">
             {t("header.mrn", { mrn: patient.mrn })}
           </p>
         </div>
-        <div className="text-sm">
+        <div className="flex flex-col items-end gap-1 text-sm">
           {ageText ? (
-            <p {...testIdProps(testIds.patients.headerAge)}>{ageText}</p>
+            <p
+              className="rounded-full bg-primary/10 px-3 py-1 font-medium text-primary"
+              {...testIdProps(testIds.patients.headerAge)}
+            >
+              {ageText}
+            </p>
           ) : null}
           {patient.birthDateIsEstimated ? (
             <p className="text-muted-foreground">{t("header.estimated")}</p>
@@ -63,8 +68,11 @@ export function PatientHeaderCard({ patient }: PatientHeaderCardProps) {
           ) : null}
         </div>
       </div>
-      <dl className="mt-4 grid gap-4 sm:grid-cols-2">
-        <div {...testIdProps(testIds.patients.headerAllergies)}>
+      <dl className="mt-5 grid gap-3 sm:grid-cols-2">
+        <div
+          className="rounded-lg bg-muted/50 px-3 py-2"
+          {...testIdProps(testIds.patients.headerAllergies)}
+        >
           <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {t("header.allergies")}
           </dt>
@@ -74,7 +82,10 @@ export function PatientHeaderCard({ patient }: PatientHeaderCardProps) {
               : allergies.map((row) => conceptText(row.substance)).join(", ")}
           </dd>
         </div>
-        <div {...testIdProps(testIds.patients.headerProblems)}>
+        <div
+          className="rounded-lg bg-muted/50 px-3 py-2"
+          {...testIdProps(testIds.patients.headerProblems)}
+        >
           <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {t("header.problems")}
           </dt>
@@ -84,7 +95,10 @@ export function PatientHeaderCard({ patient }: PatientHeaderCardProps) {
               : problems.map((row) => conceptText(row.diagnosis)).join(", ")}
           </dd>
         </div>
-        <div {...testIdProps(testIds.patients.headerMedications)}>
+        <div
+          className="rounded-lg bg-muted/50 px-3 py-2"
+          {...testIdProps(testIds.patients.headerMedications)}
+        >
           <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {t("header.medications")}
           </dt>
@@ -97,7 +111,10 @@ export function PatientHeaderCard({ patient }: PatientHeaderCardProps) {
                   .join(", ")}
           </dd>
         </div>
-        <div {...testIdProps(testIds.patients.headerVisits)}>
+        <div
+          className="rounded-lg bg-muted/50 px-3 py-2"
+          {...testIdProps(testIds.patients.headerVisits)}
+        >
           <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {t("header.lastVisits")}
           </dt>

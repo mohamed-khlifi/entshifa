@@ -4,7 +4,13 @@ from __future__ import annotations
 
 from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
-from ent.core.context import set_ip_address, set_request_id, set_user_agent
+from ent.core.context import (
+    set_clinic_id,
+    set_ip_address,
+    set_request_id,
+    set_user_agent,
+    set_user_id,
+)
 from ent.core.utils.ids import new_ulid
 
 
@@ -25,7 +31,11 @@ class RequestContextMiddleware:
         }
         incoming = headers.get("x-request-id")
         request_id = incoming if incoming and len(incoming) == 26 else new_ulid()
+        # Each request starts clean. ASGI tests reuse one task, so a previous
+        # call's clinic or user must not leak into this one.
         set_request_id(request_id)
+        set_user_id(None)
+        set_clinic_id(None)
 
         forwarded = headers.get("x-forwarded-for")
         if forwarded:

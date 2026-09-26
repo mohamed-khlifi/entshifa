@@ -20,6 +20,41 @@ from ent.features.users.models import User, UserClinicRole
 LOCAL_DEV_PASSWORD = "LocalDevSeed1!"
 
 
+async def _clinic_row_for_insert(
+    session: AsyncSession,
+    clinic: Clinic,
+    *,
+    slug: str,
+) -> Clinic:
+    """Return the clinic row that was inserted for this slug.
+
+    A stale LAST_INSERT_ID can attach the new object to an existing identity.
+    Reload that row, then return the clinic this insert actually created.
+    """
+
+    inserted_id = (
+        await session.execute(
+            select(Clinic.id).where(
+                Clinic.slug == slug,
+                Clinic.deleted_at.is_(None),
+            ),
+        )
+    ).scalar_one()
+    if clinic.id != inserted_id:
+        await session.refresh(clinic)
+        return (
+            await session.execute(select(Clinic).where(Clinic.id == inserted_id))
+        ).scalar_one()
+    stored_public_id = (
+        await session.execute(
+            select(Clinic.public_id).where(Clinic.id == inserted_id),
+        )
+    ).scalar_one()
+    if clinic.public_id != stored_public_id:
+        clinic.public_id = str(stored_public_id)
+    return clinic
+
+
 @dataclass(frozen=True, slots=True)
 class SeededUser:
     email: str
@@ -79,7 +114,7 @@ async def ensure_clinic(
     )
     session.add(clinic)
     await session.flush()
-    return clinic
+    return await _clinic_row_for_insert(session, clinic, slug=slug)
 
 
 async def ensure_site(

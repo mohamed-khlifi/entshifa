@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { DataTable } from "@/components/data/DataTable";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Select } from "@/components/ui/select";
 import { PATIENT_FLAG_CODES, SEX_VALUES } from "../constants";
 import { usePatientsQuery } from "../hooks/use-patient-queries";
 import { flagLabel, sexLabel } from "../lib/labels";
@@ -123,14 +124,13 @@ export function PatientsListPanel() {
         emptyDescription={t("list.emptyDescription")}
         defaultPageSize={20}
         toolbar={
-          <div className="flex flex-wrap gap-3">
-            <div className="space-y-1 text-sm">
+          <div className="flex flex-wrap items-end gap-3">
+            <div className="w-40 space-y-1.5">
               <Label htmlFor={testIds.patients.filterSex}>
                 {t("list.filters.sex")}
               </Label>
-              <select
+              <Select
                 id={testIds.patients.filterSex}
-                className="flex h-9 rounded-lg border border-input bg-card px-2 text-sm"
                 value={sex}
                 onChange={(event) => setFilter("sex", event.target.value)}
                 {...testIdProps(testIds.patients.filterSex)}
@@ -141,28 +141,27 @@ export function PatientsListPanel() {
                     {sexLabel(t, value)}
                   </option>
                 ))}
-              </select>
+              </Select>
             </div>
-            <div className="space-y-1 text-sm">
+            <div className="w-44 space-y-1.5">
               <Label htmlFor={testIds.patients.filterBirthDate}>
                 {t("list.filters.birthDate")}
               </Label>
               <input
                 id={testIds.patients.filterBirthDate}
                 type="date"
-                className="flex h-9 rounded-lg border border-input bg-card px-2 text-sm"
+                className="flex h-11 w-full rounded-lg border border-input bg-card px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 value={birthDate}
                 onChange={(event) => setFilter("birthDate", event.target.value)}
                 {...testIdProps(testIds.patients.filterBirthDate)}
               />
             </div>
-            <div className="space-y-1 text-sm">
+            <div className="min-w-52 space-y-1.5">
               <Label htmlFor={testIds.patients.filterFlag}>
                 {t("list.filters.flag")}
               </Label>
-              <select
+              <Select
                 id={testIds.patients.filterFlag}
-                className="flex h-9 rounded-lg border border-input bg-card px-2 text-sm"
                 value={flagCode}
                 onChange={(event) => setFilter("flagCode", event.target.value)}
                 {...testIdProps(testIds.patients.filterFlag)}
@@ -173,7 +172,7 @@ export function PatientsListPanel() {
                     {flagLabel(t, code)}
                   </option>
                 ))}
-              </select>
+              </Select>
             </div>
           </div>
         }

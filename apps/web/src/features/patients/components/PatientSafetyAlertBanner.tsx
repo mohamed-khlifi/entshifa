@@ -17,31 +17,38 @@ export function PatientSafetyAlertBanner({
   const t = useTranslations("patients");
   const { onlyHearingEar, other } = splitHearingAlerts(flags);
 
+  if (onlyHearingEar.length === 0 && other.length === 0) {
+    return null;
+  }
+
   return (
-    <div className="space-y-3">
+    <div className="flex flex-wrap items-center gap-2 rounded-xl border border-border bg-card px-4 py-3 shadow-[var(--shadow-soft)]">
       {onlyHearingEar.length > 0 ? (
-        <div
+        <p
           role="alert"
-          className="rounded-xl border-2 border-destructive bg-destructive px-4 py-4 text-destructive-foreground shadow-sm"
+          className="inline-flex items-center gap-2 rounded-full border border-destructive/30 bg-destructive/10 px-3 py-1 text-sm font-semibold text-destructive"
           {...testIdProps(testIds.patients.alertOnlyHearingEar)}
         >
-          <p className="text-lg font-bold tracking-wide">
-            {t("alerts.onlyHearingEar")}
-          </p>
-        </div>
+          <span className="h-2 w-2 shrink-0 rounded-full bg-destructive" />
+          {t("alerts.onlyHearingEar")}
+        </p>
       ) : null}
       {other.length > 0 ? (
         <div
           role="status"
-          className="rounded-xl border border-amber-600/40 bg-amber-50 px-4 py-3 text-amber-950"
+          className="flex min-w-0 flex-wrap items-center gap-2"
           {...testIdProps(testIds.patients.alertOther)}
         >
-          <p className="text-sm font-semibold">{t("alerts.otherTitle")}</p>
-          <ul className="mt-2 flex flex-wrap gap-2">
+          {onlyHearingEar.length === 0 ? (
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              {t("alerts.otherTitle")}
+            </p>
+          ) : null}
+          <ul className="flex flex-wrap gap-2">
             {other.map((flag) => (
               <li
                 key={flag.publicId}
-                className="rounded-full bg-amber-200 px-3 py-1 text-sm font-medium"
+                className="rounded-full border border-border bg-muted px-3 py-1 text-sm text-foreground"
               >
                 {flagLabel(t, flag.flagCode)}
               </li>
