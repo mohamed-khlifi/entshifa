@@ -1,0 +1,214 @@
+{
+  "gate": {
+    "forbidden": "Vous n’avez pas l’autorisation de consulter les patients."
+  },
+  "state": {
+    "loading": "Chargement du dossier…",
+    "loadError": "Ce dossier n’a pas pu être chargé."
+  },
+  "list": {
+    "title": "Patients",
+    "description": "Rechercher dans le registre de la clinique.",
+    "create": "Nouveau patient",
+    "emptyTitle": "Aucun patient",
+    "emptyDescription": "Créez un patient ou modifiez les filtres.",
+    "error": "La liste des patients n’a pas pu être chargée.",
+    "name": "Nom",
+    "mrn": "IPP",
+    "sex": "Sexe",
+    "birthDate": "Date de naissance",
+    "phone": "Téléphone",
+    "filters": {
+      "sex": "Sexe",
+      "birthDate": "Date de naissance",
+      "flag": "Alerte de sécurité",
+      "any": "Tous"
+    }
+  },
+  "sex": {
+    "male": "Masculin",
+    "female": "Féminin",
+    "other": "Autre",
+    "unknown": "Inconnu"
+  },
+  "form": {
+    "createTitle": "Nouveau patient",
+    "createDescription": "Enregistrez l’identité, les contacts et les antécédents dans le dossier.",
+    "editTitle": "Identité",
+    "submitCreate": "Créer le patient",
+    "created": "Patient créé.",
+    "conflict": "Ce dossier a été modifié ailleurs. Rechargez-le avant de continuer.",
+    "reload": "Recharger le dossier",
+    "sections": {
+      "identity": "Identité",
+      "contact": "Contact",
+      "background": "Antécédents",
+      "referring": "Médecin adresseur",
+      "guardian": "Tuteur et contact d’urgence",
+      "consent": "Consentements et statut"
+    },
+    "fields": {
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "firstNameAlt": "Prénom (autre écriture)",
+      "lastNameAlt": "Nom (autre écriture)",
+      "birthDate": "Date de naissance",
+      "birthDateEstimated": "Date de naissance estimée",
+      "sex": "Sexe",
+      "preferredLocale": "Langue préférée",
+      "mrn": "Numéro de dossier",
+      "phonePrimary": "Téléphone principal",
+      "phoneSecondary": "Téléphone secondaire",
+      "email": "E-mail",
+      "addressLine1": "Adresse ligne 1",
+      "addressLine2": "Adresse ligne 2",
+      "city": "Ville",
+      "postalCode": "Code postal",
+      "countryCode": "Code pays",
+      "occupation": "Profession",
+      "noiseExposure": "Exposition au bruit",
+      "smokingStatus": "Tabac",
+      "alcoholStatus": "Alcool",
+      "insuranceNumber": "Numéro d’assurance",
+      "referringDoctorName": "Médecin adresseur",
+      "referringDoctorPhone": "Téléphone du médecin adresseur",
+      "referringDoctorEmail": "E-mail du médecin adresseur",
+      "referringDoctorLocale": "Langue du médecin adresseur",
+      "guardianName": "Nom du tuteur",
+      "guardianRelation": "Lien avec le tuteur",
+      "emergencyContactName": "Contact d’urgence",
+      "emergencyContactPhone": "Téléphone d’urgence",
+      "consentSms": "Consentement SMS",
+      "consentEmail": "Consentement e-mail",
+      "consentTeaching": "Consentement enseignement",
+      "isDeceased": "Décédé",
+      "deceasedDate": "Date de décès"
+    }
+  },
+  "validation": {
+    "required": "Ce champ est obligatoire.",
+    "email": "Saisissez une adresse e-mail valide.",
+    "countryCode": "Utilisez un code pays à deux lettres.",
+    "locale": "Indiquez un code de langue.",
+    "deceased": "Une date de décès exige le statut décédé."
+  },
+  "duplicate": {
+    "title": "Patient déjà présent",
+    "body": "Un dossier avec le même nom et la même date de naissance, ou le même téléphone, existe déjà.",
+    "confirm": "Créer quand même",
+    "cancel": "Continuer la saisie",
+    "open": "Ouvrir le dossier"
+  },
+  "header": {
+    "ageYears": "{count, plural, one {# an} other {# ans}}",
+    "ageMonths": "{count, plural, one {# mois} other {# mois}}",
+    "estimated": "Date de naissance estimée",
+    "allergies": "Allergies",
+    "problems": "Problèmes actifs",
+    "medications": "Traitements en cours",
+    "lastVisits": "Dernières visites",
+    "lastVisitsEmpty": "Aucune visite pour le moment.",
+    "none": "Aucun élément",
+    "mrn": "IPP {mrn}",
+    "deceased": "Décédé"
+  },
+  "alerts": {
+    "onlyHearingEar": "Oreille unique",
+    "otherTitle": "Alertes de sécurité"
+  },
+  "flags": {
+    "onlyHearingEar": "Oreille unique",
+    "anticoagulant": "Anticoagulant ou antiagrégant",
+    "ototoxicTherapy": "Traitement ototoxique",
+    "difficultAirway": "Voies aériennes difficiles",
+    "tracheostomy": "Trachéotomie",
+    "laryngealStenosis": "Sténose laryngée",
+    "cochlearImplant": "Implant cochléaire",
+    "pacemaker": "Pacemaker",
+    "immunosuppressed": "Immunodépression",
+    "diabetes": "Diabète",
+    "pregnancy": "Grossesse",
+    "breastfeeding": "Allaitement",
+    "pediatricWeightMissing": "Poids pédiatrique manquant",
+    "unknown": "Alerte {code}"
+  },
+  "chart": {
+    "identifiers": "Identifiants",
+    "allergies": "Allergies",
+    "medications": "Médicaments",
+    "flags": "Alertes de sécurité",
+    "problems": "Problèmes",
+    "history": "Antécédents",
+    "empty": "Aucun élément enregistré.",
+    "active": "Actif",
+    "inactive": "Terminé",
+    "saved": "Dossier mis à jour.",
+    "addIdentifier": "Ajouter un identifiant",
+    "identifierType": "Type d’identifiant",
+    "identifierValue": "Valeur",
+    "issuingCountry": "Pays émetteur",
+    "addAllergy": "Ajouter une allergie",
+    "substance": "Substance",
+    "category": "Catégorie",
+    "severity": "Sévérité",
+    "addMedication": "Ajouter un médicament",
+    "medicationName": "Médicament",
+    "dose": "Dose",
+    "source": "Source",
+    "anticoagulant": "Anticoagulant ou antiagrégant",
+    "ototoxic": "Ototoxique",
+    "addFlag": "Ajouter une alerte",
+    "flag": "Alerte",
+    "endFlag": "Clôturer l’alerte",
+    "addProblem": "Ajouter un problème",
+    "diagnosis": "Diagnostic",
+    "status": "Statut",
+    "laterality": "Côté",
+    "addHistory": "Ajouter un antécédent",
+    "freeText": "Description",
+    "historyNeedsText": "Saisissez une description ou choisissez un concept codé."
+  },
+  "concept": {
+    "placeholder": "Rechercher dans la terminologie",
+    "searching": "Recherche…",
+    "empty": "Aucun concept correspondant."
+  },
+  "allergy": {
+    "drug": "Médicament",
+    "food": "Aliment",
+    "other": "Autre"
+  },
+  "severity": {
+    "mild": "Légère",
+    "moderate": "Modérée",
+    "severe": "Sévère"
+  },
+  "medicationSource": {
+    "prescribedHere": "Prescrit ici",
+    "reported": "Déclaré",
+    "external": "Externe"
+  },
+  "problem": {
+    "active": "Actif",
+    "resolved": "Résolu",
+    "suspected": "Suspecté",
+    "ruledOut": "Écarté"
+  },
+  "history": {
+    "entSurgery": "Chirurgie ORL",
+    "otherSurgery": "Autre chirurgie",
+    "medical": "Médical",
+    "family": "Familial",
+    "social": "Social",
+    "obstetric": "Obstétrical"
+  },
+  "identifier": {
+    "nationalId": "Identité nationale",
+    "passport": "Passeport",
+    "insurance": "Assurance"
+  },
+  "laterality": {
+    "midline": "Ligne médiane",
+    "na": "Sans objet"
+  }
+}

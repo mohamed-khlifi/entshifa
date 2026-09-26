@@ -15,7 +15,8 @@
     "users": "الفريق",
     "settings": "الإعدادات",
     "security": "الأمان",
-    "terminology": "المصطلحات"
+    "terminology": "المصطلحات",
+    "patients": "المرضى"
   },
   "clinicSwitcher": {
     "label": "العيادة النشطة"

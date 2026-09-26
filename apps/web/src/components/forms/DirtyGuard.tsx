@@ -29,8 +29,30 @@ export function DirtyGuard({ enabled = true, children }: DirtyGuardProps) {
       event.preventDefault();
       event.returnValue = t("dirtyGuard.message");
     };
+    const onClickCapture = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) {
+        return;
+      }
+      const anchor = target.closest("a");
+      if (!anchor || anchor.target === "_blank") {
+        return;
+      }
+      const href = anchor.getAttribute("href");
+      if (!href || href.startsWith("#")) {
+        return;
+      }
+      if (!window.confirm(t("dirtyGuard.message"))) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    };
     window.addEventListener("beforeunload", onBeforeUnload);
-    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+    document.addEventListener("click", onClickCapture, true);
+    return () => {
+      window.removeEventListener("beforeunload", onBeforeUnload);
+      document.removeEventListener("click", onClickCapture, true);
+    };
   }, [enabled, isDirty, t]);
 
   return (

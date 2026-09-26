@@ -69,9 +69,30 @@ export type ConceptAdminRead = Schemas["ConceptAdminRead"];
 export type ConceptCreate = Schemas["ConceptCreate"];
 export type ConceptUpdate = Schemas["ConceptUpdate"];
 export type ConceptTranslationUpsert = Schemas["ConceptTranslationUpsert"];
-export type PageSchemaConceptAdminRead = Schemas["PageSchema_ConceptAdminRead_"];
+export type PageSchemaConceptAdminRead =
+  Schemas["PageSchema_ConceptAdminRead_"];
 export type TranslationCoverageItem = Schemas["TranslationCoverageItem"];
 export type PageSchemaTranslationCoverageItem =
   Schemas["PageSchema_TranslationCoverageItem_"];
 export type ValueSetMemberCreate = Schemas["ValueSetMemberCreate"];
 export type ValueSetSummaryRead = Schemas["ValueSetSummaryRead"];
+
+export type PatientRead = Schemas["PatientRead"];
+export type PatientCreate = Schemas["PatientCreate"];
+export type PatientUpdate = Schemas["PatientUpdate"];
+export type PatientSummaryRead = Schemas["PatientSummaryRead"];
+export type PageSchemaPatientSummaryRead =
+  Schemas["PageSchema_PatientSummaryRead_"];
+export type PatientIdentifierCreate = Schemas["PatientIdentifierCreate"];
+export type PatientIdentifierRead = Schemas["PatientIdentifierRead"];
+export type PatientAllergyCreate = Schemas["PatientAllergyCreate"];
+export type PatientAllergyRead = Schemas["PatientAllergyRead"];
+export type PatientMedicationCreate = Schemas["PatientMedicationCreate"];
+export type PatientMedicationRead = Schemas["PatientMedicationRead"];
+export type PatientFlagCreate = Schemas["PatientFlagCreate"];
+export type PatientFlagUpdate = Schemas["PatientFlagUpdate"];
+export type PatientFlagRead = Schemas["PatientFlagRead"];
+export type PatientProblemCreate = Schemas["PatientProblemCreate"];
+export type PatientProblemRead = Schemas["PatientProblemRead"];
+export type PatientHistoryCreate = Schemas["PatientHistoryCreate"];
+export type PatientHistoryRead = Schemas["PatientHistoryRead"];

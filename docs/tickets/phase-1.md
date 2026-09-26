@@ -104,7 +104,7 @@ line by line.
 
 ---
 
-## - [ ] P1-06 Patients (frontend) — the reference implementation
+## - [x] P1-06 Patients (frontend) — the reference implementation
 
 **Scope**
 - Patient list with search, filters and pagination, using `DataTable`.

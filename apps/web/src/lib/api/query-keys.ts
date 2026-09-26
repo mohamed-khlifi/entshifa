@@ -21,17 +21,32 @@ export const queryKeys = {
     roles: () => [...queryKeys.users.all, "roles"] as const,
     permissions: () => [...queryKeys.users.all, "permissions"] as const,
   },
-  terminology: {
-    all: ["terminology"] as const,
-    adminConcepts: (params?: {
-      q?: string;
+  patients: {
+    all: ["patients"] as const,
+    list: (filters?: {
+      search?: string;
+      birthDate?: string;
+      sex?: string;
+      flagCode?: string;
+      sort?: string;
       limit?: number;
       offset?: number;
-    }) => [...queryKeys.terminology.all, "admin-concepts", params ?? {}] as const,
+    }) => [...queryKeys.patients.all, "list", filters ?? {}] as const,
+    detail: (publicId: string) =>
+      [...queryKeys.patients.all, "detail", publicId] as const,
+    timeline: (publicId: string) =>
+      [...queryKeys.patients.all, "detail", publicId, "timeline"] as const,
+  },
+  terminology: {
+    all: ["terminology"] as const,
+    adminConcepts: (params?: { q?: string; limit?: number; offset?: number }) =>
+      [...queryKeys.terminology.all, "admin-concepts", params ?? {}] as const,
     valueSets: () => [...queryKeys.terminology.all, "value-sets"] as const,
     valueSet: (code: string) =>
       [...queryKeys.terminology.all, "value-set", code] as const,
     coverage: (locale: string) =>
       [...queryKeys.terminology.all, "coverage", locale] as const,
+    search: (params: { q: string; locale: string; kind?: string }) =>
+      [...queryKeys.terminology.all, "search", params] as const,
   },
 } as const;

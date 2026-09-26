@@ -15,7 +15,8 @@
     "users": "Team",
     "settings": "Settings",
     "security": "Security",
-    "terminology": "Terminology"
+    "terminology": "Terminology",
+    "patients": "Patients"
   },
   "clinicSwitcher": {
     "label": "Active clinic"

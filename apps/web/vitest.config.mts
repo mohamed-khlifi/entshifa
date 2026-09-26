@@ -1,21 +1,24 @@
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-import { defineConfig } from 'vitest/config';
+import { defineConfig } from "vitest/config";
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
+  esbuild: {
+    jsx: "automatic",
+  },
   test: {
-    environment: 'jsdom',
-    include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
+    environment: "jsdom",
+    include: ["src/**/*.test.ts", "src/**/*.test.tsx"],
   },
   resolve: {
     alias: {
-      '@': path.resolve(rootDir, './src'),
-      '@entshifa/contracts': path.resolve(
+      "@": path.resolve(rootDir, "./src"),
+      "@entshifa/contracts": path.resolve(
         rootDir,
-        '../../packages/contracts/generated/schema.ts',
+        "../../packages/contracts/generated/schema.ts",
       ),
     },
   },

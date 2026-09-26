@@ -1,0 +1,214 @@
+{
+  "gate": {
+    "forbidden": "You do not have permission to view patients."
+  },
+  "state": {
+    "loading": "Loading the chart…",
+    "loadError": "This chart could not be loaded."
+  },
+  "list": {
+    "title": "Patients",
+    "description": "Search the clinic registry.",
+    "create": "New patient",
+    "emptyTitle": "No patients",
+    "emptyDescription": "Create a patient or change the filters.",
+    "error": "The patient list could not be loaded.",
+    "name": "Name",
+    "mrn": "MRN",
+    "sex": "Sex",
+    "birthDate": "Date of birth",
+    "phone": "Phone",
+    "filters": {
+      "sex": "Sex",
+      "birthDate": "Date of birth",
+      "flag": "Safety flag",
+      "any": "Any"
+    }
+  },
+  "sex": {
+    "male": "Male",
+    "female": "Female",
+    "other": "Other",
+    "unknown": "Unknown"
+  },
+  "form": {
+    "createTitle": "New patient",
+    "createDescription": "Record identity, contacts, and background on the clinic chart.",
+    "editTitle": "Demographics",
+    "submitCreate": "Create patient",
+    "created": "Patient created.",
+    "conflict": "This chart was updated elsewhere. Reload before continuing.",
+    "reload": "Reload chart",
+    "sections": {
+      "identity": "Identity",
+      "contact": "Contact",
+      "background": "Background",
+      "referring": "Referring doctor",
+      "guardian": "Guardian and emergency contact",
+      "consent": "Consent and status"
+    },
+    "fields": {
+      "firstName": "Given name",
+      "lastName": "Family name",
+      "firstNameAlt": "Given name (alternate script)",
+      "lastNameAlt": "Family name (alternate script)",
+      "birthDate": "Date of birth",
+      "birthDateEstimated": "Date of birth is estimated",
+      "sex": "Sex",
+      "preferredLocale": "Preferred language",
+      "mrn": "Medical record number",
+      "phonePrimary": "Primary phone",
+      "phoneSecondary": "Secondary phone",
+      "email": "Email",
+      "addressLine1": "Address line 1",
+      "addressLine2": "Address line 2",
+      "city": "City",
+      "postalCode": "Postal code",
+      "countryCode": "Country code",
+      "occupation": "Occupation",
+      "noiseExposure": "Noise exposure",
+      "smokingStatus": "Smoking",
+      "alcoholStatus": "Alcohol",
+      "insuranceNumber": "Insurance number",
+      "referringDoctorName": "Referring doctor",
+      "referringDoctorPhone": "Referring doctor phone",
+      "referringDoctorEmail": "Referring doctor email",
+      "referringDoctorLocale": "Referring doctor language",
+      "guardianName": "Guardian name",
+      "guardianRelation": "Guardian relationship",
+      "emergencyContactName": "Emergency contact",
+      "emergencyContactPhone": "Emergency phone",
+      "consentSms": "SMS consent",
+      "consentEmail": "Email consent",
+      "consentTeaching": "Teaching consent",
+      "isDeceased": "Deceased",
+      "deceasedDate": "Date of death"
+    }
+  },
+  "validation": {
+    "required": "This field is required.",
+    "email": "Enter a valid email address.",
+    "countryCode": "Use a two-letter country code.",
+    "locale": "Choose a language code.",
+    "deceased": "A date of death requires the deceased flag."
+  },
+  "duplicate": {
+    "title": "Possible existing patient",
+    "body": "A chart with the same name and date of birth, or the same phone, already exists.",
+    "confirm": "Create anyway",
+    "cancel": "Keep editing",
+    "open": "Open chart"
+  },
+  "header": {
+    "ageYears": "{count, plural, one {# year} other {# years}}",
+    "ageMonths": "{count, plural, one {# month} other {# months}}",
+    "estimated": "Estimated date of birth",
+    "allergies": "Allergies",
+    "problems": "Active problems",
+    "medications": "Current medications",
+    "lastVisits": "Last visits",
+    "lastVisitsEmpty": "No visits yet.",
+    "none": "None recorded",
+    "mrn": "MRN {mrn}",
+    "deceased": "Deceased"
+  },
+  "alerts": {
+    "onlyHearingEar": "Only hearing ear",
+    "otherTitle": "Safety alerts"
+  },
+  "flags": {
+    "onlyHearingEar": "Only hearing ear",
+    "anticoagulant": "Anticoagulant or antiplatelet",
+    "ototoxicTherapy": "Ototoxic therapy",
+    "difficultAirway": "Difficult airway",
+    "tracheostomy": "Tracheostomy",
+    "laryngealStenosis": "Laryngeal stenosis",
+    "cochlearImplant": "Cochlear implant",
+    "pacemaker": "Pacemaker",
+    "immunosuppressed": "Immunosuppressed",
+    "diabetes": "Diabetes",
+    "pregnancy": "Pregnancy",
+    "breastfeeding": "Breastfeeding",
+    "pediatricWeightMissing": "Pediatric weight missing",
+    "unknown": "Safety flag {code}"
+  },
+  "chart": {
+    "identifiers": "Identifiers",
+    "allergies": "Allergies",
+    "medications": "Medications",
+    "flags": "Safety flags",
+    "problems": "Problems",
+    "history": "History",
+    "empty": "Nothing recorded.",
+    "active": "Active",
+    "inactive": "Ended",
+    "saved": "Chart updated.",
+    "addIdentifier": "Add identifier",
+    "identifierType": "Identifier type",
+    "identifierValue": "Identifier value",
+    "issuingCountry": "Issuing country",
+    "addAllergy": "Add allergy",
+    "substance": "Substance",
+    "category": "Category",
+    "severity": "Severity",
+    "addMedication": "Add medication",
+    "medicationName": "Medication",
+    "dose": "Dose",
+    "source": "Source",
+    "anticoagulant": "Anticoagulant or antiplatelet",
+    "ototoxic": "Ototoxic",
+    "addFlag": "Add safety flag",
+    "flag": "Flag",
+    "endFlag": "End flag",
+    "addProblem": "Add problem",
+    "diagnosis": "Diagnosis",
+    "status": "Status",
+    "laterality": "Side",
+    "addHistory": "Add history",
+    "freeText": "Description",
+    "historyNeedsText": "Enter a description or choose a coded concept."
+  },
+  "concept": {
+    "placeholder": "Search terminology",
+    "searching": "Searching…",
+    "empty": "No matching concepts."
+  },
+  "allergy": {
+    "drug": "Drug",
+    "food": "Food",
+    "other": "Other"
+  },
+  "severity": {
+    "mild": "Mild",
+    "moderate": "Moderate",
+    "severe": "Severe"
+  },
+  "medicationSource": {
+    "prescribedHere": "Prescribed here",
+    "reported": "Reported",
+    "external": "External"
+  },
+  "problem": {
+    "active": "Active",
+    "resolved": "Resolved",
+    "suspected": "Suspected",
+    "ruledOut": "Ruled out"
+  },
+  "history": {
+    "entSurgery": "ENT surgery",
+    "otherSurgery": "Other surgery",
+    "medical": "Medical",
+    "family": "Family",
+    "social": "Social",
+    "obstetric": "Obstetric"
+  },
+  "identifier": {
+    "nationalId": "National ID",
+    "passport": "Passport",
+    "insurance": "Insurance"
+  },
+  "laterality": {
+    "midline": "Midline",
+    "na": "Not applicable"
+  }
+}

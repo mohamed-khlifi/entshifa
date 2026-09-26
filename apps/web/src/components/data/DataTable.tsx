@@ -46,6 +46,8 @@ export type DataTableProps<TData> = {
   defaultSortBy?: string;
   defaultSortDir?: TableSortDir;
   defaultPageSize?: number;
+  /** Override the row test id. Patients use `patientRowTestId`. */
+  getRowTestId?: (rowId: string) => string;
 };
 
 function SortIcon({ active, dir }: { active: boolean; dir: TableSortDir }) {
@@ -75,6 +77,7 @@ export function DataTable<TData>({
   defaultSortBy,
   defaultSortDir = "asc",
   defaultPageSize = 20,
+  getRowTestId,
 }: DataTableProps<TData>) {
   const t = useTranslations("data");
   const { state, setState } = useTableUrlState({
@@ -268,7 +271,11 @@ export function DataTable<TData>({
                   <tr
                     key={row.id}
                     className="border-b border-border last:border-b-0 hover:bg-accent/30"
-                    {...testIdProps(tableRowTestId(row.id))}
+                    {...testIdProps(
+                      getRowTestId
+                        ? getRowTestId(row.id)
+                        : tableRowTestId(row.id),
+                    )}
                   >
                     {row.getVisibleCells().map((cell) => (
                       <td key={cell.id} className="px-4 py-3 text-foreground">

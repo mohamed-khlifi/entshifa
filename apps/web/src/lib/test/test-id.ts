@@ -114,6 +114,35 @@ export const testIds = {
     viewerMeta: testId("attachments", "viewer", "meta"),
     viewerImage: testId("attachments", "viewer", "image"),
   },
+  patients: {
+    nav: testId("patients", "nav"),
+    gate: testId("patients", "gate"),
+    list: testId("patients", "list"),
+    create: testId("patients", "create"),
+    createForm: testId("patients", "create-form"),
+    createSubmit: testId("patients", "create-submit"),
+    editForm: testId("patients", "edit-form"),
+    duplicate: testId("patients", "duplicate"),
+    duplicateConfirm: testId("patients", "duplicate-confirm"),
+    duplicateCancel: testId("patients", "duplicate-cancel"),
+    filterSex: testId("patients", "filter-sex"),
+    filterBirthDate: testId("patients", "filter-birth-date"),
+    filterFlag: testId("patients", "filter-flag"),
+    shell: testId("patients", "shell"),
+    header: testId("patients", "header"),
+    headerAge: testId("patients", "header-age"),
+    headerAllergies: testId("patients", "header-allergies"),
+    headerProblems: testId("patients", "header-problems"),
+    headerMedications: testId("patients", "header-medications"),
+    headerVisits: testId("patients", "header-visits"),
+    alertOnlyHearingEar: testId("patients", "alert-only-hearing-ear"),
+    alertOther: testId("patients", "alert-other"),
+    chart: testId("patients", "chart"),
+    conflict: testId("patients", "conflict"),
+    conflictReload: testId("patients", "conflict-reload"),
+    loading: testId("patients", "loading"),
+    error: testId("patients", "error"),
+  },
   terminology: {
     concepts: {
       root: testId("terminology", "concepts", "root"),
@@ -137,6 +166,10 @@ export const testIds = {
     },
   },
 } as const;
+
+export function patientRowTestId(publicId: string): string {
+  return publicIdTestId("patients.list.row", publicId);
+}
 
 export function publicIdTestId(scope: string, publicId: string): string {
   for (const part of scope.split(".")) {

@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import { publicIdTestId, testId, testIdProps, testIds } from "./test-id";
+import {
+  patientRowTestId,
+  publicIdTestId,
+  testId,
+  testIdProps,
+  testIds,
+} from "./test-id";
 
 describe("testId", () => {
   it("joins segments with dots", () => {
@@ -21,5 +27,8 @@ describe("testId", () => {
     expect(
       publicIdTestId("patients.list.row", "01ARZ3NDEKTSV4RRFFQ69G5FAV"),
     ).toBe("patients.list.row.01ARZ3NDEKTSV4RRFFQ69G5FAV");
+    expect(patientRowTestId("01ARZ3NDEKTSV4RRFFQ69G5FAV")).toBe(
+      "patients.list.row.01ARZ3NDEKTSV4RRFFQ69G5FAV",
+    );
   });
 });

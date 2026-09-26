@@ -1,0 +1,214 @@
+{
+  "gate": {
+    "forbidden": "ليست لديك صلاحية عرض المرضى."
+  },
+  "state": {
+    "loading": "جارٍ تحميل الملف…",
+    "loadError": "تعذر تحميل هذا الملف."
+  },
+  "list": {
+    "title": "المرضى",
+    "description": "ابحث في سجل العيادة.",
+    "create": "مريض جديد",
+    "emptyTitle": "لا يوجد مرضى",
+    "emptyDescription": "أنشئ مريضًا أو غيّر عوامل التصفية.",
+    "error": "تعذر تحميل قائمة المرضى.",
+    "name": "الاسم",
+    "mrn": "رقم الملف",
+    "sex": "الجنس",
+    "birthDate": "تاريخ الميلاد",
+    "phone": "الهاتف",
+    "filters": {
+      "sex": "الجنس",
+      "birthDate": "تاريخ الميلاد",
+      "flag": "تنبيه سلامة",
+      "any": "الكل"
+    }
+  },
+  "sex": {
+    "male": "ذكر",
+    "female": "أنثى",
+    "other": "آخر",
+    "unknown": "غير معروف"
+  },
+  "form": {
+    "createTitle": "مريض جديد",
+    "createDescription": "سجّل الهوية ووسائل الاتصال والخلفية في ملف العيادة.",
+    "editTitle": "البيانات الديموغرافية",
+    "submitCreate": "إنشاء المريض",
+    "created": "تم إنشاء المريض.",
+    "conflict": "تم تحديث هذا الملف من مكان آخر. أعد التحميل قبل المتابعة.",
+    "reload": "إعادة تحميل الملف",
+    "sections": {
+      "identity": "الهوية",
+      "contact": "الاتصال",
+      "background": "الخلفية",
+      "referring": "الطبيب المحيل",
+      "guardian": "الولي وجهة اتصال الطوارئ",
+      "consent": "الموافقات والحالة"
+    },
+    "fields": {
+      "firstName": "الاسم الشخصي",
+      "lastName": "اسم العائلة",
+      "firstNameAlt": "الاسم الشخصي (كتابة بديلة)",
+      "lastNameAlt": "اسم العائلة (كتابة بديلة)",
+      "birthDate": "تاريخ الميلاد",
+      "birthDateEstimated": "تاريخ الميلاد تقديري",
+      "sex": "الجنس",
+      "preferredLocale": "اللغة المفضلة",
+      "mrn": "رقم الملف الطبي",
+      "phonePrimary": "الهاتف الأساسي",
+      "phoneSecondary": "الهاتف الثانوي",
+      "email": "البريد الإلكتروني",
+      "addressLine1": "العنوان ١",
+      "addressLine2": "العنوان ٢",
+      "city": "المدينة",
+      "postalCode": "الرمز البريدي",
+      "countryCode": "رمز البلد",
+      "occupation": "المهنة",
+      "noiseExposure": "التعرض للضجيج",
+      "smokingStatus": "التدخين",
+      "alcoholStatus": "الكحول",
+      "insuranceNumber": "رقم التأمين",
+      "referringDoctorName": "الطبيب المحيل",
+      "referringDoctorPhone": "هاتف الطبيب المحيل",
+      "referringDoctorEmail": "بريد الطبيب المحيل",
+      "referringDoctorLocale": "لغة الطبيب المحيل",
+      "guardianName": "اسم الولي",
+      "guardianRelation": "صلة الولي",
+      "emergencyContactName": "جهة اتصال الطوارئ",
+      "emergencyContactPhone": "هاتف الطوارئ",
+      "consentSms": "الموافقة على الرسائل",
+      "consentEmail": "الموافقة على البريد",
+      "consentTeaching": "الموافقة على التعليم",
+      "isDeceased": "متوفى",
+      "deceasedDate": "تاريخ الوفاة"
+    }
+  },
+  "validation": {
+    "required": "هذا الحقل مطلوب.",
+    "email": "أدخل بريدًا إلكترونيًا صالحًا.",
+    "countryCode": "استخدم رمز بلد من حرفين.",
+    "locale": "أدخل رمز لغة.",
+    "deceased": "تاريخ الوفاة يتطلب تعليم المريض كمتوفى."
+  },
+  "duplicate": {
+    "title": "مريض موجود محتمل",
+    "body": "يوجد ملف بالاسم وتاريخ الميلاد نفسيهما، أو بالهاتف نفسه.",
+    "confirm": "إنشاء على أي حال",
+    "cancel": "متابعة التعديل",
+    "open": "فتح الملف"
+  },
+  "header": {
+    "ageYears": "{count, plural, zero {# سنة} one {# سنة} two {# سنتان} few {# سنوات} many {# سنة} other {# سنة}}",
+    "ageMonths": "{count, plural, zero {# شهر} one {# شهر} two {# شهران} few {# أشهر} many {# شهرًا} other {# شهر}}",
+    "estimated": "تاريخ ميلاد تقديري",
+    "allergies": "الحساسية",
+    "problems": "المشكلات النشطة",
+    "medications": "الأدوية الحالية",
+    "lastVisits": "آخر الزيارات",
+    "lastVisitsEmpty": "لا توجد زيارات بعد.",
+    "none": "لا يوجد تسجيل",
+    "mrn": "رقم الملف {mrn}",
+    "deceased": "متوفى"
+  },
+  "alerts": {
+    "onlyHearingEar": "أذن سمع وحيدة",
+    "otherTitle": "تنبيهات السلامة"
+  },
+  "flags": {
+    "onlyHearingEar": "أذن سمع وحيدة",
+    "anticoagulant": "مضاد تخثر أو مضاد صفيحات",
+    "ototoxicTherapy": "علاج سام للأذن",
+    "difficultAirway": "مجرى هوائي صعب",
+    "tracheostomy": "فغر الرغامى",
+    "laryngealStenosis": "تضيق الحنجرة",
+    "cochlearImplant": "زرعة قوقعة",
+    "pacemaker": "ناظمة قلبية",
+    "immunosuppressed": "نقص المناعة",
+    "diabetes": "السكري",
+    "pregnancy": "حمل",
+    "breastfeeding": "إرضاع",
+    "pediatricWeightMissing": "وزن الطفل غير مسجل",
+    "unknown": "تنبيه {code}"
+  },
+  "chart": {
+    "identifiers": "المعرفات",
+    "allergies": "الحساسية",
+    "medications": "الأدوية",
+    "flags": "تنبيهات السلامة",
+    "problems": "المشكلات",
+    "history": "السوابق",
+    "empty": "لا يوجد تسجيل.",
+    "active": "نشط",
+    "inactive": "منتهٍ",
+    "saved": "تم تحديث الملف.",
+    "addIdentifier": "إضافة معرف",
+    "identifierType": "نوع المعرف",
+    "identifierValue": "قيمة المعرف",
+    "issuingCountry": "بلد الإصدار",
+    "addAllergy": "إضافة حساسية",
+    "substance": "المادة",
+    "category": "الفئة",
+    "severity": "الشدة",
+    "addMedication": "إضافة دواء",
+    "medicationName": "الدواء",
+    "dose": "الجرعة",
+    "source": "المصدر",
+    "anticoagulant": "مضاد تخثر أو مضاد صفيحات",
+    "ototoxic": "سام للأذن",
+    "addFlag": "إضافة تنبيه سلامة",
+    "flag": "التنبيه",
+    "endFlag": "إنهاء التنبيه",
+    "addProblem": "إضافة مشكلة",
+    "diagnosis": "التشخيص",
+    "status": "الحالة",
+    "laterality": "الجانب",
+    "addHistory": "إضافة سابقة",
+    "freeText": "الوصف",
+    "historyNeedsText": "أدخل وصفًا أو اختر مفهومًا مرمّزًا."
+  },
+  "concept": {
+    "placeholder": "ابحث في المصطلحات",
+    "searching": "جارٍ البحث…",
+    "empty": "لا توجد مفاهيم مطابقة."
+  },
+  "allergy": {
+    "drug": "دواء",
+    "food": "طعام",
+    "other": "أخرى"
+  },
+  "severity": {
+    "mild": "خفيفة",
+    "moderate": "متوسطة",
+    "severe": "شديدة"
+  },
+  "medicationSource": {
+    "prescribedHere": "وُصف هنا",
+    "reported": "مُبلَّغ",
+    "external": "خارجي"
+  },
+  "problem": {
+    "active": "نشط",
+    "resolved": "مُحل",
+    "suspected": "مشتبه",
+    "ruledOut": "مُستبعد"
+  },
+  "history": {
+    "entSurgery": "جراحة أنف وأذن وحنجرة",
+    "otherSurgery": "جراحة أخرى",
+    "medical": "طبي",
+    "family": "عائلي",
+    "social": "اجتماعي",
+    "obstetric": "توليدي"
+  },
+  "identifier": {
+    "nationalId": "الهوية الوطنية",
+    "passport": "جواز السفر",
+    "insurance": "التأمين"
+  },
+  "laterality": {
+    "midline": "الخط الناصف",
+    "na": "غير منطبق"
+  }
+}

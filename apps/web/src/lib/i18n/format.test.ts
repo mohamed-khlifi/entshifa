@@ -13,6 +13,7 @@ import {
   formatNumber,
   formatPersonName,
   formatQuantity,
+  patientAgeDisplay,
 } from "./format";
 import { directionalIconClass } from "./directional-icon";
 
@@ -60,6 +61,23 @@ describe("format helpers", () => {
     expect(formatPersonName({ given: "Sara", family: "Hassan" }, "en")).toBe(
       "Sara Hassan",
     );
+  });
+
+  it("shows months before the third birthday and years from then", () => {
+    const today = new Date(2026, 8, 27);
+    expect(patientAgeDisplay("2023-09-27", today)).toEqual({
+      unit: "years",
+      count: 3,
+    });
+    expect(patientAgeDisplay("2023-09-28", today)).toEqual({
+      unit: "months",
+      count: 35,
+    });
+    expect(patientAgeDisplay("2026-01-15", today)).toEqual({
+      unit: "months",
+      count: 8,
+    });
+    expect(patientAgeDisplay("not-a-date", today)).toBeNull();
   });
 });
 

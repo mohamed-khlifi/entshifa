@@ -133,3 +133,59 @@ export function formatPersonName(name: PersonName, locale?: string): string {
 
   return [prefix, core, suffix].filter(Boolean).join(" ").trim();
 }
+
+export type PatientAgeDisplay = {
+  unit: "months" | "years";
+  count: number;
+};
+
+function calendarParts(value: Date): {
+  year: number;
+  month: number;
+  day: number;
+} {
+  return {
+    year: value.getFullYear(),
+    month: value.getMonth() + 1,
+    day: value.getDate(),
+  };
+}
+
+/**
+ * Calendar age for the patient header.
+ * Under 3 years the count is completed months; from the third birthday it is
+ * completed years (feature specification §4.1). Display only — not a clinical engine.
+ */
+export function patientAgeDisplay(
+  birthDate: string,
+  today: Date = new Date(),
+): PatientAgeDisplay | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(birthDate);
+  if (!match) {
+    return null;
+  }
+  const birth = {
+    year: Number(match[1]),
+    month: Number(match[2]),
+    day: Number(match[3]),
+  };
+  if (birth.month < 1 || birth.month > 12 || birth.day < 1 || birth.day > 31) {
+    return null;
+  }
+  const now = calendarParts(today);
+  let years = now.year - birth.year;
+  if (
+    now.month < birth.month ||
+    (now.month === birth.month && now.day < birth.day)
+  ) {
+    years -= 1;
+  }
+  if (years >= 3) {
+    return { unit: "years", count: years };
+  }
+  let months = (now.year - birth.year) * 12 + (now.month - birth.month);
+  if (now.day < birth.day) {
+    months -= 1;
+  }
+  return { unit: "months", count: Math.max(0, months) };
+}
