@@ -2,5 +2,12 @@
   "name": "@entshifa/i18n-messages",
   "version": "0.0.0",
   "private": true,
-  "description": "UI translation catalogs for en, fr, ar, and future locales"
+  "description": "UI translation catalogs for en, fr, ar, and future locales",
+  "type": "module",
+  "scripts": {
+    "check": "node ./scripts/check.mjs"
+  },
+  "exports": {
+    "./*": "./*"
+  }
 }

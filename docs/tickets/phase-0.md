@@ -212,7 +212,7 @@ everything clinical, so do not shortcut it.
 
 ---
 
-## - [ ] P0-11 Internationalization end to end
+## - [x] P0-11 Internationalization end to end
 
 **Scope**
 - next-intl configured, catalogs for `en` and `fr`, a placeholder `ar` catalog.

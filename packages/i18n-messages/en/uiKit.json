@@ -1,8 +1,6 @@
 {
   "nav": {
-    "title": "UI kit",
-    "forms": "Form fields",
-    "table": "Data table"
+    "title": "UI kit"
   },
   "form": {
     "title": "Shared form fields",

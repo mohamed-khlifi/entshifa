@@ -1,0 +1,27 @@
+{
+  "empty": {
+    "title": "لا نتائج",
+    "description": "جرّب تعديل عوامل التصفية أو البحث."
+  },
+  "error": {
+    "title": "تعذر تحميل هذه القائمة",
+    "description": "حدّث الصفحة أو أعد المحاولة بعد لحظة."
+  },
+  "filter": {
+    "label": "بحث",
+    "placeholder": "بحث…"
+  },
+  "columns": {
+    "label": "الأعمدة",
+    "toggle": "إظهار أو إخفاء…",
+    "hide": "إخفاء {id}",
+    "show": "إظهار {id}"
+  },
+  "pagination": {
+    "summary": "{from}–{to} من {total}",
+    "pageSize": "صفوف في الصفحة",
+    "prev": "الصفحة السابقة",
+    "next": "الصفحة التالية",
+    "pageOf": "{page} / {totalPages}"
+  }
+}

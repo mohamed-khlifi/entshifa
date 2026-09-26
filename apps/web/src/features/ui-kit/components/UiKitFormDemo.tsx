@@ -19,6 +19,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useClinicalForm } from '@/lib/forms/createForm';
+import { MEDICAL_UNITS } from '@/lib/i18n/format';
 import { testIdProps, testIds } from '@/lib/test/test-id';
 
 import { createUiKitDemoSchema } from '../schemas/demo.schema';
@@ -109,7 +110,7 @@ export function UiKitFormDemo() {
               <NumberField
                 name="weightKg"
                 label={t('form.weightKg')}
-                unit="kg"
+                unit={MEDICAL_UNITS.kg}
                 min={0.5}
                 max={300}
                 step={0.1}

@@ -1,0 +1,48 @@
+{
+  "nav": {
+    "title": "عدة الواجهة"
+  },
+  "form": {
+    "title": "حقول النموذج المشتركة",
+    "description": "مكتبة حقول المرحلة 0: التسمية، العلامة الإلزامية، الوحدة، والأخطاء.",
+    "lastName": "اسم العائلة",
+    "lastNameDescription": "كما هو مسجل في ملف العيادة.",
+    "weightKg": "الوزن",
+    "sex": "الجنس",
+    "sexPlaceholder": "اختر…",
+    "sexFemale": "أنثى",
+    "sexMale": "ذكر",
+    "sexOther": "آخر",
+    "birthDate": "تاريخ الميلاد",
+    "side": "الجانب",
+    "diagnosis": "الموجودة",
+    "diagnosisPlaceholder": "اختر موجودة…",
+    "concepts": {
+      "otitis": "التهاب الأذن الوسطى",
+      "rhinitis": "التهاب الأنف التحسسي",
+      "vertigo": "دوار محيطي"
+    },
+    "painScore": "درجة الألم",
+    "submit": "حفظ المسودة",
+    "validation": {
+      "lastNameRequired": "أدخل اسم العائلة.",
+      "weightRequired": "أدخل الوزن.",
+      "sexRequired": "اختر الجنس.",
+      "birthDateRequired": "أدخل تاريخ الميلاد.",
+      "sideRequired": "اختر الجانب.",
+      "diagnosisRequired": "اختر موجودة.",
+      "painRequired": "اختر درجة الألم."
+    }
+  },
+  "table": {
+    "title": "جدول البيانات المشترك",
+    "description": "الأعمدة فقط — الفرز والتصفية والتصفح متزامنة مع عنوان URL.",
+    "columns": {
+      "name": "الاسم",
+      "role": "الدور",
+      "site": "الموقع"
+    },
+    "emptyTitle": "لا صفوف تجريبية",
+    "emptyDescription": "غيّر استعلام البحث لعرض الصفوف المطابقة."
+  }
+}

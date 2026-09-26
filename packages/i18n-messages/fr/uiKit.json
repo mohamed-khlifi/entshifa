@@ -1,8 +1,6 @@
 {
   "nav": {
-    "title": "Kit UI",
-    "forms": "Champs de formulaire",
-    "table": "Tableau de données"
+    "title": "Kit UI"
   },
   "form": {
     "title": "Champs de formulaire partagés",

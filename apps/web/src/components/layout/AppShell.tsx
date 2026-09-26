@@ -11,16 +11,22 @@ type AppShellProps = {
   children: ReactNode;
 };
 
+/**
+ * Fixed chrome: topbar + sidebar stay put; only main content scrolls.
+ */
 export function AppShell({ children }: AppShellProps) {
   return (
     <div
-      className="flex min-h-screen flex-col bg-muted/30"
+      className="flex h-svh flex-col overflow-hidden bg-muted/30"
       {...testIdProps(testIds.layout.shell)}
     >
       <Topbar />
-      <div className="flex flex-1">
+      <div className="flex min-h-0 flex-1">
         <Sidebar />
-        <main className="flex-1 overflow-auto p-6" {...testIdProps(testIds.layout.main)}>
+        <main
+          className="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain p-6"
+          {...testIdProps(testIds.layout.main)}
+        >
           {children}
         </main>
       </div>

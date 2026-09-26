@@ -1,6 +1,6 @@
 ---
 description: Translation catalog conventions for every locale
-globs: apps/web/messages/**/*.json,packages/i18n-messages/**/*.json
+globs: packages/i18n-messages/**/*.json
 alwaysApply: false
 ---
 

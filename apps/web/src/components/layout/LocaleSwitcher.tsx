@@ -5,9 +5,17 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useTransition } from 'react';
 
 import { usePathname, useRouter } from '@/i18n/navigation';
-import { routing, type AppLocale } from '@/i18n/routing';
+import type { AppLocale } from '@/i18n/routing';
+import { getLocaleDefinition, getEnabledLocales } from '@/lib/i18n/config';
 import { cn } from '@/lib/utils/cn';
 import { testIdProps, testIds } from '@/lib/test/test-id';
+
+const LOCALE_OPTION_KEYS = {
+  en: 'locale.options.en',
+  fr: 'locale.options.fr',
+  ar: 'locale.options.ar',
+  'en-XA': 'locale.options.enXA',
+} as const satisfies Record<AppLocale, `locale.options.${string}`>;
 
 type LocaleSwitcherProps = {
   className?: string;
@@ -19,6 +27,7 @@ export function LocaleSwitcher({ className }: LocaleSwitcherProps) {
   const router = useRouter();
   const t = useTranslations('common');
   const [isPending, startTransition] = useTransition();
+  const locales = getEnabledLocales();
 
   const handleChange = (nextLocale: string) => {
     if (nextLocale === locale) {
@@ -51,11 +60,14 @@ export function LocaleSwitcher({ className }: LocaleSwitcherProps) {
         )}
         {...testIdProps(testIds.layout.localeSwitcherSelect)}
       >
-        {routing.locales.map((code) => (
-          <option key={code} value={code}>
-            {t(`locale.options.${code}`)}
-          </option>
-        ))}
+        {locales.map((code) => {
+          const optionKey = LOCALE_OPTION_KEYS[code];
+          return (
+            <option key={code} value={code} lang={getLocaleDefinition(code).intlLocale}>
+              {t(optionKey)}
+            </option>
+          );
+        })}
       </select>
       <ChevronDown
         className="pointer-events-none absolute end-2.5 size-4 text-muted-foreground"

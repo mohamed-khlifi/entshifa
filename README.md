@@ -82,6 +82,7 @@ docs/           Architecture, clinical spec, tickets, database DDL
 | `make migrate` | Alembic migrations (P0-03) |
 | `make migrate-down` | Downgrade one Alembic revision |
 | `make seed` | Reference data seeds (P0-08) |
+| `make i18n-check` | Translation catalog parity (P0-11) |
 | `make contracts` | OpenAPI + TS codegen (P0-12) |
 | `make anonymize` | Anonymized dump script stub (full job in P1-11) |
 

@@ -7,6 +7,13 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        arabic: [
+          'var(--font-arabic)',
+          'var(--font-sans)',
+          'Tahoma',
+          'Arial',
+          'sans-serif',
+        ],
       },
       colors: {
         border: 'hsl(var(--border))',

@@ -1,31 +1,50 @@
 import { getRequestConfig } from 'next-intl/server';
 
-import { routing, type AppLocale } from './routing';
+import {
+  DEFAULT_LOCALE,
+  MESSAGE_NAMESPACES,
+  PSEUDO_LOCALE,
+  getLocaleDefinition,
+  isAppLocale,
+  type MessageNamespace,
+} from '@/lib/i18n/config';
+import { toPseudoLocaleMessages } from '@/lib/i18n/pseudo';
+
+type MessageTree = Record<string, unknown>;
+
+async function loadNamespace(
+  catalogLocale: string,
+  namespace: MessageNamespace,
+): Promise<MessageTree> {
+  const module = await import(
+    `../../../../packages/i18n-messages/${catalogLocale}/${namespace}.json`
+  );
+  return module.default as MessageTree;
+}
+
+async function loadMessages(locale: string): Promise<Record<MessageNamespace, MessageTree>> {
+  const definition = getLocaleDefinition(locale);
+  const entries = await Promise.all(
+    MESSAGE_NAMESPACES.map(async (namespace) => {
+      const tree = await loadNamespace(definition.catalogLocale, namespace);
+      return [namespace, tree] as const;
+    }),
+  );
+  const messages = Object.fromEntries(entries) as Record<MessageNamespace, MessageTree>;
+  if (locale === PSEUDO_LOCALE) {
+    return toPseudoLocaleMessages(messages);
+  }
+  return messages;
+}
 
 export default getRequestConfig(async ({ requestLocale }) => {
   let locale = await requestLocale;
-  if (!locale || !routing.locales.includes(locale as AppLocale)) {
-    locale = routing.defaultLocale;
+  if (!locale || !isAppLocale(locale)) {
+    locale = DEFAULT_LOCALE;
   }
-
-  const [common, auth, errors, forms, data, uiKit] = await Promise.all([
-    import(`../../messages/${locale}/common.json`),
-    import(`../../messages/${locale}/auth.json`),
-    import(`../../messages/${locale}/errors.json`),
-    import(`../../messages/${locale}/forms.json`),
-    import(`../../messages/${locale}/data.json`),
-    import(`../../messages/${locale}/uiKit.json`),
-  ]);
 
   return {
     locale,
-    messages: {
-      common: common.default,
-      auth: auth.default,
-      errors: errors.default,
-      forms: forms.default,
-      data: data.default,
-      uiKit: uiKit.default,
-    },
+    messages: await loadMessages(locale),
   };
 });

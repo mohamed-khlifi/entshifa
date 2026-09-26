@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
 import { Button } from '@/components/ui/button';
+import { directionalIconClass } from '@/lib/i18n/directional-icon';
 import { cn } from '@/lib/utils/cn';
 import { testIdProps, testIds } from '@/lib/test/test-id';
 
@@ -68,7 +69,7 @@ export function Pagination({
           onClick={() => onPageChange(page - 1)}
           {...testIdProps(testIds.data.pagePrev)}
         >
-          <ChevronLeft className="size-4 rtl:rotate-180" aria-hidden />
+          <ChevronLeft className={directionalIconClass('size-4')} aria-hidden />
           <span className="sr-only">{t('pagination.prev')}</span>
         </Button>
         <span className="min-w-[4rem] text-center tabular-nums text-muted-foreground">
@@ -82,7 +83,7 @@ export function Pagination({
           onClick={() => onPageChange(page + 1)}
           {...testIdProps(testIds.data.pageNext)}
         >
-          <ChevronRight className="size-4 rtl:rotate-180" aria-hidden />
+          <ChevronRight className={directionalIconClass('size-4')} aria-hidden />
           <span className="sr-only">{t('pagination.next')}</span>
         </Button>
       </div>

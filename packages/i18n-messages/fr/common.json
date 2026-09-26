@@ -6,8 +6,7 @@
     "complianceHint": "Données de santé — connectez-vous uniquement sur des appareils de confiance."
   },
   "actions": {
-    "logout": "Se déconnecter",
-    "submit": "Se connecter"
+    "logout": "Se déconnecter"
   },
   "nav": {
     "home": "Accueil",
@@ -20,7 +19,9 @@
   "locale": {
     "label": "Langue",
     "options": {
+      "ar": "العربية",
       "en": "English",
+      "enXA": "English (pseudo)",
       "fr": "Français"
     }
   }

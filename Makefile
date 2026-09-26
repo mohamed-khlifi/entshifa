@@ -4,7 +4,7 @@
 COMPOSE ?= docker compose
 ENV_FILE ?= .env
 
-.PHONY: dev dev-down dev-logs worker test lint typecheck migrate migrate-down seed contracts anonymize help
+.PHONY: dev dev-down dev-logs worker test lint typecheck migrate migrate-down seed contracts anonymize i18n-check help
 
 help: ## Show available targets
 	@grep -E '^[a-zA-Z0-9_-]+:.*##' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*## "}; {printf "  %-14s %s\n", $$1, $$2}'
@@ -45,6 +45,9 @@ seed: ## Load local dev identity/auth seed (demo users; run after migrate)
 contracts: ## Regenerate OpenAPI spec and TypeScript types (implemented in P0-12)
 	@echo "contracts: not implemented until P0-12."
 	@exit 1
+
+i18n-check: ## Verify translation catalogs (key parity, placeholders, no orphans)
+	node packages/i18n-messages/scripts/check.mjs
 
 anonymize: ## Build an anonymized development database dump (implemented in P1-11)
 	@bash infra/scripts/anonymize.sh

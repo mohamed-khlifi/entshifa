@@ -11,6 +11,13 @@ import { testId, testIdProps } from '@/lib/test/test-id';
 export const LATERALITY_VALUES = ['left', 'right', 'bilateral', 'unspecified'] as const;
 export type LateralityValue = (typeof LATERALITY_VALUES)[number];
 
+const LATERALITY_LABEL_KEYS = {
+  left: 'laterality.left',
+  right: 'laterality.right',
+  bilateral: 'laterality.bilateral',
+  unspecified: 'laterality.unspecified',
+} as const satisfies Record<LateralityValue, `laterality.${LateralityValue}`>;
+
 export type LateralityFieldProps<T extends FieldValues> = {
   name: FieldPath<T>;
   label: string;
@@ -80,7 +87,7 @@ export function LateralityField<T extends FieldValues>({
                     value={value}
                     {...testIdProps(optionId)}
                   />
-                  {t(`laterality.${value}`)}
+                  {t(LATERALITY_LABEL_KEYS[value])}
                 </label>
               );
             })}

@@ -6,8 +6,7 @@
     "complianceHint": "Protected health information — sign in only on trusted devices."
   },
   "actions": {
-    "logout": "Sign out",
-    "submit": "Sign in"
+    "logout": "Sign out"
   },
   "nav": {
     "home": "Home",
@@ -20,7 +19,9 @@
   "locale": {
     "label": "Language",
     "options": {
+      "ar": "العربية",
       "en": "English",
+      "enXA": "English (pseudo)",
       "fr": "Français"
     }
   }
