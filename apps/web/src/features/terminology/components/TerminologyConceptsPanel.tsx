@@ -119,7 +119,7 @@ export function TerminologyConceptsPanel() {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <div className="flex flex-wrap gap-3 text-sm">
-        <Link href="/admin/terminology/coverage" className="text-primary hover:underline">
+        <Link href="/admin/terminology/translation-coverage" className="text-primary hover:underline">
           {t("nav.coverage")}
         </Link>
         <Link href="/admin/terminology/value-sets" className="text-primary hover:underline">
