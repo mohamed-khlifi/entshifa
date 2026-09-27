@@ -20,9 +20,7 @@ depends_on: str | Sequence[str] | None = None
 
 _ULID = sa.CHAR(26, collation="utf8mb4_0900_as_cs")
 _CS = "utf8mb4_0900_as_cs"
-_STATUSES = (
-    "'scheduled','arrived','in_room','completed','no_show','cancelled'"
-)
+_STATUSES = "'scheduled','arrived','in_room','completed','no_show','cancelled'"
 
 
 def _clinical_columns() -> list[sa.Column[object]]:
@@ -204,11 +202,9 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    for table in ("appointment", "appointment_type"):
-        for suffix in ("created_by", "updated_by", "deleted_by"):
-            op.drop_constraint(f"fk_{table}__{suffix}", table, type_="foreignkey")
-    op.drop_index("ix_appointment__clinic_id__status__starts_at", "appointment")
-    op.drop_index("ix_appointment__clinic_id__patient_id__starts_at", "appointment")
-    op.drop_index("ix_appointment__clinic_id__user_id__starts_at", "appointment")
+    # InnoDB uses a composite index whose leftmost column is the foreign-key
+    # column as that constraint's index. DROP INDEX then raises 1553 while the
+    # constraint still exists. DROP TABLE removes the constraint and indexes
+    # together, so these indexes are not dropped on their own.
     op.drop_table("appointment")
     op.drop_table("appointment_type")

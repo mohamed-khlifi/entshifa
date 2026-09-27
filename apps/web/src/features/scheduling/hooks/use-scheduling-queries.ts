@@ -84,8 +84,7 @@ export function useSchedulingSitesQuery() {
   const { session } = useSession();
   return useQuery({
     queryKey: queryKeys.clinics.sites({ limit: 20 }),
-    queryFn: () =>
-      fetchSites(locale, session!.clinicPublicId, { limit: 20 }),
+    queryFn: () => fetchSites(locale, session!.clinicPublicId, { limit: 20 }),
     enabled: Boolean(session?.clinicPublicId),
     staleTime: 300_000,
   });
@@ -129,10 +128,7 @@ export function useCreateAppointmentMutation() {
 }
 
 function useStatusMutation(
-  fn: (
-    scopeArg: ReturnType<typeof scope>,
-    id: string,
-  ) => Promise<unknown>,
+  fn: (scopeArg: ReturnType<typeof scope>, id: string) => Promise<unknown>,
 ) {
   const locale = useLocale();
   const { session } = useSession();

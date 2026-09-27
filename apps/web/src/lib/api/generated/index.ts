@@ -105,8 +105,7 @@ export type PageSchemaAppointmentTypeRead =
 export type AppointmentRead = Schemas["AppointmentRead"];
 export type AppointmentCreate = Schemas["AppointmentCreate"];
 export type AppointmentUpdate = Schemas["AppointmentUpdate"];
-export type PageSchemaAppointmentRead =
-  Schemas["PageSchema_AppointmentRead_"];
+export type PageSchemaAppointmentRead = Schemas["PageSchema_AppointmentRead_"];
 export type WaitingRoomEntryRead = Schemas["WaitingRoomEntryRead"];
 export type PageSchemaWaitingRoomEntryRead =
   Schemas["PageSchema_WaitingRoomEntryRead_"];

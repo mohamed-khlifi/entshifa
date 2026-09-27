@@ -17,7 +17,7 @@ from ent.seeds.identity import (
 
 
 async def seed_auth_fixtures(session: AsyncSession) -> dict[str, str]:
-    suffix = new_ulid()[:8].lower()
+    suffix = new_ulid().lower()
     clinic_slug = f"test-{suffix}"
     other_clinic_slug = f"other-{suffix}"
     await ensure_clinic(

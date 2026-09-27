@@ -25,10 +25,10 @@ async def seed_appointment_types(
         row = AppointmentType(
             clinic_id=clinic_id,
             code=code,
-            name_key=str(spec["name_key"]),
-            default_duration_min=int(spec["default_duration_min"]),
-            color=str(spec["color"]),
-            requires_room=bool(spec["requires_room"]),
+            name_key=spec["name_key"],
+            default_duration_min=spec["default_duration_min"],
+            color=spec["color"],
+            requires_room=spec["requires_room"],
             created_by_id=created_by_id,
             updated_by_id=created_by_id,
         )

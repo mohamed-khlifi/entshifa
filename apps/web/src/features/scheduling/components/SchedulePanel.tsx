@@ -253,16 +253,14 @@ export function SchedulePanel() {
                     ? "border-primary bg-primary/5"
                     : "hover:bg-muted/60",
                 )}
-                {...testIdProps(testIds.scheduling.appointmentRow(appt.publicId))}
+                {...testIdProps(
+                  testIds.scheduling.appointmentRow(appt.publicId),
+                )}
                 onClick={() => setSelectedId(appt.publicId)}
               >
                 <span className="text-sm font-medium">
-                  {formatDateTimeInTimeZone(
-                    appt.startsAt,
-                    timeZone,
-                    locale,
-                  )}{" "}
-                  — {t(`status.${appt.status}` as "status.scheduled")}
+                  {formatDateTimeInTimeZone(appt.startsAt, timeZone, locale)} —{" "}
+                  {t(`status.${appt.status}` as "status.scheduled")}
                 </span>
                 <span className="text-xs text-muted-foreground">
                   {appt.room ?? t("filters.anyRoom")}
@@ -390,7 +388,9 @@ export function SchedulePanel() {
           {...testIdProps(testIds.scheduling.bookForm)}
         >
           <CardHeader>
-            <CardTitle className="text-base">{t("actions.newAppointment")}</CardTitle>
+            <CardTitle className="text-base">
+              {t("actions.newAppointment")}
+            </CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4 sm:grid-cols-2">
             <div className="sm:col-span-2">

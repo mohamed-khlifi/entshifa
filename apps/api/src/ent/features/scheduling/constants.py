@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import TypedDict
+
 APPOINTMENT_STATUSES: tuple[str, ...] = (
     "scheduled",
     "arrived",
@@ -17,7 +19,16 @@ TERMINAL_APPOINTMENT_STATUSES: frozenset[str] = frozenset(
 
 WAITING_ROOM_STATUSES: frozenset[str] = frozenset({"arrived", "in_room"})
 
-DEFAULT_APPOINTMENT_TYPES: tuple[dict[str, object], ...] = (
+
+class AppointmentTypeSeed(TypedDict):
+    code: str
+    name_key: str
+    default_duration_min: int
+    color: str
+    requires_room: bool
+
+
+DEFAULT_APPOINTMENT_TYPES: tuple[AppointmentTypeSeed, ...] = (
     {
         "code": "new_consultation",
         "name_key": "scheduling.appointment_type.new_consultation",
