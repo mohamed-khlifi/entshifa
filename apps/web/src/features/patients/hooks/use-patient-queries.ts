@@ -99,18 +99,19 @@ export function usePatientTimelineQuery(patientId: string) {
   });
 }
 
-export function useConceptSearchQuery(q: string) {
+export function useConceptSearchQuery(q: string, kind?: string) {
   const scope = useScope();
   const term = q.trim();
   return useQuery({
     queryKey: queryKeys.terminology.search({
       q: term,
       locale: scope.locale,
+      kind,
     }),
     queryFn: () =>
       searchConcepts(
         { locale: scope.locale, clinicPublicId: scope.clinicPublicId },
-        { q: term },
+        { q: term, kind },
       ),
     enabled: scope.enabled && term.length >= 2,
     staleTime: 120_000,

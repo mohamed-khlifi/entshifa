@@ -129,13 +129,18 @@ class PatientService:
         user: CurrentUser,
         body: PatientCreate,
         idempotency_key: str | None,
+        content_locale: str = "fr",
     ) -> PatientRead:
         self._bind(user)
         replay = await self._replay(
             user, idempotency_key, "patient.create", body.model_dump(mode="json")
         )
         if replay is not None:
-            return await self.get_patient(user=user, public_id=replay)
+            return await self.get_patient(
+                user=user,
+                public_id=replay,
+                content_locale=content_locale,
+            )
 
         repo = self._patients(user)
         await self._assert_locale(user, body.preferred_locale)
@@ -224,9 +229,15 @@ class PatientService:
                 clinic_id=user.clinic_id,
             )
         )
-        return await self._read(user, patient)
+        return await self._read(user, patient, content_locale=content_locale)
 
-    async def get_patient(self, *, user: CurrentUser, public_id: str) -> PatientRead:
+    async def get_patient(
+        self,
+        *,
+        user: CurrentUser,
+        public_id: str,
+        content_locale: str = "fr",
+    ) -> PatientRead:
         self._bind(user)
         patient = await self._visible(user, public_id)
         self._audit.record_access(
@@ -238,7 +249,7 @@ class PatientService:
             patient_id=patient.id,
         )
         await self._session.commit()
-        return await self._read(user, patient)
+        return await self._read(user, patient, content_locale=content_locale)
 
     async def update_patient(
         self,
@@ -246,6 +257,7 @@ class PatientService:
         user: CurrentUser,
         public_id: str,
         body: PatientUpdate,
+        content_locale: str = "fr",
     ) -> PatientRead:
         self._bind(user)
         patient = await self._visible(user, public_id)
@@ -285,7 +297,7 @@ class PatientService:
             patient.version += 1
             patient.updated_by_id = user.user_id
         await self._session.commit()
-        return await self._read(user, patient)
+        return await self._read(user, patient, content_locale=content_locale)
 
     async def merge_patients(
         self,
@@ -412,7 +424,7 @@ class PatientService:
             patient.id, limit=page.limit, offset=page.offset or 0
         )
         total = await count_children(repo, patient.id)
-        labels = await self._patients(user).concept_labels(
+        labels = await self._concept_labels(user,
             _concept_ids(items, "substance_concept_id", "reaction_concept_id")
         )
         return _page([_allergy(row, labels) for row in items], total, page)
@@ -444,7 +456,7 @@ class PatientService:
             row.public_id,
         )
         await self._session.commit()
-        labels = await self._patients(user).concept_labels(
+        labels = await self._concept_labels(user,
             _concept_ids([row], "substance_concept_id", "reaction_concept_id")
         )
         return _allergy(row, labels)
@@ -590,7 +602,7 @@ class PatientService:
             patient.id, limit=page.limit, offset=page.offset or 0
         )
         total = await count_children(repo, patient.id)
-        labels = await self._patients(user).concept_labels(
+        labels = await self._concept_labels(user,
             _concept_ids(items, "diagnosis_concept_id")
         )
         return _page([_problem(row, labels) for row in items], total, page)
@@ -622,7 +634,7 @@ class PatientService:
             row.public_id,
         )
         await self._session.commit()
-        labels = await self._patients(user).concept_labels({row.diagnosis_concept_id})
+        labels = await self._concept_labels(user,{row.diagnosis_concept_id})
         return _problem(row, labels)
 
     async def list_history(
@@ -634,7 +646,7 @@ class PatientService:
             patient.id, limit=page.limit, offset=page.offset or 0
         )
         total = await count_children(repo, patient.id)
-        labels = await self._patients(user).concept_labels(
+        labels = await self._concept_labels(user,
             {row.concept_id for row in items if row.concept_id is not None}
         )
         return _page([_history(row, labels) for row in items], total, page)
@@ -666,7 +678,7 @@ class PatientService:
             row.public_id,
         )
         await self._session.commit()
-        labels = await self._patients(user).concept_labels(
+        labels = await self._concept_labels(user,
             {row.concept_id} if row.concept_id is not None else set()
         )
         return _history(row, labels)
@@ -677,6 +689,21 @@ class PatientService:
 
     def _patients(self, user: CurrentUser) -> PatientRepository:
         return PatientRepository(self._session, clinic_id=user.clinic_id)
+
+    async def _concept_labels(
+        self,
+        user: CurrentUser,
+        concept_ids: set[int],
+        *,
+        content_locale: str = "fr",
+    ) -> dict[int, tuple[str, str, str | None]]:
+        clinic = await ClinicRepository(self._session).get(user.clinic_id)
+        default = clinic.default_locale if clinic else "fr"
+        return await self._patients(user).concept_labels(
+            concept_ids,
+            locale=content_locale,
+            clinic_default_locale=default,
+        )
 
     async def _visible(self, user: CurrentUser, public_id: str) -> Patient:
         self._bind(user)
@@ -906,7 +933,13 @@ class PatientService:
         await PatientHistoryRepository(self._session, clinic_id=user.clinic_id).add(row)
         return row
 
-    async def _read(self, user: CurrentUser, patient: Patient) -> PatientRead:
+    async def _read(
+        self,
+        user: CurrentUser,
+        patient: Patient,
+        *,
+        content_locale: str = "fr",
+    ) -> PatientRead:
         repo = self._patients(user)
         identifiers = await PatientIdentifierRepository(
             self._session, clinic_id=user.clinic_id
@@ -934,7 +967,11 @@ class PatientService:
         concept_ids.update(
             {row.concept_id for row in history if row.concept_id is not None}
         )
-        labels = await repo.concept_labels(concept_ids)
+        labels = await self._concept_labels(
+            user,
+            concept_ids,
+            content_locale=content_locale,
+        )
         users = await repo.user_public_ids(
             {row.created_by_id for row in flags if row.created_by_id is not None}
         )
@@ -994,7 +1031,7 @@ class PatientService:
         ).get_by_public_id(public_id)
         if row is None or row.patient_id != patient_id:
             raise NotFoundError(resource="patient_allergy", public_id=public_id)
-        labels = await self._patients(user).concept_labels(
+        labels = await self._concept_labels(user,
             _concept_ids([row], "substance_concept_id", "reaction_concept_id")
         )
         return _allergy(row, labels)
@@ -1030,7 +1067,7 @@ class PatientService:
         ).get_by_public_id(public_id)
         if row is None or row.patient_id != patient_id:
             raise NotFoundError(resource="patient_problem", public_id=public_id)
-        labels = await self._patients(user).concept_labels({row.diagnosis_concept_id})
+        labels = await self._concept_labels(user,{row.diagnosis_concept_id})
         return _problem(row, labels)
 
     async def _history_by_public_id(
@@ -1041,7 +1078,7 @@ class PatientService:
         ).get_by_public_id(public_id)
         if row is None or row.patient_id != patient_id:
             raise NotFoundError(resource="patient_history", public_id=public_id)
-        labels = await self._patients(user).concept_labels(
+        labels = await self._concept_labels(user,
             {row.concept_id} if row.concept_id is not None else set()
         )
         return _history(row, labels)
@@ -1130,9 +1167,12 @@ def _concept_ids(rows: list[Any], *fields: str) -> set[int]:
     return found
 
 
-def _concept(labels: dict[int, tuple[str, str]], concept_id: int) -> CodeableConcept:
-    public_id, code = labels[concept_id]
-    return CodeableConcept(concept_id=public_id, code=code)
+def _concept(
+    labels: dict[int, tuple[str, str, str | None]],
+    concept_id: int,
+) -> CodeableConcept:
+    public_id, code, display = labels[concept_id]
+    return CodeableConcept(concept_id=public_id, code=code, display=display)
 
 
 def _identifier(row: PatientIdentifier) -> PatientIdentifierRead:
@@ -1146,7 +1186,8 @@ def _identifier(row: PatientIdentifier) -> PatientIdentifierRead:
 
 
 def _allergy(
-    row: PatientAllergy, labels: dict[int, tuple[str, str]]
+    row: PatientAllergy,
+    labels: dict[int, tuple[str, str, str | None]],
 ) -> PatientAllergyRead:
     reaction = None
     if row.reaction_concept_id is not None:
@@ -1198,7 +1239,8 @@ def _flag(row: PatientFlag, users: dict[int, str]) -> PatientFlagRead:
 
 
 def _problem(
-    row: PatientProblem, labels: dict[int, tuple[str, str]]
+    row: PatientProblem,
+    labels: dict[int, tuple[str, str, str | None]],
 ) -> PatientProblemRead:
     return PatientProblemRead(
         public_id=row.public_id,
@@ -1213,7 +1255,8 @@ def _problem(
 
 
 def _history(
-    row: PatientHistory, labels: dict[int, tuple[str, str]]
+    row: PatientHistory,
+    labels: dict[int, tuple[str, str, str | None]],
 ) -> PatientHistoryRead:
     concept = _concept(labels, row.concept_id) if row.concept_id is not None else None
     return PatientHistoryRead(

@@ -103,6 +103,20 @@ Feature folder shape:
   is a clinical hazard.
 - Never hardcode a unit label; units are constants, not translations.
 
+## Terminology pickers (concepts)
+
+- Coded clinical values use a searchable single-select (`ConceptSearchField` or
+  shared successor), not a free-text field alone. Pass the correct terminology
+  `kind` so anatomy codes do not appear on allergy or medication fields.
+- The picker spans the full form row (`sm:col-span-2`). Search results render
+  **in document flow** below the input (no absolutely positioned overlays over
+  sibling fields).
+- Show the locale-resolved `display` from the API. Never surface raw dotted
+  codes (for example `ANAT.EAR.INNER`) as the primary label when a translation
+  exists; use `conceptDisplayText` on the frontend as a fallback only.
+- Selected concepts show as a clear chip or summary with an explicit **Change**
+  action before submit.
+
 ## Clinical components
 
 - `AnatomicalMap` is data-driven: an SVG plus a JSON region definition with

@@ -27,6 +27,7 @@ import {
   useAddProblemMutation,
   useEndFlagMutation,
 } from "../hooks/use-patient-queries";
+import { conceptDisplayText } from "../lib/concept-display";
 import { isFlagActive, localIsoDate } from "../lib/active-flags";
 import {
   allergyCategoryLabel,
@@ -46,20 +47,7 @@ const sectionClass =
   "space-y-4 rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]";
 const fieldClass = "space-y-1.5";
 const rowClass =
-  "flex flex-wrap items-center justify-between gap-2 rounded-lg bg-muted/60 px-3 py-2 text-sm";
-
-function conceptText(
-  concept: {
-    display?: string | null;
-    code?: string | null;
-    conceptId: string;
-  } | null,
-): string {
-  if (!concept) {
-    return "";
-  }
-  return concept.display || concept.code || concept.conceptId;
-}
+  "flex flex-wrap items-center justify-between gap-2 rounded-lg bg-muted/60 px-3 py-2.5 text-sm font-medium leading-snug";
 
 function lateralityLabel(
   tForms: ReturnType<typeof useTranslations<"forms">>,
@@ -228,7 +216,7 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
           <ul className="space-y-1 text-sm">
             {patient.allergies.map((row) => (
               <li key={row.publicId} className={rowClass}>
-                {conceptText(row.substance)} (
+                {conceptDisplayText(row.substance)} (
                 {allergyCategoryLabel(t, row.category)}
                 {row.severity ? `, ${severityLabel(t, row.severity)}` : ""})
                 {row.isActive ? "" : ` — ${t("chart.inactive")}`}
@@ -238,7 +226,7 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
         )}
         {canWrite ? (
           <form
-            className="grid items-end gap-3 sm:grid-cols-2"
+            className="grid items-start gap-3 sm:grid-cols-2"
             onSubmit={(event) => {
               event.preventDefault();
               if (substanceId.length !== 26) {
@@ -264,13 +252,19 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
             }}
           >
             <ConceptSearchField
+              className="sm:col-span-2"
               name="allergySubstance"
               label={t("chart.substance")}
+              kind="finding"
               selectedId={substanceId}
               selectedDisplay={substanceDisplay}
               onSelect={(concept) => {
                 setSubstanceId(concept.publicId);
                 setSubstanceDisplay(concept.display);
+              }}
+              onClear={() => {
+                setSubstanceId("");
+                setSubstanceDisplay("");
               }}
             />
             <div className={fieldClass}>
@@ -507,7 +501,7 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
           <ul className="space-y-1 text-sm">
             {patient.problems.map((row) => (
               <li key={row.publicId} className={rowClass}>
-                {conceptText(row.diagnosis)} (
+                {conceptDisplayText(row.diagnosis)} (
                 {problemStatusLabel(t, row.status)},{" "}
                 {lateralityLabel(tForms, t, row.laterality)})
               </li>
@@ -516,7 +510,7 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
         )}
         {canWrite ? (
           <form
-            className="grid items-end gap-3 sm:grid-cols-2"
+            className="grid items-start gap-3 sm:grid-cols-2"
             onSubmit={(event) => {
               event.preventDefault();
               if (diagnosisId.length !== 26) {
@@ -540,13 +534,19 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
             }}
           >
             <ConceptSearchField
+              className="sm:col-span-2"
               name="problemDiagnosis"
               label={t("chart.diagnosis")}
+              kind="finding"
               selectedId={diagnosisId}
               selectedDisplay={diagnosisDisplay}
               onSelect={(concept) => {
                 setDiagnosisId(concept.publicId);
                 setDiagnosisDisplay(concept.display);
+              }}
+              onClear={() => {
+                setDiagnosisId("");
+                setDiagnosisDisplay("");
               }}
             />
             <div className={fieldClass}>
@@ -599,7 +599,7 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
             {patient.history.map((row) => (
               <li key={row.publicId} className={rowClass}>
                 {historyCategoryLabel(t, row.category)}:{" "}
-                {row.freeText || conceptText(row.concept)}
+                {row.freeText || conceptDisplayText(row.concept)}
               </li>
             ))}
           </ul>

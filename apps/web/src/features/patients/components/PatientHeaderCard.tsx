@@ -2,17 +2,10 @@
 
 import { useLocale, useTranslations } from "next-intl";
 
+import { conceptDisplayText } from "../lib/concept-display";
 import type { PatientRead } from "@/lib/api/generated";
 import { formatPersonName, patientAgeDisplay } from "@/lib/i18n/format";
 import { testIdProps, testIds } from "@/lib/test/test-id";
-
-function conceptText(concept: {
-  display?: string | null;
-  code?: string | null;
-  conceptId: string;
-}): string {
-  return concept.display || concept.code || concept.conceptId;
-}
 
 type PatientHeaderCardProps = {
   patient: PatientRead;
@@ -79,7 +72,9 @@ export function PatientHeaderCard({ patient }: PatientHeaderCardProps) {
           <dd className="mt-1 text-sm">
             {allergies.length === 0
               ? t("header.none")
-              : allergies.map((row) => conceptText(row.substance)).join(", ")}
+              : allergies
+                  .map((row) => conceptDisplayText(row.substance))
+                  .join(", ")}
           </dd>
         </div>
         <div
@@ -92,7 +87,9 @@ export function PatientHeaderCard({ patient }: PatientHeaderCardProps) {
           <dd className="mt-1 text-sm">
             {problems.length === 0
               ? t("header.none")
-              : problems.map((row) => conceptText(row.diagnosis)).join(", ")}
+              : problems
+                  .map((row) => conceptDisplayText(row.diagnosis))
+                  .join(", ")}
           </dd>
         </div>
         <div

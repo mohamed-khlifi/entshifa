@@ -10,7 +10,11 @@ from ent.core.schemas.base import PageSchema, PaginationParams
 from ent.core.security.permissions import Permission
 from ent.core.security.principal import CurrentUser
 from ent.features.auth.dependencies import require
-from ent.features.patients.dependencies import get_patient_service, require_patient_read
+from ent.features.patients.dependencies import (
+    get_content_locale,
+    get_patient_service,
+    require_patient_read,
+)
 from ent.features.patients.schemas.requests import (
     PatientAllergyCreate,
     PatientCreate,
@@ -80,9 +84,13 @@ async def create_patient(
     user: CurrentUser = Depends(require(Permission.PATIENT_WRITE)),
     service: PatientService = Depends(get_patient_service),
     idempotency_key: str | None = Depends(_key),
+    content_locale: str = Depends(get_content_locale),
 ) -> PatientRead:
     return await service.create_patient(
-        user=user, body=body, idempotency_key=idempotency_key
+        user=user,
+        body=body,
+        idempotency_key=idempotency_key,
+        content_locale=content_locale,
     )
 
 
@@ -91,8 +99,13 @@ async def get_patient(
     patient_id: str,
     user: CurrentUser = Depends(require_patient_read()),
     service: PatientService = Depends(get_patient_service),
+    content_locale: str = Depends(get_content_locale),
 ) -> PatientRead:
-    return await service.get_patient(user=user, public_id=patient_id)
+    return await service.get_patient(
+        user=user,
+        public_id=patient_id,
+        content_locale=content_locale,
+    )
 
 
 @router.patch("/{patient_id}", response_model=PatientRead)
@@ -101,8 +114,14 @@ async def update_patient(
     body: PatientUpdate,
     user: CurrentUser = Depends(require(Permission.PATIENT_WRITE)),
     service: PatientService = Depends(get_patient_service),
+    content_locale: str = Depends(get_content_locale),
 ) -> PatientRead:
-    return await service.update_patient(user=user, public_id=patient_id, body=body)
+    return await service.update_patient(
+        user=user,
+        public_id=patient_id,
+        body=body,
+        content_locale=content_locale,
+    )
 
 
 @router.post("/{patient_id}/merge", response_model=PatientMergeRead)

@@ -178,17 +178,45 @@ class PatientRepository(BaseRepository[Patient]):
         )
         return result.scalar_one_or_none()
 
-    async def concept_labels(self, concept_ids: set[int]) -> dict[int, tuple[str, str]]:
+    async def concept_labels(
+        self,
+        concept_ids: set[int],
+        *,
+        locale: str,
+        clinic_default_locale: str,
+    ) -> dict[int, tuple[str, str, str | None]]:
         if not concept_ids:
             return {}
-        rows = (
-            await self.session.execute(
-                select(Concept.id, Concept.public_id, Concept.code).where(
-                    Concept.id.in_(concept_ids)
+        from ent.features.terminology.repository import TerminologyRepository
+
+        term = TerminologyRepository(self.session, self.clinic_id)
+        concepts = (
+            (
+                await self.session.execute(
+                    select(Concept).where(Concept.id.in_(concept_ids)),
                 )
             )
-        ).all()
-        return {int(row.id): (str(row.public_id), str(row.code)) for row in rows}
+            .scalars()
+            .all()
+        )
+        by_id = {int(concept.id): concept for concept in concepts}
+        translations = await term.load_translations_for_concepts(concept_ids)
+        labels: dict[int, tuple[str, str, str | None]] = {}
+        for concept_id in concept_ids:
+            concept = by_id.get(concept_id)
+            if concept is None:
+                continue
+            resolved = term.resolve_display(
+                concept=concept,
+                translations=translations.get(concept_id, []),
+                locale=locale,
+                clinic_default_locale=clinic_default_locale,
+            )
+            display = (
+                resolved.patient_friendly or resolved.full_name or resolved.display
+            )
+            labels[concept_id] = (str(concept.public_id), str(concept.code), display)
+        return labels
 
     async def user_public_ids(self, user_ids: set[int]) -> dict[int, str]:
         if not user_ids:
