@@ -31,3 +31,8 @@ class ErrorCode(StrEnum):
 
     APPOINTMENT_INVALID_TRANSITION = "appointment.invalid_transition"
     APPOINTMENT_INVALID_TIME_RANGE = "appointment.invalid_time_range"
+
+    DOCUMENTS_UNDECLARED_PLACEHOLDER = "documents.undeclared_placeholder"
+    DOCUMENTS_TEMPLATE_SYNTAX = "documents.template_syntax"
+    DOCUMENTS_IMMUTABLE = "documents.immutable"
+    DOCUMENTS_NOT_RENDERED = "documents.not_rendered"

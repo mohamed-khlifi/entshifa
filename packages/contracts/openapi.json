@@ -1858,6 +1858,384 @@
         "title": "CustomRoleUpdate",
         "type": "object"
       },
+      "DocumentCreate": {
+        "properties": {
+          "locale": {
+            "anyOf": [
+              {
+                "enum": [
+                  "en",
+                  "fr",
+                  "ar"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locale"
+          },
+          "patientPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "templateCode": {
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Templatecode",
+            "type": "string"
+          }
+        },
+        "required": [
+          "patientPublicId",
+          "templateCode"
+        ],
+        "title": "DocumentCreate",
+        "type": "object"
+      },
+      "DocumentDownloadRead": {
+        "properties": {
+          "expiresInSeconds": {
+            "title": "Expiresinseconds",
+            "type": "integer"
+          },
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url",
+          "expiresInSeconds"
+        ],
+        "title": "DocumentDownloadRead",
+        "type": "object"
+      },
+      "DocumentFinalize": {
+        "properties": {
+          "bodyOverrideHtml": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bodyoverridehtml"
+          }
+        },
+        "title": "DocumentFinalize",
+        "type": "object"
+      },
+      "DocumentRead": {
+        "properties": {
+          "category": {
+            "title": "Category",
+            "type": "string"
+          },
+          "contentHash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contenthash"
+          },
+          "finalizedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finalizedat"
+          },
+          "locale": {
+            "title": "Locale",
+            "type": "string"
+          },
+          "patientPublicId": {
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "templateCode": {
+            "title": "Templatecode",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "patientPublicId",
+          "templateCode",
+          "category",
+          "locale",
+          "title",
+          "status",
+          "contentHash",
+          "finalizedAt"
+        ],
+        "title": "DocumentRead",
+        "type": "object"
+      },
+      "DocumentRecipientCreate": {
+        "properties": {
+          "address": {
+            "anyOf": [
+              {
+                "maxLength": 190,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "channel": {
+            "default": "print",
+            "enum": [
+              "print",
+              "download"
+            ],
+            "title": "Channel",
+            "type": "string"
+          },
+          "locale": {
+            "anyOf": [
+              {
+                "enum": [
+                  "en",
+                  "fr",
+                  "ar"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locale"
+          },
+          "name": {
+            "maxLength": 160,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          },
+          "recipientType": {
+            "enum": [
+              "patient",
+              "referrer",
+              "insurer",
+              "other"
+            ],
+            "title": "Recipienttype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "recipientType",
+          "name"
+        ],
+        "title": "DocumentRecipientCreate",
+        "type": "object"
+      },
+      "DocumentRecipientRead": {
+        "properties": {
+          "channel": {
+            "title": "Channel",
+            "type": "string"
+          },
+          "deliveryStatus": {
+            "title": "Deliverystatus",
+            "type": "string"
+          },
+          "locale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locale"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "recipientType": {
+            "title": "Recipienttype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "recipientType",
+          "name",
+          "channel",
+          "locale",
+          "deliveryStatus"
+        ],
+        "title": "DocumentRecipientRead",
+        "type": "object"
+      },
+      "DocumentTemplateCreate": {
+        "properties": {
+          "category": {
+            "enum": [
+              "consultation_report",
+              "endoscopy_report",
+              "audiology_report",
+              "prescription",
+              "certificate",
+              "imaging_request",
+              "referral_letter",
+              "handout",
+              "consent",
+              "quote",
+              "operative_note",
+              "tumor_board",
+              "patient_summary"
+            ],
+            "title": "Category",
+            "type": "string"
+          },
+          "code": {
+            "maxLength": 60,
+            "minLength": 1,
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "title": "Code",
+            "type": "string"
+          },
+          "placeholders": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/PlaceholderSpec"
+            },
+            "title": "Placeholders",
+            "type": "object"
+          }
+        },
+        "required": [
+          "code",
+          "category",
+          "placeholders"
+        ],
+        "title": "DocumentTemplateCreate",
+        "type": "object"
+      },
+      "DocumentTemplateRead": {
+        "properties": {
+          "category": {
+            "title": "Category",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean"
+          },
+          "isSystem": {
+            "title": "Issystem",
+            "type": "boolean"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "code",
+          "category",
+          "isSystem",
+          "isActive"
+        ],
+        "title": "DocumentTemplateRead",
+        "type": "object"
+      },
+      "DocumentTemplateVersionCreate": {
+        "properties": {
+          "bodyHtml": {
+            "minLength": 1,
+            "title": "Bodyhtml",
+            "type": "string"
+          },
+          "css": {
+            "default": "",
+            "title": "Css",
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "ltr",
+              "rtl"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "footerHtml": {
+            "default": "",
+            "title": "Footerhtml",
+            "type": "string"
+          },
+          "headerHtml": {
+            "default": "",
+            "title": "Headerhtml",
+            "type": "string"
+          },
+          "locale": {
+            "enum": [
+              "en",
+              "fr",
+              "ar"
+            ],
+            "title": "Locale",
+            "type": "string"
+          },
+          "pageSetup": {
+            "$ref": "#/components/schemas/PageSetup"
+          }
+        },
+        "required": [
+          "locale",
+          "direction",
+          "bodyHtml",
+          "pageSetup"
+        ],
+        "title": "DocumentTemplateVersionCreate",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -2350,6 +2728,46 @@
         "title": "PageSchema[ConceptAdminRead]",
         "type": "object"
       },
+      "PageSchema_DocumentRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DocumentRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[DocumentRead]",
+        "type": "object"
+      },
+      "PageSchema_DocumentTemplateRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DocumentTemplateRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[DocumentTemplateRead]",
+        "type": "object"
+      },
       "PageSchema_PatientAllergyRead_": {
         "properties": {
           "items": {
@@ -2588,6 +3006,64 @@
           "page"
         ],
         "title": "PageSchema[WaitingRoomEntryRead]",
+        "type": "object"
+      },
+      "PageSetup": {
+        "properties": {
+          "marginBottomMm": {
+            "default": 16,
+            "maximum": 40.0,
+            "minimum": 5.0,
+            "title": "Marginbottommm",
+            "type": "integer"
+          },
+          "marginLeftMm": {
+            "default": 14,
+            "maximum": 40.0,
+            "minimum": 5.0,
+            "title": "Marginleftmm",
+            "type": "integer"
+          },
+          "marginRightMm": {
+            "default": 14,
+            "maximum": 40.0,
+            "minimum": 5.0,
+            "title": "Marginrightmm",
+            "type": "integer"
+          },
+          "marginTopMm": {
+            "default": 16,
+            "maximum": 40.0,
+            "minimum": 5.0,
+            "title": "Margintopmm",
+            "type": "integer"
+          },
+          "orientation": {
+            "default": "portrait",
+            "enum": [
+              "portrait",
+              "landscape"
+            ],
+            "title": "Orientation",
+            "type": "string"
+          },
+          "size": {
+            "const": "A4",
+            "default": "A4",
+            "title": "Size",
+            "type": "string"
+          },
+          "title": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title"
+        ],
+        "title": "PageSetup",
         "type": "object"
       },
       "PasswordResetConfirm": {
@@ -5082,6 +5558,32 @@
           "groupCode"
         ],
         "title": "PermissionRead",
+        "type": "object"
+      },
+      "PlaceholderSpec": {
+        "properties": {
+          "required": {
+            "default": true,
+            "title": "Required",
+            "type": "boolean"
+          },
+          "type": {
+            "enum": [
+              "string",
+              "integer",
+              "date",
+              "code",
+              "code_list",
+              "text_list"
+            ],
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "title": "PlaceholderSpec",
         "type": "object"
       },
       "PresignedUrlResponse": {
@@ -8437,6 +8939,640 @@
         "summary": "Patch Clinic",
         "tags": [
           "clinics"
+        ]
+      }
+    },
+    "/api/v1/document-templates": {
+      "get": {
+        "operationId": "list_document_templates_api_v1_document_templates_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_DocumentTemplateRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Document Templates",
+        "tags": [
+          "documents"
+        ]
+      },
+      "post": {
+        "operationId": "create_document_template_api_v1_document_templates_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentTemplateCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTemplateRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Document Template",
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/api/v1/document-templates/{template_id}/versions": {
+      "post": {
+        "operationId": "add_document_template_version_api_v1_document_templates__template_id__versions_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "template_id",
+            "required": true,
+            "schema": {
+              "title": "Template Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentTemplateVersionCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTemplateRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Add Document Template Version",
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/api/v1/documents": {
+      "get": {
+        "operationId": "list_documents_api_v1_documents_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "patientPublicId",
+            "required": true,
+            "schema": {
+              "maxLength": 26,
+              "minLength": 26,
+              "title": "Patientpublicid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_DocumentRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Documents",
+        "tags": [
+          "documents"
+        ]
+      },
+      "post": {
+        "operationId": "create_document_api_v1_documents_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Document",
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/api/v1/documents/{document_id}": {
+      "get": {
+        "operationId": "get_document_api_v1_documents__document_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Document",
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/api/v1/documents/{document_id}/download-url": {
+      "get": {
+        "operationId": "document_download_url_api_v1_documents__document_id__download_url_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentDownloadRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Document Download Url",
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/api/v1/documents/{document_id}/finalize": {
+      "post": {
+        "operationId": "finalize_document_api_v1_documents__document_id__finalize_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentFinalize"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Finalize Document",
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/api/v1/documents/{document_id}/recipients": {
+      "post": {
+        "operationId": "add_document_recipient_api_v1_documents__document_id__recipients_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentRecipientCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentRecipientRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Add Document Recipient",
+        "tags": [
+          "documents"
         ]
       }
     },

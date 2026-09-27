@@ -31,6 +31,9 @@ dependencies = [
     "pyotp==2.9.0",
     # P0-13 media processing (EXIF strip + thumbnails).
     "Pillow==12.3.0",
+    # P1-09 documents: typed HTML templates and RTL PDF rendering.
+    "jinja2==3.1.6",
+    "weasyprint==70.0",
 ]
 
 [project.optional-dependencies]
@@ -106,6 +109,7 @@ source_modules = [
     "ent.features.patients.repository",
     "ent.features.users.repository",
     "ent.features.terminology.repository",
+    "ent.features.documents.repository",
 ]
 forbidden_modules = [
     "ent.features.auth.service",
@@ -116,6 +120,8 @@ forbidden_modules = [
     "ent.features.users.access",
     "ent.features.health.service",
     "ent.features.terminology.service",
+    "ent.features.documents.service",
+    "ent.features.documents.templates.service",
 ]
 
 [[tool.importlinter.contracts]]
@@ -149,5 +155,7 @@ module = [
     "jwt.*",
     "PIL",
     "PIL.*",
+    "weasyprint",
+    "weasyprint.*",
 ]
 ignore_missing_imports = true

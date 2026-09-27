@@ -11,6 +11,10 @@ from ent.jobs.tasks.process_attachment import (  # noqa: F401 — register job
     JOB_PROCESS_ATTACHMENT,
     process_attachment,
 )
+from ent.jobs.tasks.render_document import (  # noqa: F401 — register job
+    JOB_RENDER_DOCUMENT,
+    render_document,
+)
 from ent.settings import get_settings
 
 JOB_HANDLE_DOMAIN_EVENT = "jobs.handle_domain_event"
@@ -20,9 +24,11 @@ __all__ = [
     "JOB_HANDLE_DOMAIN_EVENT",
     "JOB_PING_DEPENDENCIES",
     "JOB_PROCESS_ATTACHMENT",
+    "JOB_RENDER_DOCUMENT",
     "handle_domain_event",
     "ping_dependencies",
     "process_attachment",
+    "render_document",
 ]
 
 

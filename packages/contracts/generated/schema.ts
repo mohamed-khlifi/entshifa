@@ -541,6 +541,127 @@ export interface paths {
         patch: operations["patch_clinic_api_v1_clinic_patch"];
         trace?: never;
     };
+    "/api/v1/document-templates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Document Templates */
+        get: operations["list_document_templates_api_v1_document_templates_get"];
+        put?: never;
+        /** Create Document Template */
+        post: operations["create_document_template_api_v1_document_templates_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/document-templates/{template_id}/versions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add Document Template Version */
+        post: operations["add_document_template_version_api_v1_document_templates__template_id__versions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Documents */
+        get: operations["list_documents_api_v1_documents_get"];
+        put?: never;
+        /** Create Document */
+        post: operations["create_document_api_v1_documents_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/{document_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Document */
+        get: operations["get_document_api_v1_documents__document_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/{document_id}/download-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Document Download Url */
+        get: operations["document_download_url_api_v1_documents__document_id__download_url_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/{document_id}/finalize": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Finalize Document */
+        post: operations["finalize_document_api_v1_documents__document_id__finalize_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/{document_id}/recipients": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add Document Recipient */
+        post: operations["add_document_recipient_api_v1_documents__document_id__recipients_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/invitations": {
         parameters: {
             query?: never;
@@ -1763,6 +1884,141 @@ export interface components {
             /** Permissioncodes */
             permissionCodes?: string[] | null;
         };
+        /** DocumentCreate */
+        DocumentCreate: {
+            /** Locale */
+            locale?: ("en" | "fr" | "ar") | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Templatecode */
+            templateCode: string;
+        };
+        /** DocumentDownloadRead */
+        DocumentDownloadRead: {
+            /** Expiresinseconds */
+            expiresInSeconds: number;
+            /** Url */
+            url: string;
+        };
+        /** DocumentFinalize */
+        DocumentFinalize: {
+            /** Bodyoverridehtml */
+            bodyOverrideHtml?: string | null;
+        };
+        /** DocumentRead */
+        DocumentRead: {
+            /** Category */
+            category: string;
+            /** Contenthash */
+            contentHash: string | null;
+            /** Finalizedat */
+            finalizedAt: string | null;
+            /** Locale */
+            locale: string;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Publicid */
+            publicId: string;
+            /** Status */
+            status: string;
+            /** Templatecode */
+            templateCode: string;
+            /** Title */
+            title: string;
+        };
+        /** DocumentRecipientCreate */
+        DocumentRecipientCreate: {
+            /** Address */
+            address?: string | null;
+            /**
+             * Channel
+             * @default print
+             * @enum {string}
+             */
+            channel: "print" | "download";
+            /** Locale */
+            locale?: ("en" | "fr" | "ar") | null;
+            /** Name */
+            name: string;
+            /**
+             * Recipienttype
+             * @enum {string}
+             */
+            recipientType: "patient" | "referrer" | "insurer" | "other";
+        };
+        /** DocumentRecipientRead */
+        DocumentRecipientRead: {
+            /** Channel */
+            channel: string;
+            /** Deliverystatus */
+            deliveryStatus: string;
+            /** Locale */
+            locale: string | null;
+            /** Name */
+            name: string;
+            /** Publicid */
+            publicId: string;
+            /** Recipienttype */
+            recipientType: string;
+        };
+        /** DocumentTemplateCreate */
+        DocumentTemplateCreate: {
+            /**
+             * Category
+             * @enum {string}
+             */
+            category: "consultation_report" | "endoscopy_report" | "audiology_report" | "prescription" | "certificate" | "imaging_request" | "referral_letter" | "handout" | "consent" | "quote" | "operative_note" | "tumor_board" | "patient_summary";
+            /** Code */
+            code: string;
+            /** Placeholders */
+            placeholders: {
+                [key: string]: components["schemas"]["PlaceholderSpec"];
+            };
+        };
+        /** DocumentTemplateRead */
+        DocumentTemplateRead: {
+            /** Category */
+            category: string;
+            /** Code */
+            code: string;
+            /** Isactive */
+            isActive: boolean;
+            /** Issystem */
+            isSystem: boolean;
+            /** Publicid */
+            publicId: string;
+        };
+        /** DocumentTemplateVersionCreate */
+        DocumentTemplateVersionCreate: {
+            /** Bodyhtml */
+            bodyHtml: string;
+            /**
+             * Css
+             * @default
+             */
+            css: string;
+            /**
+             * Direction
+             * @enum {string}
+             */
+            direction: "ltr" | "rtl";
+            /**
+             * Footerhtml
+             * @default
+             */
+            footerHtml: string;
+            /**
+             * Headerhtml
+             * @default
+             */
+            headerHtml: string;
+            /**
+             * Locale
+             * @enum {string}
+             */
+            locale: "en" | "fr" | "ar";
+            pageSetup: components["schemas"]["PageSetup"];
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -1930,6 +2186,18 @@ export interface components {
             items: components["schemas"]["ConceptAdminRead"][];
             page: components["schemas"]["PageMeta"];
         };
+        /** PageSchema[DocumentRead] */
+        PageSchema_DocumentRead_: {
+            /** Items */
+            items: components["schemas"]["DocumentRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[DocumentTemplateRead] */
+        PageSchema_DocumentTemplateRead_: {
+            /** Items */
+            items: components["schemas"]["DocumentTemplateRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
         /** PageSchema[PatientAllergyRead] */
         PageSchema_PatientAllergyRead_: {
             /** Items */
@@ -2001,6 +2269,43 @@ export interface components {
             /** Items */
             items: components["schemas"]["WaitingRoomEntryRead"][];
             page: components["schemas"]["PageMeta"];
+        };
+        /** PageSetup */
+        PageSetup: {
+            /**
+             * Marginbottommm
+             * @default 16
+             */
+            marginBottomMm: number;
+            /**
+             * Marginleftmm
+             * @default 14
+             */
+            marginLeftMm: number;
+            /**
+             * Marginrightmm
+             * @default 14
+             */
+            marginRightMm: number;
+            /**
+             * Margintopmm
+             * @default 16
+             */
+            marginTopMm: number;
+            /**
+             * Orientation
+             * @default portrait
+             * @enum {string}
+             */
+            orientation: "portrait" | "landscape";
+            /**
+             * Size
+             * @default A4
+             * @constant
+             */
+            size: "A4";
+            /** Title */
+            title: string;
         };
         /** PasswordResetConfirm */
         PasswordResetConfirm: {
@@ -2622,6 +2927,19 @@ export interface components {
             code: string;
             /** Groupcode */
             groupCode: string;
+        };
+        /** PlaceholderSpec */
+        PlaceholderSpec: {
+            /**
+             * Required
+             * @default true
+             */
+            required: boolean;
+            /**
+             * Type
+             * @enum {string}
+             */
+            type: "string" | "integer" | "date" | "code" | "code_list" | "text_list";
         };
         /** PresignedUrlResponse */
         PresignedUrlResponse: {
@@ -4135,6 +4453,322 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ClinicRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_document_templates_api_v1_document_templates_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_DocumentTemplateRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_document_template_api_v1_document_templates_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DocumentTemplateCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentTemplateRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_document_template_version_api_v1_document_templates__template_id__versions_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                template_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DocumentTemplateVersionCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentTemplateRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_documents_api_v1_documents_get: {
+        parameters: {
+            query: {
+                patientPublicId: string;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_DocumentRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_document_api_v1_documents_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DocumentCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_document_api_v1_documents__document_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    document_download_url_api_v1_documents__document_id__download_url_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentDownloadRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    finalize_document_api_v1_documents__document_id__finalize_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DocumentFinalize"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_document_recipient_api_v1_documents__document_id__recipients_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DocumentRecipientCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentRecipientRead"];
                 };
             };
             /** @description Validation Error */

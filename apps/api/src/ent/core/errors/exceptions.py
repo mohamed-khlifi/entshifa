@@ -71,3 +71,21 @@ class AuthSessionRevokedError(DomainError):
 class AuthMfaInvalidError(DomainError):
     code = ErrorCode.AUTH_MFA_INVALID
     http_status = 401
+
+
+class DocumentTemplateError(ValidationError):
+    """Template HTML references an undeclared placeholder or will not parse."""
+
+    code = ErrorCode.DOCUMENTS_UNDECLARED_PLACEHOLDER
+
+
+class DocumentSyntaxError(ValidationError):
+    code = ErrorCode.DOCUMENTS_TEMPLATE_SYNTAX
+
+
+class DocumentImmutableError(ConflictError):
+    code = ErrorCode.DOCUMENTS_IMMUTABLE
+
+
+class DocumentNotRenderedError(ConflictError):
+    code = ErrorCode.DOCUMENTS_NOT_RENDERED

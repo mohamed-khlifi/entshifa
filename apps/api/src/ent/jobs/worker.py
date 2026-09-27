@@ -17,6 +17,7 @@ from ent.jobs.tasks import (  # noqa: F401 — register jobs
     JOB_HANDLE_DOMAIN_EVENT,
     JOB_PING_DEPENDENCIES,
     JOB_PROCESS_ATTACHMENT,
+    JOB_RENDER_DOCUMENT,
 )
 from ent.settings import load_settings
 

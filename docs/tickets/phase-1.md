@@ -153,7 +153,7 @@ line by line.
 
 ---
 
-## - [ ] P1-09 Document engine base (backend)
+## - [x] P1-09 Document engine base (backend)
 
 **Scope**
 - Models: `document_template`, `document_template_version`, `document`,

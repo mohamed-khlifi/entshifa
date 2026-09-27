@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from ent.core.security.permissions import SYSTEM_ROLE_MATRIX
 from ent.features.auth.models import Role
+from ent.features.documents.seed import ensure_patient_summary_template
 from ent.seeds.dev_patients import seed_dev_patients
 from ent.seeds.identity import (
     LOCAL_DEV_PASSWORD,
@@ -162,6 +163,7 @@ async def seed_local_dev(session: AsyncSession) -> LocalDevSeedReport:
     )
     await seed_appointment_types(session, clinic_id=demo.id, created_by_id=None)
     await seed_appointment_types(session, clinic_id=other.id, created_by_id=None)
+    await ensure_patient_summary_template(session)
 
     return LocalDevSeedReport(
         permissions_created=permissions_created,
