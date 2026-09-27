@@ -22,9 +22,11 @@ export function PatientShell({
   const t = useTranslations("patients");
   const pathname = usePathname();
   const canReadAttachments = usePermission(Permission.ATTACHMENT_READ);
+  const canFinalizeDocuments = usePermission(Permission.DOCUMENT_FINALIZE);
   const patient = usePatientQuery(patientId);
   const overviewHref = `/patients/${patientId}`;
   const attachmentsHref = `/patients/${patientId}/attachments`;
+  const documentsHref = `/patients/${patientId}/documents`;
 
   if (patient.isLoading) {
     return (
@@ -80,6 +82,20 @@ export function PatientShell({
             {...testIdProps(testIds.patients.navAttachments)}
           >
             {t("nav.attachments")}
+          </Link>
+        ) : null}
+        {canFinalizeDocuments ? (
+          <Link
+            href={documentsHref}
+            className={cn(
+              "rounded-full px-3 py-1.5 text-sm font-medium",
+              pathname === documentsHref
+                ? "bg-primary/10 text-primary"
+                : "text-muted-foreground hover:bg-muted",
+            )}
+            {...testIdProps(testIds.documents.patientNav)}
+          >
+            {t("nav.documents")}
           </Link>
         ) : null}
       </nav>

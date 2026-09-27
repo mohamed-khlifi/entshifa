@@ -16,7 +16,8 @@
     "security": "الأمان",
     "terminology": "المصطلحات",
     "patients": "المرضى",
-    "schedule": "الجدول"
+    "schedule": "الجدول",
+    "templates": "النماذج"
   },
   "clinicSwitcher": {
     "label": "العيادة النشطة"

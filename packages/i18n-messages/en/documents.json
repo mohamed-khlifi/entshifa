@@ -1,0 +1,68 @@
+{
+  "gate": {
+    "forbidden": "You cannot open documents in this clinic."
+  },
+  "list": {
+    "title": "Documents",
+    "empty": "No documents yet.",
+    "loading": "Loading documents.",
+    "error": "Documents could not be loaded.",
+    "create": "Create draft",
+    "template": "Template",
+    "locale": "Document language",
+    "preview": "Preview",
+    "finalize": "Finalize",
+    "download": "Download PDF",
+    "print": "Print",
+    "close": "Close preview"
+  },
+  "editor": {
+    "title": "Document templates",
+    "systemLocked": "System templates are read-only. Copy one to edit a clinic version.",
+    "locale": "Locale",
+    "header": "Header",
+    "body": "Body",
+    "footer": "Footer",
+    "css": "CSS",
+    "placeholders": "Placeholders",
+    "preview": "Refresh preview",
+    "save": "Publish version",
+    "saved": "Template version published.",
+    "copy": "Copy into this clinic",
+    "empty": "No templates yet.",
+    "loadError": "Templates could not be loaded."
+  },
+  "columns": {
+    "title": "Title",
+    "status": "Status",
+    "locale": "Language",
+    "category": "Category",
+    "code": "Code"
+  },
+  "status": {
+    "draft": "Draft",
+    "final": "Final",
+    "cancelled": "Cancelled"
+  },
+  "locale": {
+    "en": "English",
+    "fr": "French",
+    "ar": "Arabic"
+  },
+  "category": {
+    "patient_summary": "Patient summary",
+    "handout": "Handout",
+    "consultation_report": "Consultation report",
+    "endoscopy_report": "Endoscopy report",
+    "audiology_report": "Audiology report",
+    "prescription": "Prescription",
+    "certificate": "Certificate",
+    "imaging_request": "Imaging request",
+    "referral_letter": "Referral letter",
+    "consent": "Consent",
+    "quote": "Quote",
+    "operative_note": "Operative note",
+    "tumor_board": "Tumor board",
+    "unknown": "Document"
+  }
+}

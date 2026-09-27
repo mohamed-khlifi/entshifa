@@ -113,3 +113,21 @@ export type PageSchemaWaitingRoomEntryRead =
 export type SchedulableDoctorRead = Schemas["SchedulableDoctorRead"];
 export type PageSchemaSchedulableDoctorRead =
   Schemas["PageSchema_SchedulableDoctorRead_"];
+
+export type DocumentCreate = Schemas["DocumentCreate"];
+export type DocumentFinalize = Schemas["DocumentFinalize"];
+export type DocumentRead = Schemas["DocumentRead"];
+export type DocumentDownloadRead = Schemas["DocumentDownloadRead"];
+export type DocumentPreviewRead = Schemas["DocumentPreviewRead"];
+export type PageSchemaDocumentRead = Schemas["PageSchema_DocumentRead_"];
+export type DocumentTemplateCreate = Schemas["DocumentTemplateCreate"];
+export type DocumentTemplateRead = Schemas["DocumentTemplateRead"];
+export type DocumentTemplateDetailRead = Schemas["DocumentTemplateDetailRead"];
+export type DocumentTemplatePreview = Schemas["DocumentTemplatePreview"];
+export type DocumentTemplateVersionCreate =
+  Schemas["DocumentTemplateVersionCreate"];
+export type DocumentTemplateVersionRead =
+  Schemas["DocumentTemplateVersionRead"];
+export type PageSchemaDocumentTemplateRead =
+  Schemas["PageSchema_DocumentTemplateRead_"];
+export type PlaceholderSpec = Schemas["PlaceholderSpec"];

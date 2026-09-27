@@ -21,5 +21,11 @@
     "version_conflict": "Ce patient a été modifié. Rechargez puis réessayez."
   },
   "conflict": "Cette modification entre en conflit avec des données existantes.",
-  "validation_failed": "Vérifiez les champs signalés."
+  "validation_failed": "Vérifiez les champs signalés.",
+  "documents": {
+    "undeclared_placeholder": "Ce modèle utilise un champ non déclaré.",
+    "template_syntax": "Ce modèle contient une erreur de syntaxe.",
+    "immutable": "Un document finalisé ne peut pas être modifié.",
+    "not_rendered": "Le PDF n'est pas encore prêt."
+  }
 }

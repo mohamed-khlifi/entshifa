@@ -1,0 +1,68 @@
+{
+  "gate": {
+    "forbidden": "Vous ne pouvez pas ouvrir les documents de cette clinique."
+  },
+  "list": {
+    "title": "Documents",
+    "empty": "Aucun document.",
+    "loading": "Chargement des documents.",
+    "error": "Les documents n'ont pas pu être chargés.",
+    "create": "Créer un brouillon",
+    "template": "Modèle",
+    "locale": "Langue du document",
+    "preview": "Aperçu",
+    "finalize": "Finaliser",
+    "download": "Télécharger le PDF",
+    "print": "Imprimer",
+    "close": "Fermer l'aperçu"
+  },
+  "editor": {
+    "title": "Modèles de documents",
+    "systemLocked": "Les modèles système sont en lecture seule. Copiez-en un pour le modifier.",
+    "locale": "Langue",
+    "header": "En-tête",
+    "body": "Corps",
+    "footer": "Pied de page",
+    "css": "CSS",
+    "placeholders": "Champs",
+    "preview": "Actualiser l'aperçu",
+    "save": "Publier la version",
+    "saved": "Version du modèle publiée.",
+    "copy": "Copier dans cette clinique",
+    "empty": "Aucun modèle pour le moment.",
+    "loadError": "Les modèles n'ont pas pu être chargés."
+  },
+  "columns": {
+    "title": "Titre",
+    "status": "Statut",
+    "locale": "Langue",
+    "category": "Catégorie",
+    "code": "Code"
+  },
+  "status": {
+    "draft": "Brouillon",
+    "final": "Final",
+    "cancelled": "Annulé"
+  },
+  "locale": {
+    "en": "Anglais",
+    "fr": "Français",
+    "ar": "Arabe"
+  },
+  "category": {
+    "patient_summary": "Synthèse du patient",
+    "handout": "Fiche",
+    "consultation_report": "Compte rendu de consultation",
+    "endoscopy_report": "Compte rendu d'endoscopie",
+    "audiology_report": "Compte rendu d'audiologie",
+    "prescription": "Ordonnance",
+    "certificate": "Certificat",
+    "imaging_request": "Demande d'imagerie",
+    "referral_letter": "Courrier de correspondance",
+    "consent": "Consentement",
+    "quote": "Devis",
+    "operative_note": "Compte rendu opératoire",
+    "tumor_board": "Réunion de concertation",
+    "unknown": "Document"
+  }
+}

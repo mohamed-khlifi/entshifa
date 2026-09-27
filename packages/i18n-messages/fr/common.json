@@ -16,7 +16,8 @@
     "security": "Sécurité",
     "terminology": "Terminologie",
     "patients": "Patients",
-    "schedule": "Planning"
+    "schedule": "Planning",
+    "templates": "Modèles"
   },
   "clinicSwitcher": {
     "label": "Clinique active"

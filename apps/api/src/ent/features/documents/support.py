@@ -19,8 +19,16 @@ from ent.features.documents.models import (
     DocumentTemplate,
     DocumentTemplateVersion,
 )
-from ent.features.documents.schemas.requests import DocumentTemplateCreate
-from ent.features.documents.schemas.responses import DocumentRead, DocumentTemplateRead
+from ent.features.documents.schemas.requests import (
+    DocumentTemplateCreate,
+    PageSetup,
+)
+from ent.features.documents.schemas.responses import (
+    DocumentRead,
+    DocumentTemplateDetailRead,
+    DocumentTemplateRead,
+    DocumentTemplateVersionRead,
+)
 
 PLACEHOLDER_KEY = re.compile(r"^[A-Za-z][A-Za-z0-9]*(\.[A-Za-z][A-Za-z0-9]*)*$")
 
@@ -69,6 +77,36 @@ def document_title(version: DocumentTemplateVersion) -> str:
     if not isinstance(raw, str) or not raw.strip():
         raise ValidationError(reason="title")
     return raw.strip()[:200]
+
+
+def version_read(row: DocumentTemplateVersion) -> DocumentTemplateVersionRead:
+    page_setup = row.page_setup if isinstance(row.page_setup, dict) else {}
+    return DocumentTemplateVersionRead(
+        version=row.version,
+        locale=row.locale,
+        direction=row.direction,
+        header_html=row.header_html,
+        body_html=row.body_html,
+        footer_html=row.footer_html,
+        css=row.css,
+        page_setup=PageSetup.model_validate(page_setup),
+    )
+
+
+def template_detail(
+    row: DocumentTemplate,
+    versions: list[DocumentTemplateVersion],
+) -> DocumentTemplateDetailRead:
+    base = template_read(row)
+    return DocumentTemplateDetailRead(
+        public_id=base.public_id,
+        code=base.code,
+        category=base.category,
+        is_system=base.is_system,
+        is_active=base.is_active,
+        placeholders=dict(row.placeholders),
+        versions=[version_read(item) for item in versions],
+    )
 
 
 def template_read(row: DocumentTemplate) -> DocumentTemplateRead:

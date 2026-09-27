@@ -106,6 +106,15 @@ class ClinicService:
                     defaultLocale=data["default_locale"],
                 )
 
+        if "settings" in data and isinstance(data["settings"], dict):
+            from ent.features.documents.letterhead import validate_document_settings
+
+            await validate_document_settings(
+                self._session,
+                clinic_id=user.clinic_id,
+                settings=data["settings"],
+            )
+
         if "logo_attachment_public_id" in data:
             logo_public_id = data.pop("logo_attachment_public_id")
             if logo_public_id is None:

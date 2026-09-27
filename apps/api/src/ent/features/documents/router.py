@@ -17,12 +17,15 @@ from ent.features.documents.schemas.requests import (
     DocumentFinalize,
     DocumentRecipientCreate,
     DocumentTemplateCreate,
+    DocumentTemplatePreview,
     DocumentTemplateVersionCreate,
 )
 from ent.features.documents.schemas.responses import (
     DocumentDownloadRead,
+    DocumentPreviewRead,
     DocumentRead,
     DocumentRecipientRead,
+    DocumentTemplateDetailRead,
     DocumentTemplateRead,
 )
 from ent.features.documents.service import DocumentService
@@ -78,6 +81,30 @@ async def add_document_template_version(
     )
 
 
+@router.get(
+    "/api/v1/document-templates/{template_id}",
+    response_model=DocumentTemplateDetailRead,
+)
+async def get_document_template(
+    template_id: str,
+    user: CurrentUser = Depends(require(Permission.ADMIN_TEMPLATES)),
+    service: DocumentTemplateService = Depends(get_document_template_service),
+) -> DocumentTemplateDetailRead:
+    return await service.get_template(user=user, template_public_id=template_id)
+
+
+@router.post(
+    "/api/v1/document-templates/preview",
+    response_model=DocumentPreviewRead,
+)
+async def preview_document_template(
+    body: DocumentTemplatePreview,
+    user: CurrentUser = Depends(require(Permission.ADMIN_TEMPLATES)),
+    service: DocumentTemplateService = Depends(get_document_template_service),
+) -> DocumentPreviewRead:
+    return await service.preview(user=user, body=body)
+
+
 @router.get("/api/v1/documents", response_model=PageSchema[DocumentRead])
 async def list_documents(
     patient_public_id: str = Query(
@@ -115,6 +142,18 @@ async def get_document(
     service: DocumentService = Depends(get_document_service),
 ) -> DocumentRead:
     return await service.get_document(user=user, public_id=document_id)
+
+
+@router.get(
+    "/api/v1/documents/{document_id}/preview",
+    response_model=DocumentPreviewRead,
+)
+async def preview_document(
+    document_id: str,
+    user: CurrentUser = Depends(require(Permission.DOCUMENT_FINALIZE)),
+    service: DocumentService = Depends(get_document_service),
+) -> DocumentPreviewRead:
+    return await service.preview_html(user=user, public_id=document_id)
 
 
 @router.post("/api/v1/documents/{document_id}/finalize", response_model=DocumentRead)

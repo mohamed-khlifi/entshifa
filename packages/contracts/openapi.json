@@ -1931,6 +1931,19 @@
         "title": "DocumentFinalize",
         "type": "object"
       },
+      "DocumentPreviewRead": {
+        "properties": {
+          "html": {
+            "title": "Html",
+            "type": "string"
+          }
+        },
+        "required": [
+          "html"
+        ],
+        "title": "DocumentPreviewRead",
+        "type": "object"
+      },
       "DocumentRead": {
         "properties": {
           "category": {
@@ -2151,6 +2164,115 @@
         "title": "DocumentTemplateCreate",
         "type": "object"
       },
+      "DocumentTemplateDetailRead": {
+        "properties": {
+          "category": {
+            "title": "Category",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean"
+          },
+          "isSystem": {
+            "title": "Issystem",
+            "type": "boolean"
+          },
+          "placeholders": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/PlaceholderSpec"
+            },
+            "title": "Placeholders",
+            "type": "object"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "versions": {
+            "items": {
+              "$ref": "#/components/schemas/DocumentTemplateVersionRead"
+            },
+            "title": "Versions",
+            "type": "array"
+          }
+        },
+        "required": [
+          "publicId",
+          "code",
+          "category",
+          "isSystem",
+          "isActive",
+          "placeholders",
+          "versions"
+        ],
+        "title": "DocumentTemplateDetailRead",
+        "type": "object"
+      },
+      "DocumentTemplatePreview": {
+        "properties": {
+          "bodyHtml": {
+            "minLength": 1,
+            "title": "Bodyhtml",
+            "type": "string"
+          },
+          "css": {
+            "default": "",
+            "title": "Css",
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "ltr",
+              "rtl"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "footerHtml": {
+            "default": "",
+            "title": "Footerhtml",
+            "type": "string"
+          },
+          "headerHtml": {
+            "default": "",
+            "title": "Headerhtml",
+            "type": "string"
+          },
+          "locale": {
+            "enum": [
+              "en",
+              "fr",
+              "ar"
+            ],
+            "title": "Locale",
+            "type": "string"
+          },
+          "pageSetup": {
+            "$ref": "#/components/schemas/PageSetup"
+          },
+          "placeholders": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/PlaceholderSpec"
+            },
+            "title": "Placeholders",
+            "type": "object"
+          }
+        },
+        "required": [
+          "locale",
+          "direction",
+          "bodyHtml",
+          "placeholders",
+          "pageSetup"
+        ],
+        "title": "DocumentTemplatePreview",
+        "type": "object"
+      },
       "DocumentTemplateRead": {
         "properties": {
           "category": {
@@ -2234,6 +2356,53 @@
           "pageSetup"
         ],
         "title": "DocumentTemplateVersionCreate",
+        "type": "object"
+      },
+      "DocumentTemplateVersionRead": {
+        "properties": {
+          "bodyHtml": {
+            "title": "Bodyhtml",
+            "type": "string"
+          },
+          "css": {
+            "title": "Css",
+            "type": "string"
+          },
+          "direction": {
+            "title": "Direction",
+            "type": "string"
+          },
+          "footerHtml": {
+            "title": "Footerhtml",
+            "type": "string"
+          },
+          "headerHtml": {
+            "title": "Headerhtml",
+            "type": "string"
+          },
+          "locale": {
+            "title": "Locale",
+            "type": "string"
+          },
+          "pageSetup": {
+            "$ref": "#/components/schemas/PageSetup"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version",
+          "locale",
+          "direction",
+          "headerHtml",
+          "bodyHtml",
+          "footerHtml",
+          "css",
+          "pageSetup"
+        ],
+        "title": "DocumentTemplateVersionRead",
         "type": "object"
       },
       "HTTPValidationError": {
@@ -9081,6 +9250,133 @@
         ]
       }
     },
+    "/api/v1/document-templates/preview": {
+      "post": {
+        "operationId": "preview_document_template_api_v1_document_templates_preview_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentTemplatePreview"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentPreviewRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Preview Document Template",
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/api/v1/document-templates/{template_id}": {
+      "get": {
+        "operationId": "get_document_template_api_v1_document_templates__template_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "template_id",
+            "required": true,
+            "schema": {
+              "title": "Template Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentTemplateDetailRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Document Template",
+        "tags": [
+          "documents"
+        ]
+      }
+    },
     "/api/v1/document-templates/{template_id}/versions": {
       "post": {
         "operationId": "add_document_template_version_api_v1_document_templates__template_id__versions_post",
@@ -9498,6 +9794,69 @@
           }
         ],
         "summary": "Finalize Document",
+        "tags": [
+          "documents"
+        ]
+      }
+    },
+    "/api/v1/documents/{document_id}/preview": {
+      "get": {
+        "operationId": "preview_document_api_v1_documents__document_id__preview_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "document_id",
+            "required": true,
+            "schema": {
+              "title": "Document Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentPreviewRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Preview Document",
         "tags": [
           "documents"
         ]

@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import datetime
 
 from ent.core.schemas.base import CamelModel
+from ent.features.documents.schemas.requests import PageSetup, PlaceholderSpec
 
 
 class DocumentTemplateRead(CamelModel):
@@ -13,6 +14,26 @@ class DocumentTemplateRead(CamelModel):
     category: str
     is_system: bool
     is_active: bool
+
+
+class DocumentTemplateVersionRead(CamelModel):
+    version: int
+    locale: str
+    direction: str
+    header_html: str
+    body_html: str
+    footer_html: str
+    css: str
+    page_setup: PageSetup
+
+
+class DocumentTemplateDetailRead(DocumentTemplateRead):
+    placeholders: dict[str, PlaceholderSpec]
+    versions: list[DocumentTemplateVersionRead]
+
+
+class DocumentPreviewRead(CamelModel):
+    html: str
 
 
 class DocumentRead(CamelModel):

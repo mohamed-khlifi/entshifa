@@ -51,6 +51,16 @@ export const queryKeys = {
     waitingRoom: (params?: { on?: string; siteId?: string }) =>
       [...queryKeys.scheduling.all, "waiting-room", params ?? {}] as const,
   },
+  documents: {
+    all: ["documents"] as const,
+    templates: () => [...queryKeys.documents.all, "templates"] as const,
+    template: (publicId: string) =>
+      [...queryKeys.documents.all, "template", publicId] as const,
+    patient: (patientPublicId: string) =>
+      [...queryKeys.documents.all, "patient", patientPublicId] as const,
+    preview: (publicId: string) =>
+      [...queryKeys.documents.all, "preview", publicId] as const,
+  },
   attachments: {
     all: ["attachments"] as const,
     list: (filters: {

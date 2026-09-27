@@ -21,6 +21,11 @@ from ent.features.attachments.repository import AttachmentRepository
 from ent.features.clinics.repository import ClinicRepository
 from ent.features.documents.chart import load_summary_data
 from ent.features.documents.constants import DOCUMENT_LOCALES
+from ent.features.documents.html_render import (
+    render_document_html,
+    render_from_snapshot,
+)
+from ent.features.documents.letterhead import compose_letterhead
 from ent.features.documents.models import (
     Document,
     DocumentRecipient,
@@ -41,6 +46,7 @@ from ent.features.documents.schemas.requests import (
 )
 from ent.features.documents.schemas.responses import (
     DocumentDownloadRead,
+    DocumentPreviewRead,
     DocumentRead,
     DocumentRecipientRead,
 )
@@ -182,9 +188,17 @@ class DocumentService:
         if version is None:
             raise NotFoundError()
         chosen_body = body.body_override_html or version.body_html
+        header, footer = await compose_letterhead(
+            self._session,
+            clinic_id=user.clinic_id,
+            clinic=clinic,
+            header_html=version.header_html,
+            footer_html=version.footer_html,
+            settings=self._settings,
+        )
         placeholders = placeholder_map(dict(template.placeholders))
         issue = validate_placeholders(
-            (version.header_html, chosen_body, version.footer_html),
+            (header, chosen_body, footer),
             set(placeholders),
         )
         if issue is not None:
@@ -203,9 +217,9 @@ class DocumentService:
                 "code": template.code,
                 "locale": version.locale,
                 "direction": version.direction,
-                "header_html": version.header_html,
+                "header_html": header,
                 "body_html": chosen_body,
-                "footer_html": version.footer_html,
+                "footer_html": footer,
                 "css": version.css,
                 "page_setup": dict(version.page_setup),
             },
@@ -225,6 +239,79 @@ class DocumentService:
             payload={"document_public_id": row.public_id},
         )
         return document_read(row, patient.public_id, template.code)
+
+    async def preview_html(
+        self,
+        *,
+        user: CurrentUser,
+        public_id: str,
+    ) -> DocumentPreviewRead:
+        row = await self._document(user, public_id)
+        await self._patient_by_id(user, int(row.patient_id))
+        snapshot = (
+            row.content_snapshot if isinstance(row.content_snapshot, dict) else {}
+        )
+        frozen = snapshot.get("template")
+        if row.status == "final" and isinstance(frozen, dict):
+            self._access(
+                user,
+                action="read",
+                entity_type="document",
+                entity_id=int(row.id),
+                entity_public_id=row.public_id,
+                patient_id=int(row.patient_id),
+            )
+            await self._session.commit()
+            return DocumentPreviewRead(html=render_from_snapshot(snapshot))
+        clinic = await self._clinic(user)
+        template = await self._visible_template(user, int(row.template_id))
+        version = await DocumentTemplateVersionRepository(
+            self._session, clinic_id=user.clinic_id
+        ).get_for_template(
+            template_id=int(template.id),
+            version_id=int(row.template_version_id),
+        )
+        if version is None:
+            raise NotFoundError()
+        header, footer = await compose_letterhead(
+            self._session,
+            clinic_id=user.clinic_id,
+            clinic=clinic,
+            header_html=version.header_html,
+            footer_html=version.footer_html,
+            settings=self._settings,
+        )
+        data = snapshot.get("data")
+        if not isinstance(data, dict):
+            patient = await self._patient_by_id(user, int(row.patient_id))
+            data = await load_summary_data(
+                self._session,
+                user,
+                patient=patient,
+                clinic=clinic,
+                locale=version.locale,
+            )
+        page_setup = version.page_setup if isinstance(version.page_setup, dict) else {}
+        html = render_document_html(
+            locale=version.locale,
+            direction=version.direction,
+            header_html=header,
+            body_html=row.body_override_html or version.body_html,
+            footer_html=footer,
+            css=version.css,
+            data=data,
+            page_setup=dict(page_setup),
+        )
+        self._access(
+            user,
+            action="read",
+            entity_type="document",
+            entity_id=int(row.id),
+            entity_public_id=row.public_id,
+            patient_id=int(row.patient_id),
+        )
+        await self._session.commit()
+        return DocumentPreviewRead(html=html)
 
     async def download_url(
         self,

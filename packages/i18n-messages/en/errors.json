@@ -21,5 +21,11 @@
     "version_conflict": "This patient was updated by someone else. Reload and try again."
   },
   "conflict": "This change conflicts with existing data.",
-  "validation_failed": "Check the highlighted fields."
+  "validation_failed": "Check the highlighted fields.",
+  "documents": {
+    "undeclared_placeholder": "This template uses a field that was not declared.",
+    "template_syntax": "This template has a syntax error.",
+    "immutable": "A finalized document cannot be changed.",
+    "not_rendered": "The PDF is not ready yet."
+  }
 }

@@ -58,6 +58,17 @@ class PageSetup(CamelModel):
     title: str = Field(min_length=1, max_length=200)
 
 
+class DocumentTemplatePreview(CamelModel):
+    locale: LocaleCode
+    direction: DirectionCode
+    header_html: str = ""
+    body_html: str = Field(min_length=1)
+    footer_html: str = ""
+    css: str = ""
+    placeholders: dict[str, PlaceholderSpec]
+    page_setup: PageSetup
+
+
 class DocumentTemplateVersionCreate(CamelModel):
     locale: LocaleCode
     direction: DirectionCode

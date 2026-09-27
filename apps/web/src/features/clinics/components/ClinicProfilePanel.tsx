@@ -49,7 +49,9 @@ export function ClinicProfilePanel() {
   const [city, setCity] = useState("");
   const [documentHeader, setDocumentHeader] = useState("");
   const [documentFooter, setDocumentFooter] = useState("");
+  const [signatureId, setSignatureId] = useState("");
   const [logoBusy, setLogoBusy] = useState(false);
+  const [signatureBusy, setSignatureBusy] = useState(false);
 
   useEffect(() => {
     if (!clinic) return;
@@ -64,6 +66,12 @@ export function ClinicProfilePanel() {
     setDocumentFooter(
       readDocSetting(settings, CLINIC_DOCUMENT_SETTING_KEYS.footerHtml),
     );
+    setSignatureId(
+      readDocSetting(
+        settings,
+        CLINIC_DOCUMENT_SETTING_KEYS.signatureAttachmentPublicId,
+      ),
+    );
   }, [clinic]);
 
   const onSaveProfile = () => {
@@ -72,6 +80,8 @@ export function ClinicProfilePanel() {
       ...(clinic.settings as Record<string, unknown>),
       [CLINIC_DOCUMENT_SETTING_KEYS.headerHtml]: documentHeader || null,
       [CLINIC_DOCUMENT_SETTING_KEYS.footerHtml]: documentFooter || null,
+      [CLINIC_DOCUMENT_SETTING_KEYS.signatureAttachmentPublicId]:
+        signatureId || null,
     };
     void updateClinic.mutateAsync({
       name,
@@ -113,6 +123,51 @@ export function ClinicProfilePanel() {
       });
     } finally {
       setLogoBusy(false);
+      event.target.value = "";
+    }
+  };
+
+  const onSignatureChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file || !session || !clinic) return;
+    setSignatureBusy(true);
+    try {
+      const uploadMeta = await requestAttachmentUploadUrl(
+        {
+          category: "signature",
+          filename: file.name,
+          contentType: file.type,
+          sizeBytes: file.size,
+          isConsentedForTeaching: false,
+        },
+        locale,
+        session.clinicPublicId,
+      );
+      await fetch(uploadMeta.upload.url, {
+        method: uploadMeta.upload.method,
+        headers: uploadMeta.upload.headers,
+        body: file,
+      });
+      const attachment = await confirmAttachmentUpload(
+        { uploadToken: uploadMeta.uploadToken },
+        locale,
+        session.clinicPublicId,
+      );
+      const settings = {
+        ...(clinic.settings as Record<string, unknown>),
+        [CLINIC_DOCUMENT_SETTING_KEYS.headerHtml]: documentHeader || null,
+        [CLINIC_DOCUMENT_SETTING_KEYS.footerHtml]: documentFooter || null,
+        [CLINIC_DOCUMENT_SETTING_KEYS.signatureAttachmentPublicId]:
+          attachment.publicId,
+      };
+      await updateClinic.mutateAsync({
+        settings: settings as unknown as ClinicUpdate["settings"],
+      });
+      setSignatureId(attachment.publicId);
+    } finally {
+      setSignatureBusy(false);
       event.target.value = "";
     }
   };
@@ -211,6 +266,34 @@ export function ClinicProfilePanel() {
                 disabled={logoBusy}
                 onChange={(e) => void onLogoChange(e)}
                 {...testIdProps(testIds.clinics.logoInput)}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+            {signatureId ? (
+              <AttachmentViewer
+                attachmentPublicId={signatureId}
+                className="h-16 w-40 rounded-lg border border-border object-contain bg-background"
+              />
+            ) : (
+              <div className="flex h-16 w-40 items-center justify-center rounded-lg border border-dashed border-border bg-muted/40 text-xs text-muted-foreground">
+                {t("branding.signature")}
+              </div>
+            )}
+            <div className="space-y-2">
+              <Label htmlFor="clinic-signature">
+                {t("branding.uploadSignature")}
+              </Label>
+              <p className="text-xs text-muted-foreground">
+                {t("branding.signatureHint")}
+              </p>
+              <Input
+                id="clinic-signature"
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                disabled={signatureBusy}
+                onChange={(event) => void onSignatureChange(event)}
+                {...testIdProps(testIds.documents.signatureInput)}
               />
             </div>
           </div>

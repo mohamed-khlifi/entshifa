@@ -124,6 +124,16 @@ class DocumentTemplateVersionRepository(BaseRepository[DocumentTemplateVersion])
         current = result.scalar_one()
         return int(current or 0) + 1
 
+    async def list_for_template(
+        self, template_id: int
+    ) -> list[DocumentTemplateVersion]:
+        result = await self.session.scalars(
+            self._base_query()
+            .where(self.model.document_template_id == template_id)
+            .order_by(self.model.locale, desc(self.model.version))
+        )
+        return list(result.all())
+
     async def get_for_template(
         self,
         *,

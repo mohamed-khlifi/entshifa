@@ -1,0 +1,68 @@
+{
+  "gate": {
+    "forbidden": "لا يمكنك فتح مستندات هذه العيادة."
+  },
+  "list": {
+    "title": "المستندات",
+    "empty": "لا توجد مستندات.",
+    "loading": "جارٍ تحميل المستندات.",
+    "error": "تعذر تحميل المستندات.",
+    "create": "إنشاء مسودة",
+    "template": "النموذج",
+    "locale": "لغة المستند",
+    "preview": "معاينة",
+    "finalize": "اعتماد",
+    "download": "تنزيل PDF",
+    "print": "طباعة",
+    "close": "إغلاق المعاينة"
+  },
+  "editor": {
+    "title": "نماذج المستندات",
+    "systemLocked": "نماذج النظام للقراءة فقط. انسخ نموذجاً لتعديله في العيادة.",
+    "locale": "اللغة",
+    "header": "الترويسة",
+    "body": "المتن",
+    "footer": "التذييل",
+    "css": "CSS",
+    "placeholders": "الحقول",
+    "preview": "تحديث المعاينة",
+    "save": "نشر الإصدار",
+    "saved": "تم نشر إصدار النموذج.",
+    "copy": "نسخ إلى هذه العيادة",
+    "empty": "لا توجد نماذج بعد.",
+    "loadError": "تعذر تحميل النماذج."
+  },
+  "columns": {
+    "title": "العنوان",
+    "status": "الحالة",
+    "locale": "اللغة",
+    "category": "الفئة",
+    "code": "الرمز"
+  },
+  "status": {
+    "draft": "مسودة",
+    "final": "معتمد",
+    "cancelled": "ملغى"
+  },
+  "locale": {
+    "en": "الإنجليزية",
+    "fr": "الفرنسية",
+    "ar": "العربية"
+  },
+  "category": {
+    "patient_summary": "ملخص المريض",
+    "handout": "نشرة",
+    "consultation_report": "تقرير استشارة",
+    "endoscopy_report": "تقرير تنظير",
+    "audiology_report": "تقرير سمع",
+    "prescription": "وصفة",
+    "certificate": "شهادة",
+    "imaging_request": "طلب تصوير",
+    "referral_letter": "خطاب إحالة",
+    "consent": "موافقة",
+    "quote": "عرض سعر",
+    "operative_note": "تقرير عملية",
+    "tumor_board": "اجتماع أورام",
+    "unknown": "مستند"
+  }
+}

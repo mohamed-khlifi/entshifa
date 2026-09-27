@@ -24,6 +24,7 @@ from ent.features.documents.schemas.requests import (
     DocumentFinalize,
     DocumentRecipientCreate,
     DocumentTemplateCreate,
+    DocumentTemplatePreview,
     DocumentTemplateVersionCreate,
     PageSetup,
     PlaceholderSpec,
@@ -160,6 +161,12 @@ class _Versions:
     async def next_version(self, *, template_id: int, locale: str) -> int:
         return 2
 
+    async def list_for_template(
+        self, template_id: int
+    ) -> list[DocumentTemplateVersion]:
+        row = self.latest_row
+        return [row] if row is not None else []
+
 
 class _Documents:
     def __init__(self, session: MagicMock, clinic_id: int | None = None) -> None:
@@ -269,6 +276,10 @@ def world(monkeypatch: pytest.MonkeyPatch) -> SimpleNamespace:
     monkeypatch.setattr(
         "ent.features.documents.templates.service.DocumentTemplateVersionRepository",
         lambda session, clinic_id=None: versions,
+    )
+    monkeypatch.setattr(
+        "ent.features.documents.templates.service.ClinicRepository",
+        lambda session: clinics,
     )
     monkeypatch.setattr(
         "ent.features.documents.service.load_summary_data",
@@ -566,3 +577,46 @@ async def test_template_create_version_and_list(world: SimpleNamespace) -> None:
         user=user, page_params=PaginationParams(limit=50, offset=0)
     )
     assert listed.page.total == 1
+    detail = await service.get_template(user=user, template_public_id=TEMPLATE_ID)
+    assert detail.versions[0].locale == "ar"
+    preview = await service.preview(
+        user=user,
+        body=DocumentTemplatePreview(
+            locale="ar",
+            direction="rtl",
+            body_html="<p>{{ patient.fullName }}</p>",
+            placeholders={"patient.fullName": PlaceholderSpec(type="string")},
+            page_setup=_page_setup(),
+        ),
+    )
+    assert 'dir="rtl"' in preview.html
+
+
+@pytest.mark.asyncio
+async def test_document_preview_uses_frozen_or_live_html(
+    world: SimpleNamespace,
+) -> None:
+    user = _user()
+    drafted = _document()
+    world.documents.row = drafted
+    live = await world.documents_service.preview_html(
+        user=user, public_id=drafted.public_id
+    )
+    assert "A" in live.html
+    drafted.status = "final"
+    drafted.content_snapshot = {
+        "data": {"patient": {"fullName": "Frozen"}},
+        "template": {
+            "locale": "en",
+            "direction": "ltr",
+            "header_html": "",
+            "body_html": "<p>{{ patient.fullName }}</p>",
+            "footer_html": "",
+            "css": "",
+            "page_setup": {"title": "Note"},
+        },
+    }
+    frozen = await world.documents_service.preview_html(
+        user=user, public_id=drafted.public_id
+    )
+    assert "Frozen" in frozen.html

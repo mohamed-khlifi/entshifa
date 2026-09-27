@@ -14,4 +14,7 @@ export const Permission = {
   APPOINTMENT_TYPE_MANAGE: "appointment_type.manage",
   ATTACHMENT_READ: "attachment.read",
   ATTACHMENT_WRITE: "attachment.write",
+  DOCUMENT_FINALIZE: "document.finalize",
+  DOCUMENT_SEND: "document.send",
+  ADMIN_TEMPLATES: "admin.templates",
 } as const;

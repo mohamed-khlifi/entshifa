@@ -28,7 +28,10 @@
     "documentHeader": "En-tête de document",
     "documentFooter": "Pied de page",
     "headerPlaceholder": "Texte ou HTML optionnel en haut des documents.",
-    "footerPlaceholder": "Texte ou HTML optionnel en bas des documents."
+    "footerPlaceholder": "Texte ou HTML optionnel en bas des documents.",
+    "signature": "Signature",
+    "uploadSignature": "Téléverser la signature",
+    "signatureHint": "PNG ou JPEG affiché sous les documents finalisés."
   },
   "sites": {
     "title": "Sites",

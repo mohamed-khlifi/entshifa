@@ -27,6 +27,7 @@ export function Sidebar() {
   const canReadOwnPatients = usePermission(Permission.PATIENT_READ_OWN);
   const canReadPatients = canReadClinicPatients || canReadOwnPatients;
   const canReadSchedule = usePermission(Permission.APPOINTMENT_READ);
+  const canAdminTemplates = usePermission(Permission.ADMIN_TEMPLATES);
 
   const homeActive = pathname === "/home" || pathname.startsWith("/home/");
   const clinicActive =
@@ -36,6 +37,7 @@ export function Sidebar() {
   const securityActive = pathname.startsWith("/settings/security");
   const patientsActive = pathname.startsWith("/patients");
   const scheduleActive = pathname.startsWith("/schedule");
+  const templatesActive = pathname.startsWith("/admin/templates");
 
   return (
     <aside
@@ -67,7 +69,10 @@ export function Sidebar() {
         <Link href="/settings/security" className={navClass(securityActive)}>
           {t("nav.security")}
         </Link>
-        {canAdminClinic || canAdminUsers || canAdminTerminology ? (
+        {canAdminClinic ||
+        canAdminUsers ||
+        canAdminTerminology ||
+        canAdminTemplates ? (
           <p className="px-3 pt-4 pb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {t("nav.admin")}
           </p>
@@ -80,6 +85,15 @@ export function Sidebar() {
         {canAdminUsers ? (
           <Link href="/admin/users" className={navClass(usersActive)}>
             {t("nav.users")}
+          </Link>
+        ) : null}
+        {canAdminTemplates ? (
+          <Link
+            href="/admin/templates"
+            className={navClass(templatesActive)}
+            {...testIdProps(testIds.documents.nav)}
+          >
+            {t("nav.templates")}
           </Link>
         ) : null}
         {canAdminTerminology ? (

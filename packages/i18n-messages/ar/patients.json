@@ -4,7 +4,8 @@
   },
   "nav": {
     "overview": "الملخص",
-    "attachments": "الصور والمستندات"
+    "attachments": "الصور والمستندات",
+    "documents": "المستندات"
   },
   "state": {
     "loading": "جارٍ تحميل الملف…",

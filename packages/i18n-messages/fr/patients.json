@@ -4,7 +4,8 @@
   },
   "nav": {
     "overview": "Synthèse",
-    "attachments": "Images et documents"
+    "attachments": "Images et documents",
+    "documents": "Documents"
   },
   "state": {
     "loading": "Chargement du dossier…",

@@ -28,7 +28,10 @@
     "documentHeader": "ترويسة المستند",
     "documentFooter": "تذييل المستند",
     "headerPlaceholder": "نص أو HTML اختياري أعلى المستندات.",
-    "footerPlaceholder": "نص أو HTML اختياري أسفل المستندات."
+    "footerPlaceholder": "نص أو HTML اختياري أسفل المستندات.",
+    "signature": "التوقيع",
+    "uploadSignature": "رفع التوقيع",
+    "signatureHint": "PNG أو JPEG يظهر أسفل المستندات المعتمدة."
   },
   "sites": {
     "title": "المواقع",

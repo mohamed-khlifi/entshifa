@@ -16,7 +16,8 @@
     "security": "Security",
     "terminology": "Terminology",
     "patients": "Patients",
-    "schedule": "Schedule"
+    "schedule": "Schedule",
+    "templates": "Templates"
   },
   "clinicSwitcher": {
     "label": "Active clinic"

@@ -174,7 +174,7 @@ line by line.
 
 ---
 
-## - [ ] P1-10 Documents UI and template admin (frontend)
+## - [x] P1-10 Documents UI and template admin (frontend)
 
 **Scope**
 - Template editor with live preview per locale, placeholder picker.

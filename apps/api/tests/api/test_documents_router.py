@@ -107,6 +107,26 @@ async def test_patient_summary_finalizes_and_renders_pdf(
         )
         assert created_template.status_code == 201, created_template.text
         template_id = created_template.json()["publicId"]
+        detail = await client.get(
+            f"/api/v1/document-templates/{template_id}",
+            headers=admin,
+        )
+        assert detail.status_code == 200, detail.text
+        preview = await client.post(
+            "/api/v1/document-templates/preview",
+            headers=admin,
+            json={
+                "locale": "ar",
+                "direction": "rtl",
+                "bodyHtml": "<p>{{ patient.fullName }}</p>",
+                "placeholders": {
+                    "patient.fullName": {"type": "string", "required": True}
+                },
+                "pageSetup": {"title": "Note"},
+            },
+        )
+        assert preview.status_code == 200, preview.text
+        assert 'dir="rtl"' in preview.json()["html"]
 
         bad_direction = await client.post(
             f"/api/v1/document-templates/{template_id}/versions",
@@ -155,6 +175,12 @@ async def test_patient_summary_finalizes_and_renders_pdf(
         document_id = drafted.json()["publicId"]
         assert drafted.json()["status"] == "draft"
         assert drafted.json()["title"] == "ملخص المريض"
+        live_preview = await client.get(
+            f"/api/v1/documents/{document_id}/preview",
+            headers=doctor,
+        )
+        assert live_preview.status_code == 200, live_preview.text
+        assert 'dir="rtl"' in live_preview.json()["html"]
 
         early_download = await client.get(
             f"/api/v1/documents/{document_id}/download-url",

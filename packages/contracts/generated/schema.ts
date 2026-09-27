@@ -559,6 +559,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/document-templates/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Preview Document Template */
+        post: operations["preview_document_template_api_v1_document_templates_preview_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/document-templates/{template_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Document Template */
+        get: operations["get_document_template_api_v1_document_templates__template_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/document-templates/{template_id}/versions": {
         parameters: {
             query?: never;
@@ -639,6 +673,23 @@ export interface paths {
         put?: never;
         /** Finalize Document */
         post: operations["finalize_document_api_v1_documents__document_id__finalize_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/documents/{document_id}/preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Preview Document */
+        get: operations["preview_document_api_v1_documents__document_id__preview_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1905,6 +1956,11 @@ export interface components {
             /** Bodyoverridehtml */
             bodyOverrideHtml?: string | null;
         };
+        /** DocumentPreviewRead */
+        DocumentPreviewRead: {
+            /** Html */
+            html: string;
+        };
         /** DocumentRead */
         DocumentRead: {
             /** Category */
@@ -1975,6 +2031,60 @@ export interface components {
                 [key: string]: components["schemas"]["PlaceholderSpec"];
             };
         };
+        /** DocumentTemplateDetailRead */
+        DocumentTemplateDetailRead: {
+            /** Category */
+            category: string;
+            /** Code */
+            code: string;
+            /** Isactive */
+            isActive: boolean;
+            /** Issystem */
+            isSystem: boolean;
+            /** Placeholders */
+            placeholders: {
+                [key: string]: components["schemas"]["PlaceholderSpec"];
+            };
+            /** Publicid */
+            publicId: string;
+            /** Versions */
+            versions: components["schemas"]["DocumentTemplateVersionRead"][];
+        };
+        /** DocumentTemplatePreview */
+        DocumentTemplatePreview: {
+            /** Bodyhtml */
+            bodyHtml: string;
+            /**
+             * Css
+             * @default
+             */
+            css: string;
+            /**
+             * Direction
+             * @enum {string}
+             */
+            direction: "ltr" | "rtl";
+            /**
+             * Footerhtml
+             * @default
+             */
+            footerHtml: string;
+            /**
+             * Headerhtml
+             * @default
+             */
+            headerHtml: string;
+            /**
+             * Locale
+             * @enum {string}
+             */
+            locale: "en" | "fr" | "ar";
+            pageSetup: components["schemas"]["PageSetup"];
+            /** Placeholders */
+            placeholders: {
+                [key: string]: components["schemas"]["PlaceholderSpec"];
+            };
+        };
         /** DocumentTemplateRead */
         DocumentTemplateRead: {
             /** Category */
@@ -2018,6 +2128,24 @@ export interface components {
              */
             locale: "en" | "fr" | "ar";
             pageSetup: components["schemas"]["PageSetup"];
+        };
+        /** DocumentTemplateVersionRead */
+        DocumentTemplateVersionRead: {
+            /** Bodyhtml */
+            bodyHtml: string;
+            /** Css */
+            css: string;
+            /** Direction */
+            direction: string;
+            /** Footerhtml */
+            footerHtml: string;
+            /** Headerhtml */
+            headerHtml: string;
+            /** Locale */
+            locale: string;
+            pageSetup: components["schemas"]["PageSetup"];
+            /** Version */
+            version: number;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -4535,6 +4663,74 @@ export interface operations {
             };
         };
     };
+    preview_document_template_api_v1_document_templates_preview_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DocumentTemplatePreview"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentPreviewRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_document_template_api_v1_document_templates__template_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                template_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentTemplateDetailRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     add_document_template_version_api_v1_document_templates__template_id__versions_post: {
         parameters: {
             query?: never;
@@ -4732,6 +4928,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DocumentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    preview_document_api_v1_documents__document_id__preview_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                document_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentPreviewRead"];
                 };
             };
             /** @description Validation Error */

@@ -78,7 +78,9 @@ def referenced_paths(source: str) -> set[str] | None:
 def _inner_node_ids(parsed: nodes.Template) -> set[int]:
     inner: set[int] = set()
     for node in parsed.find_all((nodes.Getattr, nodes.Getitem)):
-        inner.add(id(node.node))
+        # find_all already restricts the type; the check narrows it for mypy.
+        if isinstance(node, (nodes.Getattr, nodes.Getitem)):  # pragma: no branch
+            inner.add(id(node.node))
     return inner
 
 

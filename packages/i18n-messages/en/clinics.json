@@ -28,7 +28,10 @@
     "documentHeader": "Document header",
     "documentFooter": "Document footer",
     "headerPlaceholder": "Optional text or HTML shown at the top of printed documents.",
-    "footerPlaceholder": "Optional text or HTML shown at the bottom of printed documents."
+    "footerPlaceholder": "Optional text or HTML shown at the bottom of printed documents.",
+    "signature": "Signature",
+    "uploadSignature": "Upload signature",
+    "signatureHint": "PNG or JPEG shown under finalized documents."
   },
   "sites": {
     "title": "Sites",
