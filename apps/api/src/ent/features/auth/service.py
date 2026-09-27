@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ent.core.errors.exceptions import (
@@ -154,6 +155,15 @@ class AuthService:
         if clinic is None:
             raise AuthInvalidCredentialsError()
 
+        clinic_id = int(clinic.id)
+        clinic_public_id = str(
+            (
+                await self.session.execute(
+                    select(Clinic.public_id).where(Clinic.id == clinic_id),
+                )
+            ).scalar_one(),
+        )
+
         now = datetime.now(UTC).replace(tzinfo=None)
         await repo.record_successful_login(user.id, at=now)
         await clear_login_attempts(email=user.email, ip_address=ip_address)
@@ -173,7 +183,7 @@ class AuthService:
             issued_at=now,
             expires_at=expires_at,
             session_family_id=family_id,
-            active_clinic_id=clinic.id,
+            active_clinic_id=clinic_id,
         )
         await repo.create_session(session_row)
 
@@ -186,7 +196,7 @@ class AuthService:
         )
 
         set_user_id(user.id)
-        set_clinic_id(clinic.id)
+        set_clinic_id(clinic_id)
         set_ip_address(ip_address)
         set_user_agent(user_agent)
         AuditRecorder(self.session).record_write(
@@ -195,15 +205,15 @@ class AuthService:
             before=None,
             after={"session_public_id": session_row.public_id, "user_id": user.id},
             changed_fields=None,
-            clinic_id=clinic.id,
+            clinic_id=clinic_id,
         )
 
-        permissions = await repo.load_permission_codes(user.id, clinic.id)
+        permissions = await repo.load_permission_codes(user.id, clinic_id)
         access_token = create_access_token(
             settings=self.settings,
             user_public_id=user.public_id,
             session_public_id=session_row.public_id,
-            clinic_public_id=clinic.public_id,
+            clinic_public_id=clinic_public_id,
             permissions=permissions,
         )
 
@@ -213,7 +223,7 @@ class AuthService:
             expires_in_minutes=self.settings.access_token_ttl_minutes,
             session=SessionResponse(
                 user_public_id=user.public_id,
-                clinic_public_id=clinic.public_id,
+                clinic_public_id=clinic_public_id,
                 session_public_id=session_row.public_id,
             ),
         )

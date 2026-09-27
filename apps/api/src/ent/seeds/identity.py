@@ -20,39 +20,17 @@ from ent.features.users.models import User, UserClinicRole
 LOCAL_DEV_PASSWORD = "LocalDevSeed1!"
 
 
-async def _clinic_row_for_insert(
-    session: AsyncSession,
-    clinic: Clinic,
-    *,
-    slug: str,
-) -> Clinic:
-    """Return the clinic row that was inserted for this slug.
+async def load_clinic_by_slug(session: AsyncSession, slug: str) -> Clinic:
+    """Load the clinic row for a slug (authoritative id and public_id)."""
 
-    A stale LAST_INSERT_ID can attach the new object to an existing identity.
-    Reload that row, then return the clinic this insert actually created.
-    """
-
-    inserted_id = (
+    return (
         await session.execute(
-            select(Clinic.id).where(
+            select(Clinic).where(
                 Clinic.slug == slug,
                 Clinic.deleted_at.is_(None),
             ),
         )
     ).scalar_one()
-    if clinic.id != inserted_id:
-        await session.refresh(clinic)
-        return (
-            await session.execute(select(Clinic).where(Clinic.id == inserted_id))
-        ).scalar_one()
-    stored_public_id = (
-        await session.execute(
-            select(Clinic.public_id).where(Clinic.id == inserted_id),
-        )
-    ).scalar_one()
-    if clinic.public_id != stored_public_id:
-        clinic.public_id = str(stored_public_id)
-    return clinic
 
 
 @dataclass(frozen=True, slots=True)
@@ -114,19 +92,38 @@ async def ensure_clinic(
     )
     session.add(clinic)
     await session.flush()
-    return await _clinic_row_for_insert(session, clinic, slug=slug)
+    # Multiple clinic inserts in one session can leave stale ids on earlier instances.
+    session.expire_all()
+    return await load_clinic_by_slug(session, slug)
 
 
 async def clinic_public_id_by_slug(session: AsyncSession, slug: str) -> str:
     """Authoritative clinic public id after flush (avoids stale in-memory ULIDs)."""
 
+    return str((await load_clinic_by_slug(session, slug)).public_id)
+
+
+async def clinic_public_id_for_user_login(
+    session: AsyncSession,
+    *,
+    email: str,
+) -> str:
+    """Public id of the clinic chosen by ``default_clinic_for_user`` at login."""
+
+    user = (
+        await session.execute(
+            select(User).where(User.email == email, User.deleted_at.is_(None)),
+        )
+    ).scalar_one()
+    clinic = await AuthRepository(session).default_clinic_for_user(user.id)
+    if clinic is None:
+        msg = f"No active clinic membership for {email}"
+        raise RuntimeError(msg)
+    session.expire(clinic)
     return str(
         (
             await session.execute(
-                select(Clinic.public_id).where(
-                    Clinic.slug == slug,
-                    Clinic.deleted_at.is_(None),
-                ),
+                select(Clinic.public_id).where(Clinic.id == clinic.id),
             )
         ).scalar_one(),
     )

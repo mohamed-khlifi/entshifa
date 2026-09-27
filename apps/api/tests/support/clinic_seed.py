@@ -8,11 +8,13 @@ from ent.core.utils.ids import new_ulid
 from ent.seeds.identity import (
     LOCAL_DEV_PASSWORD,
     clinic_public_id_by_slug,
+    clinic_public_id_for_user_login,
     ensure_all_permissions,
     ensure_clinic,
     ensure_role,
     ensure_site,
     ensure_user_with_role,
+    load_clinic_by_slug,
 )
 
 
@@ -33,6 +35,8 @@ async def seed_clinic_admin_fixtures(session: AsyncSession) -> dict[str, str]:
         name="Other Admin Clinic",
         default_locale="en",
     )
+    clinic = await load_clinic_by_slug(session, clinic_slug)
+    other = await load_clinic_by_slug(session, other_clinic_slug)
     await ensure_site(session, clinic=clinic, name="Primary", is_primary=True)
     other_site = await ensure_site(
         session, clinic=other, name="Other Primary", is_primary=True
@@ -59,21 +63,34 @@ async def seed_clinic_admin_fixtures(session: AsyncSession) -> dict[str, str]:
         last_name="User",
         password=LOCAL_DEV_PASSWORD,
     )
+    doctor_email = f"doctor+{suffix}@test.entshifa.local"
     doctor = await ensure_user_with_role(
         session,
         clinic=clinic,
         role=doctor_role,
-        email=f"doctor+{suffix}@test.entshifa.local",
+        email=doctor_email,
         first_name="Doc",
         last_name="Tor",
         password=LOCAL_DEV_PASSWORD,
     )
 
+    clinic_public_id = await clinic_public_id_for_user_login(
+        session,
+        email=doctor_email,
+    )
+    slug_public_id = await clinic_public_id_by_slug(session, clinic_slug)
+    if clinic_public_id != slug_public_id:
+        msg = (
+            "Doctor membership clinic does not match seeded slug "
+            f"({clinic_public_id} != {slug_public_id})"
+        )
+        raise RuntimeError(msg)
+
     return {
         "admin_email": admin.email,
         "doctor_email": doctor.email,
         "password": LOCAL_DEV_PASSWORD,
-        "clinic_public_id": await clinic_public_id_by_slug(session, clinic_slug),
+        "clinic_public_id": clinic_public_id,
         "other_clinic_public_id": await clinic_public_id_by_slug(
             session,
             other_clinic_slug,
