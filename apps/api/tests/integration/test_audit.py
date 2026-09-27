@@ -12,6 +12,7 @@ from ent.core.context import set_clinic_id, set_request_id, set_user_id
 from ent.core.db.session import get_session_factory
 from ent.core.utils.ids import new_ulid
 from ent.features.clinics.models import Site
+from ent.core.security.tokens import decode_access_token
 from ent.main import create_app
 from ent.settings import get_settings
 from tests.support.auth_seed import seed_auth_fixtures
@@ -92,7 +93,9 @@ async def test_login_writes_audit_and_me_sets_context() -> None:
         assert login.status_code == 200
         body = login.json()
         token = body["accessToken"]
-        session_public_id = body["session"]["sessionPublicId"]
+        assert token, body
+        settings = get_settings()
+        session_public_id = str(decode_access_token(settings, token)["sid"])
 
         factory = get_session_factory()
         async with factory() as session:
