@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Stub until P1-11 (make anonymize producing a safe development dump).
+# Build an anonymized development dump (architecture §28 / P1-11).
 set -euo pipefail
 
-echo "anonymize: not implemented yet (see docs/tickets/phase-1.md P1-11)."
-exit 1
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$ROOT/apps/api"
+python -m ent.cli.anonymize "$@"

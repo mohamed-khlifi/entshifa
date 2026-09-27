@@ -75,8 +75,8 @@ migrate-down: ## Downgrade one Alembic revision
 migrate-check: ## Migrations on empty DB and incremental upgrade
 	cd $(API_DIR) && python scripts/migration_check.py
 
-seed: ## Load local dev identity/auth seed (demo users; run after migrate)
-	cd $(API_DIR) && python -m ent.cli.seed
+seed: ## Load system + demo seed (seed_system, seed_demo; run after migrate)
+	cd $(API_DIR) && python -m ent.cli.seed --target all
 
 contracts: ## Export OpenAPI from FastAPI and generate TypeScript types
 	cd $(API_DIR) && python -m ent.cli.export_openapi
@@ -98,5 +98,5 @@ security: ## Dependency and secret scanning (API + web)
 	cd $(API_DIR) && python scripts/pip_audit_check.py
 	cd $(WEB_DIR) && npm audit --audit-level=critical
 
-anonymize: ## Build an anonymized development database dump (implemented in P1-11)
+anonymize: ## Build an anonymized development database dump
 	@bash infra/scripts/anonymize.sh

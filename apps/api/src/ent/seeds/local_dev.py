@@ -1,4 +1,8 @@
-"""Local development seed (identity, auth, and terminology)."""
+"""Local development seed entry point.
+
+``seed_local_dev`` remains the demo clinic loader. The work is split into
+``seed_system``, ``seed_demo`` and ``seed_test`` (architecture §28).
+"""
 
 from __future__ import annotations
 
@@ -6,22 +10,8 @@ from dataclasses import dataclass
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from ent.core.security.permissions import SYSTEM_ROLE_MATRIX
-from ent.features.auth.models import Role
-from ent.features.documents.seed import ensure_patient_summary_template
-from ent.seeds.dev_patients import seed_dev_patients
-from ent.seeds.identity import (
-    LOCAL_DEV_PASSWORD,
-    SeededUser,
-    ensure_all_permissions,
-    ensure_clinic,
-    ensure_role,
-    ensure_site,
-    ensure_user_with_role,
-    load_clinic_by_slug,
-)
-from ent.seeds.scheduling import seed_appointment_types
-from ent.seeds.terminology import TerminologySeedReport, seed_terminology
+from ent.seeds.identity import SeededUser
+from ent.seeds.terminology import TerminologySeedReport
 
 DEMO_CLINIC_SLUG = "demo-entshifa"
 OTHER_CLINIC_SLUG = "demo-nord"
@@ -40,138 +30,8 @@ class LocalDevSeedReport:
 
 
 async def seed_local_dev(session: AsyncSession) -> LocalDevSeedReport:
-    permissions_created = await ensure_all_permissions(session)
+    """Load system reference data and the demo clinic."""
 
-    demo = await ensure_clinic(
-        session,
-        slug=DEMO_CLINIC_SLUG,
-        name="Cabinet EntShifa Démo",
-    )
-    other = await ensure_clinic(
-        session,
-        slug=OTHER_CLINIC_SLUG,
-        name="Clinique Nord (tenant B)",
-    )
-    demo = await load_clinic_by_slug(session, DEMO_CLINIC_SLUG)
-    other = await load_clinic_by_slug(session, OTHER_CLINIC_SLUG)
+    from ent.seeds.demo import seed_demo
 
-    await ensure_site(session, clinic=demo, name="Site principal", is_primary=True)
-    await ensure_site(session, clinic=demo, name="Annexe", is_primary=False)
-    await ensure_site(session, clinic=other, name="Site unique", is_primary=True)
-
-    roles: dict[str, Role] = {}
-    for role_code in SYSTEM_ROLE_MATRIX:
-        roles[role_code] = await ensure_role(
-            session,
-            clinic=demo,
-            code=role_code,
-            name_key=f"role.{role_code}",
-        )
-
-    users: list[SeededUser] = []
-
-    users.append(
-        await ensure_user_with_role(
-            session,
-            clinic=demo,
-            role=roles["clinic_admin"],
-            email="admin@demo.entshifa.local",
-            first_name="Amina",
-            last_name="Admin",
-        ),
-    )
-
-    doctor_names = [
-        ("Sophie", "Bernard"),
-        ("Karim", "Dupont"),
-        ("Leila", "Moreau"),
-        ("Thomas", "Petit"),
-        ("Nadia", "Rousseau"),
-    ]
-    other_doctor_role = await ensure_role(
-        session,
-        clinic=other,
-        code="doctor",
-        name_key="role.doctor",
-    )
-    for index, (first, last) in enumerate(doctor_names, start=1):
-        email = f"doctor{index}@demo.entshifa.local"
-        users.append(
-            await ensure_user_with_role(
-                session,
-                clinic=demo,
-                role=roles["doctor"],
-                email=email,
-                first_name=first,
-                last_name=last,
-            ),
-        )
-        if index == 1:
-            await ensure_user_with_role(
-                session,
-                clinic=other,
-                role=other_doctor_role,
-                email=email,
-                first_name=first,
-                last_name=last,
-            )
-
-    for index in range(1, 9):
-        users.append(
-            await ensure_user_with_role(
-                session,
-                clinic=demo,
-                role=roles["assistant"],
-                email=f"assistant{index}@demo.entshifa.local",
-                first_name="Assistant",
-                last_name=f"{index:02d}",
-            ),
-        )
-
-    for index, (first, last) in enumerate(
-        [("Marc", "Audio"), ("Yasmine", "Audi"), ("Paul", "Audiogram")],
-        start=1,
-    ):
-        users.append(
-            await ensure_user_with_role(
-                session,
-                clinic=demo,
-                role=roles["audiology_technician"],
-                email=f"audio{index}@demo.entshifa.local",
-                first_name=first,
-                last_name=last,
-            ),
-        )
-
-    for index in range(1, 4):
-        users.append(
-            await ensure_user_with_role(
-                session,
-                clinic=demo,
-                role=roles["read_only"],
-                email=f"readonly{index}@demo.entshifa.local",
-                first_name="Lecture",
-                last_name=f"Seule{index}",
-            ),
-        )
-
-    terminology = await seed_terminology(session)
-    patients_created = await seed_dev_patients(
-        session,
-        clinic_id=demo.id,
-        clinic_public_id=demo.public_id,
-    )
-    await seed_appointment_types(session, clinic_id=demo.id, created_by_id=None)
-    await seed_appointment_types(session, clinic_id=other.id, created_by_id=None)
-    await ensure_patient_summary_template(session)
-
-    return LocalDevSeedReport(
-        permissions_created=permissions_created,
-        clinics=2,
-        sites=3,
-        roles=len(roles),
-        users=users,
-        password=LOCAL_DEV_PASSWORD,
-        terminology=terminology,
-        patients_created=patients_created,
-    )
+    return await seed_demo(session)

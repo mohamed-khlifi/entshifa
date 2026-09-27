@@ -81,6 +81,7 @@ class User(GlobalRecordMixin, Base):
 
 class UserClinicRole(ClinicalRecordMixin, Base):
     __tablename__ = "user_clinic_role"
+    __audit_writes__ = True
     __table_args__ = (
         UniqueConstraint(
             "user_id",
@@ -154,6 +155,7 @@ class UserInvitation(ClinicalRecordMixin, Base):
     """Single-use staff invitation. Raw token is never stored."""
 
     __tablename__ = "user_invitation"
+    __audit_writes__ = True
     __table_args__ = (
         Index("ix_user_invitation__clinic_id__email", "clinic_id", "email"),
     )

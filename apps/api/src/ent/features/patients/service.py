@@ -370,7 +370,10 @@ class PatientService:
         """Empty until encounters exist. Confirms the patient is visible."""
 
         self._bind(user)
-        await self._visible(user, public_id)
+        patient = await self._visible(user, public_id)
+        await self._access_patient(
+            user, patient, action="timeline", entity_type="patient"
+        )
         return PageSchema(
             items=[],
             page=PageMeta(total=0, limit=25, offset=0, next_cursor=None),
@@ -385,7 +388,11 @@ class PatientService:
             patient.id, limit=page.limit, offset=page.offset or 0
         )
         total = await count_children(repo, patient.id)
-        return _page([_identifier(row) for row in items], total, page)
+        chart = _page([_identifier(row) for row in items], total, page)
+        await self._access_patient(
+            user, patient, action="list", entity_type="patient_identifier"
+        )
+        return chart
 
     async def add_identifier(
         self,
@@ -428,7 +435,11 @@ class PatientService:
         labels = await self._concept_labels(
             user, _concept_ids(items, "substance_concept_id", "reaction_concept_id")
         )
-        return _page([_allergy(row, labels) for row in items], total, page)
+        chart = _page([_allergy(row, labels) for row in items], total, page)
+        await self._access_patient(
+            user, patient, action="list", entity_type="patient_allergy"
+        )
+        return chart
 
     async def add_allergy(
         self,
@@ -471,7 +482,11 @@ class PatientService:
             patient.id, limit=page.limit, offset=page.offset or 0
         )
         total = await count_children(repo, patient.id)
-        return _page([_medication(row) for row in items], total, page)
+        chart = _page([_medication(row) for row in items], total, page)
+        await self._access_patient(
+            user, patient, action="list", entity_type="patient_medication"
+        )
+        return chart
 
     async def add_medication(
         self,
@@ -532,7 +547,11 @@ class PatientService:
         users = await self._patients(user).user_public_ids(
             {row.created_by_id for row in items if row.created_by_id is not None}
         )
-        return _page([_flag(row, users) for row in items], len(items), page)
+        chart = _page([_flag(row, users) for row in items], len(items), page)
+        await self._access_patient(
+            user, patient, action="list", entity_type="patient_flag"
+        )
+        return chart
 
     async def add_flag(
         self,
@@ -606,7 +625,11 @@ class PatientService:
         labels = await self._concept_labels(
             user, _concept_ids(items, "diagnosis_concept_id")
         )
-        return _page([_problem(row, labels) for row in items], total, page)
+        chart = _page([_problem(row, labels) for row in items], total, page)
+        await self._access_patient(
+            user, patient, action="list", entity_type="patient_problem"
+        )
+        return chart
 
     async def add_problem(
         self,
@@ -650,7 +673,11 @@ class PatientService:
         labels = await self._concept_labels(
             user, {row.concept_id for row in items if row.concept_id is not None}
         )
-        return _page([_history(row, labels) for row in items], total, page)
+        chart = _page([_history(row, labels) for row in items], total, page)
+        await self._access_patient(
+            user, patient, action="list", entity_type="patient_history"
+        )
+        return chart
 
     async def add_history(
         self,
@@ -790,6 +817,25 @@ class PatientService:
             return
         if await repo.soft_delete(row.id, user.user_id):
             await self._session.commit()
+
+    async def _access_patient(
+        self,
+        user: CurrentUser,
+        patient: Patient,
+        *,
+        action: str,
+        entity_type: str,
+    ) -> None:
+        self._bind(user)
+        self._audit.record_access(
+            action=action,
+            entity_type=entity_type,
+            clinic_id=user.clinic_id,
+            entity_id=patient.id,
+            entity_public_id=patient.public_id,
+            patient_id=patient.id,
+        )
+        await self._session.commit()
 
     def _bind(self, user: CurrentUser) -> None:
         set_user_id(user.user_id)

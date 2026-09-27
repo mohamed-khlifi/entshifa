@@ -16,6 +16,7 @@ _REDACTED_KEYS = frozenset(
         "refresh_token_hash",
         "previous_refresh_token_hash",
         "access_token",
+        "token_hash",
     },
 )
 

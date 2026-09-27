@@ -187,7 +187,7 @@ line by line.
 
 ---
 
-## - [ ] P1-11 Phase 1 hardening
+## - [x] P1-11 Phase 1 hardening
 
 **Scope**
 - Cross-tenant isolation test generated over every endpoint registered so far.

@@ -53,6 +53,58 @@ Stop the stack:
 make dev-down
 ```
 
+## Run the application
+
+From a fresh clone, with the prerequisites above:
+
+```bash
+cp .env.example .env
+make dev
+cd apps/api
+python -m pip install -e ".[dev]"
+python -m alembic upgrade head
+python -m ent.cli.seed --target all
+python -m uvicorn ent.main:create_app --factory --reload --host 0.0.0.0 --port 8000 --app-dir src
+```
+
+In a second terminal:
+
+```bash
+cd apps/web
+npm ci
+npm run dev
+```
+
+Open `http://localhost:3000`. Demo logins are written to `dev-seed-output.txt`
+(password `LocalDevSeed1!` unless you changed the seed). The admin user is
+`admin@demo.entshifa.local`.
+
+On PowerShell, from the repository root:
+
+```powershell
+Copy-Item .env.example .env
+docker compose --env-file .env up -d --wait
+docker compose --env-file .env --profile init run --rm minio-init
+cd apps\api
+python -m pip install -e ".[dev]"
+python -m alembic upgrade head
+python -m ent.cli.seed --target all
+python -m uvicorn ent.main:create_app --factory --reload --host 0.0.0.0 --port 8000 --app-dir src
+```
+
+Seed targets, from `apps/api`:
+
+| Target | Command | What it loads |
+|--------|---------|----------------|
+| system | `python -m ent.cli.seed --target system` | Permissions, terminology, system templates |
+| demo / all | `python -m ent.cli.seed --target all` | System data plus the demo clinic |
+| test | `python -m ent.cli.seed --target test` | Deterministic fixture clinic |
+
+`make seed` is the demo target. `make anonymize` writes
+`build/anonymized-dev.sql` with names, phones, identifiers and free text
+removed and patient dates shifted. Backup and restore steps are in
+`docs/runbooks/backup-and-restore.md`.
+
 ## Repository layout
 
 ```
@@ -88,11 +140,11 @@ docs/           Architecture, clinical spec, tickets, database DDL
 | `make security` | pip-audit + npm audit |
 | `make migrate` | Alembic migrations (P0-03) |
 | `make migrate-down` | Downgrade one Alembic revision |
-| `make seed` | Reference data seeds (P0-08) |
+| `make seed` | System + demo seed (`seed_system`, `seed_demo`) |
 | `make i18n-check` | Translation catalog parity (P0-11) |
 | `make contracts` | Export OpenAPI + generate TypeScript types (P0-12) |
 | `make contracts-check` | Fail if committed contracts disagree with the API |
-| `make anonymize` | Anonymized dump script stub (full job in P1-11) |
+| `make anonymize` | Anonymized development SQL dump |
 
 Run `make help` for a short list.
 

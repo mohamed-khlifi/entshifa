@@ -2,14 +2,42 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any
 
-from sqlalchemy import Boolean, ForeignKey, String, text
+from sqlalchemy import (
+    Boolean,
+    CheckConstraint,
+    ForeignKey,
+    Index,
+    String,
+    Text,
+    UniqueConstraint,
+    text,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ent.core.db.base import Base
-from ent.core.db.mixins import ClinicalRecordMixin, GlobalRecordMixin
-from ent.core.db.mysql_types import mysql_json, unsigned_bigint
+from ent.core.db.mixins import (
+    AuditMixin,
+    ClinicalRecordMixin,
+    GlobalRecordMixin,
+    PublicIdMixin,
+    SoftDeleteMixin,
+    SurrogatePkMixin,
+    TimestampMixin,
+)
+from ent.core.db.mysql_types import datetime6, mysql_json, unsigned_bigint
+
+# Architecture §25.17 examples, plus the Phase 1 datasets seed_system records.
+REFERENCE_DATASETS: tuple[str, ...] = (
+    "formulary",
+    "instruments",
+    "protocols",
+    "terminology",
+    "permissions",
+    "templates",
+)
 
 
 class Clinic(GlobalRecordMixin, Base):
@@ -100,3 +128,48 @@ class Setting(GlobalRecordMixin, Base):
         nullable=False,
     )
     value: Mapped[Any] = mapped_column(mysql_json(), nullable=False)
+
+
+class ReferenceDataVersion(
+    SurrogatePkMixin,
+    PublicIdMixin,
+    TimestampMixin,
+    AuditMixin,
+    SoftDeleteMixin,
+    Base,
+):
+    """One applied revision of a reference dataset (architecture §25.17 / §28).
+
+    ``version`` is the dataset label (VARCHAR), not the optimistic-lock counter.
+    Rows are insert-only, so the integer lock from section 23 is omitted.
+    """
+
+    __tablename__ = "reference_data_version"
+    __table_args__ = (
+        CheckConstraint(
+            "dataset IN (" + ",".join(f"'{item}'" for item in REFERENCE_DATASETS) + ")",
+            name="ck_reference_data_version__dataset",
+        ),
+        UniqueConstraint(
+            "dataset",
+            "version",
+            name="uq_reference_data_version__dataset__version",
+        ),
+        Index("ix_reference_data_version__dataset", "dataset"),
+    )
+
+    dataset: Mapped[str] = mapped_column(
+        String(60, collation="utf8mb4_0900_as_cs"),
+        nullable=False,
+    )
+    version: Mapped[str] = mapped_column(
+        String(40, collation="utf8mb4_0900_as_cs"),
+        nullable=False,
+    )
+    applied_at: Mapped[datetime] = mapped_column(datetime6(), nullable=False)
+    applied_by_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("user.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=True,
+    )
+    notes: Mapped[str | None] = mapped_column(Text, nullable=True)

@@ -69,6 +69,11 @@ class SchedulingService:
             )
             for row in result.items
         ]
+        self._audit.record_access(
+            action="list",
+            entity_type="user",
+            clinic_id=user.clinic_id,
+        )
         await self._session.commit()
         return PageSchema(
             items=reads,
@@ -89,6 +94,11 @@ class SchedulingService:
         self._bind(user)
         repo = AppointmentTypeRepository(self._session, user.clinic_id)
         result = await repo.list(page=page, sort="code")
+        self._audit.record_access(
+            action="list",
+            entity_type="appointment_type",
+            clinic_id=user.clinic_id,
+        )
         await self._session.commit()
         return _page(result, _appointment_type_read)
 
