@@ -127,24 +127,8 @@ class AuthRepository:
     async def create_session(self, session: UserSession) -> UserSession:
         self._session.add(session)
         await self._session.flush()
-        # The JWT must carry the public id that was stored. Match the row by
-        # the refresh hash from this insert, not by a possibly stale identity key.
-        stored = (
-            await self._session.execute(
-                select(UserSession.id, UserSession.public_id).where(
-                    UserSession.refresh_token_hash == session.refresh_token_hash,
-                ),
-            )
-        ).one()
-        if session.id != stored.id:
-            await self._session.refresh(session)
-            return (
-                await self._session.execute(
-                    select(UserSession).where(UserSession.id == stored.id),
-                )
-            ).scalar_one()
-        if session.public_id != stored.public_id:
-            session.public_id = str(stored.public_id)
+        # Reload from the DB so JWT ``sid`` matches the persisted ``public_id``.
+        await self._session.refresh(session)
         return session
 
     async def record_failed_login(self, user_id: int) -> None:

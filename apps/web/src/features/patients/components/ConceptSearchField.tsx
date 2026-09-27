@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { fieldTestId } from "@/lib/forms/field-test-id";
+import { conceptOptionTestId, fieldTestId } from "@/lib/forms/field-test-id";
 import { testIdProps } from "@/lib/test/test-id";
 import { cn } from "@/lib/utils/cn";
 
@@ -50,7 +50,10 @@ export function ConceptSearchField({
     kinds,
     valueSetCode,
   };
-  const { items, isFetching } = useConceptPickerOptions(debouncedQuery, pickerParams);
+  const { items, isFetching } = useConceptPickerOptions(
+    debouncedQuery,
+    pickerParams,
+  );
   const inputId = fieldTestId(name);
   const listId = fieldTestId(`${name}Results`);
   const panelId = useId();
@@ -62,7 +65,8 @@ export function ConceptSearchField({
     return () => window.clearTimeout(handle);
   }, [query]);
 
-  const showResults = isOpen && (isFetching || items.length > 0 || debouncedQuery.length > 0);
+  const showResults =
+    isOpen && (isFetching || items.length > 0 || debouncedQuery.length > 0);
 
   return (
     <div className={cn("space-y-1.5", className)}>
@@ -148,7 +152,7 @@ export function ConceptSearchField({
                           setIsOpen(false);
                         }}
                         {...testIdProps(
-                          fieldTestId(`${name}Option-${item.publicId}`),
+                          conceptOptionTestId(name, item.publicId),
                         )}
                       >
                         {item.display}

@@ -139,13 +139,7 @@ export const testIds = {
     alertOther: testId("patients", "alert-other"),
     chart: testId("patients", "chart"),
     chartRemove: (section: string, publicId: string) =>
-      testId(
-        "patients",
-        "chart",
-        section,
-        "remove",
-        publicId.toLowerCase(),
-      ),
+      publicIdTestId(`patients.chart.${section}.remove`, publicId),
     conflict: testId("patients", "conflict"),
     conflictReload: testId("patients", "conflict-reload"),
     loading: testId("patients", "loading"),

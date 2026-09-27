@@ -51,7 +51,9 @@ def test_write_dev_seed_output_lists_email_password_and_role(
 
     write_dev_seed_output(report)
 
-    payload = json.loads((output_dir / "dev-seed-output.json").read_text(encoding="utf-8"))
+    payload = json.loads(
+        (output_dir / "dev-seed-output.json").read_text(encoding="utf-8")
+    )
     assert payload == {
         "users": [
             {

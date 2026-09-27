@@ -88,9 +88,7 @@ async def _build_patient_create(
                 flag_code=row["flagCode"],
                 laterality=row.get("laterality"),
                 started_on=_parse_date(row["startedOn"]),
-                ended_on=(
-                    _parse_date(row["endedOn"]) if row.get("endedOn") else None
-                ),
+                ended_on=(_parse_date(row["endedOn"]) if row.get("endedOn") else None),
                 is_auto=row.get("isAuto", False),
             ),
         )

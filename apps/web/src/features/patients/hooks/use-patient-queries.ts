@@ -254,7 +254,11 @@ export function useAddHistoryMutation() {
 }
 
 function useDeleteChartItemMutation(
-  deleteFn: (patientId: string, itemId: string, scope: ApiScope) => Promise<void>,
+  deleteFn: (
+    patientId: string,
+    itemId: string,
+    scope: ApiScope,
+  ) => Promise<void>,
 ) {
   const scope = useScope();
   const queryClient = useQueryClient();

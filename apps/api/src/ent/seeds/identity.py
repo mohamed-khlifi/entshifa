@@ -270,4 +270,9 @@ async def ensure_user_with_role(
         )
         await session.flush()
 
-    return SeededUser(email=email, role_code=role.code, public_id=user.public_id)
+    user_public_id = str(
+        (
+            await session.execute(select(User.public_id).where(User.id == user.id))
+        ).scalar_one(),
+    )
+    return SeededUser(email=email, role_code=role.code, public_id=user_public_id)

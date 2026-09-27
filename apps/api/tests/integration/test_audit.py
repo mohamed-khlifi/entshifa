@@ -71,6 +71,9 @@ async def test_site_create_writes_audit_row() -> None:
 @pytest.mark.integration
 @pytest.mark.asyncio
 async def test_login_writes_audit_and_me_sets_context() -> None:
+    from ent.core.db.session import dispose_engine
+
+    await dispose_engine()
     app = create_app(settings=get_settings())
     factory = get_session_factory()
     async with factory() as session:
@@ -87,13 +90,29 @@ async def test_login_writes_audit_and_me_sets_context() -> None:
             json={"email": fixtures["email"], "password": fixtures["password"]},
         )
         assert login.status_code == 200
-        token = login.json()["accessToken"]
+        body = login.json()
+        token = body["accessToken"]
+        session_public_id = body["session"]["sessionPublicId"]
+
+        factory = get_session_factory()
+        async with factory() as session:
+            from ent.features.users.models import UserSession
+
+            persisted = (
+                await session.execute(
+                    select(UserSession).where(
+                        UserSession.public_id == session_public_id,
+                    ),
+                )
+            ).scalar_one_or_none()
+            assert persisted is not None, "login session must be committed before /me"
 
         me = await client.get(
             "/api/v1/auth/me",
             headers={"Authorization": f"Bearer {token}"},
         )
-        assert me.status_code == 200
+        assert me.status_code == 200, me.text
+        assert me.json()["userPublicId"] == fixtures["user_public_id"]
         assert "X-Request-Id" in me.headers
 
     async with factory() as session:

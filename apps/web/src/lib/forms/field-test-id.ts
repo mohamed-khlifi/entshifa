@@ -1,4 +1,4 @@
-import { testId } from "@/lib/test/test-id";
+import { publicIdTestId, testId } from "@/lib/test/test-id";
 
 /** Convert RHF field `name` (camelCase / dotted) to kebab test-id segments. */
 export function fieldNameSegments(name: string): string[] {
@@ -22,6 +22,16 @@ export function fieldTestId(name: string): string {
 
 export function fieldErrorTestId(name: string): string {
   return testId("forms", "field-error", ...fieldNameSegments(name));
+}
+
+export function conceptOptionTestId(
+  name: string,
+  conceptPublicId: string,
+): string {
+  const scope = ["forms", "field", ...fieldNameSegments(name), "option"].join(
+    ".",
+  );
+  return publicIdTestId(scope, conceptPublicId);
 }
 
 export function columnTestId(columnId: string): string {

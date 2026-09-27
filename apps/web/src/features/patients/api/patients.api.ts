@@ -274,10 +274,10 @@ export function deletePatientProblem(
   problemId: string,
   scope: Scope,
 ): Promise<void> {
-  return apiFetch<void>(
-    `/api/v1/patients/${patientId}/problems/${problemId}`,
-    { ...scope, method: "DELETE" },
-  );
+  return apiFetch<void>(`/api/v1/patients/${patientId}/problems/${problemId}`, {
+    ...scope,
+    method: "DELETE",
+  });
 }
 
 export function deletePatientHistory(
@@ -285,8 +285,8 @@ export function deletePatientHistory(
   historyId: string,
   scope: Scope,
 ): Promise<void> {
-  return apiFetch<void>(
-    `/api/v1/patients/${patientId}/history/${historyId}`,
-    { ...scope, method: "DELETE" },
-  );
+  return apiFetch<void>(`/api/v1/patients/${patientId}/history/${historyId}`, {
+    ...scope,
+    method: "DELETE",
+  });
 }

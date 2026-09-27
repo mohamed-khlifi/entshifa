@@ -424,8 +424,8 @@ class PatientService:
             patient.id, limit=page.limit, offset=page.offset or 0
         )
         total = await count_children(repo, patient.id)
-        labels = await self._concept_labels(user,
-            _concept_ids(items, "substance_concept_id", "reaction_concept_id")
+        labels = await self._concept_labels(
+            user, _concept_ids(items, "substance_concept_id", "reaction_concept_id")
         )
         return _page([_allergy(row, labels) for row in items], total, page)
 
@@ -456,8 +456,8 @@ class PatientService:
             row.public_id,
         )
         await self._session.commit()
-        labels = await self._concept_labels(user,
-            _concept_ids([row], "substance_concept_id", "reaction_concept_id")
+        labels = await self._concept_labels(
+            user, _concept_ids([row], "substance_concept_id", "reaction_concept_id")
         )
         return _allergy(row, labels)
 
@@ -602,8 +602,8 @@ class PatientService:
             patient.id, limit=page.limit, offset=page.offset or 0
         )
         total = await count_children(repo, patient.id)
-        labels = await self._concept_labels(user,
-            _concept_ids(items, "diagnosis_concept_id")
+        labels = await self._concept_labels(
+            user, _concept_ids(items, "diagnosis_concept_id")
         )
         return _page([_problem(row, labels) for row in items], total, page)
 
@@ -634,7 +634,7 @@ class PatientService:
             row.public_id,
         )
         await self._session.commit()
-        labels = await self._concept_labels(user,{row.diagnosis_concept_id})
+        labels = await self._concept_labels(user, {row.diagnosis_concept_id})
         return _problem(row, labels)
 
     async def list_history(
@@ -646,8 +646,8 @@ class PatientService:
             patient.id, limit=page.limit, offset=page.offset or 0
         )
         total = await count_children(repo, patient.id)
-        labels = await self._concept_labels(user,
-            {row.concept_id for row in items if row.concept_id is not None}
+        labels = await self._concept_labels(
+            user, {row.concept_id for row in items if row.concept_id is not None}
         )
         return _page([_history(row, labels) for row in items], total, page)
 
@@ -678,8 +678,8 @@ class PatientService:
             row.public_id,
         )
         await self._session.commit()
-        labels = await self._concept_labels(user,
-            {row.concept_id} if row.concept_id is not None else set()
+        labels = await self._concept_labels(
+            user, {row.concept_id} if row.concept_id is not None else set()
         )
         return _history(row, labels)
 
@@ -1111,8 +1111,8 @@ class PatientService:
         ).get_by_public_id(public_id)
         if row is None or row.patient_id != patient_id:
             raise NotFoundError(resource="patient_allergy", public_id=public_id)
-        labels = await self._concept_labels(user,
-            _concept_ids([row], "substance_concept_id", "reaction_concept_id")
+        labels = await self._concept_labels(
+            user, _concept_ids([row], "substance_concept_id", "reaction_concept_id")
         )
         return _allergy(row, labels)
 
@@ -1147,7 +1147,7 @@ class PatientService:
         ).get_by_public_id(public_id)
         if row is None or row.patient_id != patient_id:
             raise NotFoundError(resource="patient_problem", public_id=public_id)
-        labels = await self._concept_labels(user,{row.diagnosis_concept_id})
+        labels = await self._concept_labels(user, {row.diagnosis_concept_id})
         return _problem(row, labels)
 
     async def _history_by_public_id(
@@ -1158,8 +1158,8 @@ class PatientService:
         ).get_by_public_id(public_id)
         if row is None or row.patient_id != patient_id:
             raise NotFoundError(resource="patient_history", public_id=public_id)
-        labels = await self._concept_labels(user,
-            {row.concept_id} if row.concept_id is not None else set()
+        labels = await self._concept_labels(
+            user, {row.concept_id} if row.concept_id is not None else set()
         )
         return _history(row, labels)
 
