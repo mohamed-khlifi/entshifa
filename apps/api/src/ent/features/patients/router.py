@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import date
 
-from fastapi import APIRouter, Depends, Header, Query, status
+from fastapi import APIRouter, Depends, Header, Query, Response, status
 
 from ent.core.schemas.base import PageSchema, PaginationParams
 from ent.core.security.permissions import Permission
@@ -179,6 +179,24 @@ async def add_identifier(
     )
 
 
+@router.delete(
+    "/{patient_id}/identifiers/{identifier_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_identifier(
+    patient_id: str,
+    identifier_id: str,
+    user: CurrentUser = Depends(require(Permission.PATIENT_WRITE)),
+    service: PatientService = Depends(get_patient_service),
+) -> Response:
+    await service.delete_identifier(
+        user=user,
+        public_id=patient_id,
+        identifier_id=identifier_id,
+    )
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
 @router.get("/{patient_id}/allergies", response_model=PageSchema[PatientAllergyRead])
 async def list_allergies(
     patient_id: str,
@@ -210,6 +228,24 @@ async def add_allergy(
         body=body,
         idempotency_key=idempotency_key,
     )
+
+
+@router.delete(
+    "/{patient_id}/allergies/{allergy_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_allergy(
+    patient_id: str,
+    allergy_id: str,
+    user: CurrentUser = Depends(require(Permission.PATIENT_WRITE)),
+    service: PatientService = Depends(get_patient_service),
+) -> Response:
+    await service.delete_allergy(
+        user=user,
+        public_id=patient_id,
+        allergy_id=allergy_id,
+    )
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @router.get(
@@ -246,6 +282,24 @@ async def add_medication(
         body=body,
         idempotency_key=idempotency_key,
     )
+
+
+@router.delete(
+    "/{patient_id}/medications/{medication_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_medication(
+    patient_id: str,
+    medication_id: str,
+    user: CurrentUser = Depends(require(Permission.PATIENT_WRITE)),
+    service: PatientService = Depends(get_patient_service),
+) -> Response:
+    await service.delete_medication(
+        user=user,
+        public_id=patient_id,
+        medication_id=medication_id,
+    )
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
 @router.get("/{patient_id}/flags", response_model=PageSchema[PatientFlagRead])
@@ -333,6 +387,24 @@ async def add_problem(
     )
 
 
+@router.delete(
+    "/{patient_id}/problems/{problem_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_problem(
+    patient_id: str,
+    problem_id: str,
+    user: CurrentUser = Depends(require(Permission.PATIENT_WRITE)),
+    service: PatientService = Depends(get_patient_service),
+) -> Response:
+    await service.delete_problem(
+        user=user,
+        public_id=patient_id,
+        problem_id=problem_id,
+    )
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
 @router.get("/{patient_id}/history", response_model=PageSchema[PatientHistoryRead])
 async def list_history(
     patient_id: str,
@@ -364,3 +436,21 @@ async def add_history(
         body=body,
         idempotency_key=idempotency_key,
     )
+
+
+@router.delete(
+    "/{patient_id}/history/{history_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_history(
+    patient_id: str,
+    history_id: str,
+    user: CurrentUser = Depends(require(Permission.PATIENT_WRITE)),
+    service: PatientService = Depends(get_patient_service),
+) -> Response:
+    await service.delete_history(
+        user=user,
+        public_id=patient_id,
+        history_id=history_id,
+    )
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

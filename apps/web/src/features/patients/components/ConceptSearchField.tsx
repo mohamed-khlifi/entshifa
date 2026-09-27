@@ -3,7 +3,10 @@
 import { useEffect, useId, useState } from "react";
 import { useTranslations } from "next-intl";
 
-import { useConceptSearchQuery } from "../hooks/use-patient-queries";
+import {
+  useConceptPickerOptions,
+  type ConceptPickerParams,
+} from "../hooks/use-patient-queries";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -19,6 +22,8 @@ type ConceptSearchFieldProps = {
   selectedId: string;
   selectedDisplay: string;
   kind?: string;
+  kinds?: string[];
+  valueSetCode?: string;
   className?: string;
   onSelect: (concept: { publicId: string; display: string }) => void;
   onClear?: () => void;
@@ -30,6 +35,8 @@ export function ConceptSearchField({
   selectedId,
   selectedDisplay,
   kind,
+  kinds,
+  valueSetCode,
   className,
   onSelect,
   onClear,
@@ -38,7 +45,12 @@ export function ConceptSearchField({
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const search = useConceptSearchQuery(debouncedQuery, kind);
+  const pickerParams: ConceptPickerParams = {
+    kind,
+    kinds,
+    valueSetCode,
+  };
+  const { items, isFetching } = useConceptPickerOptions(debouncedQuery, pickerParams);
   const inputId = fieldTestId(name);
   const listId = fieldTestId(`${name}Results`);
   const panelId = useId();
@@ -50,10 +62,7 @@ export function ConceptSearchField({
     return () => window.clearTimeout(handle);
   }, [query]);
 
-  const showResults =
-    isOpen &&
-    debouncedQuery.length >= 2 &&
-    (search.isFetching || search.data !== undefined);
+  const showResults = isOpen && (isFetching || items.length > 0 || debouncedQuery.length > 0);
 
   return (
     <div className={cn("space-y-1.5", className)}>
@@ -87,6 +96,7 @@ export function ConceptSearchField({
             id={inputId}
             value={query}
             onFocus={() => setIsOpen(true)}
+            onBlur={() => setIsOpen(false)}
             onChange={(event) => {
               setQuery(event.target.value);
               setIsOpen(true);
@@ -105,32 +115,29 @@ export function ConceptSearchField({
               className="rounded-lg border border-border bg-card shadow-sm"
               {...testIdProps(listId)}
             >
-              {search.isFetching ? (
+              {isFetching ? (
                 <p className="px-3 py-2 text-sm text-muted-foreground">
                   {t("concept.searching")}
                 </p>
               ) : null}
-              {!search.isFetching &&
-              search.data &&
-              search.data.items.length === 0 ? (
+              {!isFetching && items.length === 0 ? (
                 <p className="px-3 py-2 text-sm text-muted-foreground">
                   {t("concept.empty")}
                 </p>
               ) : null}
-              {!search.isFetching &&
-              search.data &&
-              search.data.items.length > 0 ? (
+              {!isFetching && items.length > 0 ? (
                 <ul
                   className="max-h-48 divide-y divide-border overflow-auto"
                   role="listbox"
                 >
-                  {search.data.items.map((item) => (
+                  {items.map((item) => (
                     <li key={item.publicId}>
                       <button
                         type="button"
                         role="option"
                         aria-selected={selectedId === item.publicId}
                         className="w-full px-3 py-2.5 text-start text-sm hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
+                        onMouseDown={(event) => event.preventDefault()}
                         onClick={() => {
                           onSelect({
                             publicId: item.publicId,

@@ -160,6 +160,7 @@
     "addFlag": "Add safety flag",
     "flag": "Flag",
     "endFlag": "End flag",
+    "remove": "Remove",
     "addProblem": "Add problem",
     "diagnosis": "Diagnosis",
     "status": "Status",

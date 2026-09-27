@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
@@ -11,13 +12,25 @@ import {
   addPatientIdentifier,
   addPatientMedication,
   addPatientProblem,
+  deletePatientAllergy,
+  deletePatientHistory,
+  deletePatientIdentifier,
+  deletePatientMedication,
+  deletePatientProblem,
+  fetchConceptDictionary,
   fetchPatient,
   fetchPatientTimeline,
   fetchPatients,
+  fetchValueSet,
   searchConcepts,
   updatePatientFlag,
   type PatientListParams,
 } from "../api/patients.api";
+import {
+  conceptOptionsFromDictionary,
+  filterConceptOptions,
+  type ConceptOption,
+} from "../lib/concept-picker-options";
 import type {
   PatientAllergyCreate,
   PatientFlagCreate,
@@ -45,6 +58,8 @@ function useChartErrorToast(): (error: unknown) => void {
     toast.error(message);
   };
 }
+
+type ApiScope = { locale: string; clinicPublicId: string };
 
 function useScope() {
   const locale = useLocale();
@@ -99,24 +114,89 @@ export function usePatientTimelineQuery(patientId: string) {
   });
 }
 
-export function useConceptSearchQuery(q: string, kind?: string) {
+export type ConceptPickerParams = {
+  kind?: string;
+  kinds?: string[];
+  valueSetCode?: string;
+};
+
+export function useConceptPickerOptions(
+  query: string,
+  params: ConceptPickerParams = {},
+) {
   const scope = useScope();
-  const term = q.trim();
-  return useQuery({
+  const term = query.trim();
+  const kinds =
+    params.kinds?.join(",") ?? (params.kind ? params.kind : undefined);
+
+  const browse = useQuery({
+    queryKey: queryKeys.terminology.dictionary({
+      locale: scope.locale,
+      kinds,
+      valueSet: params.valueSetCode,
+    }),
+    queryFn: async (): Promise<ConceptOption[]> => {
+      const requestScope = {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      };
+      if (params.valueSetCode) {
+        const valueSet = await fetchValueSet(params.valueSetCode, requestScope);
+        return valueSet.members.map((item) => ({
+          publicId: item.publicId,
+          display: item.display,
+        }));
+      }
+      const dictionary = await fetchConceptDictionary(requestScope, kinds);
+      return conceptOptionsFromDictionary(dictionary.concepts);
+    },
+    enabled: scope.enabled,
+    staleTime: 300_000,
+  });
+
+  const search = useQuery({
     queryKey: queryKeys.terminology.search({
       q: term,
       locale: scope.locale,
-      kind,
+      kind: params.kind,
     }),
     queryFn: () =>
       searchConcepts(
         { locale: scope.locale, clinicPublicId: scope.clinicPublicId },
-        { q: term, kind },
+        { q: term, kind: params.kind },
       ),
-    enabled: scope.enabled && term.length >= 2,
+    enabled: scope.enabled && term.length >= 1,
     staleTime: 120_000,
     placeholderData: (previous) => previous,
   });
+
+  return useMemo(() => {
+    if (term.length >= 1) {
+      const items = search.data?.items ?? [];
+      return {
+        items: items.map((item) => ({
+          publicId: item.publicId,
+          display: item.display,
+        })),
+        isFetching: search.isFetching,
+        isLoading: search.isLoading,
+      };
+    }
+    const browsed = browse.data ?? [];
+    return {
+      items: filterConceptOptions(browsed, term),
+      isFetching: browse.isFetching,
+      isLoading: browse.isLoading,
+    };
+  }, [
+    browse.data,
+    browse.isFetching,
+    browse.isLoading,
+    search.data,
+    search.isFetching,
+    search.isLoading,
+    term,
+  ]);
 }
 
 function useChartMutation<TBody>(
@@ -171,6 +251,49 @@ export function useAddProblemMutation() {
 
 export function useAddHistoryMutation() {
   return useChartMutation<PatientHistoryCreate>(addPatientHistory);
+}
+
+function useDeleteChartItemMutation(
+  deleteFn: (patientId: string, itemId: string, scope: ApiScope) => Promise<void>,
+) {
+  const scope = useScope();
+  const queryClient = useQueryClient();
+  const t = useTranslations("patients");
+  const onError = useChartErrorToast();
+  return useMutation({
+    mutationFn: (input: { patientId: string; itemId: string }) =>
+      deleteFn(input.patientId, input.itemId, {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    onSuccess: async (_data, input) => {
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.patients.detail(input.patientId),
+      });
+      toast.success(t("chart.saved"));
+    },
+    onError,
+  });
+}
+
+export function useDeleteIdentifierMutation() {
+  return useDeleteChartItemMutation(deletePatientIdentifier);
+}
+
+export function useDeleteAllergyMutation() {
+  return useDeleteChartItemMutation(deletePatientAllergy);
+}
+
+export function useDeleteMedicationMutation() {
+  return useDeleteChartItemMutation(deletePatientMedication);
+}
+
+export function useDeleteProblemMutation() {
+  return useDeleteChartItemMutation(deletePatientProblem);
+}
+
+export function useDeleteHistoryMutation() {
+  return useDeleteChartItemMutation(deletePatientHistory);
 }
 
 export function useEndFlagMutation() {

@@ -683,6 +683,86 @@ class PatientService:
         )
         return _history(row, labels)
 
+    async def delete_identifier(
+        self,
+        *,
+        user: CurrentUser,
+        public_id: str,
+        identifier_id: str,
+    ) -> None:
+        self._bind(user)
+        patient = await self._visible(user, public_id)
+        repo = PatientIdentifierRepository(self._session, clinic_id=user.clinic_id)
+        row = await repo.get_by_public_id(identifier_id)
+        if row is None or row.patient_id != patient.id:
+            raise NotFoundError(resource="patient_identifier", public_id=identifier_id)
+        await repo.soft_delete(row.id, user.user_id)
+        await self._session.commit()
+
+    async def delete_allergy(
+        self,
+        *,
+        user: CurrentUser,
+        public_id: str,
+        allergy_id: str,
+    ) -> None:
+        self._bind(user)
+        patient = await self._visible(user, public_id)
+        repo = PatientAllergyRepository(self._session, clinic_id=user.clinic_id)
+        row = await repo.get_by_public_id(allergy_id)
+        if row is None or row.patient_id != patient.id:
+            raise NotFoundError(resource="patient_allergy", public_id=allergy_id)
+        await repo.soft_delete(row.id, user.user_id)
+        await self._session.commit()
+
+    async def delete_medication(
+        self,
+        *,
+        user: CurrentUser,
+        public_id: str,
+        medication_id: str,
+    ) -> None:
+        self._bind(user)
+        patient = await self._visible(user, public_id)
+        repo = PatientMedicationRepository(self._session, clinic_id=user.clinic_id)
+        row = await repo.get_by_public_id(medication_id)
+        if row is None or row.patient_id != patient.id:
+            raise NotFoundError(resource="patient_medication", public_id=medication_id)
+        await repo.soft_delete(row.id, user.user_id)
+        await self._session.commit()
+
+    async def delete_problem(
+        self,
+        *,
+        user: CurrentUser,
+        public_id: str,
+        problem_id: str,
+    ) -> None:
+        self._bind(user)
+        patient = await self._visible(user, public_id)
+        repo = PatientProblemRepository(self._session, clinic_id=user.clinic_id)
+        row = await repo.get_by_public_id(problem_id)
+        if row is None or row.patient_id != patient.id:
+            raise NotFoundError(resource="patient_problem", public_id=problem_id)
+        await repo.soft_delete(row.id, user.user_id)
+        await self._session.commit()
+
+    async def delete_history(
+        self,
+        *,
+        user: CurrentUser,
+        public_id: str,
+        history_id: str,
+    ) -> None:
+        self._bind(user)
+        patient = await self._visible(user, public_id)
+        repo = PatientHistoryRepository(self._session, clinic_id=user.clinic_id)
+        row = await repo.get_by_public_id(history_id)
+        if row is None or row.patient_id != patient.id:
+            raise NotFoundError(resource="patient_history", public_id=history_id)
+        await repo.soft_delete(row.id, user.user_id)
+        await self._session.commit()
+
     def _bind(self, user: CurrentUser) -> None:
         set_user_id(user.user_id)
         set_clinic_id(user.clinic_id)

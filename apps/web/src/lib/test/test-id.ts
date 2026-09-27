@@ -138,6 +138,14 @@ export const testIds = {
     alertOnlyHearingEar: testId("patients", "alert-only-hearing-ear"),
     alertOther: testId("patients", "alert-other"),
     chart: testId("patients", "chart"),
+    chartRemove: (section: string, publicId: string) =>
+      testId(
+        "patients",
+        "chart",
+        section,
+        "remove",
+        publicId.toLowerCase(),
+      ),
     conflict: testId("patients", "conflict"),
     conflictReload: testId("patients", "conflict-reload"),
     loading: testId("patients", "loading"),

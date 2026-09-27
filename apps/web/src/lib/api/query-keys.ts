@@ -48,5 +48,7 @@ export const queryKeys = {
       [...queryKeys.terminology.all, "coverage", locale] as const,
     search: (params: { q: string; locale: string; kind?: string }) =>
       [...queryKeys.terminology.all, "search", params] as const,
+    dictionary: (params: { locale: string; kinds?: string; valueSet?: string }) =>
+      [...queryKeys.terminology.all, "dictionary", params] as const,
   },
 } as const;

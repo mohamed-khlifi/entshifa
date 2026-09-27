@@ -25,6 +25,11 @@ import {
   useAddIdentifierMutation,
   useAddMedicationMutation,
   useAddProblemMutation,
+  useDeleteAllergyMutation,
+  useDeleteHistoryMutation,
+  useDeleteIdentifierMutation,
+  useDeleteMedicationMutation,
+  useDeleteProblemMutation,
   useEndFlagMutation,
 } from "../hooks/use-patient-queries";
 import { conceptDisplayText } from "../lib/concept-display";
@@ -85,6 +90,11 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
   const addProblem = useAddProblemMutation();
   const addHistory = useAddHistoryMutation();
   const endFlag = useEndFlagMutation();
+  const deleteIdentifier = useDeleteIdentifierMutation();
+  const deleteAllergy = useDeleteAllergyMutation();
+  const deleteMedication = useDeleteMedicationMutation();
+  const deleteProblem = useDeleteProblemMutation();
+  const deleteHistory = useDeleteHistoryMutation();
 
   const [identifierType, setIdentifierType] =
     useState<(typeof IDENTIFIER_TYPES)[number]>("national_id");
@@ -128,7 +138,29 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
           <ul className="space-y-1 text-sm">
             {patient.identifiers.map((row) => (
               <li key={row.publicId} className={rowClass}>
-                {identifierTypeLabel(t, row.type)}: {row.value}
+                <span>
+                  {identifierTypeLabel(t, row.type)}: {row.value}
+                </span>
+                {canWrite ? (
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => {
+                      void deleteIdentifier
+                        .mutateAsync({
+                          patientId: patient.publicId,
+                          itemId: row.publicId,
+                        })
+                        .catch(() => undefined);
+                    }}
+                    {...testIdProps(
+                      testIds.patients.chartRemove("identifier", row.publicId),
+                    )}
+                  >
+                    {t("chart.remove")}
+                  </Button>
+                ) : null}
               </li>
             ))}
           </ul>
@@ -216,10 +248,32 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
           <ul className="space-y-1 text-sm">
             {patient.allergies.map((row) => (
               <li key={row.publicId} className={rowClass}>
-                {conceptDisplayText(row.substance)} (
-                {allergyCategoryLabel(t, row.category)}
-                {row.severity ? `, ${severityLabel(t, row.severity)}` : ""})
-                {row.isActive ? "" : ` — ${t("chart.inactive")}`}
+                <span>
+                  {conceptDisplayText(row.substance)} (
+                  {allergyCategoryLabel(t, row.category)}
+                  {row.severity ? `, ${severityLabel(t, row.severity)}` : ""})
+                  {row.isActive ? "" : ` — ${t("chart.inactive")}`}
+                </span>
+                {canWrite ? (
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => {
+                      void deleteAllergy
+                        .mutateAsync({
+                          patientId: patient.publicId,
+                          itemId: row.publicId,
+                        })
+                        .catch(() => undefined);
+                    }}
+                    {...testIdProps(
+                      testIds.patients.chartRemove("allergy", row.publicId),
+                    )}
+                  >
+                    {t("chart.remove")}
+                  </Button>
+                ) : null}
               </li>
             ))}
           </ul>
@@ -255,7 +309,6 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
               className="sm:col-span-2"
               name="allergySubstance"
               label={t("chart.substance")}
-              kind="finding"
               selectedId={substanceId}
               selectedDisplay={substanceDisplay}
               onSelect={(concept) => {
@@ -317,10 +370,32 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
           <ul className="space-y-1 text-sm">
             {patient.medications.map((row) => (
               <li key={row.publicId} className={rowClass}>
-                {row.freeTextName}
-                {row.isAnticoagulant ? ` (${t("chart.anticoagulant")})` : ""}
-                {row.isOtotoxic ? ` (${t("chart.ototoxic")})` : ""}
-                {row.isActive ? "" : ` — ${t("chart.inactive")}`}
+                <span>
+                  {row.freeTextName}
+                  {row.isAnticoagulant ? ` (${t("chart.anticoagulant")})` : ""}
+                  {row.isOtotoxic ? ` (${t("chart.ototoxic")})` : ""}
+                  {row.isActive ? "" : ` — ${t("chart.inactive")}`}
+                </span>
+                {canWrite ? (
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => {
+                      void deleteMedication
+                        .mutateAsync({
+                          patientId: patient.publicId,
+                          itemId: row.publicId,
+                        })
+                        .catch(() => undefined);
+                    }}
+                    {...testIdProps(
+                      testIds.patients.chartRemove("medication", row.publicId),
+                    )}
+                  >
+                    {t("chart.remove")}
+                  </Button>
+                ) : null}
               </li>
             ))}
           </ul>
@@ -501,9 +576,31 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
           <ul className="space-y-1 text-sm">
             {patient.problems.map((row) => (
               <li key={row.publicId} className={rowClass}>
-                {conceptDisplayText(row.diagnosis)} (
-                {problemStatusLabel(t, row.status)},{" "}
-                {lateralityLabel(tForms, t, row.laterality)})
+                <span>
+                  {conceptDisplayText(row.diagnosis)} (
+                  {problemStatusLabel(t, row.status)},{" "}
+                  {lateralityLabel(tForms, t, row.laterality)})
+                </span>
+                {canWrite ? (
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => {
+                      void deleteProblem
+                        .mutateAsync({
+                          patientId: patient.publicId,
+                          itemId: row.publicId,
+                        })
+                        .catch(() => undefined);
+                    }}
+                    {...testIdProps(
+                      testIds.patients.chartRemove("problem", row.publicId),
+                    )}
+                  >
+                    {t("chart.remove")}
+                  </Button>
+                ) : null}
               </li>
             ))}
           </ul>
@@ -537,7 +634,7 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
               className="sm:col-span-2"
               name="problemDiagnosis"
               label={t("chart.diagnosis")}
-              kind="finding"
+              valueSetCode="tm.findings"
               selectedId={diagnosisId}
               selectedDisplay={diagnosisDisplay}
               onSelect={(concept) => {
@@ -598,8 +695,30 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
           <ul className="space-y-1 text-sm">
             {patient.history.map((row) => (
               <li key={row.publicId} className={rowClass}>
-                {historyCategoryLabel(t, row.category)}:{" "}
-                {row.freeText || conceptDisplayText(row.concept)}
+                <span>
+                  {historyCategoryLabel(t, row.category)}:{" "}
+                  {row.freeText || conceptDisplayText(row.concept)}
+                </span>
+                {canWrite ? (
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => {
+                      void deleteHistory
+                        .mutateAsync({
+                          patientId: patient.publicId,
+                          itemId: row.publicId,
+                        })
+                        .catch(() => undefined);
+                    }}
+                    {...testIdProps(
+                      testIds.patients.chartRemove("history", row.publicId),
+                    )}
+                  >
+                    {t("chart.remove")}
+                  </Button>
+                ) : null}
               </li>
             ))}
           </ul>

@@ -185,11 +185,16 @@ class AuthService:
             session_family_id=family_id,
             active_clinic_id=clinic_id,
         )
-        await repo.create_session(session_row)
-        persisted = await repo.get_session_by_refresh_hash(refresh_hash)
-        if persisted is None:
-            raise AuthInvalidCredentialsError()
-        session_public_id = str(persisted.public_id)
+        session_row = await repo.create_session(session_row)
+        session_public_id = str(session_row.public_id)
+
+        user_public_id = str(
+            (
+                await self.session.execute(
+                    select(User.public_id).where(User.id == user.id),
+                )
+            ).scalar_one(),
+        )
 
         from ent.core.audit.recorder import AuditRecorder
         from ent.core.context import (
@@ -215,7 +220,7 @@ class AuthService:
         permissions = await repo.load_permission_codes(user.id, clinic_id)
         access_token = create_access_token(
             settings=self.settings,
-            user_public_id=user.public_id,
+            user_public_id=user_public_id,
             session_public_id=session_public_id,
             clinic_public_id=clinic_public_id,
             permissions=permissions,
@@ -226,7 +231,7 @@ class AuthService:
             token_type="bearer",
             expires_in_minutes=self.settings.access_token_ttl_minutes,
             session=SessionResponse(
-                user_public_id=user.public_id,
+                user_public_id=user_public_id,
                 clinic_public_id=clinic_public_id,
                 session_public_id=session_public_id,
             ),

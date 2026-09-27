@@ -1,7 +1,9 @@
 import { apiFetch } from "@/lib/api/client";
 import type {
+  ConceptDictionaryResponse,
   ConceptSearchResponse,
   PageSchemaPatientSummaryRead,
+  ValueSetRead,
   PatientAllergyCreate,
   PatientCreate,
   PatientFlagCreate,
@@ -206,5 +208,85 @@ export function searchConcepts(
       kind: params.kind,
     })}`,
     scope,
+  );
+}
+
+export function fetchConceptDictionary(
+  scope: Scope,
+  kinds?: string,
+): Promise<ConceptDictionaryResponse> {
+  return apiFetch<ConceptDictionaryResponse>(
+    `/api/v1/terminology/dictionary${query({
+      locale: scope.locale,
+      kinds,
+    })}`,
+    scope,
+  );
+}
+
+export function fetchValueSet(
+  code: string,
+  scope: Scope,
+): Promise<ValueSetRead> {
+  return apiFetch<ValueSetRead>(
+    `/api/v1/terminology/value-sets/${encodeURIComponent(code)}${query({
+      locale: scope.locale,
+    })}`,
+    scope,
+  );
+}
+
+export function deletePatientIdentifier(
+  patientId: string,
+  identifierId: string,
+  scope: Scope,
+): Promise<void> {
+  return apiFetch<void>(
+    `/api/v1/patients/${patientId}/identifiers/${identifierId}`,
+    { ...scope, method: "DELETE" },
+  );
+}
+
+export function deletePatientAllergy(
+  patientId: string,
+  allergyId: string,
+  scope: Scope,
+): Promise<void> {
+  return apiFetch<void>(
+    `/api/v1/patients/${patientId}/allergies/${allergyId}`,
+    { ...scope, method: "DELETE" },
+  );
+}
+
+export function deletePatientMedication(
+  patientId: string,
+  medicationId: string,
+  scope: Scope,
+): Promise<void> {
+  return apiFetch<void>(
+    `/api/v1/patients/${patientId}/medications/${medicationId}`,
+    { ...scope, method: "DELETE" },
+  );
+}
+
+export function deletePatientProblem(
+  patientId: string,
+  problemId: string,
+  scope: Scope,
+): Promise<void> {
+  return apiFetch<void>(
+    `/api/v1/patients/${patientId}/problems/${problemId}`,
+    { ...scope, method: "DELETE" },
+  );
+}
+
+export function deletePatientHistory(
+  patientId: string,
+  historyId: string,
+  scope: Scope,
+): Promise<void> {
+  return apiFetch<void>(
+    `/api/v1/patients/${patientId}/history/${historyId}`,
+    { ...scope, method: "DELETE" },
   );
 }

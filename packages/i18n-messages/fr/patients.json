@@ -160,6 +160,7 @@
     "addFlag": "Ajouter une alerte",
     "flag": "Alerte",
     "endFlag": "Clôturer l’alerte",
+    "remove": "Retirer",
     "addProblem": "Ajouter un problème",
     "diagnosis": "Diagnostic",
     "status": "Statut",

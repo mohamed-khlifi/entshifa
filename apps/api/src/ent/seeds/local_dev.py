@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from ent.core.security.permissions import SYSTEM_ROLE_MATRIX
 from ent.features.auth.models import Role
+from ent.seeds.dev_patients import seed_dev_patients
 from ent.seeds.identity import (
     LOCAL_DEV_PASSWORD,
     SeededUser,
@@ -18,7 +19,6 @@ from ent.seeds.identity import (
     ensure_user_with_role,
     load_clinic_by_slug,
 )
-from ent.seeds.dev_patients import seed_dev_patients
 from ent.seeds.terminology import TerminologySeedReport, seed_terminology
 
 DEMO_CLINIC_SLUG = "demo-entshifa"
