@@ -10,9 +10,9 @@ from ent.core.audit.hooks import install_audit_listeners
 from ent.core.audit.models import AccessLog, AuditLog
 from ent.core.context import set_clinic_id, set_request_id, set_user_id
 from ent.core.db.session import get_session_factory
+from ent.core.security.tokens import decode_access_token
 from ent.core.utils.ids import new_ulid
 from ent.features.clinics.models import Site
-from ent.core.security.tokens import decode_access_token
 from ent.main import create_app
 from ent.settings import get_settings
 from tests.support.auth_seed import seed_auth_fixtures

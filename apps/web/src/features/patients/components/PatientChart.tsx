@@ -1,5 +1,6 @@
 "use client";
 
+import { AlertTriangle, Pill, ShieldAlert } from "lucide-react";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
@@ -9,6 +10,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { ConceptSearchField } from "../components/ConceptSearchField";
+import {
+  ChartBadge,
+  PatientChartRow,
+  type ChartBadgeTone,
+} from "../components/PatientChartRow";
 import {
   ALLERGY_CATEGORIES,
   ALLERGY_SEVERITIES,
@@ -49,10 +55,33 @@ import { testIdProps, testIds } from "@/lib/test/test-id";
 import { usePermission } from "@/providers/permission-provider";
 
 const sectionClass =
-  "space-y-4 rounded-xl border border-border bg-card p-5 shadow-[var(--shadow-soft)]";
+  "space-y-4 rounded-2xl border border-border/80 bg-card p-5 shadow-[var(--shadow-soft)]";
 const fieldClass = "space-y-1.5";
+const listClass = "space-y-2";
 const rowClass =
   "flex flex-wrap items-center justify-between gap-2 rounded-lg bg-muted/60 px-3 py-2.5 text-sm font-medium leading-snug";
+
+function allergySeverityTone(
+  severity: string | null | undefined,
+): ChartBadgeTone {
+  if (severity === "severe") {
+    return "danger";
+  }
+  if (severity === "moderate") {
+    return "warning";
+  }
+  return "neutral";
+}
+
+function problemStatusTone(status: string): ChartBadgeTone {
+  if (status === "active") {
+    return "success";
+  }
+  if (status === "suspected") {
+    return "warning";
+  }
+  return "neutral";
+}
 
 function lateralityLabel(
   tForms: ReturnType<typeof useTranslations<"forms">>,
@@ -129,39 +158,32 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
   return (
     <div className="space-y-5" {...testIdProps(testIds.patients.chart)}>
       <section className={sectionClass}>
-        <h2 className="text-base font-semibold tracking-tight">
+        <h2 className="text-base font-semibold tracking-tight text-foreground">
           {t("chart.identifiers")}
         </h2>
         {patient.identifiers.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("chart.empty")}</p>
         ) : (
-          <ul className="space-y-1 text-sm">
+          <ul className={listClass}>
             {patient.identifiers.map((row) => (
-              <li key={row.publicId} className={rowClass}>
-                <span>
-                  {identifierTypeLabel(t, row.type)}: {row.value}
-                </span>
-                {canWrite ? (
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="secondary"
-                    onClick={() => {
-                      void deleteIdentifier
-                        .mutateAsync({
-                          patientId: patient.publicId,
-                          itemId: row.publicId,
-                        })
-                        .catch(() => undefined);
-                    }}
-                    {...testIdProps(
-                      testIds.patients.chartRemove("identifier", row.publicId),
-                    )}
-                  >
-                    {t("chart.remove")}
-                  </Button>
-                ) : null}
-              </li>
+              <PatientChartRow
+                key={row.publicId}
+                title={`${identifierTypeLabel(t, row.type)}: ${row.value}`}
+                canWrite={canWrite}
+                removeLabel={t("chart.remove")}
+                removeTestId={testIds.patients.chartRemove(
+                  "identifier",
+                  row.publicId,
+                )}
+                onRemove={() => {
+                  void deleteIdentifier
+                    .mutateAsync({
+                      patientId: patient.publicId,
+                      itemId: row.publicId,
+                    })
+                    .catch(() => undefined);
+                }}
+              />
             ))}
           </ul>
         )}
@@ -239,42 +261,55 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
       </section>
 
       <section className={sectionClass}>
-        <h2 className="text-base font-semibold tracking-tight">
+        <h2 className="text-base font-semibold tracking-tight text-foreground">
           {t("chart.allergies")}
         </h2>
         {patient.allergies.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("chart.empty")}</p>
         ) : (
-          <ul className="space-y-1 text-sm">
+          <ul className={listClass}>
             {patient.allergies.map((row) => (
-              <li key={row.publicId} className={rowClass}>
-                <span>
-                  {conceptDisplayText(row.substance)} (
-                  {allergyCategoryLabel(t, row.category)}
-                  {row.severity ? `, ${severityLabel(t, row.severity)}` : ""})
-                  {row.isActive ? "" : ` — ${t("chart.inactive")}`}
-                </span>
-                {canWrite ? (
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="secondary"
-                    onClick={() => {
-                      void deleteAllergy
-                        .mutateAsync({
-                          patientId: patient.publicId,
-                          itemId: row.publicId,
-                        })
-                        .catch(() => undefined);
-                    }}
-                    {...testIdProps(
-                      testIds.patients.chartRemove("allergy", row.publicId),
-                    )}
-                  >
-                    {t("chart.remove")}
-                  </Button>
-                ) : null}
-              </li>
+              <PatientChartRow
+                key={row.publicId}
+                title={conceptDisplayText(row.substance)}
+                badges={
+                  <>
+                    <ChartBadge tone="neutral">
+                      {allergyCategoryLabel(t, row.category)}
+                    </ChartBadge>
+                    {row.severity ? (
+                      <ChartBadge tone={allergySeverityTone(row.severity)}>
+                        {row.severity === "severe" ? (
+                          <AlertTriangle
+                            className="h-3 w-3 shrink-0"
+                            aria-hidden
+                          />
+                        ) : null}
+                        {severityLabel(t, row.severity)}
+                      </ChartBadge>
+                    ) : null}
+                    {!row.isActive ? (
+                      <ChartBadge tone="neutral">
+                        {t("chart.inactive")}
+                      </ChartBadge>
+                    ) : null}
+                  </>
+                }
+                canWrite={canWrite}
+                removeLabel={t("chart.remove")}
+                removeTestId={testIds.patients.chartRemove(
+                  "allergy",
+                  row.publicId,
+                )}
+                onRemove={() => {
+                  void deleteAllergy
+                    .mutateAsync({
+                      patientId: patient.publicId,
+                      itemId: row.publicId,
+                    })
+                    .catch(() => undefined);
+                }}
+              />
             ))}
           </ul>
         )}
@@ -361,42 +396,53 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
       </section>
 
       <section className={sectionClass}>
-        <h2 className="text-base font-semibold tracking-tight">
+        <h2 className="text-base font-semibold tracking-tight text-foreground">
           {t("chart.medications")}
         </h2>
         {patient.medications.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("chart.empty")}</p>
         ) : (
-          <ul className="space-y-1 text-sm">
+          <ul className={listClass}>
             {patient.medications.map((row) => (
-              <li key={row.publicId} className={rowClass}>
-                <span>
-                  {row.freeTextName}
-                  {row.isAnticoagulant ? ` (${t("chart.anticoagulant")})` : ""}
-                  {row.isOtotoxic ? ` (${t("chart.ototoxic")})` : ""}
-                  {row.isActive ? "" : ` — ${t("chart.inactive")}`}
-                </span>
-                {canWrite ? (
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="secondary"
-                    onClick={() => {
-                      void deleteMedication
-                        .mutateAsync({
-                          patientId: patient.publicId,
-                          itemId: row.publicId,
-                        })
-                        .catch(() => undefined);
-                    }}
-                    {...testIdProps(
-                      testIds.patients.chartRemove("medication", row.publicId),
-                    )}
-                  >
-                    {t("chart.remove")}
-                  </Button>
-                ) : null}
-              </li>
+              <PatientChartRow
+                key={row.publicId}
+                title={row.freeTextName}
+                badges={
+                  <>
+                    {row.isAnticoagulant ? (
+                      <ChartBadge tone="danger">
+                        <ShieldAlert className="h-3 w-3 shrink-0" aria-hidden />
+                        {t("chart.anticoagulant")}
+                      </ChartBadge>
+                    ) : null}
+                    {row.isOtotoxic ? (
+                      <ChartBadge tone="warning">
+                        <Pill className="h-3 w-3 shrink-0" aria-hidden />
+                        {t("chart.ototoxic")}
+                      </ChartBadge>
+                    ) : null}
+                    {!row.isActive ? (
+                      <ChartBadge tone="neutral">
+                        {t("chart.inactive")}
+                      </ChartBadge>
+                    ) : null}
+                  </>
+                }
+                canWrite={canWrite}
+                removeLabel={t("chart.remove")}
+                removeTestId={testIds.patients.chartRemove(
+                  "medication",
+                  row.publicId,
+                )}
+                onRemove={() => {
+                  void deleteMedication
+                    .mutateAsync({
+                      patientId: patient.publicId,
+                      itemId: row.publicId,
+                    })
+                    .catch(() => undefined);
+                }}
+              />
             ))}
           </ul>
         )}
@@ -567,41 +613,42 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
       </section>
 
       <section className={sectionClass}>
-        <h2 className="text-base font-semibold tracking-tight">
+        <h2 className="text-base font-semibold tracking-tight text-foreground">
           {t("chart.problems")}
         </h2>
         {patient.problems.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("chart.empty")}</p>
         ) : (
-          <ul className="space-y-1 text-sm">
+          <ul className={listClass}>
             {patient.problems.map((row) => (
-              <li key={row.publicId} className={rowClass}>
-                <span>
-                  {conceptDisplayText(row.diagnosis)} (
-                  {problemStatusLabel(t, row.status)},{" "}
-                  {lateralityLabel(tForms, t, row.laterality)})
-                </span>
-                {canWrite ? (
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="secondary"
-                    onClick={() => {
-                      void deleteProblem
-                        .mutateAsync({
-                          patientId: patient.publicId,
-                          itemId: row.publicId,
-                        })
-                        .catch(() => undefined);
-                    }}
-                    {...testIdProps(
-                      testIds.patients.chartRemove("problem", row.publicId),
-                    )}
-                  >
-                    {t("chart.remove")}
-                  </Button>
-                ) : null}
-              </li>
+              <PatientChartRow
+                key={row.publicId}
+                title={conceptDisplayText(row.diagnosis)}
+                badges={
+                  <>
+                    <ChartBadge tone={problemStatusTone(row.status)}>
+                      {problemStatusLabel(t, row.status)}
+                    </ChartBadge>
+                    <ChartBadge tone="neutral">
+                      {lateralityLabel(tForms, t, row.laterality)}
+                    </ChartBadge>
+                  </>
+                }
+                canWrite={canWrite}
+                removeLabel={t("chart.remove")}
+                removeTestId={testIds.patients.chartRemove(
+                  "problem",
+                  row.publicId,
+                )}
+                onRemove={() => {
+                  void deleteProblem
+                    .mutateAsync({
+                      patientId: patient.publicId,
+                      itemId: row.publicId,
+                    })
+                    .catch(() => undefined);
+                }}
+              />
             ))}
           </ul>
         )}
@@ -686,40 +733,39 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
       </section>
 
       <section className={sectionClass}>
-        <h2 className="text-base font-semibold tracking-tight">
+        <h2 className="text-base font-semibold tracking-tight text-foreground">
           {t("chart.history")}
         </h2>
         {patient.history.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("chart.empty")}</p>
         ) : (
-          <ul className="space-y-1 text-sm">
+          <ul className={listClass}>
             {patient.history.map((row) => (
-              <li key={row.publicId} className={rowClass}>
-                <span>
-                  {historyCategoryLabel(t, row.category)}:{" "}
-                  {row.freeText || conceptDisplayText(row.concept)}
-                </span>
-                {canWrite ? (
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="secondary"
-                    onClick={() => {
-                      void deleteHistory
-                        .mutateAsync({
-                          patientId: patient.publicId,
-                          itemId: row.publicId,
-                        })
-                        .catch(() => undefined);
-                    }}
-                    {...testIdProps(
-                      testIds.patients.chartRemove("history", row.publicId),
-                    )}
-                  >
-                    {t("chart.remove")}
-                  </Button>
-                ) : null}
-              </li>
+              <PatientChartRow
+                key={row.publicId}
+                title={
+                  <>
+                    <span className="text-muted-foreground">
+                      {historyCategoryLabel(t, row.category)}:
+                    </span>{" "}
+                    {row.freeText || conceptDisplayText(row.concept)}
+                  </>
+                }
+                canWrite={canWrite}
+                removeLabel={t("chart.remove")}
+                removeTestId={testIds.patients.chartRemove(
+                  "history",
+                  row.publicId,
+                )}
+                onRemove={() => {
+                  void deleteHistory
+                    .mutateAsync({
+                      patientId: patient.publicId,
+                      itemId: row.publicId,
+                    })
+                    .catch(() => undefined);
+                }}
+              />
             ))}
           </ul>
         )}

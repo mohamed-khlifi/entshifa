@@ -13,6 +13,7 @@ from ent.core.audit.recorder import AuditRecorder
 from ent.core.context import set_clinic_id, set_user_id
 from ent.core.errors.exceptions import NotFoundError, ValidationError
 from ent.core.events.bus import get_event_bus
+from ent.core.repository.base import BaseRepository
 from ent.core.schemas.base import PageMeta, PageSchema, PaginationParams
 from ent.core.schemas.common import CodeableConcept
 from ent.core.security.principal import CurrentUser
@@ -693,11 +694,13 @@ class PatientService:
         self._bind(user)
         patient = await self._visible(user, public_id)
         repo = PatientIdentifierRepository(self._session, clinic_id=user.clinic_id)
-        row = await repo.get_by_public_id(identifier_id)
-        if row is None or row.patient_id != patient.id:
-            raise NotFoundError(resource="patient_identifier", public_id=identifier_id)
-        await repo.soft_delete(row.id, user.user_id)
-        await self._session.commit()
+        await self._soft_delete_chart_row(
+            user=user,
+            patient=patient,
+            repo=repo,
+            row_public_id=identifier_id,
+            resource="patient_identifier",
+        )
 
     async def delete_allergy(
         self,
@@ -709,11 +712,13 @@ class PatientService:
         self._bind(user)
         patient = await self._visible(user, public_id)
         repo = PatientAllergyRepository(self._session, clinic_id=user.clinic_id)
-        row = await repo.get_by_public_id(allergy_id)
-        if row is None or row.patient_id != patient.id:
-            raise NotFoundError(resource="patient_allergy", public_id=allergy_id)
-        await repo.soft_delete(row.id, user.user_id)
-        await self._session.commit()
+        await self._soft_delete_chart_row(
+            user=user,
+            patient=patient,
+            repo=repo,
+            row_public_id=allergy_id,
+            resource="patient_allergy",
+        )
 
     async def delete_medication(
         self,
@@ -725,11 +730,13 @@ class PatientService:
         self._bind(user)
         patient = await self._visible(user, public_id)
         repo = PatientMedicationRepository(self._session, clinic_id=user.clinic_id)
-        row = await repo.get_by_public_id(medication_id)
-        if row is None or row.patient_id != patient.id:
-            raise NotFoundError(resource="patient_medication", public_id=medication_id)
-        await repo.soft_delete(row.id, user.user_id)
-        await self._session.commit()
+        await self._soft_delete_chart_row(
+            user=user,
+            patient=patient,
+            repo=repo,
+            row_public_id=medication_id,
+            resource="patient_medication",
+        )
 
     async def delete_problem(
         self,
@@ -741,11 +748,13 @@ class PatientService:
         self._bind(user)
         patient = await self._visible(user, public_id)
         repo = PatientProblemRepository(self._session, clinic_id=user.clinic_id)
-        row = await repo.get_by_public_id(problem_id)
-        if row is None or row.patient_id != patient.id:
-            raise NotFoundError(resource="patient_problem", public_id=problem_id)
-        await repo.soft_delete(row.id, user.user_id)
-        await self._session.commit()
+        await self._soft_delete_chart_row(
+            user=user,
+            patient=patient,
+            repo=repo,
+            row_public_id=problem_id,
+            resource="patient_problem",
+        )
 
     async def delete_history(
         self,
@@ -757,11 +766,30 @@ class PatientService:
         self._bind(user)
         patient = await self._visible(user, public_id)
         repo = PatientHistoryRepository(self._session, clinic_id=user.clinic_id)
-        row = await repo.get_by_public_id(history_id)
-        if row is None or row.patient_id != patient.id:
-            raise NotFoundError(resource="patient_history", public_id=history_id)
-        await repo.soft_delete(row.id, user.user_id)
-        await self._session.commit()
+        await self._soft_delete_chart_row(
+            user=user,
+            patient=patient,
+            repo=repo,
+            row_public_id=history_id,
+            resource="patient_history",
+        )
+
+    async def _soft_delete_chart_row(
+        self,
+        *,
+        user: CurrentUser,
+        patient: Patient,
+        repo: BaseRepository[Any],
+        row_public_id: str,
+        resource: str,
+    ) -> None:
+        row = await repo.get_by_public_id_including_deleted(row_public_id)
+        if row is None or getattr(row, "patient_id", None) != patient.id:
+            raise NotFoundError(resource=resource, public_id=row_public_id)
+        if getattr(row, "deleted_at", None) is not None:
+            return
+        if await repo.soft_delete(row.id, user.user_id):
+            await self._session.commit()
 
     def _bind(self, user: CurrentUser) -> None:
         set_user_id(user.user_id)

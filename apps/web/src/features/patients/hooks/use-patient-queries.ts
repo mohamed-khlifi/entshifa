@@ -39,6 +39,7 @@ import type {
   PatientIdentifierCreate,
   PatientMedicationCreate,
   PatientProblemCreate,
+  PatientRead,
 } from "@/lib/api/generated";
 import { ApiError, resolveErrorMessage } from "@/lib/api/errors";
 import { queryKeys } from "@/lib/api/query-keys";
@@ -253,51 +254,97 @@ export function useAddHistoryMutation() {
   return useChartMutation<PatientHistoryCreate>(addPatientHistory);
 }
 
+type ChartListKey =
+  "identifiers" | "allergies" | "medications" | "problems" | "history";
+
+function isChartDeleteAlreadyGone(error: unknown): boolean {
+  return (
+    error instanceof ApiError &&
+    (error.code === "not_found" || error.status === 404)
+  );
+}
+
+function removeChartRow(
+  patient: PatientRead,
+  listKey: ChartListKey,
+  itemId: string,
+): PatientRead {
+  const rows = patient[listKey] as { publicId: string }[];
+  return {
+    ...patient,
+    [listKey]: rows.filter((row) => row.publicId !== itemId),
+  } as PatientRead;
+}
+
 function useDeleteChartItemMutation(
   deleteFn: (
     patientId: string,
     itemId: string,
     scope: ApiScope,
   ) => Promise<void>,
+  listKey: ChartListKey,
 ) {
   const scope = useScope();
   const queryClient = useQueryClient();
   const t = useTranslations("patients");
-  const onError = useChartErrorToast();
+  const onErrorToast = useChartErrorToast();
   return useMutation({
     mutationFn: (input: { patientId: string; itemId: string }) =>
       deleteFn(input.patientId, input.itemId, {
         locale: scope.locale,
         clinicPublicId: scope.clinicPublicId,
       }),
+    onMutate: async (input) => {
+      const detailKey = queryKeys.patients.detail(input.patientId);
+      await queryClient.cancelQueries({ queryKey: detailKey });
+      const previous = queryClient.getQueryData<PatientRead>(detailKey);
+      if (previous) {
+        queryClient.setQueryData(
+          detailKey,
+          removeChartRow(previous, listKey, input.itemId),
+        );
+      }
+      return { previous };
+    },
+    onError: (error, input, context) => {
+      const detailKey = queryKeys.patients.detail(input.patientId);
+      if (isChartDeleteAlreadyGone(error)) {
+        toast.success(t("chart.saved"));
+        void queryClient.invalidateQueries({ queryKey: detailKey });
+        return;
+      }
+      if (context?.previous) {
+        queryClient.setQueryData(detailKey, context.previous);
+      }
+      onErrorToast(error);
+    },
     onSuccess: async (_data, input) => {
       await queryClient.invalidateQueries({
         queryKey: queryKeys.patients.detail(input.patientId),
       });
       toast.success(t("chart.saved"));
     },
-    onError,
   });
 }
 
 export function useDeleteIdentifierMutation() {
-  return useDeleteChartItemMutation(deletePatientIdentifier);
+  return useDeleteChartItemMutation(deletePatientIdentifier, "identifiers");
 }
 
 export function useDeleteAllergyMutation() {
-  return useDeleteChartItemMutation(deletePatientAllergy);
+  return useDeleteChartItemMutation(deletePatientAllergy, "allergies");
 }
 
 export function useDeleteMedicationMutation() {
-  return useDeleteChartItemMutation(deletePatientMedication);
+  return useDeleteChartItemMutation(deletePatientMedication, "medications");
 }
 
 export function useDeleteProblemMutation() {
-  return useDeleteChartItemMutation(deletePatientProblem);
+  return useDeleteChartItemMutation(deletePatientProblem, "problems");
 }
 
 export function useDeleteHistoryMutation() {
-  return useDeleteChartItemMutation(deletePatientHistory);
+  return useDeleteChartItemMutation(deletePatientHistory, "history");
 }
 
 export function useEndFlagMutation() {

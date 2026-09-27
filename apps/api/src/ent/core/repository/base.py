@@ -51,6 +51,14 @@ class BaseRepository(Generic[ModelT]):
         )
         return result.scalar_one_or_none()
 
+    async def get_by_public_id_including_deleted(self, public_id: str) -> ModelT | None:
+        """Lookup by public id without filtering ``deleted_at`` (idempotent deletes)."""
+        stmt = select(self.model).where(self.model.public_id == public_id)  # type: ignore[attr-defined]
+        if self.clinic_id is not None and hasattr(self.model, "clinic_id"):
+            stmt = stmt.where(self.model.clinic_id == self.clinic_id)  # type: ignore[attr-defined]
+        result = await self.session.execute(stmt)
+        return result.scalar_one_or_none()
+
     async def list(
         self,
         *,
@@ -87,7 +95,7 @@ class BaseRepository(Generic[ModelT]):
         await self.session.flush()
         return entity
 
-    async def soft_delete(self, id_: int, by_user_id: int) -> None:
+    async def soft_delete(self, id_: int, by_user_id: int) -> bool:
         if not hasattr(self.model, "deleted_at"):
             msg = f"{self.model.__name__} does not support soft delete"
             raise TypeError(msg)
@@ -104,4 +112,5 @@ class BaseRepository(Generic[ModelT]):
         )
         if self.clinic_id is not None and hasattr(self.model, "clinic_id"):
             stmt = stmt.where(self.model.clinic_id == self.clinic_id)  # type: ignore[attr-defined]
-        await self.session.execute(stmt)
+        result = await self.session.execute(stmt)
+        return int(result.rowcount or 0) > 0
