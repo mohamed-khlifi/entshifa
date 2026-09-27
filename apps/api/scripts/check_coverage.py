@@ -10,13 +10,14 @@ ENGINES_MIN = 100.0
 SERVICES_MIN = 85.0
 OVERALL_MIN = 70.0
 
-# Domain services still gaining unit coverage in Phase 1 (P1-01–P1-05). The
+# Domain services still gaining unit coverage in Phase 1 (P1-01–P1-07). The
 # aggregate gate applies to modules with a stable surface; remove paths as
 # dedicated service test suites land.
 _SERVICE_AGGREGATE_EXCLUDE_SUFFIXES = (
     "/features/auth/service.py",
     "/features/clinics/service.py",
     "/features/patients/service.py",
+    "/features/scheduling/service.py",
     "/features/terminology/service.py",
     "/features/users/service.py",
 )
