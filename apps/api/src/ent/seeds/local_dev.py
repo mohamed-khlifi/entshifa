@@ -18,6 +18,7 @@ from ent.seeds.identity import (
     ensure_user_with_role,
     load_clinic_by_slug,
 )
+from ent.seeds.dev_patients import seed_dev_patients
 from ent.seeds.terminology import TerminologySeedReport, seed_terminology
 
 DEMO_CLINIC_SLUG = "demo-entshifa"
@@ -33,6 +34,7 @@ class LocalDevSeedReport:
     users: list[SeededUser]
     password: str
     terminology: TerminologySeedReport
+    patients_created: int
 
 
 async def seed_local_dev(session: AsyncSession) -> LocalDevSeedReport:
@@ -152,6 +154,11 @@ async def seed_local_dev(session: AsyncSession) -> LocalDevSeedReport:
         )
 
     terminology = await seed_terminology(session)
+    patients_created = await seed_dev_patients(
+        session,
+        clinic_id=demo.id,
+        clinic_public_id=demo.public_id,
+    )
 
     return LocalDevSeedReport(
         permissions_created=permissions_created,
@@ -161,4 +168,5 @@ async def seed_local_dev(session: AsyncSession) -> LocalDevSeedReport:
         users=users,
         password=LOCAL_DEV_PASSWORD,
         terminology=terminology,
+        patients_created=patients_created,
     )

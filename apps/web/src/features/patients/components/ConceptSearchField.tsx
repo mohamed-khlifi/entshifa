@@ -53,8 +53,7 @@ export function ConceptSearchField({
   const showResults =
     isOpen &&
     debouncedQuery.length >= 2 &&
-    (search.isFetching ||
-      search.data !== undefined);
+    (search.isFetching || search.data !== undefined);
 
   return (
     <div className={cn("space-y-1.5", className)}>
@@ -126,9 +125,11 @@ export function ConceptSearchField({
                   role="listbox"
                 >
                   {search.data.items.map((item) => (
-                    <li key={item.publicId} role="option">
+                    <li key={item.publicId}>
                       <button
                         type="button"
+                        role="option"
+                        aria-selected={selectedId === item.publicId}
                         className="w-full px-3 py-2.5 text-start text-sm hover:bg-accent focus-visible:bg-accent focus-visible:outline-none"
                         onClick={() => {
                           onSelect({
@@ -139,7 +140,9 @@ export function ConceptSearchField({
                           setDebouncedQuery("");
                           setIsOpen(false);
                         }}
-                        {...testIdProps(fieldTestId(`${name}Option-${item.publicId}`))}
+                        {...testIdProps(
+                          fieldTestId(`${name}Option-${item.publicId}`),
+                        )}
                       >
                         {item.display}
                       </button>

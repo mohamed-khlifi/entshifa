@@ -8,8 +8,8 @@ from fastapi import Depends, Header
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ent.core.db.session import get_session
-from ent.core.i18n.content_locale import content_locale_from_accept_language
 from ent.core.errors.exceptions import PermissionDeniedError
+from ent.core.i18n.content_locale import content_locale_from_accept_language
 from ent.core.security.permissions import Permission
 from ent.core.security.principal import CurrentUser
 from ent.features.auth.dependencies import get_current_user

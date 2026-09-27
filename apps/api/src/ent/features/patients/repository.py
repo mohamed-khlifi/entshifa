@@ -200,7 +200,7 @@ class PatientRepository(BaseRepository[Patient]):
             .all()
         )
         by_id = {int(concept.id): concept for concept in concepts}
-        translations = await term.load_translations_for_concepts(concept_ids)
+        translations = await term.load_translations_for_concepts(list(concept_ids))
         labels: dict[int, tuple[str, str, str | None]] = {}
         for concept_id in concept_ids:
             concept = by_id.get(concept_id)

@@ -3165,6 +3165,7 @@ export interface operations {
             header?: {
                 "X-Clinic-Id"?: string | null;
                 "Idempotency-Key"?: string | null;
+                "Accept-Language"?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -3200,6 +3201,7 @@ export interface operations {
             query?: never;
             header?: {
                 "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
             };
             path: {
                 patient_id: string;
@@ -3233,6 +3235,7 @@ export interface operations {
             query?: never;
             header?: {
                 "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
             };
             path: {
                 patient_id: string;

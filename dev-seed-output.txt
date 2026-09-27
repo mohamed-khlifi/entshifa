@@ -1,0 +1,29 @@
+[assistant]
+assistant1@demo.entshifa.local	LocalDevSeed1!
+assistant2@demo.entshifa.local	LocalDevSeed1!
+assistant3@demo.entshifa.local	LocalDevSeed1!
+assistant4@demo.entshifa.local	LocalDevSeed1!
+assistant5@demo.entshifa.local	LocalDevSeed1!
+assistant6@demo.entshifa.local	LocalDevSeed1!
+assistant7@demo.entshifa.local	LocalDevSeed1!
+assistant8@demo.entshifa.local	LocalDevSeed1!
+
+[audiology_technician]
+audio1@demo.entshifa.local	LocalDevSeed1!
+audio2@demo.entshifa.local	LocalDevSeed1!
+audio3@demo.entshifa.local	LocalDevSeed1!
+
+[clinic_admin]
+admin@demo.entshifa.local	LocalDevSeed1!
+
+[doctor]
+doctor1@demo.entshifa.local	LocalDevSeed1!
+doctor2@demo.entshifa.local	LocalDevSeed1!
+doctor3@demo.entshifa.local	LocalDevSeed1!
+doctor4@demo.entshifa.local	LocalDevSeed1!
+doctor5@demo.entshifa.local	LocalDevSeed1!
+
+[read_only]
+readonly1@demo.entshifa.local	LocalDevSeed1!
+readonly2@demo.entshifa.local	LocalDevSeed1!
+readonly3@demo.entshifa.local	LocalDevSeed1!

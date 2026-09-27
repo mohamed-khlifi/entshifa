@@ -6,7 +6,9 @@ export type ConceptLike = {
   conceptId: string;
 };
 
-export function conceptDisplayText(concept: ConceptLike | null | undefined): string {
+export function conceptDisplayText(
+  concept: ConceptLike | null | undefined,
+): string {
   if (!concept) {
     return "";
   }

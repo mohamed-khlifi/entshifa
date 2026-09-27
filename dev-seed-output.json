@@ -1,0 +1,104 @@
+{
+  "users": [
+    {
+      "role": "assistant",
+      "email": "assistant1@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "assistant",
+      "email": "assistant2@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "assistant",
+      "email": "assistant3@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "assistant",
+      "email": "assistant4@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "assistant",
+      "email": "assistant5@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "assistant",
+      "email": "assistant6@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "assistant",
+      "email": "assistant7@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "assistant",
+      "email": "assistant8@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "audiology_technician",
+      "email": "audio1@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "audiology_technician",
+      "email": "audio2@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "audiology_technician",
+      "email": "audio3@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "clinic_admin",
+      "email": "admin@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "doctor",
+      "email": "doctor1@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "doctor",
+      "email": "doctor2@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "doctor",
+      "email": "doctor3@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "doctor",
+      "email": "doctor4@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "doctor",
+      "email": "doctor5@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "read_only",
+      "email": "readonly1@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "read_only",
+      "email": "readonly2@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    },
+    {
+      "role": "read_only",
+      "email": "readonly3@demo.entshifa.local",
+      "password": "LocalDevSeed1!"
+    }
+  ]
+}

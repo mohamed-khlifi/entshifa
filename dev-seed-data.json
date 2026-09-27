@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "description": "INPUT: edit demo patients, then run python -m ent.cli.seed from apps/api. OUTPUT (repo root): dev-seed-output.txt and dev-seed-output.json list every demo user email, password, and role.",
+  "patients": [
+    {
+      "mrn": "DEMO-0001",
+      "firstName": "Leïla",
+      "lastName": "Ben Salem",
+      "birthDate": "1975-03-12",
+      "sex": "female",
+      "preferredLocale": "fr",
+      "phonePrimary": "+33601020304",
+      "city": "Paris",
+      "countryCode": "FR",
+      "medications": [
+        {
+          "freeTextName": "Aspirin",
+          "dose": "100 mg",
+          "source": "reported",
+          "isAnticoagulant": true
+        }
+      ],
+      "problems": [
+        {
+          "diagnosisConceptCode": "FIND.TM.PERFORATION",
+          "status": "active",
+          "laterality": "right"
+        }
+      ],
+      "flags": [
+        {
+          "flagCode": "anticoagulant",
+          "startedOn": "2024-01-10",
+          "isAuto": false
+        }
+      ]
+    },
+    {
+      "mrn": "DEMO-0002",
+      "firstName": "Karim",
+      "lastName": "Haddad",
+      "firstNameAlt": "كريم",
+      "lastNameAlt": "حداد",
+      "birthDate": "1988-07-22",
+      "sex": "male",
+      "preferredLocale": "fr",
+      "phonePrimary": "+21622112233",
+      "city": "Tunis",
+      "countryCode": "TN",
+      "medications": [
+        {
+          "freeTextName": "Betahistine",
+          "dose": "16 mg x3",
+          "source": "prescribed_here"
+        }
+      ],
+      "history": [
+        {
+          "category": "ent_surgery",
+          "freeText": "Tympanoplasty (right)",
+          "occurredYear": 2019
+        }
+      ]
+    },
+    {
+      "mrn": "DEMO-0003",
+      "firstName": "Sophie",
+      "lastName": "Martin",
+      "birthDate": "1992-11-05",
+      "sex": "female",
+      "preferredLocale": "en",
+      "phonePrimary": "+33145678901",
+      "email": "sophie.martin@example.invalid",
+      "city": "Lyon",
+      "countryCode": "FR",
+      "problems": [
+        {
+          "diagnosisConceptCode": "FIND.TM.EFFUSION",
+          "status": "suspected",
+          "laterality": "left"
+        }
+      ]
+    },
+    {
+      "mrn": "DEMO-0004",
+      "firstName": "Youssef",
+      "lastName": "Alami",
+      "birthDate": "1965-01-30",
+      "sex": "male",
+      "preferredLocale": "fr",
+      "phonePrimary": "+212612345678",
+      "isDeceased": false,
+      "noiseExposure": "occupational",
+      "smokingStatus": "former",
+      "flags": [
+        {
+          "flagCode": "only_hearing_ear",
+          "laterality": "left",
+          "startedOn": "2015-06-01",
+          "isAuto": false
+        }
+      ]
+    },
+    {
+      "mrn": "DEMO-0005",
+      "firstName": "Emma",
+      "lastName": "Dupont",
+      "birthDate": "2018-09-14",
+      "birthDateIsEstimated": true,
+      "sex": "female",
+      "preferredLocale": "fr",
+      "phonePrimary": "+33699887766",
+      "guardianName": "Marie Dupont",
+      "guardianRelation": "mother",
+      "flags": [
+        {
+          "flagCode": "pediatric_weight_missing",
+          "startedOn": "2026-01-01",
+          "isAuto": true
+        }
+      ]
+    },
+    {
+      "mrn": "DEMO-0006",
+      "firstName": "Thomas",
+      "lastName": "Bernard",
+      "birthDate": "1954-12-02",
+      "sex": "male",
+      "preferredLocale": "fr",
+      "phonePrimary": "+33311223344",
+      "medications": [
+        {
+          "freeTextName": "Gentamicin",
+          "source": "external",
+          "isOtotoxic": true
+        }
+      ],
+      "problems": [
+        {
+          "diagnosisConceptCode": "FIND.TM.RETRACTION",
+          "status": "active",
+          "laterality": "bilateral"
+        }
+      ]
+    }
+  ]
+}
