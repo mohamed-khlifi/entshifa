@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -85,6 +86,10 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
   const t = useTranslations("patients");
   const tForms = useTranslations("forms");
   const canWrite = usePermission(Permission.PATIENT_WRITE);
+
+  const requireConceptSelection = () => {
+    toast.error(t("concept.selectRequired"));
+  };
   const addIdentifier = useAddIdentifierMutation();
   const addAllergy = useAddAllergyMutation();
   const addMedication = useAddMedicationMutation();
@@ -237,6 +242,7 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
             onSubmit={(event) => {
               event.preventDefault();
               if (substanceId.length !== 26) {
+                requireConceptSelection();
                 return;
               }
               void addAllergy
@@ -331,6 +337,7 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
             onSubmit={(event) => {
               event.preventDefault();
               if (!medName.trim()) {
+                toast.error(t("validation.required"));
                 return;
               }
               void addMedication
@@ -513,6 +520,7 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
             onSubmit={(event) => {
               event.preventDefault();
               if (diagnosisId.length !== 26) {
+                requireConceptSelection();
                 return;
               }
               void addProblem

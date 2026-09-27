@@ -80,7 +80,8 @@ export function usePatientQuery(patientId: string) {
         clinicPublicId: scope.clinicPublicId,
       }),
     enabled: scope.enabled && patientId.length > 0,
-    staleTime: 30_000,
+    staleTime: 60_000,
+    gcTime: 5 * 60_000,
   });
 }
 
@@ -112,7 +113,8 @@ export function useConceptSearchQuery(q: string) {
         { q: term },
       ),
     enabled: scope.enabled && term.length >= 2,
-    staleTime: 60_000,
+    staleTime: 120_000,
+    placeholderData: (previous) => previous,
   });
 }
 

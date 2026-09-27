@@ -117,6 +117,21 @@ async def ensure_clinic(
     return await _clinic_row_for_insert(session, clinic, slug=slug)
 
 
+async def clinic_public_id_by_slug(session: AsyncSession, slug: str) -> str:
+    """Authoritative clinic public id after flush (avoids stale in-memory ULIDs)."""
+
+    return str(
+        (
+            await session.execute(
+                select(Clinic.public_id).where(
+                    Clinic.slug == slug,
+                    Clinic.deleted_at.is_(None),
+                ),
+            )
+        ).scalar_one(),
+    )
+
+
 async def ensure_site(
     session: AsyncSession,
     *,

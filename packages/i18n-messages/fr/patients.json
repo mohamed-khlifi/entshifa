@@ -171,7 +171,8 @@
   "concept": {
     "placeholder": "Rechercher dans la terminologie",
     "searching": "Recherche…",
-    "empty": "Aucun concept correspondant."
+    "empty": "Aucun concept correspondant.",
+    "selectRequired": "Choisissez un terme dans les résultats de recherche."
   },
   "allergy": {
     "drug": "Médicament",

@@ -171,7 +171,8 @@
   "concept": {
     "placeholder": "Search terminology",
     "searching": "Searching…",
-    "empty": "No matching concepts."
+    "empty": "No matching concepts.",
+    "selectRequired": "Select a term from the search results."
   },
   "allergy": {
     "drug": "Drug",

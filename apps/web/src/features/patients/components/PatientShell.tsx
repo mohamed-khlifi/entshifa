@@ -5,10 +5,7 @@ import type { ReactNode } from "react";
 
 import { PatientHeaderCard } from "../components/PatientHeaderCard";
 import { PatientSafetyAlertBanner } from "../components/PatientSafetyAlertBanner";
-import {
-  usePatientQuery,
-  usePatientTimelineQuery,
-} from "../hooks/use-patient-queries";
+import { usePatientQuery } from "../hooks/use-patient-queries";
 import { testIdProps, testIds } from "@/lib/test/test-id";
 
 export function PatientShell({
@@ -20,7 +17,6 @@ export function PatientShell({
 }) {
   const t = useTranslations("patients");
   const patient = usePatientQuery(patientId);
-  usePatientTimelineQuery(patientId);
 
   if (patient.isLoading) {
     return (

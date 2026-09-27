@@ -32,6 +32,14 @@ def test_accented_latin_name_folds_to_the_unaccented_form() -> None:
 
 
 @pytest.mark.clinical
+def test_duplicate_folded_name_tokens_are_deduped_once() -> None:
+    """Same token in first and last name must not appear twice in the search key."""
+
+    folded = build_name_normalized(first_name="Ben", last_name="ben")
+    assert folded == "ben"
+
+
+@pytest.mark.clinical
 def test_arabic_script_is_preserved_beside_the_latin_name() -> None:
     """The second script stays in the search key; it is not transliterated."""
 
