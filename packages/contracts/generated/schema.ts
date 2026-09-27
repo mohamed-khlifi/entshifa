@@ -183,6 +183,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/attachments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Attachments */
+        get: operations["list_attachments_api_v1_attachments_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/attachments/confirm": {
         parameters: {
             query?: never;
@@ -1413,6 +1430,7 @@ export interface components {
         };
         /** AttachmentRead */
         AttachmentRead: {
+            bodySite?: components["schemas"]["CodeableConcept"] | null;
             /** Caption */
             caption: string | null;
             /** Capturedat */
@@ -1423,12 +1441,21 @@ export interface components {
             checksumSha256: string | null;
             /** Contenttype */
             contentType: string;
+            /** Createdat */
+            createdAt?: string | null;
             /** Durationms */
             durationMs: number | null;
             /** Filename */
             filename: string;
             /** Height */
             height: number | null;
+            /**
+             * Isconsentedforteaching
+             * @default false
+             */
+            isConsentedForTeaching: boolean;
+            /** Laterality */
+            laterality?: string | null;
             /** Patientpublicid */
             patientPublicId: string | null;
             /** Processingstatus */
@@ -1449,14 +1476,24 @@ export interface components {
          * @description Client asks for a pre-signed PUT URL; file bytes never hit the API.
          */
         AttachmentUploadUrlRequest: {
+            /** Bodysiteconceptid */
+            bodySiteConceptId?: string | null;
             /** Caption */
             caption?: string | null;
+            /** Capturedat */
+            capturedAt?: string | null;
             /** Category */
             category: string;
             /** Contenttype */
             contentType: string;
             /** Filename */
             filename: string;
+            /**
+             * Isconsentedforteaching
+             * @default false
+             */
+            isConsentedForTeaching: boolean;
+            laterality?: components["schemas"]["Laterality"] | null;
             /** Patientpublicid */
             patientPublicId?: string | null;
             /** Sizebytes */
@@ -1879,6 +1916,12 @@ export interface components {
         PageSchema_AppointmentTypeRead_: {
             /** Items */
             items: components["schemas"]["AppointmentTypeRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[AttachmentRead] */
+        PageSchema_AttachmentRead_: {
+            /** Items */
+            items: components["schemas"]["AttachmentRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[ConceptAdminRead] */
@@ -3380,11 +3423,52 @@ export interface operations {
             };
         };
     };
+    list_attachments_api_v1_attachments_get: {
+        parameters: {
+            query: {
+                patientPublicId: string;
+                category?: string | null;
+                laterality?: string | null;
+                capturedFrom?: string | null;
+                capturedTo?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_AttachmentRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     confirm_upload_api_v1_attachments_confirm_post: {
         parameters: {
             query?: never;
             header?: {
                 "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
             };
             path?: never;
             cookie?: never;
@@ -3455,6 +3539,7 @@ export interface operations {
             query?: never;
             header?: {
                 "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
             };
             path: {
                 public_id: string;

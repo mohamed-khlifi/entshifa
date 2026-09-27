@@ -93,6 +93,7 @@ export function ClinicProfilePanel() {
           filename: file.name,
           contentType: file.type,
           sizeBytes: file.size,
+          isConsentedForTeaching: false,
         },
         locale,
         session.clinicPublicId,

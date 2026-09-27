@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+from datetime import datetime
+
 from pydantic import Field, field_validator
 
 from ent.core.schemas.base import CamelModel
+from ent.core.schemas.common import Laterality
 from ent.features.attachments.models import ATTACHMENT_CATEGORIES
 
 _ALLOWED_CATEGORIES = frozenset(ATTACHMENT_CATEGORIES)
@@ -19,6 +22,10 @@ class AttachmentUploadUrlRequest(CamelModel):
     size_bytes: int = Field(ge=1, le=2_147_483_648)  # 2 GiB hard cap
     patient_public_id: str | None = Field(default=None, min_length=26, max_length=26)
     caption: str | None = Field(default=None, max_length=255)
+    laterality: Laterality | None = None
+    body_site_concept_id: str | None = Field(default=None, min_length=26, max_length=26)
+    captured_at: datetime | None = None
+    is_consented_for_teaching: bool = False
 
     @field_validator("category")
     @classmethod
@@ -36,6 +43,13 @@ class AttachmentUploadUrlRequest(CamelModel):
             msg = "invalid filename"
             raise ValueError(msg)
         return name
+
+    @field_validator("body_site_concept_id", "caption", mode="before")
+    @classmethod
+    def blank_to_none(cls, value: object) -> object:
+        if isinstance(value, str) and not value.strip():
+            return None
+        return value
 
 
 class AttachmentConfirmRequest(CamelModel):

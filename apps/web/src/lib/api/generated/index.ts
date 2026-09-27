@@ -29,6 +29,7 @@ export type AttachmentUploadUrlResponse =
   Schemas["AttachmentUploadUrlResponse"];
 export type AttachmentConfirmRequest = Schemas["AttachmentConfirmRequest"];
 export type AttachmentRead = Schemas["AttachmentRead"];
+export type PageSchemaAttachmentRead = Schemas["PageSchema_AttachmentRead_"];
 export type AttachmentDownloadUrlResponse =
   Schemas["AttachmentDownloadUrlResponse"];
 export type MediaVariantRead = Schemas["MediaVariantRead"];

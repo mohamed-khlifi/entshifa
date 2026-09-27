@@ -2,6 +2,10 @@
   "gate": {
     "forbidden": "Vous n’avez pas l’autorisation de consulter les patients."
   },
+  "nav": {
+    "overview": "Synthèse",
+    "attachments": "Images et documents"
+  },
   "state": {
     "loading": "Chargement du dossier…",
     "loadError": "Ce dossier n’a pas pu être chargé."

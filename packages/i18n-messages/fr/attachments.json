@@ -1,12 +1,112 @@
 {
+  "forbidden": "Vous n’avez pas l’autorisation de voir les images et documents.",
+  "consent": {
+    "yes": "Autorisé pour l’enseignement",
+    "no": "Pas pour l’enseignement"
+  },
+  "validation": {
+    "caption": "La légende doit contenir au plus 255 caractères."
+  },
+  "filter": {
+    "category": "Catégorie",
+    "laterality": "Côté",
+    "from": "Du",
+    "to": "Au",
+    "any": "Tous"
+  },
+  "gallery": {
+    "title": "Images et documents",
+    "description": "Endoscopie, photos et comptes rendus externes de ce dossier. Les fichiers partent directement vers le stockage.",
+    "loading": "Chargement des pièces jointes…",
+    "error": "La liste des pièces jointes n’a pas pu être chargée.",
+    "emptyTitle": "Aucune pièce jointe",
+    "emptyDescription": "Ajoutez une image, une vidéo ou un document externe.",
+    "teaching": "Enseignement",
+    "noDate": "Pas de date de capture",
+    "noBodySite": "Pas de site anatomique",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "page": "{from}–{to} sur {total}"
+  },
+  "upload": {
+    "open": "Ajouter",
+    "title": "Ajouter une pièce jointe",
+    "description": "Le fichier est envoyé directement au stockage. Le dossier conserve les étiquettes, dont le consentement pour l’enseignement.",
+    "maxHint": "Taille maximale du fichier : {size}.",
+    "captureTitle": "Capture",
+    "externalTitle": "Documents externes",
+    "category": "Catégorie",
+    "laterality": "Côté",
+    "capturedAt": "Capturé",
+    "caption": "Légende",
+    "file": "Fichier",
+    "bodySite": "Site anatomique",
+    "clearBodySite": "Effacer",
+    "bodySiteEmpty": "Aucune structure correspondante.",
+    "consent": "Consentement pour l’enseignement",
+    "consentHint": "Indiquez si ce fichier peut servir à l’enseignement. Laissez décoché si le consentement n’a pas été donné.",
+    "submit": "Envoyer",
+    "submitting": "Envoi…",
+    "retry": "Réessayer",
+    "progress": "{percent} % · {loaded} / {total}",
+    "toast": {
+      "saved": "Pièce jointe enregistrée.",
+      "failed": "L’envoi ne s’est pas terminé."
+    },
+    "errors": {
+      "storage": "Le stockage n’a pas accepté le fichier. Vous pouvez réessayer.",
+      "fileRequired": "Choisissez un fichier.",
+      "fileTooLarge": "Ce fichier dépasse la taille autorisée.",
+      "unauthenticated": "Connectez-vous pour ajouter une pièce jointe."
+    },
+    "presets": {
+      "endoscopyImage": "Image d’endoscopie",
+      "endoscopyVideo": "Vidéo d’endoscopie",
+      "clinicalPhoto": "Photo clinique",
+      "audiogramScan": "Audiogramme externe",
+      "imagingReport": "Compte rendu d’imagerie",
+      "pathology": "Anatomopathologie",
+      "externalLetter": "Courrier externe",
+      "documentPdf": "Document PDF"
+    }
+  },
+  "category": {
+    "endoscopy_image": "Image d’endoscopie",
+    "endoscopy_video": "Vidéo d’endoscopie",
+    "clinical_photo": "Photo clinique",
+    "audiogram_scan": "Audiogramme externe",
+    "imaging_report": "Compte rendu d’imagerie",
+    "pathology": "Anatomopathologie",
+    "external_letter": "Courrier externe",
+    "document_pdf": "Document PDF",
+    "signature": "Signature",
+    "logo": "Logo",
+    "voice_recording": "Enregistrement vocal",
+    "unknown": "Pièce jointe"
+  },
+  "laterality": {
+    "left": "Gauche",
+    "right": "Droite",
+    "bilateral": "Bilatéral",
+    "midline": "Ligne médiane",
+    "na": "Sans objet",
+    "unspecified": "Non précisé"
+  },
   "viewer": {
-    "title": "Visionneuse de pièces jointes",
+    "title": "Pièce jointe",
     "description": "Charge une URL de téléchargement courte durée, contrôlée par les permissions.",
     "load": "Charger la pièce jointe",
     "loading": "Chargement…",
     "filename": "Nom de fichier",
     "status": "Traitement",
     "imageAlt": "Aperçu de pièce jointe clinique",
+    "close": "Fermer",
+    "bodySite": "Site anatomique",
+    "capturedAt": "Date",
+    "consent": "Consentement pour l’enseignement",
+    "download": "Ouvrir le fichier",
+    "video": "Vidéo d’endoscopie",
+    "audio": "Enregistrement audio",
     "statusValues": {
       "pending": "En attente",
       "processing": "En cours",

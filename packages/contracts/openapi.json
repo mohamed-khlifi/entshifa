@@ -574,6 +574,16 @@
       },
       "AttachmentRead": {
         "properties": {
+          "bodySite": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CodeableConcept"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "caption": {
             "anyOf": [
               {
@@ -616,6 +626,18 @@
             "title": "Contenttype",
             "type": "string"
           },
+          "createdAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Createdat"
+          },
           "durationMs": {
             "anyOf": [
               {
@@ -641,6 +663,22 @@
               }
             ],
             "title": "Height"
+          },
+          "isConsentedForTeaching": {
+            "default": false,
+            "title": "Isconsentedforteaching",
+            "type": "boolean"
+          },
+          "laterality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Laterality"
           },
           "patientPublicId": {
             "anyOf": [
@@ -719,6 +757,19 @@
       "AttachmentUploadUrlRequest": {
         "description": "Client asks for a pre-signed PUT URL; file bytes never hit the API.",
         "properties": {
+          "bodySiteConceptId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bodysiteconceptid"
+          },
           "caption": {
             "anyOf": [
               {
@@ -730,6 +781,18 @@
               }
             ],
             "title": "Caption"
+          },
+          "capturedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Capturedat"
           },
           "category": {
             "maxLength": 40,
@@ -748,6 +811,21 @@
             "minLength": 1,
             "title": "Filename",
             "type": "string"
+          },
+          "isConsentedForTeaching": {
+            "default": false,
+            "title": "Isconsentedforteaching",
+            "type": "boolean"
+          },
+          "laterality": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Laterality"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "patientPublicId": {
             "anyOf": [
@@ -2230,6 +2308,26 @@
           "page"
         ],
         "title": "PageSchema[AppointmentTypeRead]",
+        "type": "object"
+      },
+      "PageSchema_AttachmentRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AttachmentRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[AttachmentRead]",
         "type": "object"
       },
       "PageSchema_ConceptAdminRead_": {
@@ -7018,6 +7116,178 @@
         ]
       }
     },
+    "/api/v1/attachments": {
+      "get": {
+        "operationId": "list_attachments_api_v1_attachments_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "patientPublicId",
+            "required": true,
+            "schema": {
+              "maxLength": 26,
+              "minLength": 26,
+              "title": "Patientpublicid",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 40,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category"
+            }
+          },
+          {
+            "in": "query",
+            "name": "laterality",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 20,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Laterality"
+            }
+          },
+          {
+            "in": "query",
+            "name": "capturedFrom",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Capturedfrom"
+            }
+          },
+          {
+            "in": "query",
+            "name": "capturedTo",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Capturedto"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 24,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_AttachmentRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Attachments",
+        "tags": [
+          "attachments"
+        ]
+      }
+    },
     "/api/v1/attachments/confirm": {
       "post": {
         "operationId": "confirm_upload_api_v1_attachments_confirm_post",
@@ -7036,6 +7306,22 @@
                 }
               ],
               "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
             }
           }
         ],
@@ -7173,6 +7459,22 @@
                 }
               ],
               "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
             }
           }
         ],

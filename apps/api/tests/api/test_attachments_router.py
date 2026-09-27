@@ -8,6 +8,7 @@ from urllib.parse import parse_qs, urlparse
 import pytest
 from httpx import ASGITransport, AsyncClient
 
+from ent.core.utils.ids import new_ulid
 from ent.main import create_app
 from ent.settings import get_settings
 from tests.support.env import clear_settings_cache
@@ -30,6 +31,18 @@ async def test_upload_url_requires_authentication(app) -> None:
                 "contentType": "image/jpeg",
                 "sizeBytes": 1024,
             },
+        )
+    assert response.status_code == 401
+    assert response.json()["code"] == "auth.unauthenticated"
+
+
+@pytest.mark.asyncio
+async def test_list_requires_authentication(app) -> None:
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        response = await client.get(
+            "/api/v1/attachments",
+            params={"patientPublicId": "01ARZ3NDEKTSV4RRFFQ69G5FAV"},
         )
     assert response.status_code == 401
     assert response.json()["code"] == "auth.unauthenticated"
@@ -79,14 +92,32 @@ async def test_attachment_upload_confirm_and_download(
         token = login.json()["accessToken"]
         headers = {"Authorization": f"Bearer {token}"}
 
+        created = await client.post(
+            "/api/v1/patients",
+            headers={**headers, "Idempotency-Key": new_ulid()},
+            json={
+                "firstName": "Media",
+                "lastName": "Chart",
+                "birthDate": "1991-04-02",
+                "sex": "male",
+                "preferredLocale": "en",
+            },
+        )
+        assert created.status_code == 201, created.text
+        patient_id = created.json()["publicId"]
+
         upload_resp = await client.post(
             "/api/v1/attachments/upload-url",
             headers=headers,
             json={
-                "category": "clinical_photo",
-                "filename": "ear.jpg",
-                "contentType": "image/jpeg",
+                "category": "external_letter",
+                "filename": "letter.pdf",
+                "contentType": "application/pdf",
                 "sizeBytes": 128,
+                "patientPublicId": patient_id,
+                "laterality": "left",
+                "isConsentedForTeaching": True,
+                "caption": "Outside report",
             },
         )
         assert upload_resp.status_code == 200
@@ -108,8 +139,28 @@ async def test_attachment_upload_confirm_and_download(
             headers=headers,
             json={"uploadToken": upload_token},
         )
-        assert confirm.status_code == 200
-        public_id = confirm.json()["publicId"]
+        assert confirm.status_code == 200, confirm.text
+        confirmed = confirm.json()
+        public_id = confirmed["publicId"]
+        assert confirmed["isConsentedForTeaching"] is True
+        assert confirmed["laterality"] == "left"
+        assert confirmed["patientPublicId"] == patient_id
+
+        listed = await client.get(
+            "/api/v1/attachments",
+            headers=headers,
+            params={"patientPublicId": patient_id, "category": "external_letter"},
+        )
+        assert listed.status_code == 200, listed.text
+        assert listed.json()["page"]["total"] >= 1
+        assert any(item["publicId"] == public_id for item in listed.json()["items"])
+
+        missing = await client.get(
+            "/api/v1/attachments",
+            headers=headers,
+            params={"patientPublicId": "01ARZ3NDEKTSV4RRFFQ69G5FAV"},
+        )
+        assert missing.status_code == 404
 
         detail = await client.get(
             f"/api/v1/attachments/{public_id}",

@@ -1,12 +1,112 @@
 {
+  "forbidden": "ليست لديك صلاحية عرض الصور والمستندات.",
+  "consent": {
+    "yes": "مسموح للتعليم",
+    "no": "ليس للتعليم"
+  },
+  "validation": {
+    "caption": "يجب ألا يتجاوز التعليق 255 حرفًا."
+  },
+  "filter": {
+    "category": "الفئة",
+    "laterality": "الجهة",
+    "from": "من",
+    "to": "إلى",
+    "any": "الكل"
+  },
+  "gallery": {
+    "title": "الصور والمستندات",
+    "description": "التنظير والصور والتقارير الخارجية لهذا الملف. تُرفع الملفات مباشرة إلى التخزين.",
+    "loading": "جارٍ تحميل المرفقات…",
+    "error": "تعذر تحميل قائمة المرفقات.",
+    "emptyTitle": "لا توجد مرفقات",
+    "emptyDescription": "أضف صورة أو مقطع فيديو أو مستندًا خارجيًا.",
+    "teaching": "التعليم",
+    "noDate": "لا تاريخ التقاط",
+    "noBodySite": "لا موضع تشريحي",
+    "previous": "السابق",
+    "next": "التالي",
+    "page": "{from}–{to} من {total}"
+  },
+  "upload": {
+    "open": "رفع",
+    "title": "إضافة مرفق",
+    "description": "يُرسل الملف مباشرة إلى التخزين. يحتفظ الملف بالوسوم، ومنها الموافقة على الاستخدام التعليمي.",
+    "maxHint": "الحد الأقصى لحجم الملف {size}.",
+    "captureTitle": "الالتقاط",
+    "externalTitle": "مستندات خارجية",
+    "category": "الفئة",
+    "laterality": "الجهة",
+    "capturedAt": "وقت الالتقاط",
+    "caption": "تعليق",
+    "file": "الملف",
+    "bodySite": "الموضع التشريحي",
+    "clearBodySite": "مسح",
+    "bodySiteEmpty": "لا توجد بنية مطابقة.",
+    "consent": "موافقة على الاستخدام التعليمي",
+    "consentHint": "سجّل ما إذا كان يجوز استخدام هذا الملف للتعليم. اتركه دون تحديد إذا لم تُعطَ الموافقة.",
+    "submit": "رفع",
+    "submitting": "جارٍ الرفع…",
+    "retry": "إعادة المحاولة",
+    "progress": "{percent}% · {loaded} / {total}",
+    "toast": {
+      "saved": "تم حفظ المرفق.",
+      "failed": "لم يكتمل الرفع."
+    },
+    "errors": {
+      "storage": "لم يقبل التخزين الملف. يمكنك إعادة المحاولة.",
+      "fileRequired": "اختر ملفًا.",
+      "fileTooLarge": "يتجاوز هذا الملف الحجم المسموح.",
+      "unauthenticated": "سجّل الدخول لرفع المرفقات."
+    },
+    "presets": {
+      "endoscopyImage": "صورة تنظير",
+      "endoscopyVideo": "فيديو تنظير",
+      "clinicalPhoto": "صورة سريرية",
+      "audiogramScan": "مخطط سمع خارجي",
+      "imagingReport": "تقرير تصوير",
+      "pathology": "تشريح مرضي",
+      "externalLetter": "خطاب خارجي",
+      "documentPdf": "مستند PDF"
+    }
+  },
+  "category": {
+    "endoscopy_image": "صورة تنظير",
+    "endoscopy_video": "فيديو تنظير",
+    "clinical_photo": "صورة سريرية",
+    "audiogram_scan": "مخطط سمع خارجي",
+    "imaging_report": "تقرير تصوير",
+    "pathology": "تشريح مرضي",
+    "external_letter": "خطاب خارجي",
+    "document_pdf": "مستند PDF",
+    "signature": "التوقيع",
+    "logo": "الشعار",
+    "voice_recording": "تسجيل صوتي",
+    "unknown": "مرفق"
+  },
+  "laterality": {
+    "left": "أيسر",
+    "right": "أيمن",
+    "bilateral": "ثنائي الجانب",
+    "midline": "خط الناصف",
+    "na": "لا ينطبق",
+    "unspecified": "غير محدد"
+  },
   "viewer": {
-    "title": "عارض المرفقات",
+    "title": "مرفق",
     "description": "يحمّل رابط تنزيل قصير الأمد بعد التحقق من الصلاحيات للوسائط السريرية.",
     "load": "تحميل المرفق",
     "loading": "جارٍ التحميل…",
     "filename": "اسم الملف",
     "status": "المعالجة",
     "imageAlt": "معاينة مرفق سريري",
+    "close": "إغلاق",
+    "bodySite": "الموضع التشريحي",
+    "capturedAt": "التاريخ",
+    "consent": "موافقة التعليم",
+    "download": "فتح الملف",
+    "video": "فيديو تنظير",
+    "audio": "تسجيل صوتي",
     "statusValues": {
       "pending": "قيد الانتظار",
       "processing": "قيد المعالجة",

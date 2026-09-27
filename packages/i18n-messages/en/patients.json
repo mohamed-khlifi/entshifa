@@ -2,6 +2,10 @@
   "gate": {
     "forbidden": "You do not have permission to view patients."
   },
+  "nav": {
+    "overview": "Overview",
+    "attachments": "Images and documents"
+  },
   "state": {
     "loading": "Loading the chart…",
     "loadError": "This chart could not be loaded."

@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import datetime
 
 from ent.core.schemas.base import CamelModel
+from ent.core.schemas.common import CodeableConcept
 
 
 class PresignedUrlResponse(CamelModel):
@@ -42,8 +43,12 @@ class AttachmentRead(CamelModel):
     caption: str | None
     processing_status: str
     patient_public_id: str | None
+    laterality: str | None = None
+    body_site: CodeableConcept | None = None
+    is_consented_for_teaching: bool = False
     virus_scanned_at: datetime | None
     captured_at: datetime | None
+    created_at: datetime | None = None
     variants: list[MediaVariantRead]
 
 

@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 
+from ent.core.schemas.common import CodeableConcept
 from ent.features.attachments.models import Attachment, MediaVariant
-from ent.features.attachments.service import _extension_for, _to_read
+from ent.features.attachments.service import _extension_for, _to_read, _to_utc_naive
 
 
 def test_extension_for_filename_and_content_type() -> None:
@@ -56,6 +57,21 @@ def test_to_read_skips_deleted_variants() -> None:
         updated_at=now,
     )
     attachment.variants = [live, deleted]
-    read = _to_read(attachment)
+    attachment.laterality = "left"
+    attachment.is_consented_for_teaching = True
+    site = CodeableConcept(
+        concept_id="01ARZ3NDEKTSV4RRFFQ69G5FB3", code="ear", display="Ear"
+    )
+    read = _to_read(attachment, body_site=site)
     assert len(read.variants) == 1
     assert read.variants[0].variant == "thumb"
+    assert read.is_consented_for_teaching is True
+    assert read.laterality == "left"
+    assert read.body_site is not None
+    assert read.body_site.display == "Ear"
+
+
+def test_to_utc_naive_converts_aware_instants() -> None:
+    aware = datetime(2026, 9, 27, 12, 0, tzinfo=UTC)
+    assert _to_utc_naive(aware).tzinfo is None
+    assert _to_utc_naive(aware) == datetime(2026, 9, 27, 12, 0)

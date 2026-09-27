@@ -1,12 +1,112 @@
 {
+  "forbidden": "You do not have permission to view images and documents.",
+  "consent": {
+    "yes": "Allowed for teaching",
+    "no": "Not for teaching"
+  },
+  "validation": {
+    "caption": "Caption must be 255 characters or fewer."
+  },
+  "filter": {
+    "category": "Category",
+    "laterality": "Side",
+    "from": "From",
+    "to": "To",
+    "any": "Any"
+  },
+  "gallery": {
+    "title": "Images and documents",
+    "description": "Endoscopy, photos, and external reports for this chart. Files upload directly to storage.",
+    "loading": "Loading attachments…",
+    "error": "The attachment list could not be loaded.",
+    "emptyTitle": "No attachments",
+    "emptyDescription": "Upload an image, a video, or an external document.",
+    "teaching": "Teaching",
+    "noDate": "No capture date",
+    "noBodySite": "No body site",
+    "previous": "Previous",
+    "next": "Next",
+    "page": "{from}–{to} of {total}"
+  },
+  "upload": {
+    "open": "Upload",
+    "title": "Add attachment",
+    "description": "The file is sent straight to storage. The chart stores the tags, including teaching consent.",
+    "maxHint": "Maximum file size {size}.",
+    "captureTitle": "Capture",
+    "externalTitle": "External documents",
+    "category": "Category",
+    "laterality": "Side",
+    "capturedAt": "Captured",
+    "caption": "Caption",
+    "file": "File",
+    "bodySite": "Body site",
+    "clearBodySite": "Clear",
+    "bodySiteEmpty": "No matching anatomy.",
+    "consent": "Consent for teaching",
+    "consentHint": "Record whether this file may be used for teaching. Leave unchecked when consent was not given.",
+    "submit": "Upload",
+    "submitting": "Uploading…",
+    "retry": "Retry",
+    "progress": "{percent}% · {loaded} / {total}",
+    "toast": {
+      "saved": "Attachment saved.",
+      "failed": "The upload did not finish."
+    },
+    "errors": {
+      "storage": "Storage did not accept the file. You can retry.",
+      "fileRequired": "Choose a file.",
+      "fileTooLarge": "This file is larger than the allowed size.",
+      "unauthenticated": "Sign in to upload attachments."
+    },
+    "presets": {
+      "endoscopyImage": "Endoscopy image",
+      "endoscopyVideo": "Endoscopy video",
+      "clinicalPhoto": "Clinical photo",
+      "audiogramScan": "External audiogram",
+      "imagingReport": "Imaging report",
+      "pathology": "Pathology",
+      "externalLetter": "External letter",
+      "documentPdf": "PDF document"
+    }
+  },
+  "category": {
+    "endoscopy_image": "Endoscopy image",
+    "endoscopy_video": "Endoscopy video",
+    "clinical_photo": "Clinical photo",
+    "audiogram_scan": "External audiogram",
+    "imaging_report": "Imaging report",
+    "pathology": "Pathology",
+    "external_letter": "External letter",
+    "document_pdf": "PDF document",
+    "signature": "Signature",
+    "logo": "Logo",
+    "voice_recording": "Voice recording",
+    "unknown": "Attachment"
+  },
+  "laterality": {
+    "left": "Left",
+    "right": "Right",
+    "bilateral": "Bilateral",
+    "midline": "Midline",
+    "na": "Not applicable",
+    "unspecified": "Unspecified"
+  },
   "viewer": {
-    "title": "Attachment viewer",
+    "title": "Attachment",
     "description": "Loads a short-lived, permission-checked download URL for clinical media.",
     "load": "Load attachment",
     "loading": "Loading…",
     "filename": "Filename",
     "status": "Processing",
     "imageAlt": "Clinical attachment preview",
+    "close": "Close",
+    "bodySite": "Body site",
+    "capturedAt": "Date",
+    "consent": "Teaching consent",
+    "download": "Open file",
+    "video": "Endoscopy video",
+    "audio": "Audio recording",
     "statusValues": {
       "pending": "Pending",
       "processing": "Processing",

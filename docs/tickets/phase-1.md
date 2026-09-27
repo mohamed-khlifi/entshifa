@@ -139,7 +139,7 @@ line by line.
 
 ---
 
-## - [ ] P1-08 Attachments (frontend)
+## - [x] P1-08 Attachments (frontend)
 
 **Scope**
 - Upload component using the P0-13 pre-signed flow, with progress and retry.
