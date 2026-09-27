@@ -15,7 +15,8 @@
     "users": "Équipe",
     "security": "Sécurité",
     "terminology": "Terminologie",
-    "patients": "Patients"
+    "patients": "Patients",
+    "schedule": "Planning"
   },
   "clinicSwitcher": {
     "label": "Clinique active"

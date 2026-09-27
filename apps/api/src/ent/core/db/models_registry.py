@@ -17,6 +17,7 @@ from ent.features.patients.models import (
     PatientProblem,
     PatientRequestIdempotency,
 )
+from ent.features.scheduling.models import Appointment, AppointmentType
 from ent.features.terminology.models import (
     CodeSystem,
     Concept,
@@ -35,6 +36,8 @@ from ent.features.users.models import (
 from ent.jobs.models import JobRun
 
 __all__ = [
+    "Appointment",
+    "AppointmentType",
     "AccessLog",
     "Attachment",
     "AuditLog",

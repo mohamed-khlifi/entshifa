@@ -121,7 +121,7 @@ line by line.
 
 ---
 
-## - [ ] P1-07 Scheduling (backend and frontend)
+## - [x] P1-07 Scheduling (backend and frontend)
 
 **Scope**
 - `appointment_type` with default durations, `appointment`, waiting room list.

@@ -1,0 +1,78 @@
+{
+  "gate": {
+    "forbidden": "Vous n'avez pas l'autorisation d'accéder au planning."
+  },
+  "loading": "Chargement du planning…",
+  "page": {
+    "title": "Planning",
+    "description": "Vues jour et semaine, salle d'attente et statuts de rendez-vous."
+  },
+  "views": {
+    "day": "Jour",
+    "week": "Semaine"
+  },
+  "filters": {
+    "doctor": "Médecin",
+    "room": "Salle",
+    "allDoctors": "Tous les médecins",
+    "anyRoom": "Toute salle"
+  },
+  "actions": {
+    "prev": "Précédent",
+    "next": "Suivant",
+    "today": "Aujourd'hui",
+    "newAppointment": "Prendre rendez-vous",
+    "arrive": "Arrivé",
+    "inRoom": "En salle",
+    "complete": "Terminer",
+    "noShow": "Absent",
+    "cancel": "Annuler"
+  },
+  "appointment_type": {
+    "new_consultation": "Première consultation",
+    "follow_up": "Contrôle",
+    "procedure": "Acte",
+    "audiology_slot": "Créneau audiology",
+    "post_op_check": "Contrôle post-op",
+    "surgery": "Chirurgie"
+  },
+  "status": {
+    "scheduled": "Planifié",
+    "arrived": "En attente",
+    "in_room": "En salle",
+    "completed": "Terminé",
+    "no_show": "Absent",
+    "cancelled": "Annulé"
+  },
+  "questionnaire": {
+    "not_applicable": "Questionnaire — non applicable",
+    "pending": "Questionnaire en attente",
+    "completed": "Questionnaire complété"
+  },
+  "waitingRoom": {
+    "title": "Salle d'attente",
+    "empty": "Aucun patient en attente.",
+    "arrivedAt": "Arrivé à {time}"
+  },
+  "calendar": {
+    "empty": "Aucun rendez-vous sur cette période.",
+    "overlapWarning": "Ce créneau chevauche un autre rendez-vous du même médecin."
+  },
+  "form": {
+    "patient": "Patient",
+    "doctor": "Médecin",
+    "type": "Type",
+    "site": "Site",
+    "startsAt": "Début",
+    "duration": "Durée (minutes)",
+    "room": "Salle",
+    "reason": "Motif",
+    "submit": "Enregistrer",
+    "cancelReason": "Motif d'annulation"
+  },
+  "toast": {
+    "created": "Rendez-vous enregistré.",
+    "updated": "Rendez-vous mis à jour.",
+    "statusUpdated": "Statut mis à jour."
+  }
+}

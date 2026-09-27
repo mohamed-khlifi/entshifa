@@ -1,0 +1,78 @@
+{
+  "gate": {
+    "forbidden": "You do not have permission to view the schedule."
+  },
+  "loading": "Loading schedule…",
+  "page": {
+    "title": "Schedule",
+    "description": "Day and week views, waiting room, and appointment status."
+  },
+  "views": {
+    "day": "Day",
+    "week": "Week"
+  },
+  "filters": {
+    "doctor": "Doctor",
+    "room": "Room",
+    "allDoctors": "All doctors",
+    "anyRoom": "Any room"
+  },
+  "actions": {
+    "prev": "Previous",
+    "next": "Next",
+    "today": "Today",
+    "newAppointment": "Book appointment",
+    "arrive": "Mark arrived",
+    "inRoom": "In room",
+    "complete": "Complete",
+    "noShow": "No-show",
+    "cancel": "Cancel"
+  },
+  "appointment_type": {
+    "new_consultation": "New consultation",
+    "follow_up": "Follow-up",
+    "procedure": "Procedure",
+    "audiology_slot": "Audiology slot",
+    "post_op_check": "Post-op check",
+    "surgery": "Surgery"
+  },
+  "status": {
+    "scheduled": "Scheduled",
+    "arrived": "Waiting",
+    "in_room": "In room",
+    "completed": "Completed",
+    "no_show": "No-show",
+    "cancelled": "Cancelled"
+  },
+  "questionnaire": {
+    "not_applicable": "Questionnaire — not applicable",
+    "pending": "Questionnaire pending",
+    "completed": "Questionnaire completed"
+  },
+  "waitingRoom": {
+    "title": "Waiting room",
+    "empty": "No patients waiting.",
+    "arrivedAt": "Arrived at {time}"
+  },
+  "calendar": {
+    "empty": "No appointments in this range.",
+    "overlapWarning": "This slot overlaps another appointment for the same doctor."
+  },
+  "form": {
+    "patient": "Patient",
+    "doctor": "Doctor",
+    "type": "Type",
+    "site": "Site",
+    "startsAt": "Start",
+    "duration": "Duration (minutes)",
+    "room": "Room",
+    "reason": "Reason",
+    "submit": "Save appointment",
+    "cancelReason": "Cancellation reason"
+  },
+  "toast": {
+    "created": "Appointment booked.",
+    "updated": "Appointment updated.",
+    "statusUpdated": "Status updated."
+  }
+}

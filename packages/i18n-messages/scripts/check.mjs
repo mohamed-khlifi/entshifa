@@ -29,6 +29,7 @@ const NAMESPACES = [
   'data',
   'attachments',
   'patients',
+  'scheduling',
 ];
 
 /**
@@ -49,6 +50,24 @@ const ALLOWLISTED_KEYS = new Set([
   'attachments.viewer.statusValues.failed',
   'attachments.viewer.errors.unauthenticated',
   'attachments.viewer.errors.load_failed',
+  'scheduling.appointment_type.audiology_slot',
+  'scheduling.appointment_type.follow_up',
+  'scheduling.appointment_type.new_consultation',
+  'scheduling.appointment_type.post_op_check',
+  'scheduling.appointment_type.procedure',
+  'scheduling.appointment_type.surgery',
+  'scheduling.form.cancelReason',
+  'scheduling.form.reason',
+  'scheduling.questionnaire.completed',
+  'scheduling.questionnaire.not_applicable',
+  'scheduling.questionnaire.pending',
+  'scheduling.status.arrived',
+  'scheduling.status.cancelled',
+  'scheduling.status.completed',
+  'scheduling.status.in_room',
+  'scheduling.status.no_show',
+  'scheduling.status.scheduled',
+  'scheduling.toast.updated',
 ]);
 
 /** Entire namespace looked up from API `code` via apiErrorCodeToMessageKey. */

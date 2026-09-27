@@ -28,3 +28,6 @@ class ErrorCode(StrEnum):
     PATIENT_VERSION_CONFLICT = "patient.version_conflict"
     PATIENT_IDEMPOTENCY_MISMATCH = "patient.idempotency_mismatch"
     PATIENT_MERGE_INVALID = "patient.merge_invalid"
+
+    APPOINTMENT_INVALID_TRANSITION = "appointment.invalid_transition"
+    APPOINTMENT_INVALID_TIME_RANGE = "appointment.invalid_time_range"

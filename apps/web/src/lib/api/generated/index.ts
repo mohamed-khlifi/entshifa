@@ -96,3 +96,20 @@ export type PatientProblemCreate = Schemas["PatientProblemCreate"];
 export type PatientProblemRead = Schemas["PatientProblemRead"];
 export type PatientHistoryCreate = Schemas["PatientHistoryCreate"];
 export type PatientHistoryRead = Schemas["PatientHistoryRead"];
+
+export type AppointmentTypeRead = Schemas["AppointmentTypeRead"];
+export type AppointmentTypeCreate = Schemas["AppointmentTypeCreate"];
+export type AppointmentTypeUpdate = Schemas["AppointmentTypeUpdate"];
+export type PageSchemaAppointmentTypeRead =
+  Schemas["PageSchema_AppointmentTypeRead_"];
+export type AppointmentRead = Schemas["AppointmentRead"];
+export type AppointmentCreate = Schemas["AppointmentCreate"];
+export type AppointmentUpdate = Schemas["AppointmentUpdate"];
+export type PageSchemaAppointmentRead =
+  Schemas["PageSchema_AppointmentRead_"];
+export type WaitingRoomEntryRead = Schemas["WaitingRoomEntryRead"];
+export type PageSchemaWaitingRoomEntryRead =
+  Schemas["PageSchema_WaitingRoomEntryRead_"];
+export type SchedulableDoctorRead = Schemas["SchedulableDoctorRead"];
+export type PageSchemaSchedulableDoctorRead =
+  Schemas["PageSchema_SchedulableDoctorRead_"];

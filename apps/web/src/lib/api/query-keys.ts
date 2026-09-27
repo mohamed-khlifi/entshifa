@@ -37,6 +37,20 @@ export const queryKeys = {
     timeline: (publicId: string) =>
       [...queryKeys.patients.all, "detail", publicId, "timeline"] as const,
   },
+  scheduling: {
+    all: ["scheduling"] as const,
+    types: () => [...queryKeys.scheduling.all, "types"] as const,
+    doctors: () => [...queryKeys.scheduling.all, "doctors"] as const,
+    appointments: (filters?: {
+      startsAfter?: string;
+      startsBefore?: string;
+      doctorUserId?: string;
+      room?: string;
+      siteId?: string;
+    }) => [...queryKeys.scheduling.all, "appointments", filters ?? {}] as const,
+    waitingRoom: (params?: { on?: string; siteId?: string }) =>
+      [...queryKeys.scheduling.all, "waiting-room", params ?? {}] as const,
+  },
   terminology: {
     all: ["terminology"] as const,
     adminConcepts: (params?: { q?: string; limit?: number; offset?: number }) =>

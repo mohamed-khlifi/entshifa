@@ -1,0 +1,78 @@
+{
+  "gate": {
+    "forbidden": "ليس لديك صلاحية عرض الجدول."
+  },
+  "loading": "جاري تحميل الجدول…",
+  "page": {
+    "title": "الجدول",
+    "description": "عرض يومي وأسبوعي، قائمة الانتظار وحالات المواعيد."
+  },
+  "views": {
+    "day": "يوم",
+    "week": "أسبوع"
+  },
+  "filters": {
+    "doctor": "الطبيب",
+    "room": "الغرفة",
+    "allDoctors": "كل الأطباء",
+    "anyRoom": "أي غرفة"
+  },
+  "actions": {
+    "prev": "السابق",
+    "next": "التالي",
+    "today": "اليوم",
+    "newAppointment": "حجز موعد",
+    "arrive": "وصل",
+    "inRoom": "في الغرفة",
+    "complete": "إنهاء",
+    "noShow": "لم يحضر",
+    "cancel": "إلغاء"
+  },
+  "appointment_type": {
+    "new_consultation": "استشارة جديدة",
+    "follow_up": "متابعة",
+    "procedure": "إجراء",
+    "audiology_slot": "موعد audiologie",
+    "post_op_check": "متابعة ما بعد العملية",
+    "surgery": "جراحة"
+  },
+  "status": {
+    "scheduled": "مجدول",
+    "arrived": "في الانتظار",
+    "in_room": "في الغرفة",
+    "completed": "مكتمل",
+    "no_show": "لم يحضر",
+    "cancelled": "ملغى"
+  },
+  "questionnaire": {
+    "not_applicable": "الاستبيان — غير مطبق",
+    "pending": "استبيان قيد الانتظار",
+    "completed": "اكتمل الاستبيان"
+  },
+  "waitingRoom": {
+    "title": "غرفة الانتظار",
+    "empty": "لا مرضى في الانتظار.",
+    "arrivedAt": "وصل في {time}"
+  },
+  "calendar": {
+    "empty": "لا مواعيد في هذه الفترة.",
+    "overlapWarning": "يتداخل هذا الموعد مع موعد آخر لنفس الطبيب."
+  },
+  "form": {
+    "patient": "المريض",
+    "doctor": "الطبيب",
+    "type": "النوع",
+    "site": "الموقع",
+    "startsAt": "البداية",
+    "duration": "المدة (دقائق)",
+    "room": "الغرفة",
+    "reason": "السبب",
+    "submit": "حفظ الموعد",
+    "cancelReason": "سبب الإلغاء"
+  },
+  "toast": {
+    "created": "تم حجز الموعد.",
+    "updated": "تم تحديث الموعد.",
+    "statusUpdated": "تم تحديث الحالة."
+  }
+}

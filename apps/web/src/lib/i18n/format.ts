@@ -61,6 +61,25 @@ export function formatTime(
   );
 }
 
+export function formatDateTimeInTimeZone(
+  value: Date | string | number,
+  timeZone: string,
+  locale?: string,
+  options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  },
+): string {
+  const date = value instanceof Date ? value : new Date(value);
+  return new Intl.DateTimeFormat(resolveIntlLocale(locale), {
+    ...options,
+    timeZone,
+  }).format(date);
+}
+
 export function formatDateTime(
   value: Date | string | number,
   locale?: string,

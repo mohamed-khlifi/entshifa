@@ -9,6 +9,180 @@
  */
 
 export interface paths {
+    "/api/v1/appointment-types": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Appointment Types */
+        get: operations["list_appointment_types_api_v1_appointment_types_get"];
+        put?: never;
+        /** Create Appointment Type */
+        post: operations["create_appointment_type_api_v1_appointment_types_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/appointment-types/{type_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Appointment Type */
+        delete: operations["delete_appointment_type_api_v1_appointment_types__type_id__delete"];
+        options?: never;
+        head?: never;
+        /** Update Appointment Type */
+        patch: operations["update_appointment_type_api_v1_appointment_types__type_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/appointments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Appointments */
+        get: operations["list_appointments_api_v1_appointments_get"];
+        put?: never;
+        /** Create Appointment */
+        post: operations["create_appointment_api_v1_appointments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/appointments/waiting-room": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Waiting Room */
+        get: operations["list_waiting_room_api_v1_appointments_waiting_room_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/appointments/{appointment_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Appointment */
+        get: operations["get_appointment_api_v1_appointments__appointment_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Appointment */
+        patch: operations["update_appointment_api_v1_appointments__appointment_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/appointments/{appointment_id}/arrive": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Arrive Appointment */
+        post: operations["arrive_appointment_api_v1_appointments__appointment_id__arrive_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/appointments/{appointment_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Appointment */
+        post: operations["cancel_appointment_api_v1_appointments__appointment_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/appointments/{appointment_id}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Complete Appointment */
+        post: operations["complete_appointment_api_v1_appointments__appointment_id__complete_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/appointments/{appointment_id}/in-room": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** In Room Appointment */
+        post: operations["in_room_appointment_api_v1_appointments__appointment_id__in_room_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/appointments/{appointment_id}/no-show": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** No Show Appointment */
+        post: operations["no_show_appointment_api_v1_appointments__appointment_id__no_show_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/attachments/confirm": {
         parameters: {
             query?: never;
@@ -699,6 +873,23 @@ export interface paths {
         patch: operations["patch_role_api_v1_roles__role_id__patch"];
         trace?: never;
     };
+    "/api/v1/scheduling/doctors": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Schedulable Doctors */
+        get: operations["list_schedulable_doctors_api_v1_scheduling_doctors_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/settings/clinical": {
         parameters: {
             query?: never;
@@ -1039,6 +1230,170 @@ export interface components {
         ActiveClinicRequest: {
             /** Clinicpublicid */
             clinicPublicId: string;
+        };
+        /** AppointmentCancel */
+        AppointmentCancel: {
+            /** Cancellationreason */
+            cancellationReason: string;
+        };
+        /** AppointmentCreate */
+        AppointmentCreate: {
+            /** Appointmenttypeid */
+            appointmentTypeId: string;
+            /** Endsat */
+            endsAt?: string | null;
+            /** Patientid */
+            patientId: string;
+            /** Reasontext */
+            reasonText?: string | null;
+            /** Room */
+            room?: string | null;
+            /** Siteid */
+            siteId: string;
+            /**
+             * Startsat
+             * Format: date-time
+             */
+            startsAt: string;
+            /** Userid */
+            userId: string;
+        };
+        /** AppointmentOverlapWarning */
+        AppointmentOverlapWarning: {
+            /**
+             * Code
+             * @default appointment.doctor_overlap
+             */
+            code: string;
+            /** Overlappingappointmentids */
+            overlappingAppointmentIds?: string[];
+        };
+        /** AppointmentRead */
+        AppointmentRead: {
+            /** Appointmenttypeid */
+            appointmentTypeId: string;
+            /** Arrivedat */
+            arrivedAt: string | null;
+            /** Cancellationreason */
+            cancellationReason: string | null;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /** Endedat */
+            endedAt: string | null;
+            /**
+             * Endsat
+             * Format: date-time
+             */
+            endsAt: string;
+            /** Overlapwarnings */
+            overlapWarnings?: components["schemas"]["AppointmentOverlapWarning"][];
+            /** Patientid */
+            patientId: string;
+            /** Publicid */
+            publicId: string;
+            questionnaireStatus: components["schemas"]["QuestionnaireStatusRead"];
+            /** Reasontext */
+            reasonText: string | null;
+            /** Room */
+            room: string | null;
+            /** Siteid */
+            siteId: string;
+            /** Startedat */
+            startedAt: string | null;
+            /**
+             * Startsat
+             * Format: date-time
+             */
+            startsAt: string;
+            /** Status */
+            status: string;
+            /**
+             * Updatedat
+             * Format: date-time
+             */
+            updatedAt: string;
+            /** Userid */
+            userId: string;
+            /** Version */
+            version: number;
+        };
+        /** AppointmentTypeCreate */
+        AppointmentTypeCreate: {
+            /** Code */
+            code: string;
+            /** Color */
+            color: string;
+            /** Defaultdurationmin */
+            defaultDurationMin: number;
+            /** Namekey */
+            nameKey: string;
+            /**
+             * Requiresroom
+             * @default false
+             */
+            requiresRoom: boolean;
+        };
+        /** AppointmentTypeRead */
+        AppointmentTypeRead: {
+            /** Code */
+            code: string;
+            /** Color */
+            color: string;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /** Defaultdurationmin */
+            defaultDurationMin: number;
+            /** Namekey */
+            nameKey: string;
+            /** Publicid */
+            publicId: string;
+            /** Requiresroom */
+            requiresRoom: boolean;
+            /**
+             * Updatedat
+             * Format: date-time
+             */
+            updatedAt: string;
+            /** Version */
+            version: number;
+        };
+        /** AppointmentTypeUpdate */
+        AppointmentTypeUpdate: {
+            /** Color */
+            color?: string | null;
+            /** Defaultdurationmin */
+            defaultDurationMin?: number | null;
+            /** Namekey */
+            nameKey?: string | null;
+            /** Requiresroom */
+            requiresRoom?: boolean | null;
+            /** Version */
+            version: number;
+        };
+        /** AppointmentUpdate */
+        AppointmentUpdate: {
+            /** Appointmenttypeid */
+            appointmentTypeId?: string | null;
+            /** Endsat */
+            endsAt?: string | null;
+            /** Reasontext */
+            reasonText?: string | null;
+            /** Room */
+            room?: string | null;
+            /** Siteid */
+            siteId?: string | null;
+            /** Startsat */
+            startsAt?: string | null;
+            /** Userid */
+            userId?: string | null;
+            /** Version */
+            version: number;
         };
         /**
          * AttachmentConfirmRequest
@@ -1514,6 +1869,18 @@ export interface components {
             /** Total */
             total?: number | null;
         };
+        /** PageSchema[AppointmentRead] */
+        PageSchema_AppointmentRead_: {
+            /** Items */
+            items: components["schemas"]["AppointmentRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[AppointmentTypeRead] */
+        PageSchema_AppointmentTypeRead_: {
+            /** Items */
+            items: components["schemas"]["AppointmentTypeRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
         /** PageSchema[ConceptAdminRead] */
         PageSchema_ConceptAdminRead_: {
             /** Items */
@@ -1562,6 +1929,12 @@ export interface components {
             items: components["schemas"]["PatientSummaryRead"][];
             page: components["schemas"]["PageMeta"];
         };
+        /** PageSchema[SchedulableDoctorRead] */
+        PageSchema_SchedulableDoctorRead_: {
+            /** Items */
+            items: components["schemas"]["SchedulableDoctorRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
         /** PageSchema[SiteRead] */
         PageSchema_SiteRead_: {
             /** Items */
@@ -1578,6 +1951,12 @@ export interface components {
         PageSchema_UserRead_: {
             /** Items */
             items: components["schemas"]["UserRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[WaitingRoomEntryRead] */
+        PageSchema_WaitingRoomEntryRead_: {
+            /** Items */
+            items: components["schemas"]["WaitingRoomEntryRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PasswordResetConfirm */
@@ -2214,6 +2593,17 @@ export interface components {
             /** Url */
             url: string;
         };
+        /**
+         * QuestionnaireStatusRead
+         * @description Stub until phase 5 instruments are wired.
+         */
+        QuestionnaireStatusRead: {
+            /**
+             * Status
+             * @default not_applicable
+             */
+            status: string;
+        };
         /** ReadinessCheck */
         ReadinessCheck: {
             /** Name */
@@ -2288,6 +2678,15 @@ export interface components {
             nameKey: string;
             /** Permissioncodes */
             permissionCodes: string[];
+            /** Publicid */
+            publicId: string;
+        };
+        /** SchedulableDoctorRead */
+        SchedulableDoctorRead: {
+            /** Firstname */
+            firstName: string;
+            /** Lastname */
+            lastName: string;
             /** Publicid */
             publicId: string;
         };
@@ -2478,6 +2877,14 @@ export interface components {
             /** Namekey */
             nameKey: string;
         };
+        /** WaitingRoomEntryRead */
+        WaitingRoomEntryRead: {
+            appointment: components["schemas"]["AppointmentRead"];
+            /** Doctordisplayname */
+            doctorDisplayName: string;
+            /** Patientdisplayname */
+            patientDisplayName: string;
+        };
     };
     responses: never;
     parameters: never;
@@ -2487,6 +2894,492 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    list_appointment_types_api_v1_appointment_types_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_AppointmentTypeRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_appointment_type_api_v1_appointment_types_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AppointmentTypeCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppointmentTypeRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_appointment_type_api_v1_appointment_types__type_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                type_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_appointment_type_api_v1_appointment_types__type_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                type_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AppointmentTypeUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppointmentTypeRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_appointments_api_v1_appointments_get: {
+        parameters: {
+            query: {
+                startsAfter: string;
+                startsBefore: string;
+                doctorUserId?: string | null;
+                room?: string | null;
+                siteId?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_AppointmentRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_appointment_api_v1_appointments_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AppointmentCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppointmentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_waiting_room_api_v1_appointments_waiting_room_get: {
+        parameters: {
+            query: {
+                on: string;
+                siteId?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_WaitingRoomEntryRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_appointment_api_v1_appointments__appointment_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                appointment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppointmentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_appointment_api_v1_appointments__appointment_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                appointment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AppointmentUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppointmentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    arrive_appointment_api_v1_appointments__appointment_id__arrive_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                appointment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppointmentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_appointment_api_v1_appointments__appointment_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                appointment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AppointmentCancel"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppointmentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    complete_appointment_api_v1_appointments__appointment_id__complete_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                appointment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppointmentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    in_room_appointment_api_v1_appointments__appointment_id__in_room_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                appointment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppointmentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    no_show_appointment_api_v1_appointments__appointment_id__no_show_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                appointment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppointmentRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     confirm_upload_api_v1_attachments_confirm_post: {
         parameters: {
             query?: never;
@@ -4188,6 +5081,40 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["RoleRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_schedulable_doctors_api_v1_scheduling_doctors_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_SchedulableDoctorRead_"];
                 };
             };
             /** @description Validation Error */

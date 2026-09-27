@@ -9,6 +9,10 @@
   "generic": "حدث خطأ ما. أعد المحاولة.",
   "internal_error": "حدث خطأ ما. أعد المحاولة.",
   "not_found": "المورد المطلوب غير موجود.",
+  "appointment": {
+    "invalid_transition": "تغيير الحالة هذا غير مسموح.",
+    "invalid_time_range": "يجب أن يكون وقت الانتهاء بعد وقت البداية."
+  },
   "patient": {
     "idempotency_mismatch": "مفتاح منع التكرار هذا استُخدم لطلب مختلف.",
     "merge_invalid": "لا يمكن دمج هذين المريضين.",

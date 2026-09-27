@@ -1,3 +1,4 @@
+export { fetchPatients } from "./api/patients.api";
 export { PatientsGate } from "./components/PatientsGate";
 export { PatientsListPanel } from "./components/PatientsListPanel";
 export { PatientCreateForm } from "./components/PatientCreateForm";

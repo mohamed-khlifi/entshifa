@@ -9,6 +9,10 @@
   "generic": "Une erreur est survenue. Réessayez.",
   "internal_error": "Une erreur est survenue. Réessayez.",
   "not_found": "La ressource demandée est introuvable.",
+  "appointment": {
+    "invalid_transition": "Ce changement de statut n'est pas autorisé.",
+    "invalid_time_range": "L'heure de fin doit être après l'heure de début."
+  },
   "patient": {
     "idempotency_mismatch": "Cette clé d'idempotence a déjà servi pour une autre demande.",
     "merge_invalid": "Ces patients ne peuvent pas être fusionnés.",

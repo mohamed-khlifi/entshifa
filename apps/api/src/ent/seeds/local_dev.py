@@ -19,6 +19,7 @@ from ent.seeds.identity import (
     ensure_user_with_role,
     load_clinic_by_slug,
 )
+from ent.seeds.scheduling import seed_appointment_types
 from ent.seeds.terminology import TerminologySeedReport, seed_terminology
 
 DEMO_CLINIC_SLUG = "demo-entshifa"
@@ -159,6 +160,8 @@ async def seed_local_dev(session: AsyncSession) -> LocalDevSeedReport:
         clinic_id=demo.id,
         clinic_public_id=demo.public_id,
     )
+    await seed_appointment_types(session, clinic_id=demo.id, created_by_id=None)
+    await seed_appointment_types(session, clinic_id=other.id, created_by_id=None)
 
     return LocalDevSeedReport(
         permissions_created=permissions_created,

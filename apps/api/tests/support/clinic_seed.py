@@ -89,6 +89,7 @@ async def seed_clinic_admin_fixtures(session: AsyncSession) -> dict[str, str]:
     return {
         "admin_email": admin.email,
         "doctor_email": doctor.email,
+        "doctor_public_id": doctor.public_id,
         "password": LOCAL_DEV_PASSWORD,
         "clinic_public_id": clinic_public_id,
         "other_clinic_public_id": await clinic_public_id_by_slug(

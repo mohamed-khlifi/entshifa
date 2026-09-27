@@ -30,6 +30,9 @@ class Permission(StrEnum):
     ADMIN_EXPORT = "admin.export"
     ADMIN_CLINIC = "admin.clinic"
     AUTH_SESSION_READ = "auth.session.read"
+    APPOINTMENT_READ = "appointment.read"
+    APPOINTMENT_WRITE = "appointment.write"
+    APPOINTMENT_TYPE_MANAGE = "appointment_type.manage"
 
 
 SYSTEM_ROLE_MATRIX: dict[str, frozenset[Permission]] = {
@@ -52,6 +55,8 @@ SYSTEM_ROLE_MATRIX: dict[str, frozenset[Permission]] = {
             Permission.DOCUMENT_SEND,
             Permission.ATTACHMENT_READ,
             Permission.ATTACHMENT_WRITE,
+            Permission.APPOINTMENT_READ,
+            Permission.APPOINTMENT_WRITE,
             Permission.AUTH_SESSION_READ,
         }
     ),
@@ -64,6 +69,8 @@ SYSTEM_ROLE_MATRIX: dict[str, frozenset[Permission]] = {
             Permission.AUDIOLOGY_ENTER,
             Permission.ATTACHMENT_READ,
             Permission.ATTACHMENT_WRITE,
+            Permission.APPOINTMENT_READ,
+            Permission.APPOINTMENT_WRITE,
             Permission.AUTH_SESSION_READ,
         }
     ),
@@ -73,6 +80,7 @@ SYSTEM_ROLE_MATRIX: dict[str, frozenset[Permission]] = {
             Permission.AUDIOLOGY_ENTER,
             Permission.ATTACHMENT_READ,
             Permission.ATTACHMENT_WRITE,
+            Permission.APPOINTMENT_READ,
             Permission.AUTH_SESSION_READ,
         }
     ),
@@ -80,6 +88,7 @@ SYSTEM_ROLE_MATRIX: dict[str, frozenset[Permission]] = {
         {
             Permission.PATIENT_READ_CLINIC,
             Permission.ATTACHMENT_READ,
+            Permission.APPOINTMENT_READ,
             Permission.AUTH_SESSION_READ,
         }
     ),

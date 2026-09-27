@@ -9,4 +9,7 @@ export const Permission = {
   PATIENT_READ_CLINIC: "patient.read.clinic",
   PATIENT_WRITE: "patient.write",
   PATIENT_MERGE: "patient.merge",
+  APPOINTMENT_READ: "appointment.read",
+  APPOINTMENT_WRITE: "appointment.write",
+  APPOINTMENT_TYPE_MANAGE: "appointment_type.manage",
 } as const;

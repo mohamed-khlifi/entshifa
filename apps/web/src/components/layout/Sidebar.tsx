@@ -26,6 +26,7 @@ export function Sidebar() {
   const canReadClinicPatients = usePermission(Permission.PATIENT_READ_CLINIC);
   const canReadOwnPatients = usePermission(Permission.PATIENT_READ_OWN);
   const canReadPatients = canReadClinicPatients || canReadOwnPatients;
+  const canReadSchedule = usePermission(Permission.APPOINTMENT_READ);
 
   const homeActive = pathname === "/home" || pathname.startsWith("/home/");
   const clinicActive =
@@ -34,6 +35,7 @@ export function Sidebar() {
   const terminologyActive = pathname.startsWith("/admin/terminology");
   const securityActive = pathname.startsWith("/settings/security");
   const patientsActive = pathname.startsWith("/patients");
+  const scheduleActive = pathname.startsWith("/schedule");
 
   return (
     <aside
@@ -51,6 +53,15 @@ export function Sidebar() {
             {...testIdProps(testIds.patients.nav)}
           >
             {t("nav.patients")}
+          </Link>
+        ) : null}
+        {canReadSchedule ? (
+          <Link
+            href="/schedule"
+            className={navClass(scheduleActive)}
+            {...testIdProps(testIds.scheduling.nav)}
+          >
+            {t("nav.schedule")}
           </Link>
         ) : null}
         <Link href="/settings/security" className={navClass(securityActive)}>
