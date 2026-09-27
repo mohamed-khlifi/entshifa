@@ -16,6 +16,7 @@ from ent.seeds.identity import (
     ensure_role,
     ensure_site,
     ensure_user_with_role,
+    load_clinic_by_slug,
 )
 from ent.seeds.terminology import TerminologySeedReport, seed_terminology
 
@@ -47,6 +48,8 @@ async def seed_local_dev(session: AsyncSession) -> LocalDevSeedReport:
         slug=OTHER_CLINIC_SLUG,
         name="Clinique Nord (tenant B)",
     )
+    demo = await load_clinic_by_slug(session, DEMO_CLINIC_SLUG)
+    other = await load_clinic_by_slug(session, OTHER_CLINIC_SLUG)
 
     await ensure_site(session, clinic=demo, name="Site principal", is_primary=True)
     await ensure_site(session, clinic=demo, name="Annexe", is_primary=False)

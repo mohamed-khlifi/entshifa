@@ -92,8 +92,8 @@ async def ensure_clinic(
     )
     session.add(clinic)
     await session.flush()
-    # Multiple clinic inserts in one session can leave stale ids on earlier instances.
-    session.expire_all()
+    # Drop the flushed instance so the session identity map cannot keep a stale pk.
+    session.expunge(clinic)
     return await load_clinic_by_slug(session, slug)
 
 
@@ -119,11 +119,11 @@ async def clinic_public_id_for_user_login(
     if clinic is None:
         msg = f"No active clinic membership for {email}"
         raise RuntimeError(msg)
-    session.expire(clinic)
+    clinic_id = int(clinic.id)
     return str(
         (
             await session.execute(
-                select(Clinic.public_id).where(Clinic.id == clinic.id),
+                select(Clinic.public_id).where(Clinic.id == clinic_id),
             )
         ).scalar_one(),
     )
