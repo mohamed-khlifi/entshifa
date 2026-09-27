@@ -43,7 +43,7 @@ export function FilterBar({
 
   return (
     <div
-      className={cn("flex flex-wrap items-center gap-3", className)}
+      className={cn("flex flex-wrap items-end gap-3", className)}
       {...testIdProps(testIds.data.filterBar)}
     >
       <div className="relative min-w-[12rem] flex-1">

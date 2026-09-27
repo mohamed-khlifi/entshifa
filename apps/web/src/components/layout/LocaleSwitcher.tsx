@@ -4,6 +4,7 @@ import { ChevronDown, Globe } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useTransition } from "react";
 
+import { formControlClass } from "@/components/ui/form-control";
 import { LOCALES, type AppLocale } from "@/lib/i18n/config";
 import { usePathname, useRouter } from "@/lib/i18n/navigation";
 import { cn } from "@/lib/utils/cn";
@@ -53,7 +54,8 @@ export function LocaleSwitcher({ className }: LocaleSwitcherProps) {
         disabled={isPending}
         onChange={(event) => handleChange(event.target.value)}
         className={cn(
-          "h-9 min-w-[9.5rem] cursor-pointer appearance-none rounded-lg border border-input bg-card py-1.5 ps-9 pe-8 text-sm font-medium text-foreground shadow-sm transition-[color,box-shadow,opacity] hover:border-primary/30 hover:bg-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-60",
+          formControlClass,
+          "h-10 min-w-[9.5rem] cursor-pointer appearance-none py-0 ps-9 pe-8 font-medium hover:border-primary/30 hover:bg-accent/40",
         )}
         {...testIdProps(testIds.layout.localeSwitcherSelect)}
       >

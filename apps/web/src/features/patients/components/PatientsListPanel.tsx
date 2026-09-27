@@ -6,8 +6,9 @@ import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 
 import { DataTable } from "@/components/data/DataTable";
+import { TableToolbarField } from "@/components/data/TableToolbarField";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import { formControlClass } from "@/components/ui/form-control";
 import { Select } from "@/components/ui/select";
 import { PATIENT_FLAG_CODES, SEX_VALUES } from "../constants";
 import { usePatientsQuery } from "../hooks/use-patient-queries";
@@ -16,6 +17,7 @@ import type { PatientSummaryRead } from "@/lib/api/generated";
 import { formatDate, formatPersonName } from "@/lib/i18n/format";
 import { Link, usePathname, useRouter } from "@/lib/i18n/navigation";
 import { Permission } from "@/lib/permissions";
+import { cn } from "@/lib/utils/cn";
 import { patientRowTestId, testIdProps, testIds } from "@/lib/test/test-id";
 import { usePermission } from "@/providers/permission-provider";
 
@@ -68,7 +70,7 @@ export function PatientsListPanel() {
         cell: ({ row }) => (
           <Link
             href={`/patients/${row.original.publicId}`}
-            className="font-medium underline"
+            className="font-medium text-primary underline-offset-4 hover:underline"
           >
             {formatPersonName(
               { given: row.original.firstName, family: row.original.lastName },
@@ -98,19 +100,7 @@ export function PatientsListPanel() {
   );
 
   return (
-    <div className="space-y-4" {...testIdProps(testIds.patients.list)}>
-      {canWrite ? (
-        <div className="flex justify-end">
-          <Button asChild>
-            <Link
-              href="/patients/new"
-              {...testIdProps(testIds.patients.create)}
-            >
-              {t("list.create")}
-            </Link>
-          </Button>
-        </div>
-      ) : null}
+    <div {...testIdProps(testIds.patients.list)}>
       <DataTable
         columns={columns}
         data={data?.items ?? []}
@@ -123,12 +113,25 @@ export function PatientsListPanel() {
         emptyTitle={t("list.emptyTitle")}
         emptyDescription={t("list.emptyDescription")}
         defaultPageSize={20}
+        actions={
+          canWrite ? (
+            <Button asChild size="lg">
+              <Link
+                href="/patients/new"
+                {...testIdProps(testIds.patients.create)}
+              >
+                {t("list.create")}
+              </Link>
+            </Button>
+          ) : undefined
+        }
         toolbar={
-          <div className="flex flex-wrap items-end gap-3">
-            <div className="w-40 space-y-1.5">
-              <Label htmlFor={testIds.patients.filterSex}>
-                {t("list.filters.sex")}
-              </Label>
+          <>
+            <TableToolbarField
+              label={t("list.filters.sex")}
+              htmlFor={testIds.patients.filterSex}
+              className="w-36 sm:w-40"
+            >
               <Select
                 id={testIds.patients.filterSex}
                 value={sex}
@@ -142,24 +145,26 @@ export function PatientsListPanel() {
                   </option>
                 ))}
               </Select>
-            </div>
-            <div className="w-44 space-y-1.5">
-              <Label htmlFor={testIds.patients.filterBirthDate}>
-                {t("list.filters.birthDate")}
-              </Label>
+            </TableToolbarField>
+            <TableToolbarField
+              label={t("list.filters.birthDate")}
+              htmlFor={testIds.patients.filterBirthDate}
+              className="w-40 sm:w-44"
+            >
               <input
                 id={testIds.patients.filterBirthDate}
                 type="date"
-                className="flex h-11 w-full rounded-lg border border-input bg-card px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className={cn(formControlClass, "text-foreground")}
                 value={birthDate}
                 onChange={(event) => setFilter("birthDate", event.target.value)}
                 {...testIdProps(testIds.patients.filterBirthDate)}
               />
-            </div>
-            <div className="min-w-52 space-y-1.5">
-              <Label htmlFor={testIds.patients.filterFlag}>
-                {t("list.filters.flag")}
-              </Label>
+            </TableToolbarField>
+            <TableToolbarField
+              label={t("list.filters.flag")}
+              htmlFor={testIds.patients.filterFlag}
+              className="min-w-[11rem] flex-1 sm:max-w-xs"
+            >
               <Select
                 id={testIds.patients.filterFlag}
                 value={flagCode}
@@ -173,8 +178,8 @@ export function PatientsListPanel() {
                   </option>
                 ))}
               </Select>
-            </div>
-          </div>
+            </TableToolbarField>
+          </>
         }
       />
     </div>

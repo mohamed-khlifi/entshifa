@@ -167,6 +167,7 @@ class AuthRepository:
         await self._session.execute(stmt)
 
     async def default_clinic_for_user(self, user_id: int) -> Clinic | None:
+        """Pick the active membership with the latest starts_on; ties go to the earliest role row."""
         today = date.today()
         stmt: Select[tuple[Clinic]] = (
             select(Clinic)
@@ -178,7 +179,10 @@ class AuthRepository:
                 UserClinicRole.starts_on <= today,
                 or_(UserClinicRole.ends_on.is_(None), UserClinicRole.ends_on >= today),
             )
-            .order_by(UserClinicRole.starts_on.desc(), UserClinicRole.id.desc())
+            .order_by(
+                UserClinicRole.starts_on.desc(),
+                UserClinicRole.id.asc(),
+            )
             .limit(1)
         )
         return (await self._session.execute(stmt)).scalar_one_or_none()

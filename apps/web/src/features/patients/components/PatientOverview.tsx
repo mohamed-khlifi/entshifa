@@ -10,9 +10,13 @@ export function PatientOverview({ patientId }: { patientId: string }) {
     return null;
   }
   return (
-    <div className="space-y-10">
-      <PatientEditForm patient={patient.data} />
-      <PatientChart patient={patient.data} />
+    <div className="space-y-8">
+      <section className="rounded-xl border border-border bg-card p-6 shadow-[var(--shadow-soft)]">
+        <PatientEditForm patient={patient.data} />
+      </section>
+      <section>
+        <PatientChart patient={patient.data} />
+      </section>
     </div>
   );
 }

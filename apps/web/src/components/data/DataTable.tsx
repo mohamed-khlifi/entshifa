@@ -19,7 +19,9 @@ import {
   useTableUrlState,
   type TableSortDir,
 } from "@/components/data/useTableUrlState";
+import { TableToolbarField } from "@/components/data/TableToolbarField";
 import { Button } from "@/components/ui/button";
+import { Select } from "@/components/ui/select";
 import { columnTestId, tableRowTestId } from "@/lib/forms/field-test-id";
 import { cn } from "@/lib/utils/cn";
 import { testIdProps, testIds } from "@/lib/test/test-id";
@@ -42,6 +44,8 @@ export type DataTableProps<TData> = {
   emptyDescription?: string;
   enableRowSelection?: boolean;
   toolbar?: ReactNode;
+  /** Rendered at the end of the search row (e.g. primary page action). */
+  actions?: ReactNode;
   className?: string;
   defaultSortBy?: string;
   defaultSortDir?: TableSortDir;
@@ -73,6 +77,7 @@ export function DataTable<TData>({
   emptyDescription,
   enableRowSelection = false,
   toolbar,
+  actions,
   className,
   defaultSortBy,
   defaultSortDir = "asc",
@@ -154,40 +159,54 @@ export function DataTable<TData>({
       className={cn("space-y-4", className)}
       {...testIdProps(testIds.data.table)}
     >
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <FilterBar value={state.q} onChange={(q) => setState({ q, page: 1 })} />
-        <div className="flex flex-wrap items-center gap-2">
-          {hideableColumns.length > 0 ? (
-            <label className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>{t("columns.label")}</span>
-              <select
-                className="h-9 rounded-lg border border-input bg-card px-2 text-sm"
-                value=""
-                onChange={(event) => {
-                  const id = event.target.value;
-                  if (!id) {
-                    return;
-                  }
-                  const column = table.getColumn(id);
-                  column?.toggleVisibility(!column.getIsVisible());
-                }}
-                {...testIdProps(testIds.data.columnVisibility)}
+      <div className="space-y-4 rounded-xl border border-border bg-card p-4 shadow-[var(--shadow-soft)]">
+        <FilterBar
+          className="w-full"
+          value={state.q}
+          onChange={(q) => setState({ q, page: 1 })}
+          trailing={
+            actions ? (
+              <div className="flex shrink-0 items-end">{actions}</div>
+            ) : null
+          }
+        />
+        {hideableColumns.length > 0 || toolbar ? (
+          <div className="flex flex-wrap items-end gap-3 border-t border-border pt-4">
+            {hideableColumns.length > 0 ? (
+              <TableToolbarField
+                label={t("columns.label")}
+                htmlFor={testIds.data.columnVisibility}
+                className="w-44 sm:w-52"
               >
-                <option value="" disabled>
-                  {t("columns.toggle")}
-                </option>
-                {hideableColumns.map((column) => (
-                  <option key={column.id} value={column.id}>
-                    {column.getIsVisible()
-                      ? t("columns.hide", { id: column.id })
-                      : t("columns.show", { id: column.id })}
+                <Select
+                  id={testIds.data.columnVisibility}
+                  value=""
+                  onChange={(event) => {
+                    const id = event.target.value;
+                    if (!id) {
+                      return;
+                    }
+                    const column = table.getColumn(id);
+                    column?.toggleVisibility(!column.getIsVisible());
+                  }}
+                  {...testIdProps(testIds.data.columnVisibility)}
+                >
+                  <option value="" disabled>
+                    {t("columns.toggle")}
                   </option>
-                ))}
-              </select>
-            </label>
-          ) : null}
-          {toolbar}
-        </div>
+                  {hideableColumns.map((column) => (
+                    <option key={column.id} value={column.id}>
+                      {column.getIsVisible()
+                        ? t("columns.hide", { id: column.id })
+                        : t("columns.show", { id: column.id })}
+                    </option>
+                  ))}
+                </Select>
+              </TableToolbarField>
+            ) : null}
+            {toolbar}
+          </div>
+        ) : null}
       </div>
 
       <div className="overflow-hidden rounded-xl border border-border bg-card shadow-[var(--shadow-soft)]">

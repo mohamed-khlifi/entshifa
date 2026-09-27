@@ -17,7 +17,7 @@ type AppShellProps = {
 export function AppShell({ children }: AppShellProps) {
   return (
     <div
-      className="flex h-svh flex-col overflow-hidden bg-muted/30"
+      className="flex h-svh flex-col overflow-hidden bg-gradient-to-b from-muted/50 to-background"
       {...testIdProps(testIds.layout.shell)}
     >
       <Topbar />
