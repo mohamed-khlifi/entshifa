@@ -191,7 +191,16 @@ class Document(ClinicalRecordMixin, Base):
         ForeignKey("patient.id", ondelete="RESTRICT", onupdate="RESTRICT"),
         nullable=False,
     )
-    encounter_id: Mapped[int | None] = mapped_column(unsigned_bigint(), nullable=True)
+    encounter_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(
+            "encounter.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+            name="fk_document__encounter",
+        ),
+        nullable=True,
+    )
     template_id: Mapped[int] = mapped_column(
         unsigned_bigint(),
         ForeignKey("document_template.id", ondelete="RESTRICT", onupdate="RESTRICT"),

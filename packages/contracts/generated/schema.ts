@@ -713,6 +713,92 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/encounters": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Encounter */
+        post: operations["create_encounter_api_v1_encounters_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/encounters/{encounter_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Encounter */
+        get: operations["get_encounter_api_v1_encounters__encounter_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Patch Encounter */
+        patch: operations["patch_encounter_api_v1_encounters__encounter_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/encounters/{encounter_id}/addenda": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add Encounter Addendum */
+        post: operations["add_encounter_addendum_api_v1_encounters__encounter_id__addenda_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/encounters/{encounter_id}/copy-forward": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Copy Encounter Forward */
+        post: operations["copy_encounter_forward_api_v1_encounters__encounter_id__copy_forward_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/encounters/{encounter_id}/sign": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Sign Encounter */
+        post: operations["sign_encounter_api_v1_encounters__encounter_id__sign_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/invitations": {
         parameters: {
             query?: never;
@@ -728,6 +814,127 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/v1/observations/cohort": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Observation Cohort */
+        get: operations["observation_cohort_api_v1_observations_cohort_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/observations/encounter/{encounter_public_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Encounter Observations */
+        get: operations["list_encounter_observations_api_v1_observations_encounter__encounter_public_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/observations/patient/{patient_id}/batch": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Record Observations */
+        post: operations["record_observations_api_v1_observations_patient__patient_id__batch_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/observations/patient/{patient_id}/concept/{code}/timeline": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Observation Timeline */
+        get: operations["observation_timeline_api_v1_observations_patient__patient_id__concept__code__timeline_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/observations/patient/{patient_id}/diff": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Diff Observations */
+        get: operations["diff_observations_api_v1_observations_patient__patient_id__diff_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/observations/patient/{patient_id}/snapshots": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Snapshots */
+        get: operations["list_snapshots_api_v1_observations_patient__patient_id__snapshots_get"];
+        put?: never;
+        /** Record Snapshot */
+        post: operations["record_snapshot_api_v1_observations_patient__patient_id__snapshots_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/observations/{public_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Observation */
+        delete: operations["delete_observation_api_v1_observations__public_id__delete"];
+        options?: never;
+        head?: never;
+        /** Update Observation */
+        patch: operations["update_observation_api_v1_observations__public_id__patch"];
         trace?: never;
     };
     "/api/v1/patients": {
@@ -796,6 +1003,23 @@ export interface paths {
         post?: never;
         /** Delete Allergy */
         delete: operations["delete_allergy_api_v1_patients__patient_id__allergies__allergy_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/encounters": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Patient Encounters */
+        get: operations["list_patient_encounters_api_v1_patients__patient_id__encounters_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -2147,6 +2371,223 @@ export interface components {
             /** Version */
             version: number;
         };
+        /** EncounterAddendumCreate */
+        EncounterAddendumCreate: {
+            /** Body */
+            body: string;
+        };
+        /** EncounterAddendumRead */
+        EncounterAddendumRead: {
+            /** Authorpublicid */
+            authorPublicId: string;
+            /** Body */
+            body: string;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /** Publicid */
+            publicId: string;
+        };
+        /** EncounterComplaintRead */
+        EncounterComplaintRead: {
+            concept: components["schemas"]["CodeableConcept"];
+            /** Durationtext */
+            durationText?: string | null;
+            /** Isprimary */
+            isPrimary: boolean;
+            /** Laterality */
+            laterality?: string | null;
+            /** Publicid */
+            publicId: string;
+            /** Sortorder */
+            sortOrder: number;
+        };
+        /** EncounterComplaintWrite */
+        EncounterComplaintWrite: {
+            /** Conceptcode */
+            conceptCode: string;
+            /** Durationtext */
+            durationText?: string | null;
+            /**
+             * Isprimary
+             * @default false
+             */
+            isPrimary: boolean;
+            laterality?: components["schemas"]["Laterality"] | null;
+            /**
+             * Sortorder
+             * @default 0
+             */
+            sortOrder: number;
+        };
+        /** EncounterCopyForward */
+        EncounterCopyForward: {
+            /** Sitepublicid */
+            sitePublicId?: string | null;
+            /**
+             * Startedat
+             * Format: date-time
+             */
+            startedAt: string;
+        };
+        /** EncounterCreate */
+        EncounterCreate: {
+            /** Appointmentpublicid */
+            appointmentPublicId?: string | null;
+            /** Assessmenttext */
+            assessmentText?: string | null;
+            /** Chiefcomplaintsummary */
+            chiefComplaintSummary?: string | null;
+            /** Complaints */
+            complaints?: components["schemas"]["EncounterComplaintWrite"][];
+            /**
+             * Encountertype
+             * @default consultation
+             * @enum {string}
+             */
+            encounterType: "consultation" | "follow_up" | "procedure" | "post_op" | "result_review" | "teleconsultation";
+            /** Endedat */
+            endedAt?: string | null;
+            /** Historytext */
+            historyText?: string | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Plantext */
+            planText?: string | null;
+            /** Sitepublicid */
+            sitePublicId: string;
+            /**
+             * Startedat
+             * Format: date-time
+             */
+            startedAt: string;
+            /** Templatepublicid */
+            templatePublicId?: string | null;
+        };
+        /** EncounterPatch */
+        EncounterPatch: {
+            /** Assessmenttext */
+            assessmentText?: string | null;
+            /** Chiefcomplaintsummary */
+            chiefComplaintSummary?: string | null;
+            /** Complaints */
+            complaints?: components["schemas"]["EncounterComplaintWrite"][] | null;
+            /** Endedat */
+            endedAt?: string | null;
+            /** Historytext */
+            historyText?: string | null;
+            /** Plantext */
+            planText?: string | null;
+            /** Version */
+            version: number;
+        };
+        /** EncounterRead */
+        EncounterRead: {
+            /** Addenda */
+            addenda: components["schemas"]["EncounterAddendumRead"][];
+            /** Appointmentpublicid */
+            appointmentPublicId?: string | null;
+            /** Assessmenttext */
+            assessmentText?: string | null;
+            /** Chiefcomplaintsummary */
+            chiefComplaintSummary?: string | null;
+            /** Clinicianpublicid */
+            clinicianPublicId: string;
+            /** Complaints */
+            complaints: components["schemas"]["EncounterComplaintRead"][];
+            /** Encountertype */
+            encounterType: string;
+            /** Endedat */
+            endedAt?: string | null;
+            /** Historytext */
+            historyText?: string | null;
+            /** Lockedhash */
+            lockedHash?: string | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Plantext */
+            planText?: string | null;
+            /** Previousencounterpublicid */
+            previousEncounterPublicId?: string | null;
+            /** Publicid */
+            publicId: string;
+            /** Signatures */
+            signatures: components["schemas"]["EncounterSignatureRead"][];
+            /** Signedat */
+            signedAt?: string | null;
+            /** Signedbypublicid */
+            signedByPublicId?: string | null;
+            /** Sitepublicid */
+            sitePublicId: string;
+            /**
+             * Startedat
+             * Format: date-time
+             */
+            startedAt: string;
+            /** Status */
+            status: string;
+            /** Templatepublicid */
+            templatePublicId?: string | null;
+            /** Version */
+            version: number;
+        };
+        /** EncounterSign */
+        EncounterSign: {
+            /**
+             * Role
+             * @default clinician
+             */
+            role: string;
+        };
+        /** EncounterSignatureRead */
+        EncounterSignatureRead: {
+            /** Contenthash */
+            contentHash: string;
+            /** Publicid */
+            publicId: string;
+            /** Role */
+            role: string;
+            /**
+             * Signedat
+             * Format: date-time
+             */
+            signedAt: string;
+            /** Userpublicid */
+            userPublicId: string;
+        };
+        /** ExaminationSnapshotCreate */
+        ExaminationSnapshotCreate: {
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            laterality?: components["schemas"]["Laterality"] | null;
+            /** Mapid */
+            mapId: string;
+            /** Payload */
+            payload: Record<string, never>;
+            /** Renderedsvgpublicid */
+            renderedSvgPublicId?: string | null;
+        };
+        /** ExaminationSnapshotRead */
+        ExaminationSnapshotRead: {
+            /** Encounterpublicid */
+            encounterPublicId: string | null;
+            /** Laterality */
+            laterality: string | null;
+            /** Mapid */
+            mapId: string;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Payload */
+            payload: Record<string, never>;
+            /** Publicid */
+            publicId: string;
+            /** Renderedsvgpublicid */
+            renderedSvgPublicId?: string | null;
+            /** Version */
+            version: number;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -2276,6 +2717,236 @@ export interface components {
             /** Mfatoken */
             mfaToken: string;
         };
+        /** ObservationBatchCreate */
+        ObservationBatchCreate: {
+            /** Encounterpublicid */
+            encounterPublicId: string;
+            /** Observations */
+            observations: components["schemas"]["ObservationCreate"][];
+        };
+        /** ObservationComponentCreate */
+        ObservationComponentCreate: {
+            /** Conceptcode */
+            conceptCode: string;
+            /** Ordinalvalue */
+            ordinalValue?: number | null;
+            /** Qualifiers */
+            qualifiers?: Record<string, never> | null;
+            /** Valueboolean */
+            valueBoolean?: boolean | null;
+            /** Valueconceptcode */
+            valueConceptCode?: string | null;
+            /** Valuehigh */
+            valueHigh?: number | string | null;
+            /** Valuelow */
+            valueLow?: number | string | null;
+            /** Valuenumeric */
+            valueNumeric?: number | string | null;
+            /** Valuetext */
+            valueText?: string | null;
+            /**
+             * Valuetype
+             * @enum {string}
+             */
+            valueType: "code" | "numeric" | "boolean" | "text" | "range" | "ordinal";
+            /** Valueunit */
+            valueUnit?: string | null;
+        };
+        /** ObservationComponentRead */
+        ObservationComponentRead: {
+            concept: components["schemas"]["CodeableConcept"];
+            /** Ordinalvalue */
+            ordinalValue?: number | null;
+            /** Publicid */
+            publicId: string;
+            /** Qualifiers */
+            qualifiers?: Record<string, never> | null;
+            /** Valueboolean */
+            valueBoolean?: boolean | null;
+            valueConcept?: components["schemas"]["CodeableConcept"] | null;
+            /** Valuehigh */
+            valueHigh?: string | null;
+            /** Valuelow */
+            valueLow?: string | null;
+            /** Valuenumeric */
+            valueNumeric?: string | null;
+            /** Valuetext */
+            valueText?: string | null;
+            /** Valuetype */
+            valueType: string;
+            /** Valueunit */
+            valueUnit?: string | null;
+        };
+        /** ObservationCreate */
+        ObservationCreate: {
+            /** Bodysitecode */
+            bodySiteCode?: string | null;
+            /** Components */
+            components?: components["schemas"]["ObservationComponentCreate"][];
+            /** Conceptcode */
+            conceptCode: string;
+            /**
+             * Confirmed
+             * @default false
+             */
+            confirmed: boolean;
+            /**
+             * Effectiveat
+             * Format: date-time
+             */
+            effectiveAt: string;
+            laterality: components["schemas"]["Laterality"];
+            /** Mapregioncode */
+            mapRegionCode?: string | null;
+            /** Methodconceptcode */
+            methodConceptCode?: string | null;
+            /** Ordinalvalue */
+            ordinalValue?: number | null;
+            /** Qualifiers */
+            qualifiers?: Record<string, never> | null;
+            /**
+             * Source
+             * @default clinician
+             * @enum {string}
+             */
+            source: "clinician" | "technician" | "patient" | "device" | "ai_confirmed";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "normal" | "abnormal" | "not_examined" | "unknown";
+            /** Valueboolean */
+            valueBoolean?: boolean | null;
+            /** Valueconceptcode */
+            valueConceptCode?: string | null;
+            /** Valuehigh */
+            valueHigh?: number | string | null;
+            /** Valuelow */
+            valueLow?: number | string | null;
+            /** Valuenumeric */
+            valueNumeric?: number | string | null;
+            /** Valuetext */
+            valueText?: string | null;
+            /**
+             * Valuetype
+             * @enum {string}
+             */
+            valueType: "code" | "numeric" | "boolean" | "text" | "range" | "ordinal";
+            /** Valueunit */
+            valueUnit?: string | null;
+        };
+        /** ObservationDiffRead */
+        ObservationDiffRead: {
+            bodySite?: components["schemas"]["CodeableConcept"] | null;
+            concept: components["schemas"]["CodeableConcept"];
+            /** Laterality */
+            laterality: string;
+            /** Mapregioncode */
+            mapRegionCode?: string | null;
+            visitA: components["schemas"]["ObservationDiffSide"];
+            visitB: components["schemas"]["ObservationDiffSide"];
+        };
+        /** ObservationDiffSide */
+        ObservationDiffSide: {
+            /** Ordinalvalue */
+            ordinalValue?: number | null;
+            /** Publicid */
+            publicId?: string | null;
+            /** Status */
+            status?: string | null;
+            valueConcept?: components["schemas"]["CodeableConcept"] | null;
+            /** Valuenumeric */
+            valueNumeric?: string | null;
+            /** Valuetext */
+            valueText?: string | null;
+        };
+        /** ObservationRead */
+        ObservationRead: {
+            bodySite?: components["schemas"]["CodeableConcept"] | null;
+            /** Components */
+            components: components["schemas"]["ObservationComponentRead"][];
+            concept: components["schemas"]["CodeableConcept"];
+            /** Confirmedbypublicid */
+            confirmedByPublicId?: string | null;
+            /**
+             * Effectiveat
+             * Format: date-time
+             */
+            effectiveAt: string;
+            /** Encounterpublicid */
+            encounterPublicId: string | null;
+            /** Laterality */
+            laterality: string;
+            /** Mapregioncode */
+            mapRegionCode?: string | null;
+            method?: components["schemas"]["CodeableConcept"] | null;
+            /** Ordinalvalue */
+            ordinalValue?: number | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Publicid */
+            publicId: string;
+            /** Qualifiers */
+            qualifiers?: Record<string, never> | null;
+            /** Recordedbypublicid */
+            recordedByPublicId?: string | null;
+            /** Source */
+            source: string;
+            /** Status */
+            status: string;
+            /** Valueboolean */
+            valueBoolean?: boolean | null;
+            valueConcept?: components["schemas"]["CodeableConcept"] | null;
+            /** Valuehigh */
+            valueHigh?: string | null;
+            /** Valuelow */
+            valueLow?: string | null;
+            /** Valuenumeric */
+            valueNumeric?: string | null;
+            /** Valuetext */
+            valueText?: string | null;
+            /** Valuetype */
+            valueType: string;
+            /** Valueunit */
+            valueUnit?: string | null;
+            /** Version */
+            version: number;
+        };
+        /** ObservationUpdate */
+        ObservationUpdate: {
+            /** Mapregioncode */
+            mapRegionCode?: string | null;
+            /** Ordinalvalue */
+            ordinalValue?: number | null;
+            /** Qualifiers */
+            qualifiers?: Record<string, never> | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "normal" | "abnormal" | "not_examined" | "unknown";
+            /** Valueboolean */
+            valueBoolean?: boolean | null;
+            /** Valueconceptcode */
+            valueConceptCode?: string | null;
+            /** Valuehigh */
+            valueHigh?: number | string | null;
+            /** Valuelow */
+            valueLow?: number | string | null;
+            /** Valuenumeric */
+            valueNumeric?: number | string | null;
+            /** Valuetext */
+            valueText?: string | null;
+            /**
+             * Valuetype
+             * @enum {string}
+             */
+            valueType: "code" | "numeric" | "boolean" | "text" | "range" | "ordinal";
+            /** Valueunit */
+            valueUnit?: string | null;
+            /** Version */
+            version: number;
+        };
         /**
          * PageMeta
          * @description Pagination envelope metadata.
@@ -2324,6 +2995,24 @@ export interface components {
         PageSchema_DocumentTemplateRead_: {
             /** Items */
             items: components["schemas"]["DocumentTemplateRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[EncounterRead] */
+        PageSchema_EncounterRead_: {
+            /** Items */
+            items: components["schemas"]["EncounterRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[ExaminationSnapshotRead] */
+        PageSchema_ExaminationSnapshotRead_: {
+            /** Items */
+            items: components["schemas"]["ExaminationSnapshotRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[ObservationRead] */
+        PageSchema_ObservationRead_: {
+            /** Items */
+            items: components["schemas"]["ObservationRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[PatientAllergyRead] */
@@ -5011,6 +5700,228 @@ export interface operations {
             };
         };
     };
+    create_encounter_api_v1_encounters_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EncounterCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EncounterRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_encounter_api_v1_encounters__encounter_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                encounter_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EncounterRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    patch_encounter_api_v1_encounters__encounter_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                encounter_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EncounterPatch"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EncounterRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_encounter_addendum_api_v1_encounters__encounter_id__addenda_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                encounter_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EncounterAddendumCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EncounterRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    copy_encounter_forward_api_v1_encounters__encounter_id__copy_forward_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                encounter_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EncounterCopyForward"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EncounterRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    sign_encounter_api_v1_encounters__encounter_id__sign_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                encounter_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EncounterSign"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EncounterRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     create_invitation_api_v1_invitations_post: {
         parameters: {
             query?: never;
@@ -5033,6 +5944,338 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["InvitationRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    observation_cohort_api_v1_observations_cohort_get: {
+        parameters: {
+            query: {
+                conceptCode: string;
+                ordinal: number;
+                effectiveFrom: string;
+                effectiveTo: string;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_ObservationRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_encounter_observations_api_v1_observations_encounter__encounter_public_id__get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                encounter_public_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_ObservationRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    record_observations_api_v1_observations_patient__patient_id__batch_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ObservationBatchCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ObservationRead"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    observation_timeline_api_v1_observations_patient__patient_id__concept__code__timeline_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                patient_id: string;
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_ObservationRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    diff_observations_api_v1_observations_patient__patient_id__diff_get: {
+        parameters: {
+            query?: {
+                encounterA?: string | null;
+                encounterB?: string | null;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ObservationDiffRead"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_snapshots_api_v1_observations_patient__patient_id__snapshots_get: {
+        parameters: {
+            query?: {
+                mapId?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_ExaminationSnapshotRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    record_snapshot_api_v1_observations_patient__patient_id__snapshots_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ExaminationSnapshotCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ExaminationSnapshotRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_observation_api_v1_observations__public_id__delete: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                public_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_observation_api_v1_observations__public_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                public_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ObservationUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ObservationRead"];
                 };
             };
             /** @description Validation Error */
@@ -5288,6 +6531,43 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_patient_encounters_api_v1_patients__patient_id__encounters_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_EncounterRead_"];
+                };
             };
             /** @description Validation Error */
             422: {

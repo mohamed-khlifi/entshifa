@@ -125,3 +125,47 @@ def test_observation_free_text_dates_and_qualifiers_are_scrubbed() -> None:
     assert row["qualifiers"] == {"redacted": True}
     assert row["effective_at"] == effective + timedelta(days=offsets[7])
     assert row["created_at"] == datetime(2026, 1, 1, 0, 0, 0)
+
+
+def test_encounter_narrative_and_dates_are_scrubbed() -> None:
+    patients = [{"id": 7, "public_id": "01PATIENTPUBLICID0000000001"}]
+    offsets = build_offsets(patients)
+    started = datetime(2026, 6, 1, 9, 0, 0)
+    signed = datetime(2026, 6, 1, 9, 30, 0)
+    row = anonymize_row(
+        "encounter",
+        {
+            "id": 4,
+            "public_id": "01ENCOUNTERPUBLICID0000001",
+            "patient_id": 7,
+            "history_text": "secret history",
+            "assessment_text": "secret assessment",
+            "plan_text": "secret plan",
+            "chief_complaint_summary": "secret complaint",
+            "started_at": started,
+            "signed_at": signed,
+            "created_at": datetime(2026, 1, 1, 0, 0, 0),
+        },
+        offsets=offsets,
+        password_hash="hash",
+    )
+    addendum = anonymize_row(
+        "encounter_addendum",
+        {
+            "id": 5,
+            "public_id": "01ADDENDUMPUBLICID00000001",
+            "patient_id": 7,
+            "body": "secret correction",
+        },
+        offsets=offsets,
+        password_hash="hash",
+    )
+    shift = timedelta(days=offsets[7])
+    assert row["history_text"] == "redacted"
+    assert row["assessment_text"] == "redacted"
+    assert row["plan_text"] == "redacted"
+    assert row["chief_complaint_summary"] == "redacted"
+    assert row["started_at"] == started + shift
+    assert row["signed_at"] == signed + shift
+    assert row["created_at"] == datetime(2026, 1, 1, 0, 0, 0)
+    assert addendum["body"] == "redacted"

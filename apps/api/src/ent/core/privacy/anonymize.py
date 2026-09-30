@@ -24,6 +24,7 @@ _CLINICAL_DATES = frozenset(
         "arrived_at",
         "started_at",
         "ended_at",
+        "signed_at",
         "captured_at",
         "finalized_at",
         "scheduled_for",
@@ -74,6 +75,12 @@ _GLOBAL_SCRUB = frozenset(
         "slug",
         "mrn",
         "value_text",
+        "history_text",
+        "assessment_text",
+        "plan_text",
+        "chief_complaint_summary",
+        "duration_text",
+        "body",
     }
 )
 

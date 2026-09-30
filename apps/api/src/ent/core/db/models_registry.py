@@ -13,6 +13,13 @@ from ent.features.documents.models import (
     DocumentTemplateVersion,
     PhraseLibrary,
 )
+from ent.features.encounters.models import (
+    Encounter,
+    EncounterAddendum,
+    EncounterComplaint,
+    EncounterSignature,
+    EncounterTemplate,
+)
 from ent.features.observations.models import (
     ExaminationSnapshot,
     Observation,
@@ -59,6 +66,11 @@ __all__ = [
     "DocumentRecipient",
     "DocumentTemplate",
     "DocumentTemplateVersion",
+    "Encounter",
+    "EncounterAddendum",
+    "EncounterComplaint",
+    "EncounterSignature",
+    "EncounterTemplate",
     "ExaminationSnapshot",
     "Setting",
     "Concept",

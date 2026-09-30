@@ -83,7 +83,16 @@ class Attachment(ClinicalRecordMixin, Base):
         ForeignKey("patient.id", ondelete="RESTRICT", onupdate="RESTRICT"),
         nullable=True,
     )
-    encounter_id: Mapped[int | None] = mapped_column(unsigned_bigint(), nullable=True)
+    encounter_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(
+            "encounter.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+            name="fk_attachment__encounter",
+        ),
+        nullable=True,
+    )
     procedure_record_id: Mapped[int | None] = mapped_column(
         unsigned_bigint(), nullable=True
     )

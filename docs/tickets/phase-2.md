@@ -34,7 +34,7 @@ before writing anything.
 
 ---
 
-## - [ ] P2-02 Encounters (backend)
+## - [x] P2-02 Encounters (backend)
 
 **Scope**
 - Models: `encounter`, `encounter_complaint`, `encounter_addendum`,

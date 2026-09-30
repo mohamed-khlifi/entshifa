@@ -20,6 +20,7 @@ from ent.features.documents.models import (
     DocumentTemplate,
     DocumentTemplateVersion,
 )
+from ent.features.encounters.models import Encounter
 from ent.features.observations.models import Observation
 from ent.features.patients.models import (
     Patient,
@@ -265,10 +266,26 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             )
         ).scalar_one()
         encounter_public_id = new_ulid()
+        encounter = Encounter(
+            public_id=encounter_public_id,
+            clinic_id=other.id,
+            site_id=site.id,
+            patient_id=patient.id,
+            user_id=other_user.id,
+            encounter_type="consultation",
+            started_at=datetime(2026, 6, 15, 10, 0, 0),
+            status="draft",
+            history_text="secret history",
+            created_by_id=other_user.id,
+            updated_by_id=other_user.id,
+        )
+        session.add(encounter)
+        await session.flush()
         observation = Observation(
             public_id=new_ulid(),
             clinic_id=other.id,
             patient_id=patient.id,
+            encounter_id=encounter.id,
             encounter_public_id=encounter_public_id,
             concept_id=finding.id,
             laterality="right",
@@ -303,6 +320,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "history_id": history.public_id,
             "clinic_public_id": other.public_id,
             "encounter_public_id": encounter_public_id,
+            "encounter_id": encounter_public_id,
         }
         forbidden = [
             patient.public_id,

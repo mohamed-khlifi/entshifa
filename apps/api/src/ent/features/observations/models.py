@@ -96,9 +96,17 @@ class Observation(ClinicalRecordMixin, Base):
         ForeignKey("patient.id", ondelete="RESTRICT", onupdate="RESTRICT"),
         nullable=False,
     )
-    # Integer FK to encounter.id arrives with P2-02. Until then the public id
-    # is the stable visit address.
-    encounter_id: Mapped[int | None] = mapped_column(unsigned_bigint(), nullable=True)
+    # Visit row. Public id remains the stable address used by observations.
+    encounter_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(
+            "encounter.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+            name="fk_observation__encounter",
+        ),
+        nullable=True,
+    )
     encounter_public_id: Mapped[str | None] = mapped_column(
         String(26, collation="utf8mb4_0900_as_cs"),
         nullable=True,
@@ -280,7 +288,16 @@ class ExaminationSnapshot(ClinicalRecordMixin, Base):
         ForeignKey("patient.id", ondelete="RESTRICT", onupdate="RESTRICT"),
         nullable=False,
     )
-    encounter_id: Mapped[int | None] = mapped_column(unsigned_bigint(), nullable=True)
+    encounter_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(
+            "encounter.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+            name="fk_examination_snapshot__encounter",
+        ),
+        nullable=True,
+    )
     encounter_public_id: Mapped[str | None] = mapped_column(
         String(26, collation="utf8mb4_0900_as_cs"),
         nullable=True,

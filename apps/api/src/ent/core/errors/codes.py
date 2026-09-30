@@ -40,3 +40,8 @@ class ErrorCode(StrEnum):
     OBSERVATION_NOT_FOUND = "observation.not_found"
     OBSERVATION_INVALID_VALUE = "observation.invalid_value_type"
     OBSERVATION_VERSION_CONFLICT = "observation.version_conflict"
+
+    ENCOUNTER_NOT_FOUND = "encounter.not_found"
+    ENCOUNTER_VERSION_CONFLICT = "encounter.version_conflict"
+    ENCOUNTER_INVALID_TRANSITION = "encounter.invalid_transition"
+    ENCOUNTER_ALREADY_SIGNED = "encounter.already_signed"

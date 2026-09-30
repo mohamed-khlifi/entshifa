@@ -27,7 +27,7 @@ dependencies = [
     "sqlalchemy[asyncio]==2.0.39",
     # P0-04 security core.
     "argon2-cffi==23.1.0",
-    "pyjwt==2.13.0",
+    "pyjwt==2.15.0",
     "pyotp==2.9.0",
     # P0-13 media processing (EXIF strip + thumbnails).
     "Pillow==12.3.0",
@@ -85,6 +85,7 @@ target-version = ["py312"]
 [tool.coverage.run]
 branch = true
 source = ["ent"]
+concurrency = ["greenlet"]
 omit = [
     "*/ent/seeds/*",
     "*/ent/cli/*",
@@ -111,6 +112,7 @@ source_modules = [
     "ent.features.terminology.repository",
     "ent.features.documents.repository",
     "ent.features.observations.repository",
+    "ent.features.encounters.repository",
 ]
 forbidden_modules = [
     "ent.features.auth.service",
@@ -124,6 +126,7 @@ forbidden_modules = [
     "ent.features.documents.service",
     "ent.features.documents.templates.service",
     "ent.features.observations.service",
+    "ent.features.encounters.service",
 ]
 
 [[tool.importlinter.contracts]]

@@ -23,9 +23,15 @@
   "conflict": "This change conflicts with existing data.",
   "validation_failed": "Check the highlighted fields.",
   "documents": {
-    "undeclared_placeholder": "This template uses a field that was not declared.",
-    "template_syntax": "This template has a syntax error.",
     "immutable": "A finalized document cannot be changed.",
-    "not_rendered": "The PDF is not ready yet."
+    "not_rendered": "The PDF is not ready yet.",
+    "template_syntax": "This template has a syntax error.",
+    "undeclared_placeholder": "This template uses a field that was not declared."
+  },
+  "encounter": {
+    "already_signed": "This visit is signed. Add an addendum instead of editing it.",
+    "invalid_transition": "This visit cannot change to that status.",
+    "not_found": "That visit was not found.",
+    "version_conflict": "This visit was updated by someone else. Reload and try again."
   }
 }

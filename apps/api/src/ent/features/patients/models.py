@@ -348,12 +348,25 @@ class PatientProblem(ClinicalRecordMixin, Base):
     status: Mapped[str] = mapped_column(String(20), nullable=False)
     onset_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     resolved_date: Mapped[date | None] = mapped_column(Date, nullable=True)
-    # FKs to encounter deferred until that table exists.
     first_encounter_id: Mapped[int | None] = mapped_column(
-        unsigned_bigint(), nullable=True
+        unsigned_bigint(),
+        ForeignKey(
+            "encounter.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+            name="fk_patient_problem__first_encounter",
+        ),
+        nullable=True,
     )
     last_encounter_id: Mapped[int | None] = mapped_column(
-        unsigned_bigint(), nullable=True
+        unsigned_bigint(),
+        ForeignKey(
+            "encounter.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+            name="fk_patient_problem__last_encounter",
+        ),
+        nullable=True,
     )
     note: Mapped[str | None] = mapped_column(Text, nullable=True)
 

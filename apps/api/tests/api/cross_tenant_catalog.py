@@ -31,6 +31,7 @@ TENANT_PATH_PARAMS = frozenset(
         "problem_id",
         "history_id",
         "clinic_public_id",
+        "encounter_id",
         "encounter_public_id",
     }
 )

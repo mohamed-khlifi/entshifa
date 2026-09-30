@@ -23,9 +23,15 @@
   "conflict": "Cette modification entre en conflit avec des données existantes.",
   "validation_failed": "Vérifiez les champs signalés.",
   "documents": {
-    "undeclared_placeholder": "Ce modèle utilise un champ non déclaré.",
-    "template_syntax": "Ce modèle contient une erreur de syntaxe.",
     "immutable": "Un document finalisé ne peut pas être modifié.",
-    "not_rendered": "Le PDF n'est pas encore prêt."
+    "not_rendered": "Le PDF n'est pas encore prêt.",
+    "template_syntax": "Ce modèle contient une erreur de syntaxe.",
+    "undeclared_placeholder": "Ce modèle utilise un champ non déclaré."
+  },
+  "encounter": {
+    "already_signed": "Cette visite est signée. Ajoutez un addendum au lieu de la modifier.",
+    "invalid_transition": "Cette visite ne peut pas passer à ce statut.",
+    "not_found": "Cette visite est introuvable.",
+    "version_conflict": "Cette visite a été modifiée. Rechargez puis réessayez."
   }
 }
