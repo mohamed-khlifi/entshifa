@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 
+from ent.core.db import models_registry as _models_registry  # noqa: F401
 from ent.core.db.session import dispose_engine, get_session_factory
 from ent.seeds.demo import seed_demo
 from ent.seeds.dev_seed_export import write_dev_seed_output
