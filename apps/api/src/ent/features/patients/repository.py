@@ -228,6 +228,13 @@ class PatientRepository(BaseRepository[Patient]):
         ).all()
         return {int(row.id): str(row.public_id) for row in rows}
 
+    async def public_ids_by_id(self, patient_ids: set[int]) -> dict[int, str]:
+        if not patient_ids:
+            return {}
+        base = self._base_query().where(Patient.id.in_(patient_ids)).subquery()
+        rows = (await self.session.execute(select(base.c.id, base.c.public_id))).all()
+        return {int(row.id): str(row.public_id) for row in rows}
+
     async def reassign_chart(
         self,
         *,

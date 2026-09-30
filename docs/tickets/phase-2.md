@@ -13,7 +13,7 @@ Reference: feature spec sections 5, 6, 14 and 15. Architecture sections 25.5,
 
 ---
 
-## - [ ] P2-01 Observation engine (backend)
+## - [x] P2-01 Observation engine (backend)
 
 The most consequential ticket in the project. Read architecture section 26
 before writing anything.

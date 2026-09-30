@@ -20,6 +20,7 @@ from ent.features.documents.models import (
     DocumentTemplate,
     DocumentTemplateVersion,
 )
+from ent.features.observations.models import Observation
 from ent.features.patients.models import (
     Patient,
     PatientAllergy,
@@ -258,6 +259,30 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
         )
         session.add_all([document, appointment])
         await session.flush()
+        finding = (
+            await session.execute(
+                select(Concept).where(Concept.code == "FIND.TM.NORMAL")
+            )
+        ).scalar_one()
+        encounter_public_id = new_ulid()
+        observation = Observation(
+            public_id=new_ulid(),
+            clinic_id=other.id,
+            patient_id=patient.id,
+            encounter_public_id=encounter_public_id,
+            concept_id=finding.id,
+            laterality="right",
+            status="abnormal",
+            value_type="ordinal",
+            ordinal_value=3,
+            effective_at=datetime(2026, 6, 15, 10, 0, 0),
+            source="clinician",
+            recorded_by_id=other_user.id,
+            created_by_id=other_user.id,
+            updated_by_id=other_user.id,
+        )
+        session.add(observation)
+        await session.flush()
 
         ids = {
             "patient_id": patient.public_id,
@@ -277,6 +302,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "problem_id": problem.public_id,
             "history_id": history.public_id,
             "clinic_public_id": other.public_id,
+            "encounter_public_id": encounter_public_id,
         }
         forbidden = [
             patient.public_id,
@@ -292,6 +318,8 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             last_name,
             concept_code,
             room,
+            observation.public_id,
+            encounter_public_id,
         ]
         await session.commit()
 
@@ -369,6 +397,13 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             ("GET", "/api/v1/terminology/admin/value-sets"): {},
             ("GET", "/api/v1/terminology/concepts/search"): {
                 "q": concept_code,
+                "limit": "100",
+            },
+            ("GET", "/api/v1/observations/cohort"): {
+                "conceptCode": "FIND.TM.NORMAL",
+                "ordinal": "3",
+                "effectiveFrom": "2026-01-01T00:00:00",
+                "effectiveTo": "2027-01-01T00:00:00",
                 "limit": "100",
             },
         }

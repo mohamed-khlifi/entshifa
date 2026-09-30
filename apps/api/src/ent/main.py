@@ -17,6 +17,7 @@ from ent.features.auth.router import router as auth_router
 from ent.features.clinics.router import router as clinics_router
 from ent.features.documents.router import router as documents_router
 from ent.features.health.router import router as health_router
+from ent.features.observations.router import router as observations_router
 from ent.features.patients.router import router as patients_router
 from ent.features.scheduling.router import router as scheduling_router
 from ent.features.terminology.router import router as terminology_router
@@ -67,4 +68,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(scheduling_router)
     app.include_router(attachments_router)
     app.include_router(documents_router)
+    app.include_router(observations_router)
     return app

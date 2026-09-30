@@ -13,6 +13,11 @@ from ent.features.documents.models import (
     DocumentTemplateVersion,
     PhraseLibrary,
 )
+from ent.features.observations.models import (
+    ExaminationSnapshot,
+    Observation,
+    ObservationComponent,
+)
 from ent.features.patients.models import (
     Patient,
     PatientAllergy,
@@ -54,12 +59,15 @@ __all__ = [
     "DocumentRecipient",
     "DocumentTemplate",
     "DocumentTemplateVersion",
+    "ExaminationSnapshot",
     "Setting",
     "Concept",
     "ConceptRelationship",
     "ConceptTranslation",
     "JobRun",
     "MediaVariant",
+    "Observation",
+    "ObservationComponent",
     "PasswordResetToken",
     "Patient",
     "PatientAllergy",

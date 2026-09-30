@@ -31,6 +31,7 @@ TENANT_PATH_PARAMS = frozenset(
         "problem_id",
         "history_id",
         "clinic_public_id",
+        "encounter_public_id",
     }
 )
 
@@ -53,6 +54,7 @@ COLLECTION_ROUTES = frozenset(
         ("GET", "/api/v1/terminology/admin/concepts"),
         ("GET", "/api/v1/terminology/admin/value-sets"),
         ("GET", "/api/v1/terminology/concepts/search"),
+        ("GET", "/api/v1/observations/cohort"),
     }
 )
 
@@ -67,9 +69,7 @@ MUTATION_OK = frozenset({400, 404, 422})
 
 
 def path_params(path: str) -> frozenset[str]:
-    return frozenset(
-        raw.split(":", 1)[0] for raw in re.findall(r"\{([^}]+)\}", path)
-    )
+    return frozenset(raw.split(":", 1)[0] for raw in re.findall(r"\{([^}]+)\}", path))
 
 
 def iter_api_routes(app: FastAPI) -> Iterator[tuple[str, str, frozenset[str]]]:

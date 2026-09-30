@@ -28,6 +28,7 @@ _CLINICAL_DATES = frozenset(
         "finalized_at",
         "scheduled_for",
         "sent_at",
+        "effective_at",
     }
 )
 
@@ -72,6 +73,7 @@ _GLOBAL_SCRUB = frozenset(
         "title",
         "slug",
         "mrn",
+        "value_text",
     }
 )
 
@@ -85,7 +87,9 @@ _HTML_COLUMNS = frozenset(
     }
 )
 
-_JSON_REDACT = frozenset({"before_json", "after_json", "content_snapshot"})
+_JSON_REDACT = frozenset(
+    {"before_json", "after_json", "content_snapshot", "payload", "qualifiers"}
+)
 
 
 def offset_days(patient_public_id: str) -> int:

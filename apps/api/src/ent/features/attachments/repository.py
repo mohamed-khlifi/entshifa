@@ -25,6 +25,13 @@ class AttachmentRepository(BaseRepository[Attachment]):
         result = await self.session.execute(stmt)
         return result.scalar_one_or_none()
 
+    async def public_ids_by_id(self, attachment_ids: set[int]) -> dict[int, str]:
+        if not attachment_ids:
+            return {}
+        base = self._base_query().where(Attachment.id.in_(attachment_ids)).subquery()
+        rows = (await self.session.execute(select(base.c.id, base.c.public_id))).all()
+        return {int(row.id): str(row.public_id) for row in rows}
+
     async def list_for_patient(
         self, patient_id: int, *, limit: int = 500
     ) -> list[Attachment]:

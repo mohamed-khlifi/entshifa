@@ -11,6 +11,7 @@ from ent.core.db.models_registry import ReferenceDataVersion as _registered
 from ent.features.attachments.service import AttachmentService
 from ent.features.documents.service import DocumentService
 from ent.features.documents.templates.service import DocumentTemplateService
+from ent.features.observations.service import ObservationService
 from ent.features.patients.service import PatientService
 from ent.features.scheduling.service import SchedulingService
 
@@ -43,6 +44,7 @@ def test_clinical_read_methods_record_access() -> None:
         (DocumentService, ("list_", "get_", "preview_", "download_")),
         (AttachmentService, ("list_", "get_", "request_download")),
         (DocumentTemplateService, ("list_", "get_")),
+        (ObservationService, ("list_", "get_")),
     )
     missing: list[str] = []
     for cls, prefixes in expectations:

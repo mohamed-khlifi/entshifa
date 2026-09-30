@@ -36,3 +36,7 @@ class ErrorCode(StrEnum):
     DOCUMENTS_TEMPLATE_SYNTAX = "documents.template_syntax"
     DOCUMENTS_IMMUTABLE = "documents.immutable"
     DOCUMENTS_NOT_RENDERED = "documents.not_rendered"
+
+    OBSERVATION_NOT_FOUND = "observation.not_found"
+    OBSERVATION_INVALID_VALUE = "observation.invalid_value_type"
+    OBSERVATION_VERSION_CONFLICT = "observation.version_conflict"

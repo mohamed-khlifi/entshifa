@@ -101,3 +101,27 @@ def test_password_and_audit_payloads_are_replaced() -> None:
     assert audit["ip_address"] is None
     assert audit["user_agent"] == "redacted"
     assert audit["reason"] == "redacted"
+
+
+def test_observation_free_text_dates_and_qualifiers_are_scrubbed() -> None:
+    patients = [{"id": 7, "public_id": "01PATIENTPUBLICID0000000001"}]
+    offsets = build_offsets(patients)
+    effective = datetime(2026, 3, 1, 8, 0, 0)
+    row = anonymize_row(
+        "observation",
+        {
+            "id": 1,
+            "public_id": "01OBSERVATIONPUBLICID000001",
+            "patient_id": 7,
+            "value_text": "secret finding",
+            "effective_at": effective,
+            "qualifiers": {"size_mm": 12},
+            "created_at": datetime(2026, 1, 1, 0, 0, 0),
+        },
+        offsets=offsets,
+        password_hash="hash",
+    )
+    assert row["value_text"] == "redacted"
+    assert row["qualifiers"] == {"redacted": True}
+    assert row["effective_at"] == effective + timedelta(days=offsets[7])
+    assert row["created_at"] == datetime(2026, 1, 1, 0, 0, 0)
