@@ -42,7 +42,9 @@ export function NormalsToolbar({
 }: NormalsToolbarProps) {
   return (
     <section
-      className={compact ? "flex min-w-0 flex-wrap items-center gap-2" : "space-y-2"}
+      className={
+        compact ? "flex min-w-0 flex-wrap items-center gap-2" : "space-y-2"
+      }
       {...testIdProps(testIds.examination.normals.group)}
     >
       <h2 className={compact ? "sr-only" : "text-sm font-medium"}>
