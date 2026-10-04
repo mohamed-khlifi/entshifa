@@ -133,3 +133,72 @@ def test_unknown_locale_is_rejected() -> None:
     with pytest.raises(NarrativeLocaleError) as caught:
         render_examination_narrative([], locale="de")
     assert caught.value.locale == "de"
+
+
+def test_empty_template_uses_body_site_and_blank_phrases_are_omitted() -> None:
+    text = render_examination_narrative(
+        [
+            _finding(
+                laterality="right",
+                status="abnormal",
+                sort_index=0,
+                body_site="Septum",
+                template="   ",
+                code="FIND.NOSE.SEPTUM",
+            ),
+            _finding(
+                laterality="midline",
+                status="abnormal",
+                sort_index=0,
+                body_site="Tongue",
+                template="{{bodySite}}{{note}}",
+                code="FIND.ORAL.TONGUE",
+            ),
+            _finding(
+                laterality="left",
+                status="abnormal",
+                sort_index=0,
+                body_site="",
+                template="{{missing}}",
+                code="FIND.BLANK",
+            ),
+        ],
+        locale="en",
+    )
+    assert text == "Right — Septum. Midline — Tongue."
+
+
+def test_three_negatives_use_the_list_separator_and_final_joiner() -> None:
+    text = render_examination_narrative(
+        [
+            _finding(
+                laterality="right",
+                status="normal",
+                sort_index=0,
+                body_site="External auditory canal",
+                template="{{bodySite}}: normal",
+                code="FIND.CANAL.NORMAL",
+            ),
+            _finding(
+                laterality="right",
+                status="normal",
+                sort_index=1,
+                body_site="Pars flaccida",
+                template="{{bodySite}}: normal",
+                code="FIND.TM.PF.NORMAL",
+            ),
+            _finding(
+                laterality="right",
+                status="normal",
+                sort_index=2,
+                body_site="Anterosuperior quadrant",
+                template="{{bodySite}}: normal",
+                code="FIND.TM.AS.NORMAL",
+            ),
+        ],
+        locale="en",
+    )
+    assert text == (
+        "Right — External auditory canal: normal, "
+        "Pars flaccida: normal and Anterosuperior quadrant: normal."
+    )
