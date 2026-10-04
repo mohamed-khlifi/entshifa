@@ -149,3 +149,6 @@ async def sign_encounter(
   pagination envelope.
 - Use the factories in `tests/factories/`. Do not build fixtures by hand.
 - Every new endpoint gets a cross-tenant isolation test.
+- A skipped integration probe is not coverage. The cross-tenant waiting-room
+  request is skipped when `ZoneInfo("Europe/Paris")` is missing. CI has
+  tzdata and will run it. Execute that SQL on local MySQL 8.4 before pushing.

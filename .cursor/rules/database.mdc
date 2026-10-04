@@ -1,6 +1,6 @@
 ---
 description: MySQL schema, SQLAlchemy models and Alembic migration conventions
-globs: apps/api/alembic/**/*.py,apps/api/src/ent/features/**/models.py,apps/api/src/ent/core/db/**/*.py
+globs: apps/api/alembic/**/*.py,apps/api/src/ent/features/**/models.py,apps/api/src/ent/features/**/repository.py,apps/api/src/ent/core/db/**/*.py
 alwaysApply: false
 ---
 
@@ -84,6 +84,13 @@ Terminology, formulary, instruments, protocols and templates are seeded by
 versioned scripts in `cli/seed.py`, never by hand-written SQL in a migration
 and never hardcoded in Python. Applying a seed records a row in
 `reference_data_version`.
+
+## SQL dialect
+
+MySQL 8.4 rejects `NULLS FIRST` and `NULLS LAST`. SQLAlchemy
+`nulls_last()` / `nulls_first()` compile to that syntax and fail in CI.
+Put nulls last by ordering `column.is_(None)` before the column itself:
+`IS NULL` is 0 when a value is present and 1 when it is missing.
 
 ## Performance
 

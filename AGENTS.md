@@ -130,6 +130,11 @@ converts; never do it by hand.
 - Tenant scoping verified for any new query.
 - If the change touches a clinical calculation, the engine `VERSION` is bumped
   and the reference is recorded.
+- Before pushing, run the Makefile CI targets with the API virtualenv Python
+  (`apps/api/.venv`) and npm. A skipped test is not a pass. If a probe is
+  skipped because timezone data is missing (`Europe/Paris`,
+  `ZoneInfoNotFoundError`), run that query against local MySQL 8.4 anyway.
+  CI has tzdata and will execute it.
 
 ## How to work with me
 
@@ -158,6 +163,8 @@ converts; never do it by hand.
 - A wide examination table with dozens of nullable columns
 - A list endpoint without pagination
 - `SELECT *`, N+1 queries in timelines
+- `NULLS FIRST` or `NULLS LAST` in SQL. MySQL 8.4 rejects them. Sort nulls
+  with `column IS NULL` ahead of the column (`nulls_last()` emits `NULLS LAST`).
 - Floats for money or for exact measurements
 - `ON DELETE CASCADE` on clinical tables
 - Building AI features before the structured data layer is solid
