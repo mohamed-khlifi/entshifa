@@ -158,6 +158,7 @@ export const testIds = {
     shell: testId("patients", "shell"),
     chartNav: testId("patients", "chart-nav"),
     navOverview: testId("patients", "nav-overview"),
+    navExamination: testId("patients", "nav-examination"),
     navAttachments: testId("patients", "nav-attachments"),
     header: testId("patients", "header"),
     headerAge: testId("patients", "header-age"),
@@ -237,6 +238,22 @@ export const testIds = {
     waitingRow: (publicId: string) =>
       publicIdTestId("scheduling.waiting", publicId),
   },
+  examination: {
+    root: testId("examination", "root"),
+    mapSelect: testId("examination", "map-select"),
+    encounter: testId("examination", "encounter"),
+    encounterEmpty: testId("examination", "encounter-empty"),
+    save: testId("examination", "save"),
+    snapshot: testId("examination", "snapshot"),
+    narrative: testId("examination", "narrative"),
+    map: {
+      root: testId("examination", "map", "root"),
+      lateralityRight: testId("examination", "map", "laterality-right"),
+      lateralityLeft: testId("examination", "map", "laterality-left"),
+      findingPicker: testId("examination", "map", "finding-picker"),
+      notExamined: testId("examination", "map", "not-examined"),
+    },
+  },
   terminology: {
     concepts: {
       root: testId("terminology", "concepts", "root"),
@@ -260,6 +277,20 @@ export const testIds = {
     },
   },
 } as const;
+
+export function examinationRegionTestId(regionId: string): string {
+  return testId("examination", "map", "region", examinationToken(regionId));
+}
+
+export function examinationFindingTestId(conceptCode: string): string {
+  return testId("examination", "map", "finding", examinationToken(conceptCode));
+}
+
+function examinationToken(value: string): string {
+  const segment = value.toLowerCase().replaceAll("_", "-").replaceAll(".", "-");
+  assertSegment(segment);
+  return segment;
+}
 
 export function patientRowTestId(publicId: string): string {
   return publicIdTestId("patients.list.row", publicId);

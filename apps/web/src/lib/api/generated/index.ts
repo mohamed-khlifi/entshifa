@@ -131,3 +131,14 @@ export type DocumentTemplateVersionRead =
 export type PageSchemaDocumentTemplateRead =
   Schemas["PageSchema_DocumentTemplateRead_"];
 export type PlaceholderSpec = Schemas["PlaceholderSpec"];
+
+export type NarrativeFindingIn = Schemas["NarrativeFindingIn"];
+export type NarrativeRenderRequest = Schemas["NarrativeRenderRequest"];
+export type NarrativeRenderRead = Schemas["NarrativeRenderRead"];
+export type ObservationCreate = Schemas["ObservationCreate"];
+export type ObservationBatchCreate = Schemas["ObservationBatchCreate"];
+export type ObservationRead = Schemas["ObservationRead"];
+export type ExaminationSnapshotCreate = Schemas["ExaminationSnapshotCreate"];
+export type ExaminationSnapshotRead = Schemas["ExaminationSnapshotRead"];
+export type EncounterRead = Schemas["EncounterRead"];
+export type PageSchemaEncounterRead = Schemas["PageSchema_EncounterRead_"];

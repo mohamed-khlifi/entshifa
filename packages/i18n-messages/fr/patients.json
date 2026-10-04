@@ -5,7 +5,8 @@
   "nav": {
     "overview": "Synthèse",
     "attachments": "Images et documents",
-    "documents": "Documents"
+    "documents": "Documents",
+    "examination": "Examen"
   },
   "state": {
     "loading": "Chargement du dossier…",

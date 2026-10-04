@@ -5,7 +5,8 @@
   "nav": {
     "overview": "الملخص",
     "attachments": "الصور والمستندات",
-    "documents": "المستندات"
+    "documents": "المستندات",
+    "examination": "الفحص"
   },
   "state": {
     "loading": "جارٍ تحميل الملف…",

@@ -115,20 +115,20 @@ async def test_missing_translation_falls_back_to_code_marker() -> None:
                 select(Concept).where(Concept.code == "FIND.TM.EFFUSION"),
             )
         ).scalar_one()
-        # Remove French translation to force missing path for locale=ar default=en.
-        fr_rows = (
+        # Drop every non-English row so locale=ar and clinic default=ar both miss.
+        other_rows = (
             (
                 await session.execute(
                     select(ConceptTranslation).where(
                         ConceptTranslation.concept_id == concept.id,
-                        ConceptTranslation.locale == "fr",
+                        ConceptTranslation.locale != "en",
                     ),
                 )
             )
             .scalars()
             .all()
         )
-        for row in fr_rows:
+        for row in other_rows:
             await session.delete(row)
         await session.commit()
 

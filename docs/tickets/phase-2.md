@@ -68,7 +68,7 @@ before writing anything.
 
 ---
 
-## - [ ] P2-04 Anatomical maps: ear, nose, oral cavity, neck (frontend + seed)
+## - [x] P2-04 Anatomical maps: ear, nose, oral cavity, neck (frontend + seed)
 
 **Scope**
 Use the `add-anatomical-map` skill for each. Four maps in this ticket:

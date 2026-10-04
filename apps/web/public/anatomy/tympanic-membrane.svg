@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 240">
+  <path id="tm-canal" d="M36 16h128v208H36z" />
+  <path id="tm-pf" d="M78 36h44v28H78z" />
+  <path id="tm-pt-as" d="M48 72h52v64H48z" />
+  <path id="tm-pt-ps" d="M100 72h52v64h-52z" />
+  <path id="tm-pt-ai" d="M48 136h52v64H48z" />
+  <path id="tm-pt-pi" d="M100 136h52v64h-52z" />
+</svg>

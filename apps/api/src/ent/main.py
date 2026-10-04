@@ -21,6 +21,7 @@ from ent.features.encounters.templates.router import (
     router as encounter_templates_router,
 )
 from ent.features.health.router import router as health_router
+from ent.features.narrative.router import router as narrative_router
 from ent.features.observations.router import router as observations_router
 from ent.features.patients.router import router as patients_router
 from ent.features.scheduling.router import router as scheduling_router
@@ -73,6 +74,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(attachments_router)
     app.include_router(documents_router)
     app.include_router(observations_router)
+    app.include_router(narrative_router)
     app.include_router(encounters_router)
     app.include_router(encounter_templates_router)
     return app

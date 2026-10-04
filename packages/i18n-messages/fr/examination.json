@@ -1,0 +1,92 @@
+{
+  "title": "Examen",
+  "loading": "Chargement de l’examen…",
+  "maps": {
+    "tympanicMembrane": "Membrane tympanique",
+    "nasalCavity": "Fosse nasale",
+    "oralCavity": "Cavité orale et oropharynx",
+    "neckLevels": "Cou"
+  },
+  "actions": {
+    "save": "Enregistrer les constatations",
+    "saved": "Constatations enregistrées.",
+    "saveSnapshot": "Enregistrer le schéma",
+    "snapshotSaved": "Schéma enregistré.",
+    "notExamined": "Non examiné"
+  },
+  "laterality": {
+    "group": "Côté",
+    "right": "Droit",
+    "left": "Gauche"
+  },
+  "findingPicker": {
+    "title": "Constatation",
+    "loading": "Chargement des constatations…",
+    "empty": "Aucune constatation n’est configurée pour cette région."
+  },
+  "narrative": {
+    "title": "Aperçu du compte rendu",
+    "empty": "Les structures examinées apparaîtront ici."
+  },
+  "encounter": {
+    "label": "Consultation",
+    "empty": "Aucune consultation n’est disponible pour rattacher ces constatations.",
+    "option": "{when} · {status}",
+    "status": {
+      "draft": "Brouillon",
+      "signed": "Signée",
+      "amended": "Addendum",
+      "other": "Consultation"
+    }
+  },
+  "regions": {
+    "unknown": "Région"
+  },
+  "tm": {
+    "regions": {
+      "canal": "Conduit auditif externe",
+      "parsFlaccida": "Pars flaccida",
+      "anteroSuperior": "Quadrant antéro-supérieur",
+      "anteroInferior": "Quadrant antéro-inférieur",
+      "posteroSuperior": "Quadrant postéro-supérieur",
+      "posteroInferior": "Quadrant postéro-inférieur"
+    }
+  },
+  "nose": {
+    "regions": {
+      "vestibule": "Vestibule nasal",
+      "valve": "Valve nasale",
+      "septum": "Septum nasal",
+      "inferiorTurbinate": "Cornet inférieur",
+      "middleTurbinate": "Cornet moyen",
+      "mucosa": "Muqueuse nasale"
+    }
+  },
+  "oral": {
+    "regions": {
+      "lips": "Lèvres",
+      "tongue": "Langue",
+      "softPalate": "Palais mou",
+      "tonsil": "Amygdale",
+      "posteriorWall": "Paroi pharyngée postérieure"
+    }
+  },
+  "neck": {
+    "regions": {
+      "parotid": "Glande parotide",
+      "levelIa": "Niveau IA",
+      "levelIb": "Niveau IB",
+      "levelIia": "Niveau IIA",
+      "levelIib": "Niveau IIB",
+      "submandibular": "Glande sous-mandibulaire",
+      "levelIii": "Niveau III",
+      "levelIv": "Niveau IV",
+      "levelVa": "Niveau VA",
+      "levelVb": "Niveau VB",
+      "levelVi": "Niveau VI",
+      "thyroidLobe": "Lobe thyroïdien",
+      "isthmus": "Isthme thyroïdien",
+      "levelVii": "Niveau VII"
+    }
+  }
+}

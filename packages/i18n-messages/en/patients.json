@@ -5,7 +5,8 @@
   "nav": {
     "overview": "Overview",
     "attachments": "Images and documents",
-    "documents": "Documents"
+    "documents": "Documents",
+    "examination": "Examination"
   },
   "state": {
     "loading": "Loading the chart…",

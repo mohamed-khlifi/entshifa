@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 280">
+  <path id="nose-vestibule" d="M40 16h100v36H40z" />
+  <path id="nose-valve" d="M48 56h84v32H48z" />
+  <path id="nose-septum" d="M78 96h24v150H78z" />
+  <path id="nose-it" d="M28 168h48v48H28z" />
+  <path id="nose-mt" d="M28 112h46v48H28z" />
+  <path id="nose-mucosa" d="M108 112h44v104h-44z" />
+</svg>

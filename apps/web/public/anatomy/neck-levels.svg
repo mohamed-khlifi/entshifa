@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 460">
+  <path id="neck-parotid" d="M16 12h188v28H16z" />
+  <path id="neck-ia" d="M78 46h64v28H78z" />
+  <path id="neck-ib" d="M16 46h56v28H16z" />
+  <path id="neck-iia" d="M16 80h90v32H16z" />
+  <path id="neck-iib" d="M114 80h90v32h-90z" />
+  <path id="neck-smg" d="M16 118h188v28H16z" />
+  <path id="neck-iii" d="M16 152h188v32H16z" />
+  <path id="neck-iv" d="M16 190h188v32H16z" />
+  <path id="neck-va" d="M16 228h90v32H16z" />
+  <path id="neck-vb" d="M114 228h90v32h-90z" />
+  <path id="neck-vi" d="M70 266h80v32H70z" />
+  <path id="neck-thyroid" d="M28 304h164v40H28z" />
+  <path id="neck-isthmus" d="M78 348h64v28H78z" />
+  <path id="neck-vii" d="M54 384h112v32H54z" />
+</svg>

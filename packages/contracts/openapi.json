@@ -3785,6 +3785,99 @@
         "title": "MfaLogin",
         "type": "object"
       },
+      "NarrativeFindingIn": {
+        "properties": {
+          "bodySiteCode": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bodysitecode"
+          },
+          "conceptCode": {
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Conceptcode",
+            "type": "string"
+          },
+          "laterality": {
+            "$ref": "#/components/schemas/Laterality"
+          },
+          "mapRegionCode": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mapregioncode"
+          },
+          "sortIndex": {
+            "default": 0,
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Sortindex",
+            "type": "integer"
+          },
+          "status": {
+            "enum": [
+              "normal",
+              "abnormal",
+              "not_examined",
+              "unknown"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "conceptCode",
+          "laterality",
+          "status"
+        ],
+        "title": "NarrativeFindingIn",
+        "type": "object"
+      },
+      "NarrativeRenderRead": {
+        "properties": {
+          "locale": {
+            "title": "Locale",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "locale",
+          "text"
+        ],
+        "title": "NarrativeRenderRead",
+        "type": "object"
+      },
+      "NarrativeRenderRequest": {
+        "properties": {
+          "findings": {
+            "items": {
+              "$ref": "#/components/schemas/NarrativeFindingIn"
+            },
+            "maxItems": 200,
+            "title": "Findings",
+            "type": "array"
+          }
+        },
+        "title": "NarrativeRenderRequest",
+        "type": "object"
+      },
       "ObservationBatchCreate": {
         "properties": {
           "encounterPublicId": {
@@ -13000,6 +13093,86 @@
         "summary": "Create Invitation",
         "tags": [
           "users"
+        ]
+      }
+    },
+    "/api/v1/narrative/render": {
+      "post": {
+        "operationId": "render_narrative_api_v1_narrative_render_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NarrativeRenderRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NarrativeRenderRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Render Narrative",
+        "tags": [
+          "narrative"
         ]
       }
     },

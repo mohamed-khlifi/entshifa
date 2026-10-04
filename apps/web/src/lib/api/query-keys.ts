@@ -82,6 +82,21 @@ export const queryKeys = {
         variant ?? "original",
       ] as const,
   },
+  examination: {
+    all: ["examination"] as const,
+    encounters: (patientId: string) =>
+      [...queryKeys.examination.all, "encounters", patientId] as const,
+    valueSet: (code: string, locale: string) =>
+      [...queryKeys.examination.all, "value-set", code, locale] as const,
+    narrative: (patientId: string, mapId: string, signature: string) =>
+      [
+        ...queryKeys.examination.all,
+        "narrative",
+        patientId,
+        mapId,
+        signature,
+      ] as const,
+  },
   terminology: {
     all: ["terminology"] as const,
     adminConcepts: (params?: { q?: string; limit?: number; offset?: number }) =>

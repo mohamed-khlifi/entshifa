@@ -1,0 +1,92 @@
+{
+  "title": "Examination",
+  "loading": "Loading examination…",
+  "maps": {
+    "tympanicMembrane": "Tympanic membrane",
+    "nasalCavity": "Nasal cavity",
+    "oralCavity": "Oral cavity and oropharynx",
+    "neckLevels": "Neck"
+  },
+  "actions": {
+    "save": "Save findings",
+    "saved": "Findings saved.",
+    "saveSnapshot": "Save map snapshot",
+    "snapshotSaved": "Map snapshot saved.",
+    "notExamined": "Not examined"
+  },
+  "laterality": {
+    "group": "Side",
+    "right": "Right",
+    "left": "Left"
+  },
+  "findingPicker": {
+    "title": "Finding",
+    "loading": "Loading findings…",
+    "empty": "No findings are configured for this region."
+  },
+  "narrative": {
+    "title": "Report preview",
+    "empty": "Examined structures will appear here."
+  },
+  "encounter": {
+    "label": "Encounter",
+    "empty": "There is no encounter to attach these findings to yet.",
+    "option": "{when} · {status}",
+    "status": {
+      "draft": "Draft",
+      "signed": "Signed",
+      "amended": "Addendum",
+      "other": "Encounter"
+    }
+  },
+  "regions": {
+    "unknown": "Region"
+  },
+  "tm": {
+    "regions": {
+      "canal": "External auditory canal",
+      "parsFlaccida": "Pars flaccida",
+      "anteroSuperior": "Anterosuperior quadrant",
+      "anteroInferior": "Anteroinferior quadrant",
+      "posteroSuperior": "Posterosuperior quadrant",
+      "posteroInferior": "Posteroinferior quadrant"
+    }
+  },
+  "nose": {
+    "regions": {
+      "vestibule": "Nasal vestibule",
+      "valve": "Nasal valve",
+      "septum": "Nasal septum",
+      "inferiorTurbinate": "Inferior turbinate",
+      "middleTurbinate": "Middle turbinate",
+      "mucosa": "Nasal mucosa"
+    }
+  },
+  "oral": {
+    "regions": {
+      "lips": "Lips",
+      "tongue": "Tongue",
+      "softPalate": "Soft palate",
+      "tonsil": "Tonsil",
+      "posteriorWall": "Posterior pharyngeal wall"
+    }
+  },
+  "neck": {
+    "regions": {
+      "parotid": "Parotid gland",
+      "levelIa": "Level IA",
+      "levelIb": "Level IB",
+      "levelIia": "Level IIA",
+      "levelIib": "Level IIB",
+      "submandibular": "Submandibular gland",
+      "levelIii": "Level III",
+      "levelIv": "Level IV",
+      "levelVa": "Level VA",
+      "levelVb": "Level VB",
+      "levelVi": "Level VI",
+      "thyroidLobe": "Thyroid lobe",
+      "isthmus": "Thyroid isthmus",
+      "levelVii": "Level VII"
+    }
+  }
+}

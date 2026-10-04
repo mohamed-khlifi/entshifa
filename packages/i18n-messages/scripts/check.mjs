@@ -31,6 +31,7 @@ const NAMESPACES = [
   'patients',
   'scheduling',
   'documents',
+  'examination',
 ];
 
 /**

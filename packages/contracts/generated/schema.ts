@@ -885,6 +885,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/narrative/render": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Render Narrative */
+        post: operations["render_narrative_api_v1_narrative_render_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/observations/cohort": {
         parameters: {
             query?: never;
@@ -2870,6 +2887,38 @@ export interface components {
             code: string;
             /** Mfatoken */
             mfaToken: string;
+        };
+        /** NarrativeFindingIn */
+        NarrativeFindingIn: {
+            /** Bodysitecode */
+            bodySiteCode?: string | null;
+            /** Conceptcode */
+            conceptCode: string;
+            laterality: components["schemas"]["Laterality"];
+            /** Mapregioncode */
+            mapRegionCode?: string | null;
+            /**
+             * Sortindex
+             * @default 0
+             */
+            sortIndex: number;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "normal" | "abnormal" | "not_examined" | "unknown";
+        };
+        /** NarrativeRenderRead */
+        NarrativeRenderRead: {
+            /** Locale */
+            locale: string;
+            /** Text */
+            text: string;
+        };
+        /** NarrativeRenderRequest */
+        NarrativeRenderRequest: {
+            /** Findings */
+            findings?: components["schemas"]["NarrativeFindingIn"][];
         };
         /** ObservationBatchCreate */
         ObservationBatchCreate: {
@@ -6273,6 +6322,42 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["InvitationRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    render_narrative_api_v1_narrative_render_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NarrativeRenderRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NarrativeRenderRead"];
                 };
             };
             /** @description Validation Error */

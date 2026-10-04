@@ -27,6 +27,7 @@ export function PatientShell({
   const overviewHref = `/patients/${patientId}`;
   const attachmentsHref = `/patients/${patientId}/attachments`;
   const documentsHref = `/patients/${patientId}/documents`;
+  const examinationHref = `/patients/${patientId}/examination`;
 
   if (patient.isLoading) {
     return (
@@ -84,6 +85,18 @@ export function PatientShell({
             {t("nav.attachments")}
           </Link>
         ) : null}
+        <Link
+          href={examinationHref}
+          className={cn(
+            "rounded-full px-3 py-1.5 text-sm font-medium",
+            pathname === examinationHref
+              ? "bg-primary/10 text-primary"
+              : "text-muted-foreground hover:bg-muted",
+          )}
+          {...testIdProps(testIds.patients.navExamination)}
+        >
+          {t("nav.examination")}
+        </Link>
         {canFinalizeDocuments ? (
           <Link
             href={documentsHref}

@@ -6,6 +6,7 @@ from dataclasses import dataclass
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm.attributes import flag_modified
 
 from ent.core.utils.ids import new_ulid
 from ent.features.terminology.models import (
@@ -37,6 +38,7 @@ class _ConceptSeed:
     translations: tuple[_Translation, ...]
     parent_code: str | None = None
     relationship: str | None = None
+    narrative: dict[str, str] | None = None
 
 
 ANATOMY: tuple[_ConceptSeed, ...] = (
@@ -122,14 +124,25 @@ FINDINGS: tuple[_ConceptSeed, ...] = (
     _ConceptSeed(
         code="FIND.TM.NORMAL",
         kind="finding",
+        narrative={
+            "en": "{{bodySite}}: normal",
+            "fr": "{{bodySite}} : normal",
+            "ar": "{{bodySite}}: طبيعي",
+        },
         translations=(
             _Translation("en", "Normal", "Normal tympanic membrane"),
             _Translation("fr", "Normal", "Membrane tympanique normale"),
+            _Translation("ar", "طبيعي", "غشاء طبلة طبيعي"),
         ),
     ),
     _ConceptSeed(
         code="FIND.TM.PERFORATION",
         kind="finding",
+        narrative={
+            "en": "{{bodySite}}: perforation",
+            "fr": "{{bodySite}} : perforation",
+            "ar": "{{bodySite}}: انثقاب",
+        },
         translations=(
             _Translation(
                 "en",
@@ -143,22 +156,35 @@ FINDINGS: tuple[_ConceptSeed, ...] = (
                 "Perforation de la membrane tympanique",
                 ("pérforation", "trou"),
             ),
+            _Translation("ar", "انثقاب", "انثقاب غشاء الطبلة"),
         ),
     ),
     _ConceptSeed(
         code="FIND.TM.RETRACTION",
         kind="finding",
+        narrative={
+            "en": "{{bodySite}}: retraction",
+            "fr": "{{bodySite}} : rétraction",
+            "ar": "{{bodySite}}: انكماش",
+        },
         translations=(
             _Translation("en", "Retraction", "Tympanic membrane retraction"),
             _Translation("fr", "Rétraction", "Rétraction de la membrane tympanique"),
+            _Translation("ar", "انكماش", "انكماش غشاء الطبلة"),
         ),
     ),
     _ConceptSeed(
         code="FIND.TM.EFFUSION",
         kind="finding",
+        narrative={
+            "en": "{{bodySite}}: effusion",
+            "fr": "{{bodySite}} : épanchement",
+            "ar": "{{bodySite}}: انصباب",
+        },
         translations=(
             _Translation("en", "Effusion", "Middle ear effusion"),
             _Translation("fr", "Épanchement", "Épanchement de l'oreille moyenne"),
+            _Translation("ar", "انصباب", "انصباب الأذن الوسطى"),
         ),
     ),
 )
@@ -388,6 +414,14 @@ async def seed_terminology(session: AsyncSession) -> TerminologySeedReport:
             is_default=False,
         )
 
+    from ent.seeds.anatomy_maps import seed_anatomy_maps
+
+    map_report = await seed_anatomy_maps(session, system, by_code)
+    concepts_created += map_report.concepts
+    translations_created += map_report.translations
+    value_sets_count += map_report.value_sets
+    members_created += map_report.members
+
     return TerminologySeedReport(
         code_systems=1 if system else 0,
         concepts=concepts_created,
@@ -437,7 +471,16 @@ async def _ensure_concept(
             ),
         )
     ).scalar_one_or_none()
+    narrative = {"narrative": dict(seed.narrative)} if seed.narrative else None
     if existing is not None:
+        if (
+            narrative is not None
+            and (existing.properties or {}).get("narrative") != seed.narrative
+        ):
+            existing.properties = narrative
+            flag_modified(existing, "properties")
+        if parent_id is not None and existing.parent_id is None:
+            existing.parent_id = parent_id
         return existing, False
     row = Concept(
         public_id=new_ulid(),
@@ -446,6 +489,7 @@ async def _ensure_concept(
         kind=seed.kind,
         parent_id=parent_id,
         sort_order=sort_order,
+        properties=narrative,
         is_active=True,
         clinic_id=None,
     )
@@ -535,6 +579,34 @@ async def _ensure_value_set(session: AsyncSession) -> tuple[ValueSet, bool]:
         code=TM_FINDINGS_VALUE_SET,
         name_key="terminology.valueSet.tmFindings",
         description_key="terminology.valueSet.tmFindings.description",
+    )
+    session.add(row)
+    await session.flush()
+    return row, True
+
+
+async def _ensure_coded_value_set(
+    session: AsyncSession,
+    *,
+    code: str,
+    name_key: str,
+    description_key: str,
+) -> tuple[ValueSet, bool]:
+    existing = (
+        await session.execute(
+            select(ValueSet).where(
+                ValueSet.code == code,
+                ValueSet.deleted_at.is_(None),
+            ),
+        )
+    ).scalar_one_or_none()
+    if existing is not None:
+        return existing, False
+    row = ValueSet(
+        public_id=new_ulid(),
+        code=code,
+        name_key=name_key,
+        description_key=description_key,
     )
     session.add(row)
     await session.flush()

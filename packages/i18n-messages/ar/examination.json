@@ -1,0 +1,92 @@
+{
+  "title": "الفحص",
+  "loading": "جارٍ تحميل الفحص…",
+  "maps": {
+    "tympanicMembrane": "غشاء الطبلة",
+    "nasalCavity": "جوف الأنف",
+    "oralCavity": "جوف الفم والبلعوم الفموي",
+    "neckLevels": "العنق"
+  },
+  "actions": {
+    "save": "حفظ الموجودات",
+    "saved": "حُفظت الموجودات.",
+    "saveSnapshot": "حفظ المخطط",
+    "snapshotSaved": "حُفظ المخطط.",
+    "notExamined": "لم يُفحص"
+  },
+  "laterality": {
+    "group": "الجانب",
+    "right": "أيمن",
+    "left": "أيسر"
+  },
+  "findingPicker": {
+    "title": "موجودة",
+    "loading": "جارٍ تحميل الموجودات…",
+    "empty": "لا توجد موجودات مهيأة لهذه المنطقة."
+  },
+  "narrative": {
+    "title": "معاينة التقرير",
+    "empty": "ستظهر البنى المفحوصة هنا."
+  },
+  "encounter": {
+    "label": "الزيارة",
+    "empty": "لا توجد زيارة لربط هذه الموجودات بها بعد.",
+    "option": "{when} · {status}",
+    "status": {
+      "draft": "مسودة",
+      "signed": "موقّعة",
+      "amended": "ملحق",
+      "other": "زيارة"
+    }
+  },
+  "regions": {
+    "unknown": "منطقة"
+  },
+  "tm": {
+    "regions": {
+      "canal": "الصماخ السمعي الظاهر",
+      "parsFlaccida": "الجزء الرخو",
+      "anteroSuperior": "الربع الأمامي العلوي",
+      "anteroInferior": "الربع الأمامي السفلي",
+      "posteroSuperior": "الربع الخلفي العلوي",
+      "posteroInferior": "الربع الخلفي السفلي"
+    }
+  },
+  "nose": {
+    "regions": {
+      "vestibule": "دهليز الأنف",
+      "valve": "الصمام الأنفي",
+      "septum": "الحاجز الأنفي",
+      "inferiorTurbinate": "القرين السفلي",
+      "middleTurbinate": "القرين الأوسط",
+      "mucosa": "المخاطية الأنفية"
+    }
+  },
+  "oral": {
+    "regions": {
+      "lips": "الشفتان",
+      "tongue": "اللسان",
+      "softPalate": "الحنك الرخو",
+      "tonsil": "اللوزة",
+      "posteriorWall": "الجدار الخلفي للبلعوم"
+    }
+  },
+  "neck": {
+    "regions": {
+      "parotid": "النكفية",
+      "levelIa": "المستوى IA",
+      "levelIb": "المستوى IB",
+      "levelIia": "المستوى IIA",
+      "levelIib": "المستوى IIB",
+      "submandibular": "الغدة تحت الفك",
+      "levelIii": "المستوى III",
+      "levelIv": "المستوى IV",
+      "levelVa": "المستوى VA",
+      "levelVb": "المستوى VB",
+      "levelVi": "المستوى VI",
+      "thyroidLobe": "فص الدرقية",
+      "isthmus": "برزخ الدرقية",
+      "levelVii": "المستوى VII"
+    }
+  }
+}
