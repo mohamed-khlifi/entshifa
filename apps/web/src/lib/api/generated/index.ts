@@ -144,9 +144,16 @@ export type ExaminationSnapshotCreate = Schemas["ExaminationSnapshotCreate"];
 export type ExaminationSnapshotRead = Schemas["ExaminationSnapshotRead"];
 export type PageSchemaExaminationSnapshotRead =
   Schemas["PageSchema_ExaminationSnapshotRead_"];
+export type EncounterComplaintWrite = Schemas["EncounterComplaintWrite"];
 export type EncounterCopyForward = Schemas["EncounterCopyForward"];
 export type EncounterCreate = Schemas["EncounterCreate"];
+export type EncounterPatch = Schemas["EncounterPatch"];
 export type EncounterRead = Schemas["EncounterRead"];
+export type EncounterSign = Schemas["EncounterSign"];
+export type EncounterAddendumCreate = Schemas["EncounterAddendumCreate"];
+export type EncounterTemplateRead = Schemas["EncounterTemplateRead"];
+export type EncounterTemplateRouteRequest =
+  Schemas["EncounterTemplateRouteRequest"];
 export type PageSchemaEncounterRead = Schemas["PageSchema_EncounterRead_"];
 export type PageSchemaPatientProblemRead =
   Schemas["PageSchema_PatientProblemRead_"];

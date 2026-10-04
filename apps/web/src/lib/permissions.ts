@@ -15,6 +15,10 @@ export const Permission = {
   ATTACHMENT_READ: "attachment.read",
   ATTACHMENT_WRITE: "attachment.write",
   DOCUMENT_FINALIZE: "document.finalize",
+  ENCOUNTER_CREATE: "encounter.create",
+  ENCOUNTER_WRITE: "encounter.write",
+  ENCOUNTER_SIGN: "encounter.sign",
+  ENCOUNTER_AMEND: "encounter.amend",
   DOCUMENT_SEND: "document.send",
   ADMIN_TEMPLATES: "admin.templates",
 } as const;

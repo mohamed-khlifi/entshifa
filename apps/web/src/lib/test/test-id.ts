@@ -159,6 +159,7 @@ export const testIds = {
     chartNav: testId("patients", "chart-nav"),
     navOverview: testId("patients", "nav-overview"),
     navExamination: testId("patients", "nav-examination"),
+    navConsultation: testId("patients", "nav-consultation"),
     navAttachments: testId("patients", "nav-attachments"),
     header: testId("patients", "header"),
     headerAge: testId("patients", "header-age"),
@@ -274,6 +275,37 @@ export const testIds = {
       copiedBadge: testId("examination", "map", "copied-badge"),
     },
   },
+  encounters: {
+    root: testId("encounters", "root"),
+    loading: testId("encounters", "loading"),
+    error: testId("encounters", "error"),
+    needsSite: testId("encounters", "needs-site"),
+    patientCard: testId("encounters", "patient-card"),
+    visits: testId("encounters", "visits"),
+    questionnaire: testId("encounters", "questionnaire"),
+    complaints: testId("encounters", "complaints"),
+    complaintSearch: testId("encounters", "complaint-search"),
+    history: testId("encounters", "history"),
+    redFlags: testId("encounters", "red-flags"),
+    suggestions: testId("encounters", "suggestions"),
+    exam: testId("encounters", "exam"),
+    assessment: testId("encounters", "assessment"),
+    plan: testId("encounters", "plan"),
+    planAdd: testId("encounters", "plan-add"),
+    preview: testId("encounters", "preview"),
+    bottomBar: testId("encounters", "bottom-bar"),
+    print: testId("encounters", "print"),
+    sign: testId("encounters", "sign"),
+    signDialog: testId("encounters", "sign-dialog"),
+    signConfirm: testId("encounters", "sign-confirm"),
+    signCancel: testId("encounters", "sign-cancel"),
+    conflict: testId("encounters", "conflict"),
+    conflictReload: testId("encounters", "conflict-reload"),
+    addendum: testId("encounters", "addendum"),
+    addendumSubmit: testId("encounters", "addendum-submit"),
+    followUp: testId("encounters", "follow-up"),
+    signed: testId("encounters", "signed"),
+  },
   terminology: {
     concepts: {
       root: testId("terminology", "concepts", "root"),
@@ -318,6 +350,35 @@ function examinationToken(value: string): string {
   const segment = value.toLowerCase().replaceAll("_", "-").replaceAll(".", "-");
   assertSegment(segment);
   return segment;
+}
+
+export function encounterComplaintTestId(code: string): string {
+  return testId("encounters", "complaint", examinationToken(code));
+}
+
+export function encounterRedFlagTestId(flagId: string): string {
+  return testId("encounters", "red-flag", examinationToken(flagId));
+}
+
+export function encounterRegionTestId(region: string): string {
+  return testId("encounters", "region", examinationToken(region));
+}
+
+export function encounterSuggestionTestId(kind: string, code: string): string {
+  return testId(
+    "encounters",
+    "suggestion",
+    examinationToken(kind),
+    examinationToken(code),
+  );
+}
+
+export function encounterMapToggleTestId(mapId: string): string {
+  return testId("encounters", "map", examinationToken(mapId));
+}
+
+export function encounterVisitTestId(publicId: string): string {
+  return publicIdTestId("encounters.visit", publicId);
 }
 
 export function patientRowTestId(publicId: string): string {

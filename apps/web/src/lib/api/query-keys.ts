@@ -103,6 +103,26 @@ export const queryKeys = {
     problems: (patientId: string) =>
       [...queryKeys.examination.all, "problems", patientId] as const,
   },
+  encounters: {
+    all: ["encounters"] as const,
+    patient: (patientId: string) =>
+      [...queryKeys.encounters.all, "patient", patientId] as const,
+    detail: (encounterId: string) =>
+      [...queryKeys.encounters.all, "detail", encounterId] as const,
+    templates: () => [...queryKeys.encounters.all, "templates"] as const,
+    templateRoute: (
+      complaintCodes: readonly string[],
+      primary: string | null,
+    ) =>
+      [
+        ...queryKeys.encounters.all,
+        "template-route",
+        primary ?? "",
+        ...complaintCodes,
+      ] as const,
+    narrative: (patientId: string, signature: string) =>
+      [...queryKeys.encounters.all, "narrative", patientId, signature] as const,
+  },
   terminology: {
     all: ["terminology"] as const,
     adminConcepts: (params?: { q?: string; limit?: number; offset?: number }) =>

@@ -1,0 +1,371 @@
+{
+  "actions": {
+    "print": "Print",
+    "sign": "Sign"
+  },
+  "addendum": {
+    "label": "Correction",
+    "saved": "Correction saved.",
+    "submit": "Add correction",
+    "title": "Signed visit"
+  },
+  "assessment": {
+    "empty": "No diagnosis yet.",
+    "favorite": "Favourite {code}",
+    "favoriteMissing": "That favourite is not in the clinic terminology yet.",
+    "laterality": "Side",
+    "line": "{display} — {laterality} — {status}",
+    "note": "Assessment note",
+    "promote": "Add to problem list",
+    "promoted": "On the problem list",
+    "remove": "Remove diagnosis",
+    "search": "Diagnosis",
+    "side": {
+      "bilateral": "Bilateral",
+      "left": "Left",
+      "na": "Not applicable",
+      "right": "Right"
+    },
+    "status": "Status",
+    "statusOptions": {
+      "confirmed": "Confirmed",
+      "ruledOut": "Ruled out",
+      "suspected": "Suspected"
+    },
+    "title": "Assessment"
+  },
+  "complaints": {
+    "empty": "No complaints match that search.",
+    "makePrimary": "Make primary",
+    "primary": "Primary",
+    "regions": {
+      "balance": "Balance",
+      "ear": "Ear",
+      "nose": "Nose",
+      "other": "Other",
+      "throat": "Throat",
+      "voice": "Voice"
+    },
+    "search": "Search complaints",
+    "title": "Reason for visit"
+  },
+  "conflict": {
+    "body": "The saved visit is version {serverVersion}. This screen still has version {clientVersion}.",
+    "reload": "Load saved visit",
+    "title": "This visit changed elsewhere"
+  },
+  "exam": {
+    "collapse": "Hide map",
+    "expand": "Show map",
+    "title": "Examination"
+  },
+  "history": {
+    "course": "Course",
+    "courseOptions": {
+      "constant": "Constant",
+      "improving": "Improving",
+      "intermittent": "Intermittent",
+      "progressive": "Progressive"
+    },
+    "fieldUnavailable": "History question",
+    "impact": "Impact on work, school, or sleep",
+    "laterality": "Laterality",
+    "lateralityOptions": {
+      "alternating": "Alternating",
+      "bilateral": "Bilateral",
+      "left": "Left",
+      "right": "Right"
+    },
+    "no": "No",
+    "note": "History note",
+    "onset": "Onset",
+    "optionUnavailable": "Selected option",
+    "previousConsultations": "Previous consultations",
+    "previousTreatments": "Previous treatments and response",
+    "relievingFactors": "Relieving factors",
+    "severity": "Severity",
+    "templateTitle": "Complaint-specific history",
+    "title": "History",
+    "triggers": "Triggers",
+    "yes": "Yes"
+  },
+  "layout": {
+    "error": "The consultation could not be opened.",
+    "loading": "Opening the consultation…",
+    "needsSite": "Add a clinic site before starting a visit."
+  },
+  "note": {
+    "line": "{label}: {value}"
+  },
+  "patientCard": {
+    "ageMonths": "{count, plural, one {# month} other {# months}}",
+    "ageYears": "{count, plural, one {# year} other {# years}}",
+    "allergies": "Allergies",
+    "medications": "Current medications",
+    "mrn": "MRN {mrn}",
+    "none": "None recorded",
+    "problems": "Active problems",
+    "questionnaire": "Today's questionnaire",
+    "questionnaireEmpty": "No score recorded for today.",
+    "visits": "Recent visits",
+    "visitsEmpty": "No earlier visit."
+  },
+  "plan": {
+    "add": "Add plan item",
+    "addFollowUp": "Follow-up: {days, plural, one {# day} other {# days}}",
+    "detail": "Detail",
+    "empty": "No plan items yet.",
+    "kind": "Plan item",
+    "kinds": {
+      "advice": "Advice given",
+      "certificate": "Certificate",
+      "followUp": "Follow-up",
+      "imagingRequested": "Imaging requested",
+      "medication": "Medication",
+      "procedureToday": "Procedure done today",
+      "referral": "Referral",
+      "sickLeave": "Sick leave",
+      "surgeryProposed": "Surgery proposed",
+      "testRequested": "Test requested"
+    },
+    "line": "{kind}: {detail}",
+    "note": "Plan note",
+    "remove": "Remove plan item",
+    "title": "Plan"
+  },
+  "preview": {
+    "assessment": "Assessment",
+    "complaints": "Complaints",
+    "empty": "The report fills in as you document the visit.",
+    "examination": "Examination",
+    "examinationEmpty": "Examined structures will appear here.",
+    "flags": "Red flags",
+    "history": "History",
+    "plan": "Plan",
+    "title": "Report preview"
+  },
+  "redFlags": {
+    "dysphagiaWeightLoss": "Dysphagia with weight loss",
+    "facialWeaknessParotid": "Facial weakness with a parotid mass",
+    "hint": "Confirm a flag when it applies. The visit does not make the diagnosis.",
+    "hoarsenessSmoker": "Hoarseness for more than 3 weeks in a smoker",
+    "neckLumpAdult": "Neck lump for more than 3 weeks in an adult",
+    "stridor": "Stridor",
+    "suddenHearingLoss": "Sudden sensorineural hearing loss",
+    "suggested": "Matches this complaint",
+    "title": "Red flags",
+    "unilateralObstructionBleeding": "Unilateral nasal obstruction with bleeding",
+    "unilateralTinnitus": "Unilateral tinnitus with asymmetric hearing"
+  },
+  "sign": {
+    "body": "Signing locks this visit. A later correction is a separate addendum.",
+    "cancel": "Keep editing",
+    "confirm": "Sign visit",
+    "title": "Sign this visit"
+  },
+  "status": {
+    "signed": "Signed"
+  },
+  "suggestions": {
+    "documents": {
+      "allergen_avoidance_handout": "Allergen avoidance handout",
+      "bppv_home_exercises_handout": "BPPV home exercise handout",
+      "dry_ear_precautions_handout": "Dry-ear precautions handout",
+      "hearing_protection_guide": "Hearing protection guide",
+      "nosebleed_first_aid_handout": "Nosebleed first-aid handout",
+      "saline_irrigation_handout": "Saline irrigation handout",
+      "sinusitis_advice": "Sinusitis advice",
+      "tinnitus_management_handout": "Tinnitus management handout",
+      "tonsillitis_care_guide": "Tonsillitis care guide",
+      "vocal_hygiene_handout": "Vocal hygiene handout"
+    },
+    "documentsTitle": "Suggested documents",
+    "examSections": {
+      "blood_pressure": "Blood pressure",
+      "ear": "Ear",
+      "endoscopy": "Endoscopy",
+      "face": "Face",
+      "laryngoscopy": "Laryngoscopy",
+      "neck": "Neck",
+      "neck_auscultation": "Neck auscultation",
+      "nose": "Nose",
+      "oral_cavity": "Oral cavity",
+      "tuning_forks": "Tuning forks",
+      "vestibular_exam": "Vestibular examination"
+    },
+    "instruments": {
+      "dhi": "DHI",
+      "hhie": "HHIE",
+      "nose": "NOSE",
+      "rsi": "RSI",
+      "snot22": "SNOT-22",
+      "thi": "THI",
+      "vhi10": "VHI-10"
+    },
+    "instrumentsTitle": "Suggested questionnaires",
+    "pending": "No interactive map for this section yet. It stays on the visit as a reminder.",
+    "sectionsTitle": "Other suggested sections",
+    "tests": {
+      "aria_classification": "ARIA classification",
+      "audiogram": "Audiogram",
+      "cautery_record": "Cautery record",
+      "coagulation_panel": "Coagulation panel",
+      "ct_sinuses": "Sinus CT",
+      "dix_hallpike_maneuver": "Dix-Hallpike maneuver",
+      "ear_swab_culture": "Ear swab culture",
+      "flexible_laryngoscopy": "Flexible laryngoscopy",
+      "microscopy": "Microscopy",
+      "mri_internal_auditory_canal": "MRI internal auditory canal",
+      "nasal_endoscopy": "Nasal endoscopy",
+      "otoscopy": "Otoscopy",
+      "prick_test": "Prick test",
+      "rapid_strep_test": "Rapid strep test",
+      "specific_ige": "Specific IgE",
+      "throat_swab_culture": "Throat swab culture",
+      "tympanogram": "Tympanogram",
+      "vestibular_testing": "Vestibular testing",
+      "videostroboscopy": "Videostroboscopy"
+    },
+    "testsTitle": "Suggested tests",
+    "title": "Template suggestions",
+    "unknown": "Suggestion"
+  },
+  "templates": {
+    "ear_pain": {
+      "fields": {
+        "associated_discharge": "Associated discharge",
+        "radiation_to_jaw": "Radiation to the jaw",
+        "swimming_exposure": "Recent swimming"
+      },
+      "name": "Ear pain"
+    },
+    "epistaxis": {
+      "fields": {
+        "anticoagulant_use": "Anticoagulant use",
+        "frequency": "Bleeding frequency",
+        "frequency_options": {
+          "isolated": "Isolated",
+          "recurrent_daily": "Daily",
+          "recurrent_weekly": "Weekly"
+        },
+        "hypertension_history": "Hypertension"
+      },
+      "name": "Epistaxis"
+    },
+    "facial_pain": {
+      "fields": {
+        "bending_forward_worse": "Worse bending forward",
+        "dental_symptoms": "Dental symptoms",
+        "sinus_distribution": "Sinus distribution",
+        "sinus_distribution_options": {
+          "diffuse": "Diffuse",
+          "ethmoid": "Ethmoid",
+          "frontal": "Frontal",
+          "maxillary": "Maxillary",
+          "sphenoid": "Sphenoid"
+        }
+      },
+      "name": "Facial pain"
+    },
+    "hearing_loss": {
+      "fields": {
+        "family_history": "Family history of hearing loss",
+        "noise_exposure": "Noise exposure",
+        "onset_profile": "Onset",
+        "onset_profile_options": {
+          "fluctuating": "Fluctuating",
+          "progressive": "Progressive",
+          "sudden": "Sudden"
+        },
+        "ototoxic_medications": "Ototoxic medication"
+      },
+      "name": "Hearing loss"
+    },
+    "hoarseness": {
+      "fields": {
+        "duration_weeks": "Duration in weeks",
+        "dysphagia_or_weight_loss": "Dysphagia or weight loss",
+        "professional_voice_user": "Professional voice use",
+        "smoking_history": "Smoking"
+      },
+      "name": "Hoarseness"
+    },
+    "nasal_obstruction": {
+      "fields": {
+        "facial_pressure": "Facial pressure",
+        "hyposmia": "Reduced smell",
+        "mouth_breathing": "Mouth breathing at night",
+        "pattern": "Obstruction pattern",
+        "pattern_options": {
+          "alternating": "Alternating",
+          "constant": "Constant"
+        },
+        "spray_overuse": "Decongestant spray overuse",
+        "worse_lying_down": "Worse when lying down"
+      },
+      "name": "Nasal obstruction"
+    },
+    "rhinorrhea": {
+      "fields": {
+        "discharge_character": "Discharge",
+        "discharge_character_options": {
+          "blood_stained": "Blood-stained",
+          "clear_watery": "Clear and watery",
+          "mucoid": "Mucoid",
+          "purulent": "Purulent"
+        },
+        "itchy_eyes_palate": "Itchy eyes or palate",
+        "seasonality": "Seasonality",
+        "seasonality_options": {
+          "autumn": "Autumn",
+          "perennial": "Perennial",
+          "spring": "Spring",
+          "summer": "Summer"
+        },
+        "sneezing_paroxysms": "Sneezing spells"
+      },
+      "name": "Rhinorrhea"
+    },
+    "sore_throat": {
+      "fields": {
+        "antibiotic_courses": "Antibiotic courses",
+        "episodes_past_12m": "Episodes in the past 12 months",
+        "peritonsillar_abscess_history": "Previous peritonsillar abscess"
+      },
+      "name": "Sore throat"
+    },
+    "tinnitus": {
+      "fields": {
+        "pitch_character": "Sound character",
+        "pitch_character_options": {
+          "clicking": "Clicking",
+          "high_pitched": "High pitched",
+          "low_hum": "Low hum",
+          "white_noise": "White noise"
+        },
+        "pulsatile": "Pulsatile",
+        "sleep_interference": "Disturbs sleep"
+      },
+      "name": "Tinnitus"
+    },
+    "vertigo": {
+      "fields": {
+        "auditory_symptoms": "Hearing symptoms with the vertigo",
+        "migraine_history": "Migraine history",
+        "neurological_red_flags": "Neurological warning symptoms",
+        "timing_and_triggers": "Timing and triggers",
+        "timing_and_triggers_options": {
+          "continuous_days": "Continuous, over days",
+          "head_motion_induced": "Brought on by head motion",
+          "positional_seconds": "Positional, lasting seconds",
+          "spontaneous_hours": "Spontaneous, lasting hours"
+        }
+      },
+      "name": "Vertigo"
+    }
+  },
+  "toast": {
+    "copy": "Previous visit copied into a new draft.",
+    "signed": "Visit signed."
+  }
+}

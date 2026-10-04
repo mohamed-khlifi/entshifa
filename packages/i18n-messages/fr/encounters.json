@@ -1,0 +1,371 @@
+{
+  "actions": {
+    "print": "Imprimer",
+    "sign": "Signer"
+  },
+  "addendum": {
+    "label": "Correction",
+    "saved": "Correction enregistrée.",
+    "submit": "Ajouter la correction",
+    "title": "Visite signée"
+  },
+  "assessment": {
+    "empty": "Aucun diagnostic pour le moment.",
+    "favorite": "Favori {code}",
+    "favoriteMissing": "Ce favori n’est pas encore dans la terminologie de la clinique.",
+    "laterality": "Côté",
+    "line": "{display} — {laterality} — {status}",
+    "note": "Note d’évaluation",
+    "promote": "Ajouter à la liste des problèmes",
+    "promoted": "Dans la liste des problèmes",
+    "remove": "Retirer le diagnostic",
+    "search": "Diagnostic",
+    "side": {
+      "bilateral": "Bilatéral",
+      "left": "Gauche",
+      "na": "Sans objet",
+      "right": "Droit"
+    },
+    "status": "Statut",
+    "statusOptions": {
+      "confirmed": "Confirmé",
+      "ruledOut": "Écarté",
+      "suspected": "Suspecté"
+    },
+    "title": "Évaluation"
+  },
+  "complaints": {
+    "empty": "Aucun motif ne correspond à cette recherche.",
+    "makePrimary": "Définir comme principal",
+    "primary": "Principal",
+    "regions": {
+      "balance": "Équilibre",
+      "ear": "Oreille",
+      "nose": "Nez",
+      "other": "Autre",
+      "throat": "Gorge",
+      "voice": "Voix"
+    },
+    "search": "Rechercher un motif",
+    "title": "Motif de consultation"
+  },
+  "conflict": {
+    "body": "La visite enregistrée est à la version {serverVersion}. Cet écran a encore la version {clientVersion}.",
+    "reload": "Charger la visite enregistrée",
+    "title": "Cette visite a été modifiée ailleurs"
+  },
+  "exam": {
+    "collapse": "Masquer la carte",
+    "expand": "Afficher la carte",
+    "title": "Examen"
+  },
+  "history": {
+    "course": "Évolution",
+    "courseOptions": {
+      "constant": "Constant",
+      "improving": "En amélioration",
+      "intermittent": "Intermittent",
+      "progressive": "Progressif"
+    },
+    "fieldUnavailable": "Question d’anamnèse",
+    "impact": "Retentissement sur le travail, l’école ou le sommeil",
+    "laterality": "Latéralité",
+    "lateralityOptions": {
+      "alternating": "Alternant",
+      "bilateral": "Bilatéral",
+      "left": "Gauche",
+      "right": "Droit"
+    },
+    "no": "Non",
+    "note": "Note d’anamnèse",
+    "onset": "Début",
+    "optionUnavailable": "Option choisie",
+    "previousConsultations": "Consultations antérieures",
+    "previousTreatments": "Traitements déjà essayés et réponse",
+    "relievingFactors": "Facteurs améliorants",
+    "severity": "Sévérité",
+    "templateTitle": "Anamnèse liée au motif",
+    "title": "Anamnèse",
+    "triggers": "Facteurs déclenchants",
+    "yes": "Oui"
+  },
+  "layout": {
+    "error": "La consultation n’a pas pu être ouverte.",
+    "loading": "Ouverture de la consultation…",
+    "needsSite": "Ajoutez un site de clinique avant de commencer une visite."
+  },
+  "note": {
+    "line": "{label} : {value}"
+  },
+  "patientCard": {
+    "ageMonths": "{count, plural, one {# mois} other {# mois}}",
+    "ageYears": "{count, plural, one {# an} other {# ans}}",
+    "allergies": "Allergies",
+    "medications": "Traitements en cours",
+    "mrn": "IPP {mrn}",
+    "none": "Aucun élément",
+    "problems": "Problèmes actifs",
+    "questionnaire": "Questionnaire du jour",
+    "questionnaireEmpty": "Aucun score enregistré pour aujourd’hui.",
+    "visits": "Visites récentes",
+    "visitsEmpty": "Aucune visite antérieure."
+  },
+  "plan": {
+    "add": "Ajouter un élément",
+    "addFollowUp": "Suivi : {days, plural, one {# jour} other {# jours}}",
+    "detail": "Détail",
+    "empty": "Aucun élément de plan.",
+    "kind": "Élément du plan",
+    "kinds": {
+      "advice": "Conseil donné",
+      "certificate": "Certificat",
+      "followUp": "Suivi",
+      "imagingRequested": "Imagerie demandée",
+      "medication": "Médicament",
+      "procedureToday": "Geste réalisé aujourd’hui",
+      "referral": "Adressage",
+      "sickLeave": "Arrêt de travail",
+      "surgeryProposed": "Chirurgie proposée",
+      "testRequested": "Examen demandé"
+    },
+    "line": "{kind} : {detail}",
+    "note": "Note de plan",
+    "remove": "Retirer l’élément",
+    "title": "Plan"
+  },
+  "preview": {
+    "assessment": "Évaluation",
+    "complaints": "Motifs",
+    "empty": "Le compte rendu se remplit au fil de la visite.",
+    "examination": "Examen",
+    "examinationEmpty": "Les structures examinées apparaîtront ici.",
+    "flags": "Signaux d’alerte",
+    "history": "Anamnèse",
+    "plan": "Plan",
+    "title": "Aperçu du compte rendu"
+  },
+  "redFlags": {
+    "dysphagiaWeightLoss": "Dysphagie avec perte de poids",
+    "facialWeaknessParotid": "Paralysie faciale avec masse parotidienne",
+    "hint": "Confirmez un signal lorsqu’il s’applique. La visite ne pose pas le diagnostic.",
+    "hoarsenessSmoker": "Dysphonie de plus de 3 semaines chez un fumeur",
+    "neckLumpAdult": "Masse cervicale de plus de 3 semaines chez un adulte",
+    "stridor": "Stridor",
+    "suddenHearingLoss": "Surdité brusque de perception",
+    "suggested": "Correspond à ce motif",
+    "title": "Signaux d’alerte",
+    "unilateralObstructionBleeding": "Obstruction nasale unilatérale avec saignement",
+    "unilateralTinnitus": "Acouphène unilatéral avec audition asymétrique"
+  },
+  "sign": {
+    "body": "La signature verrouille cette visite. Une correction ultérieure est un addendum distinct.",
+    "cancel": "Continuer la saisie",
+    "confirm": "Signer la visite",
+    "title": "Signer cette visite"
+  },
+  "status": {
+    "signed": "Signée"
+  },
+  "suggestions": {
+    "documents": {
+      "allergen_avoidance_handout": "Fiche d’éviction allergénique",
+      "bppv_home_exercises_handout": "Fiche d’exercices à domicile pour le VPPB",
+      "dry_ear_precautions_handout": "Fiche de précautions d’oreille sèche",
+      "hearing_protection_guide": "Guide de protection auditive",
+      "nosebleed_first_aid_handout": "Fiche de premiers gestes pour l’épistaxis",
+      "saline_irrigation_handout": "Fiche de lavage nasal",
+      "sinusitis_advice": "Conseils pour la sinusite",
+      "tinnitus_management_handout": "Fiche de prise en charge des acouphènes",
+      "tonsillitis_care_guide": "Guide de soins pour l’angine",
+      "vocal_hygiene_handout": "Fiche d’hygiène vocale"
+    },
+    "documentsTitle": "Documents suggérés",
+    "examSections": {
+      "blood_pressure": "Pression artérielle",
+      "ear": "Oreille",
+      "endoscopy": "Endoscopie",
+      "face": "Face",
+      "laryngoscopy": "Laryngoscopie",
+      "neck": "Cou",
+      "neck_auscultation": "Auscultation cervicale",
+      "nose": "Nez",
+      "oral_cavity": "Cavité orale",
+      "tuning_forks": "Diapasons",
+      "vestibular_exam": "Examen vestibulaire"
+    },
+    "instruments": {
+      "dhi": "DHI",
+      "hhie": "HHIE",
+      "nose": "NOSE",
+      "rsi": "RSI",
+      "snot22": "SNOT-22",
+      "thi": "THI",
+      "vhi10": "VHI-10"
+    },
+    "instrumentsTitle": "Questionnaires suggérés",
+    "pending": "Pas encore de carte interactive pour cette section. Elle reste visible comme rappel.",
+    "sectionsTitle": "Autres sections suggérées",
+    "tests": {
+      "aria_classification": "Classification ARIA",
+      "audiogram": "Audiogramme",
+      "cautery_record": "Fiche de cautérisation",
+      "coagulation_panel": "Bilan de coagulation",
+      "ct_sinuses": "TDM des sinus",
+      "dix_hallpike_maneuver": "Manœuvre de Dix-Hallpike",
+      "ear_swab_culture": "Prélèvement d’oreille",
+      "flexible_laryngoscopy": "Laryngoscopie souple",
+      "microscopy": "Microscopie",
+      "mri_internal_auditory_canal": "IRM du conduit auditif interne",
+      "nasal_endoscopy": "Endoscopie nasale",
+      "otoscopy": "Otoscopie",
+      "prick_test": "Prick-test",
+      "rapid_strep_test": "Test rapide du streptocoque",
+      "specific_ige": "IgE spécifiques",
+      "throat_swab_culture": "Prélèvement de gorge",
+      "tympanogram": "Tympanogramme",
+      "vestibular_testing": "Explorations vestibulaires",
+      "videostroboscopy": "Vidéostroboscopie"
+    },
+    "testsTitle": "Examens suggérés",
+    "title": "Suggestions du modèle",
+    "unknown": "Suggestion"
+  },
+  "templates": {
+    "ear_pain": {
+      "fields": {
+        "associated_discharge": "Écoulement associé",
+        "radiation_to_jaw": "Irradiation vers la mâchoire",
+        "swimming_exposure": "Baignade récente"
+      },
+      "name": "Otalgie"
+    },
+    "epistaxis": {
+      "fields": {
+        "anticoagulant_use": "Traitement anticoagulant",
+        "frequency": "Fréquence des saignements",
+        "frequency_options": {
+          "isolated": "Isolé",
+          "recurrent_daily": "Quotidien",
+          "recurrent_weekly": "Hebdomadaire"
+        },
+        "hypertension_history": "Hypertension"
+      },
+      "name": "Épistaxis"
+    },
+    "facial_pain": {
+      "fields": {
+        "bending_forward_worse": "Aggravée en se penchant",
+        "dental_symptoms": "Symptômes dentaires",
+        "sinus_distribution": "Territoire sinusien",
+        "sinus_distribution_options": {
+          "diffuse": "Diffus",
+          "ethmoid": "Ethmoïde",
+          "frontal": "Frontal",
+          "maxillary": "Maxillaire",
+          "sphenoid": "Sphénoïde"
+        }
+      },
+      "name": "Douleur faciale"
+    },
+    "hearing_loss": {
+      "fields": {
+        "family_history": "Antécédent familial de surdité",
+        "noise_exposure": "Exposition au bruit",
+        "onset_profile": "Mode d’installation",
+        "onset_profile_options": {
+          "fluctuating": "Fluctuant",
+          "progressive": "Progressif",
+          "sudden": "Brutal"
+        },
+        "ototoxic_medications": "Médicament ototoxique"
+      },
+      "name": "Perte auditive"
+    },
+    "hoarseness": {
+      "fields": {
+        "duration_weeks": "Durée en semaines",
+        "dysphagia_or_weight_loss": "Dysphagie ou perte de poids",
+        "professional_voice_user": "Usage professionnel de la voix",
+        "smoking_history": "Tabac"
+      },
+      "name": "Dysphonie"
+    },
+    "nasal_obstruction": {
+      "fields": {
+        "facial_pressure": "Pression faciale",
+        "hyposmia": "Baisse de l’odorat",
+        "mouth_breathing": "Respiration buccale nocturne",
+        "pattern": "Type d’obstruction",
+        "pattern_options": {
+          "alternating": "Alternant",
+          "constant": "Constant"
+        },
+        "spray_overuse": "Surutilisation de vasoconstricteur",
+        "worse_lying_down": "Aggravée en décubitus"
+      },
+      "name": "Obstruction nasale"
+    },
+    "rhinorrhea": {
+      "fields": {
+        "discharge_character": "Écoulement",
+        "discharge_character_options": {
+          "blood_stained": "Teinté de sang",
+          "clear_watery": "Clair et aqueux",
+          "mucoid": "Muqueux",
+          "purulent": "Purulent"
+        },
+        "itchy_eyes_palate": "Prurit oculaire ou du palais",
+        "seasonality": "Saisonnalité",
+        "seasonality_options": {
+          "autumn": "Automne",
+          "perennial": "Perannuel",
+          "spring": "Printemps",
+          "summer": "Été"
+        },
+        "sneezing_paroxysms": "Salves d’éternuements"
+      },
+      "name": "Rhinorrhée"
+    },
+    "sore_throat": {
+      "fields": {
+        "antibiotic_courses": "Cures d’antibiotiques",
+        "episodes_past_12m": "Épisodes des 12 derniers mois",
+        "peritonsillar_abscess_history": "Antécédent d’abcès péri-amygdalien"
+      },
+      "name": "Mal de gorge"
+    },
+    "tinnitus": {
+      "fields": {
+        "pitch_character": "Caractère du son",
+        "pitch_character_options": {
+          "clicking": "Clics",
+          "high_pitched": "Aigu",
+          "low_hum": "Bourdonnement grave",
+          "white_noise": "Bruit blanc"
+        },
+        "pulsatile": "Pulsatile",
+        "sleep_interference": "Gêne le sommeil"
+      },
+      "name": "Acouphènes"
+    },
+    "vertigo": {
+      "fields": {
+        "auditory_symptoms": "Symptômes auditifs avec le vertige",
+        "migraine_history": "Antécédent de migraine",
+        "neurological_red_flags": "Signes neurologiques d’alerte",
+        "timing_and_triggers": "Chronologie et déclencheurs",
+        "timing_and_triggers_options": {
+          "continuous_days": "Continu, sur plusieurs jours",
+          "head_motion_induced": "Déclenché par les mouvements de tête",
+          "positional_seconds": "Positionnel, durant quelques secondes",
+          "spontaneous_hours": "Spontané, durant des heures"
+        }
+      },
+      "name": "Vertige"
+    }
+  },
+  "toast": {
+    "copy": "La visite précédente a été copiée dans un nouveau brouillon.",
+    "signed": "Visite signée."
+  }
+}

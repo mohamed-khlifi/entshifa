@@ -12,4 +12,5 @@ export {
 export { NumberField } from "./NumberField";
 export { ScaleField } from "./ScaleField";
 export { SelectField, type SelectOption } from "./SelectField";
+export { TextAreaField } from "./TextAreaField";
 export { TextField } from "./TextField";

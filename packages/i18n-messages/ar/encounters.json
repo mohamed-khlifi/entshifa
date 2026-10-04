@@ -1,0 +1,371 @@
+{
+  "actions": {
+    "print": "طباعة",
+    "sign": "توقيع"
+  },
+  "addendum": {
+    "label": "تصحيح",
+    "saved": "تم حفظ التصحيح.",
+    "submit": "إضافة التصحيح",
+    "title": "زيارة موقّعة"
+  },
+  "assessment": {
+    "empty": "لا يوجد تشخيص بعد.",
+    "favorite": "مفضّل {code}",
+    "favoriteMissing": "هذا المفضّل غير موجود بعد في مصطلحات العيادة.",
+    "laterality": "الجانب",
+    "line": "{display} — {laterality} — {status}",
+    "note": "ملاحظة التقييم",
+    "promote": "إضافة إلى قائمة المشكلات",
+    "promoted": "في قائمة المشكلات",
+    "remove": "إزالة التشخيص",
+    "search": "التشخيص",
+    "side": {
+      "bilateral": "ثنائي الجانب",
+      "left": "أيسر",
+      "na": "غير منطبق",
+      "right": "أيمن"
+    },
+    "status": "الحالة",
+    "statusOptions": {
+      "confirmed": "مؤكد",
+      "ruledOut": "مستبعد",
+      "suspected": "مشتبه"
+    },
+    "title": "التقييم"
+  },
+  "complaints": {
+    "empty": "لا توجد شكوى مطابقة لهذا البحث.",
+    "makePrimary": "جعلها الرئيسية",
+    "primary": "رئيسية",
+    "regions": {
+      "balance": "التوازن",
+      "ear": "الأذن",
+      "nose": "الأنف",
+      "other": "أخرى",
+      "throat": "الحلق",
+      "voice": "الصوت"
+    },
+    "search": "بحث في الشكاوى",
+    "title": "سبب الزيارة"
+  },
+  "conflict": {
+    "body": "الزيارة المحفوظة في الإصدار {serverVersion}. هذه الشاشة ما زالت على الإصدار {clientVersion}.",
+    "reload": "تحميل الزيارة المحفوظة",
+    "title": "تغيّرت هذه الزيارة في مكان آخر"
+  },
+  "exam": {
+    "collapse": "إخفاء الخريطة",
+    "expand": "إظهار الخريطة",
+    "title": "الفحص"
+  },
+  "history": {
+    "course": "السير",
+    "courseOptions": {
+      "constant": "ثابت",
+      "improving": "في تحسن",
+      "intermittent": "متقطع",
+      "progressive": "مترقٍ"
+    },
+    "fieldUnavailable": "سؤال من القصة المرضية",
+    "impact": "الأثر على العمل أو المدرسة أو النوم",
+    "laterality": "الجانب",
+    "lateralityOptions": {
+      "alternating": "متناوب",
+      "bilateral": "ثنائي الجانب",
+      "left": "أيسر",
+      "right": "أيمن"
+    },
+    "no": "لا",
+    "note": "ملاحظة القصة المرضية",
+    "onset": "البداية",
+    "optionUnavailable": "الخيار المحدد",
+    "previousConsultations": "استشارات سابقة",
+    "previousTreatments": "علاجات سابقة والاستجابة",
+    "relievingFactors": "عوامل التخفيف",
+    "severity": "الشدة",
+    "templateTitle": "قصة مرتبطة بالشكوى",
+    "title": "القصة المرضية",
+    "triggers": "العوامل المثيرة",
+    "yes": "نعم"
+  },
+  "layout": {
+    "error": "تعذر فتح الاستشارة.",
+    "loading": "جارٍ فتح الاستشارة…",
+    "needsSite": "أضف موقعًا للعيادة قبل بدء الزيارة."
+  },
+  "note": {
+    "line": "{label}: {value}"
+  },
+  "patientCard": {
+    "ageMonths": "{count, plural, zero {# شهر} one {شهر واحد} two {شهران} few {# أشهر} many {# شهرًا} other {# شهر}}",
+    "ageYears": "{count, plural, zero {# سنة} one {سنة واحدة} two {سنتان} few {# سنوات} many {# سنة} other {# سنة}}",
+    "allergies": "الحساسية",
+    "medications": "الأدوية الحالية",
+    "mrn": "رقم الملف {mrn}",
+    "none": "لا يوجد",
+    "problems": "المشكلات النشطة",
+    "questionnaire": "استبيان اليوم",
+    "questionnaireEmpty": "لا توجد درجة مسجّلة لليوم.",
+    "visits": "الزيارات الأخيرة",
+    "visitsEmpty": "لا توجد زيارة سابقة."
+  },
+  "plan": {
+    "add": "إضافة بند",
+    "addFollowUp": "متابعة: {days, plural, zero {# يوم} one {يوم واحد} two {يومان} few {# أيام} many {# يومًا} other {# يوم}}",
+    "detail": "التفصيل",
+    "empty": "لا توجد بنود في الخطة.",
+    "kind": "بند الخطة",
+    "kinds": {
+      "advice": "نصيحة قُدّمت",
+      "certificate": "شهادة",
+      "followUp": "متابعة",
+      "imagingRequested": "تصوير مطلوب",
+      "medication": "دواء",
+      "procedureToday": "إجراء تم اليوم",
+      "referral": "تحويل",
+      "sickLeave": "إجازة مرضية",
+      "surgeryProposed": "جراحة مقترحة",
+      "testRequested": "فحص مطلوب"
+    },
+    "line": "{kind}: {detail}",
+    "note": "ملاحظة الخطة",
+    "remove": "إزالة البند",
+    "title": "الخطة"
+  },
+  "preview": {
+    "assessment": "التقييم",
+    "complaints": "الشكاوى",
+    "empty": "يكتمل التقرير كلما وُثّقت الزيارة.",
+    "examination": "الفحص",
+    "examinationEmpty": "ستظهر البنى المفحوصة هنا.",
+    "flags": "علامات الخطر",
+    "history": "القصة المرضية",
+    "plan": "الخطة",
+    "title": "معاينة التقرير"
+  },
+  "redFlags": {
+    "dysphagiaWeightLoss": "عسر بلع مع نقص وزن",
+    "facialWeaknessParotid": "ضعف وجهي مع كتلة نكفية",
+    "hint": "أكّد العلامة عندما تنطبق. الزيارة لا تضع التشخيص.",
+    "hoarsenessSmoker": "بحة لأكثر من 3 أسابيع لدى مدخّن",
+    "neckLumpAdult": "كتلة رقبة لأكثر من 3 أسابيع لدى بالغ",
+    "stridor": "صرير",
+    "suddenHearingLoss": "نقص سمع حسي عصبي مفاجئ",
+    "suggested": "تطابق هذه الشكوى",
+    "title": "علامات الخطر",
+    "unilateralObstructionBleeding": "انسداد أنفي أحادي الجانب مع نزف",
+    "unilateralTinnitus": "طنين أحادي الجانب مع سمع غير متناظر"
+  },
+  "sign": {
+    "body": "التوقيع يقفل هذه الزيارة. أي تصحيح لاحق يكون ملحقًا مستقلًا.",
+    "cancel": "متابعة التحرير",
+    "confirm": "توقيع الزيارة",
+    "title": "توقيع هذه الزيارة"
+  },
+  "status": {
+    "signed": "موقّعة"
+  },
+  "suggestions": {
+    "documents": {
+      "allergen_avoidance_handout": "نشرة تجنّب المهيّجات",
+      "bppv_home_exercises_handout": "نشرة تمارين الدوار الوضعي في المنزل",
+      "dry_ear_precautions_handout": "نشرة احتياطات جفاف الأذن",
+      "hearing_protection_guide": "دليل حماية السمع",
+      "nosebleed_first_aid_handout": "نشرة الإسعاف الأوّلي للرعاف",
+      "saline_irrigation_handout": "نشرة الغسل الملحي",
+      "sinusitis_advice": "نصائح التهاب الجيوب",
+      "tinnitus_management_handout": "نشرة التعامل مع الطنين",
+      "tonsillitis_care_guide": "دليل العناية بالتهاب اللوزتين",
+      "vocal_hygiene_handout": "نشرة صحة الصوت"
+    },
+    "documentsTitle": "مستندات مقترحة",
+    "examSections": {
+      "blood_pressure": "ضغط الدم",
+      "ear": "الأذن",
+      "endoscopy": "التنظير",
+      "face": "الوجه",
+      "laryngoscopy": "تنظير الحنجرة",
+      "neck": "الرقبة",
+      "neck_auscultation": "إصغاء الرقبة",
+      "nose": "الأنف",
+      "oral_cavity": "جوف الفم",
+      "tuning_forks": "الشوكات الرنانة",
+      "vestibular_exam": "الفحص الدهليزي"
+    },
+    "instruments": {
+      "dhi": "DHI",
+      "hhie": "HHIE",
+      "nose": "NOSE",
+      "rsi": "RSI",
+      "snot22": "SNOT-22",
+      "thi": "THI",
+      "vhi10": "VHI-10"
+    },
+    "instrumentsTitle": "استبيانات مقترحة",
+    "pending": "لا توجد خريطة تفاعلية لهذا القسم بعد. يبقى ظاهرًا كتذكير.",
+    "sectionsTitle": "أقسام أخرى مقترحة",
+    "tests": {
+      "aria_classification": "تصنيف ARIA",
+      "audiogram": "مخطط السمع",
+      "cautery_record": "سجل الكي",
+      "coagulation_panel": "فحوص التخثر",
+      "ct_sinuses": "تصوير مقطعي للجيوب",
+      "dix_hallpike_maneuver": "مناورة Dix-Hallpike",
+      "ear_swab_culture": "مسحة أذن للزرع",
+      "flexible_laryngoscopy": "تنظير حنجرة مرن",
+      "microscopy": "الفحص المجهري",
+      "mri_internal_auditory_canal": "رنين مغناطيسي لمجرى السمع الباطن",
+      "nasal_endoscopy": "تنظير أنفي",
+      "otoscopy": "تنظير الأذن",
+      "prick_test": "اختبار الوخز",
+      "rapid_strep_test": "اختبار العقديات السريع",
+      "specific_ige": "IgE نوعي",
+      "throat_swab_culture": "مسحة حلق للزرع",
+      "tympanogram": "مخطط الطبلة",
+      "vestibular_testing": "فحوص دهليزية",
+      "videostroboscopy": "تنظير ستروبوسكوبي"
+    },
+    "testsTitle": "فحوص مقترحة",
+    "title": "اقتراحات النموذج",
+    "unknown": "اقتراح"
+  },
+  "templates": {
+    "ear_pain": {
+      "fields": {
+        "associated_discharge": "مفرزات مرافقة",
+        "radiation_to_jaw": "انتشار نحو الفك",
+        "swimming_exposure": "سباحة حديثة"
+      },
+      "name": "ألم الأذن"
+    },
+    "epistaxis": {
+      "fields": {
+        "anticoagulant_use": "استخدام مميّع",
+        "frequency": "تكرار النزف",
+        "frequency_options": {
+          "isolated": "نوبة واحدة",
+          "recurrent_daily": "يومي",
+          "recurrent_weekly": "أسبوعي"
+        },
+        "hypertension_history": "ارتفاع ضغط الدم"
+      },
+      "name": "رعاف"
+    },
+    "facial_pain": {
+      "fields": {
+        "bending_forward_worse": "يزداد عند الانحناء",
+        "dental_symptoms": "أعراض سنية",
+        "sinus_distribution": "توزع الجيوب",
+        "sinus_distribution_options": {
+          "diffuse": "منتشر",
+          "ethmoid": "غربالي",
+          "frontal": "جبهي",
+          "maxillary": "فكّي",
+          "sphenoid": "وتدي"
+        }
+      },
+      "name": "ألم وجهي"
+    },
+    "hearing_loss": {
+      "fields": {
+        "family_history": "قصة عائلية لنقص السمع",
+        "noise_exposure": "التعرّض للضجيج",
+        "onset_profile": "نمط البداية",
+        "onset_profile_options": {
+          "fluctuating": "متقلب",
+          "progressive": "مترقٍ",
+          "sudden": "مفاجئ"
+        },
+        "ototoxic_medications": "دواء سام للأذن"
+      },
+      "name": "نقص السمع"
+    },
+    "hoarseness": {
+      "fields": {
+        "duration_weeks": "المدة بالأسابيع",
+        "dysphagia_or_weight_loss": "عسر بلع أو نقص وزن",
+        "professional_voice_user": "استخدام مهني للصوت",
+        "smoking_history": "التدخين"
+      },
+      "name": "بحة الصوت"
+    },
+    "nasal_obstruction": {
+      "fields": {
+        "facial_pressure": "ضغط وجهي",
+        "hyposmia": "ضعف الشم",
+        "mouth_breathing": "تنفس فموي ليلاً",
+        "pattern": "نمط الانسداد",
+        "pattern_options": {
+          "alternating": "متناوب",
+          "constant": "ثابت"
+        },
+        "spray_overuse": "إفراط في بخاخ مزيل الاحتقان",
+        "worse_lying_down": "يزداد عند الاستلقاء"
+      },
+      "name": "انسداد أنفي"
+    },
+    "rhinorrhea": {
+      "fields": {
+        "discharge_character": "المفرزات",
+        "discharge_character_options": {
+          "blood_stained": "مختلطة بدم",
+          "clear_watery": "رائقة مائية",
+          "mucoid": "مخاطية",
+          "purulent": "قيحية"
+        },
+        "itchy_eyes_palate": "حكّة في العينين أو الحنك",
+        "seasonality": "الموسمية",
+        "seasonality_options": {
+          "autumn": "الخريف",
+          "perennial": "على مدار السنة",
+          "spring": "الربيع",
+          "summer": "الصيف"
+        },
+        "sneezing_paroxysms": "نوبات عطاس"
+      },
+      "name": "سيلان أنفي"
+    },
+    "sore_throat": {
+      "fields": {
+        "antibiotic_courses": "دورات المضادات",
+        "episodes_past_12m": "النوبات خلال 12 شهرًا",
+        "peritonsillar_abscess_history": "خراج حول اللوزة سابقًا"
+      },
+      "name": "ألم الحلق"
+    },
+    "tinnitus": {
+      "fields": {
+        "pitch_character": "صفة الصوت",
+        "pitch_character_options": {
+          "clicking": "طقطقة",
+          "high_pitched": "حاد",
+          "low_hum": "همهمة منخفضة",
+          "white_noise": "ضجيج أبيض"
+        },
+        "pulsatile": "نابض",
+        "sleep_interference": "يزعج النوم"
+      },
+      "name": "طنين"
+    },
+    "vertigo": {
+      "fields": {
+        "auditory_symptoms": "أعراض سمعية مع الدوار",
+        "migraine_history": "قصة شقيقة",
+        "neurological_red_flags": "أعراض عصبية منذرة",
+        "timing_and_triggers": "التوقيت والمحرّضات",
+        "timing_and_triggers_options": {
+          "continuous_days": "مستمر لعدة أيام",
+          "head_motion_induced": "يثار بحركة الرأس",
+          "positional_seconds": "وضعي لثوانٍ",
+          "spontaneous_hours": "عفوي لساعات"
+        }
+      },
+      "name": "دوار"
+    }
+  },
+  "toast": {
+    "copy": "نُسخت الزيارة السابقة إلى مسودة جديدة.",
+    "signed": "تم توقيع الزيارة."
+  }
+}

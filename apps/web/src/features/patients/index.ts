@@ -1,4 +1,7 @@
 export { fetchPatients } from "./api/patients.api";
+export { ConceptSearchField } from "./components/ConceptSearchField";
+export { usePatientQuery } from "./hooks/use-patient-queries";
+export { conceptDisplayText } from "./lib/concept-display";
 export { PatientsGate } from "./components/PatientsGate";
 export { PatientsListPanel } from "./components/PatientsListPanel";
 export { PatientCreateForm } from "./components/PatientCreateForm";

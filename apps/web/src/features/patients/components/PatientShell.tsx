@@ -71,6 +71,19 @@ export function PatientShell({
         >
           {t("nav.overview")}
         </Link>
+        <Link
+          href={`/patients/${patientId}/consultation`}
+          className={cn(
+            "rounded-full px-3 py-1.5 text-sm font-medium",
+            pathname === `/patients/${patientId}/consultation` ||
+              pathname.startsWith(`/patients/${patientId}/encounters/`)
+              ? "bg-primary/10 text-primary"
+              : "text-muted-foreground hover:bg-muted",
+          )}
+          {...testIdProps(testIds.patients.navConsultation)}
+        >
+          {t("nav.consultation")}
+        </Link>
         {canReadAttachments ? (
           <Link
             href={attachmentsHref}

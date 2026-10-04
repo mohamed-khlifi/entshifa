@@ -106,7 +106,7 @@ fr.
 
 ---
 
-## - [ ] P2-06 Consultation cockpit (frontend)
+## - [x] P2-06 Consultation cockpit (frontend)
 
 **Scope**
 - Three-column layout: patient card, consultation sections, live report
