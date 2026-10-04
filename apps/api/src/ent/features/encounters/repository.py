@@ -187,3 +187,133 @@ class EncounterTemplateRepository(BaseRepository[EncounterTemplate]):
             )
         )
         return result.scalar_one_or_none()
+
+    async def get_effective_by_code(
+        self,
+        code: str,
+        *,
+        user_id: int,
+    ) -> EncounterTemplate | None:
+        """Resolve a template code following doctor > clinic > system precedence."""
+        if self.clinic_id is None:
+            return None
+        # In MySQL, IS NULL evaluates to 1 when NULL, 0 when NOT NULL.
+        # So user_id.is_(None) orders doctor override (0) before clinic/system (1).
+        # clinic_id.is_(None) orders clinic override (0) before system (1).
+        stmt = (
+            select(EncounterTemplate)
+            .where(
+                EncounterTemplate.code == code,
+                EncounterTemplate.deleted_at.is_(None),
+                EncounterTemplate.is_active.is_(True),
+                or_(
+                    EncounterTemplate.clinic_id.is_(None),
+                    EncounterTemplate.clinic_id == self.clinic_id,
+                ),
+                or_(
+                    EncounterTemplate.user_id.is_(None),
+                    EncounterTemplate.user_id == user_id,
+                ),
+            )
+            .order_by(
+                EncounterTemplate.user_id.is_(None),
+                EncounterTemplate.clinic_id.is_(None),
+            )
+        )
+        result = await self.session.execute(stmt)
+        return result.scalars().first()
+
+    async def get_effective_for_concept(
+        self,
+        concept_id: int,
+        *,
+        user_id: int,
+    ) -> EncounterTemplate | None:
+        """Find highest-priority active template whose trigger_concept_ids JSON contains concept_id."""
+        if self.clinic_id is None:
+            return None
+        # Filter in Python / SQL candidate pool for active templates visible to user
+        stmt = (
+            select(EncounterTemplate)
+            .where(
+                EncounterTemplate.deleted_at.is_(None),
+                EncounterTemplate.is_active.is_(True),
+                or_(
+                    EncounterTemplate.clinic_id.is_(None),
+                    EncounterTemplate.clinic_id == self.clinic_id,
+                ),
+                or_(
+                    EncounterTemplate.user_id.is_(None),
+                    EncounterTemplate.user_id == user_id,
+                ),
+            )
+            .order_by(
+                EncounterTemplate.user_id.is_(None),
+                EncounterTemplate.clinic_id.is_(None),
+            )
+        )
+        result = await self.session.execute(stmt)
+        candidates = list(result.scalars().all())
+        for candidate in candidates:
+            triggers = candidate.trigger_concept_ids or []
+            if concept_id in triggers or str(concept_id) in triggers:
+                return candidate
+        return None
+
+    async def list_effective_for_user(
+        self,
+        *,
+        user_id: int,
+    ) -> list[EncounterTemplate]:
+        """List distinct active templates visible to the user, with overrides taking precedence."""
+        if self.clinic_id is None:
+            return []
+        stmt = (
+            select(EncounterTemplate)
+            .where(
+                EncounterTemplate.deleted_at.is_(None),
+                EncounterTemplate.is_active.is_(True),
+                or_(
+                    EncounterTemplate.clinic_id.is_(None),
+                    EncounterTemplate.clinic_id == self.clinic_id,
+                ),
+                or_(
+                    EncounterTemplate.user_id.is_(None),
+                    EncounterTemplate.user_id == user_id,
+                ),
+            )
+            .order_by(
+                EncounterTemplate.code,
+                EncounterTemplate.user_id.is_(None),
+                EncounterTemplate.clinic_id.is_(None),
+            )
+        )
+        result = await self.session.execute(stmt)
+        rows = list(result.scalars().all())
+        seen_codes: set[str] = set()
+        effective: list[EncounterTemplate] = []
+        for row in rows:
+            if row.code not in seen_codes:
+                seen_codes.add(row.code)
+                effective.append(row)
+        return effective
+
+    async def get_exact_override(
+        self,
+        code: str,
+        *,
+        clinic_id: int,
+        user_id: int | None,
+    ) -> EncounterTemplate | None:
+        """Find an exact override row for a clinic or doctor."""
+        stmt = select(EncounterTemplate).where(
+            EncounterTemplate.code == code,
+            EncounterTemplate.clinic_id == clinic_id,
+            EncounterTemplate.deleted_at.is_(None),
+        )
+        if user_id is None:
+            stmt = stmt.where(EncounterTemplate.user_id.is_(None))
+        else:
+            stmt = stmt.where(EncounterTemplate.user_id == user_id)
+        result = await self.session.execute(stmt)
+        return result.scalar_one_or_none()

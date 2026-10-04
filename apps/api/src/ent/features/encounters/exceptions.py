@@ -10,6 +10,10 @@ class EncounterNotFoundError(NotFoundError):
     code = ErrorCode.ENCOUNTER_NOT_FOUND
 
 
+class EncounterTemplateNotFoundError(NotFoundError):
+    code = ErrorCode.ENCOUNTER_TEMPLATE_NOT_FOUND
+
+
 class EncounterVersionConflictError(ConflictError):
     code = ErrorCode.ENCOUNTER_VERSION_CONFLICT
 

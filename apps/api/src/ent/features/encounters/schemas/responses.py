@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Any, Literal
+
+from pydantic import Field
 
 from ent.core.schemas.base import CamelModel
 from ent.core.schemas.common import CodeableConcept
@@ -55,3 +58,16 @@ class EncounterRead(CamelModel):
     addenda: list[EncounterAddendumRead]
     signatures: list[EncounterSignatureRead]
     version: int
+
+
+class EncounterTemplateRead(CamelModel):
+    public_id: str
+    code: str
+    name_key: str
+    scope: Literal["system", "clinic", "doctor"]
+    is_active: bool
+    trigger_concepts: list[CodeableConcept] = Field(default_factory=list)
+    config: dict[str, Any]
+    version: int
+    created_at: datetime
+    updated_at: datetime

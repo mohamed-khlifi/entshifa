@@ -45,3 +45,4 @@ class ErrorCode(StrEnum):
     ENCOUNTER_VERSION_CONFLICT = "encounter.version_conflict"
     ENCOUNTER_INVALID_TRANSITION = "encounter.invalid_transition"
     ENCOUNTER_ALREADY_SIGNED = "encounter.already_signed"
+    ENCOUNTER_TEMPLATE_NOT_FOUND = "encounter.template_not_found"

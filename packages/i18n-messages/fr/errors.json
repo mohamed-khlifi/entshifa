@@ -32,6 +32,7 @@
     "already_signed": "Cette visite est signée. Ajoutez un addendum au lieu de la modifier.",
     "invalid_transition": "Cette visite ne peut pas passer à ce statut.",
     "not_found": "Cette visite est introuvable.",
+    "template_not_found": "Modèle de consultation introuvable.",
     "version_conflict": "Cette visite a été modifiée. Rechargez puis réessayez."
   }
 }

@@ -51,7 +51,7 @@ before writing anything.
 
 ---
 
-## - [ ] P2-03 Visit templates and chief complaint routing (backend)
+## - [x] P2-03 Visit templates and chief complaint routing (backend)
 
 **Scope**
 - `encounter_template` with `trigger_concept_ids` and a config holding history

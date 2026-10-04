@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from typing import Literal
 
 from ent.core.errors.exceptions import ValidationError
 from ent.core.schemas.base import PageMeta, PageSchema
@@ -13,6 +14,7 @@ from ent.features.encounters.models import (
     EncounterAddendum,
     EncounterComplaint,
     EncounterSignature,
+    EncounterTemplate,
 )
 from ent.features.encounters.schemas.requests import EncounterComplaintWrite
 from ent.features.encounters.schemas.responses import (
@@ -20,6 +22,7 @@ from ent.features.encounters.schemas.responses import (
     EncounterComplaintRead,
     EncounterRead,
     EncounterSignatureRead,
+    EncounterTemplateRead,
 )
 
 _LABELS = dict[int, tuple[str, str, str | None]]
@@ -180,4 +183,30 @@ def _signature(row: EncounterSignature) -> EncounterSignatureRead:
         role=row.role,
         signed_at=row.signed_at,
         content_hash=row.content_hash,
+    )
+
+
+def template_to_read(
+    row: EncounterTemplate,
+    trigger_concepts: list[CodeableConcept],
+) -> EncounterTemplateRead:
+    scope: Literal["system", "clinic", "doctor"]
+    if row.user_id is not None:
+        scope = "doctor"
+    elif row.clinic_id is not None:
+        scope = "clinic"
+    else:
+        scope = "system"
+
+    return EncounterTemplateRead(
+        public_id=row.public_id,
+        code=row.code,
+        name_key=row.name_key,
+        scope=scope,
+        is_active=bool(row.is_active),
+        trigger_concepts=trigger_concepts,
+        config=row.config or {},
+        version=int(row.version),
+        created_at=row.created_at,
+        updated_at=row.updated_at,
     )

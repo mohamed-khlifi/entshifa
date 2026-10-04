@@ -713,6 +713,75 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/encounter-templates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Encounter Templates */
+        get: operations["list_encounter_templates_api_v1_encounter_templates_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/encounter-templates/route": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Route Encounter Template */
+        post: operations["route_encounter_template_api_v1_encounter_templates_route_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/encounter-templates/{code}/override": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Override Encounter Template */
+        post: operations["override_encounter_template_api_v1_encounter_templates__code__override_post"];
+        /** Reset Encounter Template Override */
+        delete: operations["reset_encounter_template_override_api_v1_encounter_templates__code__override_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/encounter-templates/{public_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Encounter Template */
+        get: operations["get_encounter_template_api_v1_encounter_templates__public_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/encounters": {
         parameters: {
             query?: never;
@@ -2557,6 +2626,70 @@ export interface components {
             /** Userpublicid */
             userPublicId: string;
         };
+        /** EncounterTemplateConfig */
+        EncounterTemplateConfig: {
+            /** Defaultfollowupdays */
+            defaultFollowUpDays?: number | null;
+            /** Examsections */
+            examSections?: string[];
+            /** Favoritediagnoses */
+            favoriteDiagnoses?: string[];
+            /** Historyfields */
+            historyFields?: components["schemas"]["HistoryFieldConfig"][];
+            /** Suggesteddocuments */
+            suggestedDocuments?: string[];
+            /** Suggestedinstruments */
+            suggestedInstruments?: string[];
+            /** Suggestedtests */
+            suggestedTests?: string[];
+        };
+        /** EncounterTemplateOverrideWrite */
+        EncounterTemplateOverrideWrite: {
+            config: components["schemas"]["EncounterTemplateConfig"];
+            /** Namekey */
+            nameKey?: string | null;
+            /** Triggerconceptcodes */
+            triggerConceptCodes?: string[] | null;
+        };
+        /** EncounterTemplateRead */
+        EncounterTemplateRead: {
+            /** Code */
+            code: string;
+            /** Config */
+            config: Record<string, never>;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /** Isactive */
+            isActive: boolean;
+            /** Namekey */
+            nameKey: string;
+            /** Publicid */
+            publicId: string;
+            /**
+             * Scope
+             * @enum {string}
+             */
+            scope: "system" | "clinic" | "doctor";
+            /** Triggerconcepts */
+            triggerConcepts?: components["schemas"]["CodeableConcept"][];
+            /**
+             * Updatedat
+             * Format: date-time
+             */
+            updatedAt: string;
+            /** Version */
+            version: number;
+        };
+        /** EncounterTemplateRouteRequest */
+        EncounterTemplateRouteRequest: {
+            /** Complaintcodes */
+            complaintCodes?: string[];
+            /** Primarycomplaintcode */
+            primaryComplaintCode?: string | null;
+        };
         /** ExaminationSnapshotCreate */
         ExaminationSnapshotCreate: {
             /** Encounterpublicid */
@@ -2592,6 +2725,27 @@ export interface components {
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /** HistoryFieldConfig */
+        HistoryFieldConfig: {
+            /** Defaultvalue */
+            defaultValue?: unknown | null;
+            /**
+             * Fieldtype
+             * @enum {string}
+             */
+            fieldType: "text" | "boolean" | "select" | "multiselect" | "number";
+            /** Id */
+            id: string;
+            /** Labelkey */
+            labelKey: string;
+            /** Options */
+            options?: string[] | null;
+            /**
+             * Required
+             * @default false
+             */
+            required: boolean;
         };
         /** InvitationAccept */
         InvitationAccept: {
@@ -5687,6 +5841,181 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DocumentRecipientRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_encounter_templates_api_v1_encounter_templates_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EncounterTemplateRead"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    route_encounter_template_api_v1_encounter_templates_route_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EncounterTemplateRouteRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EncounterTemplateRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    override_encounter_template_api_v1_encounter_templates__code__override_post: {
+        parameters: {
+            query?: {
+                scope?: "doctor" | "clinic";
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EncounterTemplateOverrideWrite"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EncounterTemplateRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    reset_encounter_template_override_api_v1_encounter_templates__code__override_delete: {
+        parameters: {
+            query?: {
+                scope?: "doctor" | "clinic";
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_encounter_template_api_v1_encounter_templates__public_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                public_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EncounterTemplateRead"];
                 };
             };
             /** @description Validation Error */

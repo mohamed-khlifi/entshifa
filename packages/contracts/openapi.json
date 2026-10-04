@@ -3042,6 +3042,198 @@
         "title": "EncounterSignatureRead",
         "type": "object"
       },
+      "EncounterTemplateConfig": {
+        "properties": {
+          "defaultFollowUpDays": {
+            "anyOf": [
+              {
+                "maximum": 730.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Defaultfollowupdays"
+          },
+          "examSections": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Examsections",
+            "type": "array"
+          },
+          "favoriteDiagnoses": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Favoritediagnoses",
+            "type": "array"
+          },
+          "historyFields": {
+            "items": {
+              "$ref": "#/components/schemas/HistoryFieldConfig"
+            },
+            "title": "Historyfields",
+            "type": "array"
+          },
+          "suggestedDocuments": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Suggesteddocuments",
+            "type": "array"
+          },
+          "suggestedInstruments": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Suggestedinstruments",
+            "type": "array"
+          },
+          "suggestedTests": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Suggestedtests",
+            "type": "array"
+          }
+        },
+        "title": "EncounterTemplateConfig",
+        "type": "object"
+      },
+      "EncounterTemplateOverrideWrite": {
+        "properties": {
+          "config": {
+            "$ref": "#/components/schemas/EncounterTemplateConfig"
+          },
+          "nameKey": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Namekey"
+          },
+          "triggerConceptCodes": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Triggerconceptcodes"
+          }
+        },
+        "required": [
+          "config"
+        ],
+        "title": "EncounterTemplateOverrideWrite",
+        "type": "object"
+      },
+      "EncounterTemplateRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "config": {
+            "title": "Config",
+            "type": "object"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "title": "Createdat",
+            "type": "string"
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean"
+          },
+          "nameKey": {
+            "title": "Namekey",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "scope": {
+            "enum": [
+              "system",
+              "clinic",
+              "doctor"
+            ],
+            "title": "Scope",
+            "type": "string"
+          },
+          "triggerConcepts": {
+            "items": {
+              "$ref": "#/components/schemas/CodeableConcept"
+            },
+            "title": "Triggerconcepts",
+            "type": "array"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "title": "Updatedat",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "publicId",
+          "code",
+          "nameKey",
+          "scope",
+          "isActive",
+          "config",
+          "version",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "EncounterTemplateRead",
+        "type": "object"
+      },
+      "EncounterTemplateRouteRequest": {
+        "properties": {
+          "complaintCodes": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Complaintcodes",
+            "type": "array"
+          },
+          "primaryComplaintCode": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Primarycomplaintcode"
+          }
+        },
+        "title": "EncounterTemplateRouteRequest",
+        "type": "object"
+      },
       "ExaminationSnapshotCreate": {
         "properties": {
           "encounterPublicId": {
@@ -3177,6 +3369,68 @@
           }
         },
         "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "HistoryFieldConfig": {
+        "properties": {
+          "defaultValue": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Defaultvalue"
+          },
+          "fieldType": {
+            "enum": [
+              "text",
+              "boolean",
+              "select",
+              "multiselect",
+              "number"
+            ],
+            "title": "Fieldtype",
+            "type": "string"
+          },
+          "id": {
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Id",
+            "type": "string"
+          },
+          "labelKey": {
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Labelkey",
+            "type": "string"
+          },
+          "options": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Options"
+          },
+          "required": {
+            "default": false,
+            "title": "Required",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "labelKey",
+          "fieldType"
+        ],
+        "title": "HistoryFieldConfig",
         "type": "object"
       },
       "InvitationAccept": {
@@ -11765,6 +12019,410 @@
         "summary": "Add Document Recipient",
         "tags": [
           "documents"
+        ]
+      }
+    },
+    "/api/v1/encounter-templates": {
+      "get": {
+        "operationId": "list_encounter_templates_api_v1_encounter_templates_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/EncounterTemplateRead"
+                  },
+                  "title": "Response List Encounter Templates Api V1 Encounter Templates Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Encounter Templates",
+        "tags": [
+          "encounter-templates"
+        ]
+      }
+    },
+    "/api/v1/encounter-templates/route": {
+      "post": {
+        "operationId": "route_encounter_template_api_v1_encounter_templates_route_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EncounterTemplateRouteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EncounterTemplateRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Route Encounter Template",
+        "tags": [
+          "encounter-templates"
+        ]
+      }
+    },
+    "/api/v1/encounter-templates/{code}/override": {
+      "delete": {
+        "operationId": "reset_encounter_template_override_api_v1_encounter_templates__code__override_delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "title": "Code",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "scope",
+            "required": false,
+            "schema": {
+              "default": "doctor",
+              "enum": [
+                "doctor",
+                "clinic"
+              ],
+              "title": "Scope",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Reset Encounter Template Override",
+        "tags": [
+          "encounter-templates"
+        ]
+      },
+      "post": {
+        "operationId": "override_encounter_template_api_v1_encounter_templates__code__override_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "title": "Code",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "scope",
+            "required": false,
+            "schema": {
+              "default": "doctor",
+              "enum": [
+                "doctor",
+                "clinic"
+              ],
+              "title": "Scope",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EncounterTemplateOverrideWrite"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EncounterTemplateRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Override Encounter Template",
+        "tags": [
+          "encounter-templates"
+        ]
+      }
+    },
+    "/api/v1/encounter-templates/{public_id}": {
+      "get": {
+        "operationId": "get_encounter_template_api_v1_encounter_templates__public_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "public_id",
+            "required": true,
+            "schema": {
+              "title": "Public Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EncounterTemplateRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Encounter Template",
+        "tags": [
+          "encounter-templates"
         ]
       }
     },

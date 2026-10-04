@@ -19,6 +19,7 @@ from ent.features.terminology.models import (
 
 INTERNAL_SYSTEM_CODE = "INTERNAL"
 TM_FINDINGS_VALUE_SET = "tm.findings"
+COMPLAINTS_VALUE_SET = "complaints.ent"
 
 
 @dataclass(frozen=True, slots=True)
@@ -162,6 +163,163 @@ FINDINGS: tuple[_ConceptSeed, ...] = (
     ),
 )
 
+COMPLAINTS: tuple[_ConceptSeed, ...] = (
+    _ConceptSeed(
+        code="CC.NASAL_OBSTRUCTION",
+        kind="finding",
+        translations=(
+            _Translation(
+                "en",
+                "Nasal obstruction",
+                "Nasal obstruction",
+                ("blocked nose", "stuffy nose"),
+            ),
+            _Translation(
+                "fr",
+                "Obstruction nasale",
+                "Obstruction nasale",
+                ("nez bouché",),
+            ),
+        ),
+    ),
+    _ConceptSeed(
+        code="CC.FACIAL_PAIN",
+        kind="finding",
+        translations=(
+            _Translation(
+                "en",
+                "Facial pain / sinus pressure",
+                "Facial pain or sinus pressure",
+                ("sinus pain", "facial pressure"),
+            ),
+            _Translation(
+                "fr",
+                "Douleur faciale / pression sinusienne",
+                "Douleur faciale ou pression sinusienne",
+                ("douleur sinusienne",),
+            ),
+        ),
+    ),
+    _ConceptSeed(
+        code="CC.RHINORRHEA",
+        kind="finding",
+        translations=(
+            _Translation(
+                "en",
+                "Rhinorrhea / sneezing",
+                "Rhinorrhea and sneezing",
+                ("runny nose",),
+            ),
+            _Translation(
+                "fr",
+                "Rhinorrhée / éternuements",
+                "Rhinorrhée et éternuements",
+                ("nez qui coule",),
+            ),
+        ),
+    ),
+    _ConceptSeed(
+        code="CC.EPISTAXIS",
+        kind="finding",
+        translations=(
+            _Translation("en", "Epistaxis", "Epistaxis", ("nosebleed",)),
+            _Translation("fr", "Épistaxis", "Épistaxis", ("saignement de nez",)),
+        ),
+    ),
+    _ConceptSeed(
+        code="CC.HEARING_LOSS",
+        kind="finding",
+        translations=(
+            _Translation(
+                "en",
+                "Hearing loss",
+                "Hearing loss",
+                ("deafness", "hypoacusis"),
+            ),
+            _Translation(
+                "fr",
+                "Baisse d'audition",
+                "Baisse d'audition",
+                ("surdité", "hypoacousie"),
+            ),
+        ),
+    ),
+    _ConceptSeed(
+        code="CC.EAR_PAIN",
+        kind="finding",
+        translations=(
+            _Translation(
+                "en", "Ear pain / otalgia", "Ear pain or otalgia", ("earache",)
+            ),
+            _Translation(
+                "fr", "Otalgie / douleur d'oreille", "Otalgie ou douleur d'oreille"
+            ),
+        ),
+    ),
+    _ConceptSeed(
+        code="CC.TINNITUS",
+        kind="finding",
+        translations=(
+            _Translation("en", "Tinnitus", "Tinnitus", ("ringing in ears",)),
+            _Translation("fr", "Acouphènes", "Acouphènes", ("bourdonnements",)),
+        ),
+    ),
+    _ConceptSeed(
+        code="CC.VERTIGO",
+        kind="finding",
+        translations=(
+            _Translation(
+                "en",
+                "Vertigo / dizziness",
+                "Vertigo and dizziness",
+                ("spinning", "imbalance"),
+            ),
+            _Translation(
+                "fr",
+                "Vertiges / étourdissements",
+                "Vertiges et étourdissements",
+                ("étourdissement",),
+            ),
+        ),
+    ),
+    _ConceptSeed(
+        code="CC.SORE_THROAT",
+        kind="finding",
+        translations=(
+            _Translation(
+                "en",
+                "Sore throat / tonsillitis",
+                "Sore throat and tonsillitis",
+                ("pharyngitis",),
+            ),
+            _Translation(
+                "fr",
+                "Mal de gorge / amygdalite",
+                "Mal de gorge et amygdalite",
+                ("angine",),
+            ),
+        ),
+    ),
+    _ConceptSeed(
+        code="CC.HOARSENESS",
+        kind="finding",
+        translations=(
+            _Translation(
+                "en",
+                "Hoarseness / dysphonia",
+                "Hoarseness and dysphonia",
+                ("voice change",),
+            ),
+            _Translation(
+                "fr",
+                "Enrouement / dysphonie",
+                "Enrouement et dysphonie",
+                ("voix rauque",),
+            ),
+        ),
+    ),
+)
+
 
 @dataclass(frozen=True, slots=True)
 class TerminologySeedReport:
@@ -178,7 +336,7 @@ async def seed_terminology(session: AsyncSession) -> TerminologySeedReport:
     translations_created = 0
     by_code: dict[str, Concept] = {}
 
-    for index, seed in enumerate((*ANATOMY, *FINDINGS)):
+    for index, seed in enumerate((*ANATOMY, *FINDINGS, *COMPLAINTS)):
         parent = by_code.get(seed.parent_code) if seed.parent_code else None
         concept, created = await _ensure_concept(
             session,
@@ -195,7 +353,7 @@ async def seed_terminology(session: AsyncSession) -> TerminologySeedReport:
         )
 
     relationships = 0
-    for seed in (*ANATOMY, *FINDINGS):
+    for seed in (*ANATOMY, *FINDINGS, *COMPLAINTS):
         if seed.parent_code and seed.relationship:
             parent = by_code[seed.parent_code]
             child = by_code[seed.code]
@@ -207,6 +365,7 @@ async def seed_terminology(session: AsyncSession) -> TerminologySeedReport:
             )
 
     value_set, vs_created = await _ensure_value_set(session)
+    value_sets_count = 1 if vs_created else 0
     members_created = 0
     for index, seed in enumerate(FINDINGS):
         members_created += await _ensure_member(
@@ -217,11 +376,23 @@ async def seed_terminology(session: AsyncSession) -> TerminologySeedReport:
             is_default=seed.code == "FIND.TM.NORMAL",
         )
 
+    complaints_vs, cvs_created = await _ensure_complaints_value_set(session)
+    if cvs_created:
+        value_sets_count += 1
+    for index, seed in enumerate(COMPLAINTS):
+        members_created += await _ensure_member(
+            session,
+            value_set=complaints_vs,
+            concept=by_code[seed.code],
+            sort_order=index,
+            is_default=False,
+        )
+
     return TerminologySeedReport(
         code_systems=1 if system else 0,
         concepts=concepts_created,
         translations=translations_created,
-        value_sets=1 if vs_created else 0,
+        value_sets=value_sets_count,
         members=members_created,
     )
 
@@ -364,6 +535,30 @@ async def _ensure_value_set(session: AsyncSession) -> tuple[ValueSet, bool]:
         code=TM_FINDINGS_VALUE_SET,
         name_key="terminology.valueSet.tmFindings",
         description_key="terminology.valueSet.tmFindings.description",
+    )
+    session.add(row)
+    await session.flush()
+    return row, True
+
+
+async def _ensure_complaints_value_set(
+    session: AsyncSession,
+) -> tuple[ValueSet, bool]:
+    existing = (
+        await session.execute(
+            select(ValueSet).where(
+                ValueSet.code == COMPLAINTS_VALUE_SET,
+                ValueSet.deleted_at.is_(None),
+            ),
+        )
+    ).scalar_one_or_none()
+    if existing is not None:
+        return existing, False
+    row = ValueSet(
+        public_id=new_ulid(),
+        code=COMPLAINTS_VALUE_SET,
+        name_key="terminology.valueSet.complaints",
+        description_key="terminology.valueSet.complaints.description",
     )
     session.add(row)
     await session.flush()

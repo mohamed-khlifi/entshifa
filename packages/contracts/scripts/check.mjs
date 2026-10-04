@@ -75,6 +75,14 @@ function applyBanner(body) {
 }
 
 function resolvePython() {
+  const venvPythonWin = path.join(API_ROOT, '.venv', 'Scripts', 'python.exe');
+  if (fs.existsSync(venvPythonWin)) {
+    return venvPythonWin;
+  }
+  const venvPythonUnix = path.join(API_ROOT, '.venv', 'bin', 'python');
+  if (fs.existsSync(venvPythonUnix)) {
+    return venvPythonUnix;
+  }
   for (const command of ['python', 'python3']) {
     const probe = spawnSync(command, ['--version'], { encoding: 'utf8' });
     if (probe.status === 0) {

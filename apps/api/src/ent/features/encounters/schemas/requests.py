@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import Field
 
@@ -77,3 +77,33 @@ class EncounterAddendumCreate(CamelModel):
 class EncounterCopyForward(CamelModel):
     started_at: datetime
     site_public_id: str | None = Field(default=None, min_length=26, max_length=26)
+
+
+class HistoryFieldConfig(CamelModel):
+    id: str = Field(min_length=1, max_length=60)
+    label_key: str = Field(min_length=1, max_length=120)
+    field_type: Literal["text", "boolean", "select", "multiselect", "number"]
+    options: list[str] | None = None
+    required: bool = False
+    default_value: Any | None = None
+
+
+class EncounterTemplateConfig(CamelModel):
+    history_fields: list[HistoryFieldConfig] = Field(default_factory=list)
+    exam_sections: list[str] = Field(default_factory=list)
+    suggested_instruments: list[str] = Field(default_factory=list)
+    suggested_tests: list[str] = Field(default_factory=list)
+    suggested_documents: list[str] = Field(default_factory=list)
+    favorite_diagnoses: list[str] = Field(default_factory=list)
+    default_follow_up_days: int | None = Field(default=None, ge=1, le=730)
+
+
+class EncounterTemplateOverrideWrite(CamelModel):
+    name_key: str | None = Field(default=None, max_length=80)
+    trigger_concept_codes: list[str] | None = None
+    config: EncounterTemplateConfig
+
+
+class EncounterTemplateRouteRequest(CamelModel):
+    complaint_codes: list[str] = Field(default_factory=list, max_length=20)
+    primary_complaint_code: str | None = Field(default=None, max_length=60)

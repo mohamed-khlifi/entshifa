@@ -7,10 +7,12 @@ from dataclasses import dataclass
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ent.features.documents.seed import ensure_patient_summary_template
+from ent.seeds.encounter_templates import seed_encounter_templates
 from ent.seeds.identity import ensure_all_permissions
 from ent.seeds.reference_data import record_reference_data_version
 from ent.seeds.terminology import TerminologySeedReport, seed_terminology
 from ent.seeds.versions import (
+    ENCOUNTER_TEMPLATES_VERSION,
     PERMISSIONS_VERSION,
     TEMPLATES_VERSION,
     TERMINOLOGY_VERSION,
@@ -30,6 +32,7 @@ async def seed_system(session: AsyncSession) -> SystemSeedReport:
     permissions_created = await ensure_all_permissions(session)
     terminology = await seed_terminology(session)
     await ensure_patient_summary_template(session)
+    encounter_templates_created = await seed_encounter_templates(session)
     created = 0
     if await record_reference_data_version(
         session,
@@ -50,6 +53,13 @@ async def seed_system(session: AsyncSession) -> SystemSeedReport:
         dataset="templates",
         version=TEMPLATES_VERSION,
         notes="seed_system patient summary template",
+    ):
+        created += 1
+    if await record_reference_data_version(
+        session,
+        dataset="encounter_templates",
+        version=ENCOUNTER_TEMPLATES_VERSION,
+        notes=f"seed_system encounter templates ({encounter_templates_created} created)",
     ):
         created += 1
     return SystemSeedReport(
