@@ -9,7 +9,6 @@ from sqlalchemy import select
 from ent.core.db.session import get_session_factory
 from ent.core.utils.ids import new_ulid
 from ent.features.clinics.models import Clinic
-from ent.features.users.models import User
 from ent.main import create_app
 from ent.seeds.encounter_templates import seed_encounter_templates
 from ent.seeds.terminology import seed_terminology
@@ -247,4 +246,3 @@ async def test_encounter_template_routing_and_isolation() -> None:
         assert other_route_res.status_code == 200
         assert other_route_res.json()["scope"] == "system"
         assert other_route_res.json()["config"]["defaultFollowUpDays"] == 42
-
