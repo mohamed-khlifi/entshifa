@@ -15,6 +15,35 @@
     "snapshotSaved": "حُفظ المخطط.",
     "notExamined": "لم يُفحص"
   },
+  "normals": {
+    "all": "فحص أنف وأذن وحنجرة طبيعي",
+    "group": "الطبيعي بنقرة واحدة",
+    "neck": "عنق طبيعي",
+    "oral": "جوف الفم والبلعوم الفموي طبيعي",
+    "otoscopyLeft": "تنظير أذن أيسر طبيعي",
+    "otoscopyRight": "تنظير أذن أيمن طبيعي",
+    "rhinoscopy": "تنظير أنف أمامي طبيعي"
+  },
+  "copyForward": {
+    "action": "نسخ من الزيارة السابقة",
+    "assessment": "التقييم",
+    "banner": "منسوخ من {when}",
+    "complaint": "الشكوى الرئيسية",
+    "complaints": "الشكاوى",
+    "complaintsEmpty": "لم تُنسخ شكاوى.",
+    "confirmAll": "تأكيد كل المنسوخ",
+    "confirmRegion": "تأكيد",
+    "copiedBadge": "منسوخ",
+    "findingCount": "{count, plural, =0 {# موجودات منسوخة.} one {# موجودة منسوخة.} two {# موجودتان منسوختان.} few {# موجودات منسوخة.} many {# موجودة منسوخة.} other {# موجودة منسوخة.}}",
+    "history": "السوابق",
+    "historyEmpty": "لم تُنسخ سوابق.",
+    "plan": "الخطة",
+    "problems": "قائمة المشكلات",
+    "problemsEmpty": "لا مشكلات نشطة.",
+    "problemsError": "تعذر تحميل المشكلات.",
+    "problemsLoading": "جارٍ تحميل المشكلات…",
+    "unavailable": "لا توجد زيارة سابقة للنسخ."
+  },
   "laterality": {
     "group": "الجانب",
     "right": "أيمن",

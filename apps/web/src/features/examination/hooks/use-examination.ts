@@ -11,14 +11,18 @@ import { toast } from "sonner";
 
 import {
   createExaminationEncounter,
+  fetchEncounterObservations,
+  fetchExaminationProblems,
   fetchExaminationSites,
   fetchExaminationValueSet,
   fetchPatientEncounters,
+  loadCopyForwardChart,
   recordExaminationSnapshot,
   recordObservations,
   renderNarrative,
 } from "../api/examination.api";
 import type {
+  EncounterCopyForward,
   EncounterCreate,
   ExaminationSnapshotCreate,
   NarrativeRenderRequest,
@@ -147,6 +151,60 @@ export function useRecordObservations(patientId: string) {
       }),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
+        queryKey: queryKeys.examination.encounters(patientId),
+      });
+    },
+    onError: toastError,
+  });
+}
+
+export function useEncounterObservations(encounterId: string | null) {
+  const scope = useScope();
+  return useQuery({
+    queryKey: queryKeys.examination.encounterObservations(encounterId ?? ""),
+    queryFn: () =>
+      fetchEncounterObservations(encounterId ?? "", {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    enabled: scope.enabled && Boolean(encounterId),
+    staleTime: 30_000,
+  });
+}
+
+export function useExaminationProblems(patientId: string, enabled: boolean) {
+  const scope = useScope();
+  return useQuery({
+    queryKey: queryKeys.examination.problems(patientId),
+    queryFn: () =>
+      fetchExaminationProblems(patientId, {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    enabled: scope.enabled && enabled && patientId.length > 0,
+    staleTime: 30_000,
+  });
+}
+
+export function useCopyEncounterForward(patientId: string) {
+  const scope = useScope();
+  const toastError = useExaminationErrorToast();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: {
+      sourceEncounterId: string;
+      body: EncounterCopyForward;
+    }) =>
+      loadCopyForwardChart(patientId, input.sourceEncounterId, input.body, {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    onSuccess: (result, input) => {
+      queryClient.setQueryData(
+        queryKeys.examination.encounterObservations(input.sourceEncounterId),
+        result.observations,
+      );
+      void queryClient.invalidateQueries({
         queryKey: queryKeys.examination.encounters(patientId),
       });
     },

@@ -33,4 +33,15 @@ export type RegionMark = {
   status: "not_examined" | "normal" | "abnormal";
   conceptCode: string | null;
   dirty: boolean;
+  /** Pre-filled from an earlier visit and not yet accepted. */
+  copied?: boolean;
+  /** Clinician accepted the value. Untouched copies stay unconfirmed. */
+  confirmed?: boolean;
+  /** Source encounter public id when this mark was copied forward. */
+  sourceEncounterId?: string;
+};
+
+export type MapState = {
+  side: MapSide;
+  marks: Record<string, RegionMark>;
 };

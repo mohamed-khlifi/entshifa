@@ -6,8 +6,13 @@ import { toast } from "sonner";
 
 import { AnatomicalMap } from "@/components/clinical/AnatomicalMap/AnatomicalMap";
 import { Button } from "@/components/ui/button";
+import { CopyForwardPanel } from "./CopyForwardPanel";
+import { NormalsToolbar } from "./NormalsToolbar";
 import {
+  useCopyEncounterForward,
   useCreateExaminationEncounter,
+  useEncounterObservations,
+  useExaminationProblems,
   useExaminationSites,
   useExaminationValueSets,
   useNarrativePreview,
@@ -15,34 +20,56 @@ import {
   useRecordObservations,
   useRecordSnapshot,
 } from "../hooks/use-examination";
-import { anatomicalMaps } from "@/lib/anatomy";
+import { selectCopySource } from "../lib/copy-source";
 import {
+  anatomicalMaps,
+  nasalCavityMap,
+  neckLevelsMap,
+  oralCavityMap,
+  tympanicMembraneMap,
+} from "@/lib/anatomy";
+import {
+  confirmAllMarks,
+  confirmMark,
+  effectiveLaterality,
+  examinationStateFromCopy,
+  hasDirtyExamination,
+  markAllNormal,
   markFromFinding,
   markNormal,
   markNotExamined,
+  markSectionNormal,
   regionStorageKey,
-  effectiveLaterality,
-  dirtyMarks,
-  toNarrativeDrafts,
-  toObservationCreates,
+  toAllObservationCreates,
+  toFullNarrativeDrafts,
 } from "@/lib/anatomy/examination-state";
 import { examinationMapTitle } from "@/lib/anatomy/region-labels";
 import type {
   MapFindingOption,
   MapRegionDefinition,
-  MapSide,
+  MapState,
   RegionMark,
 } from "@/lib/anatomy/types";
-import type { ExaminationSnapshotCreate } from "@/lib/api/generated";
+import type {
+  CodeableConcept,
+  EncounterRead,
+  ExaminationSnapshotCreate,
+} from "@/lib/api/generated";
 import { formatDate } from "@/lib/i18n/format";
-import { testIdProps, testIds } from "@/lib/test/test-id";
-
-type MapState = {
-  side: MapSide;
-  marks: Record<string, RegionMark>;
-};
+import { examinationMapTestId, testIdProps, testIds } from "@/lib/test/test-id";
 
 const initialMapState: MapState = { side: "right", marks: {} };
+
+type CopySession = {
+  sourceEncounterId: string;
+  sourceStartedAt: string;
+  historyText: string | null;
+  chiefComplaintSummary: string | null;
+  complaints: { id: string; label: string }[];
+  assessmentText: string | null;
+  planText: string | null;
+  confirmed: boolean;
+};
 
 export function ExaminationWorkspace({ patientId }: { patientId: string }) {
   const t = useTranslations("examination");
@@ -51,40 +78,71 @@ export function ExaminationWorkspace({ patientId }: { patientId: string }) {
   const [mapId, setMapId] = useState(anatomicalMaps[0].id);
   const [byMap, setByMap] = useState<Record<string, MapState>>({});
   const [encounterId, setEncounterId] = useState<string | null>(null);
+  const [createdEncounter, setCreatedEncounter] =
+    useState<EncounterRead | null>(null);
+  const [copySession, setCopySession] = useState<CopySession | null>(null);
   const definition =
     anatomicalMaps.find((map) => map.id === mapId) ?? anatomicalMaps[0];
   const mapState = byMap[definition.id] ?? initialMapState;
-  const rows = encounters.data?.items ?? [];
+  const rows = useMemo(() => {
+    const items = encounters.data?.items ?? [];
+    if (
+      !createdEncounter ||
+      items.some((row) => row.publicId === createdEncounter.publicId)
+    ) {
+      return items;
+    }
+    return [createdEncounter, ...items];
+  }, [encounters.data?.items, createdEncounter]);
   const selectedEncounter =
     rows.find((row) => row.publicId === encounterId) ??
     rows.find((row) => row.status === "draft") ??
     rows[0] ??
     null;
   const activeEncounterId = selectedEncounter?.publicId ?? null;
+  const copySource = selectCopySource(rows, activeEncounterId);
 
   const valueSetCodes = useMemo(
     () => [...new Set(definition.regions.map((region) => region.valueSetCode))],
     [definition],
   );
   const valueSetQueries = useExaminationValueSets(valueSetCodes);
-  const drafts = toNarrativeDrafts(definition, mapState.side, mapState.marks);
+  const drafts = toFullNarrativeDrafts(anatomicalMaps, byMap);
   const narrative = useNarrativePreview(
     patientId,
-    definition.id,
+    "full",
     drafts.length > 0 ? { findings: drafts } : null,
   );
   const save = useRecordObservations(patientId);
   const snapshot = useRecordSnapshot(patientId);
   const sites = useExaminationSites();
   const createEncounter = useCreateExaminationEncounter(patientId);
-  const hasFindings =
-    dirtyMarks(definition, mapState.side, mapState.marks).length > 0;
+  const copyForward = useCopyEncounterForward(patientId);
+  const copiedObservations = useEncounterObservations(
+    copySession?.sourceEncounterId ?? null,
+  );
+  const problems = useExaminationProblems(patientId, copySession !== null);
+  const hasFindings = hasDirtyExamination(anatomicalMaps, byMap);
   const writing =
-    save.isPending || snapshot.isPending || createEncounter.isPending;
+    save.isPending ||
+    snapshot.isPending ||
+    createEncounter.isPending ||
+    copyForward.isPending;
   const canAttach =
     selectedEncounter?.status === "draft" ||
     rows.some((row) => row.status === "draft") ||
     (sites.data?.items.length ?? 0) > 0;
+  const findingCount =
+    copiedObservations.data?.page.total ??
+    copiedObservations.data?.items.length ??
+    0;
+  const problemLines = (problems.data?.items ?? []).flatMap((row) => {
+    if (row.status !== "active") {
+      return [];
+    }
+    const label = codedLabel(row.diagnosis);
+    return label ? [{ id: row.publicId, label }] : [];
+  });
 
   const findingsByValueSet = useMemo(() => {
     const grouped: Record<string, MapFindingOption[]> = {};
@@ -102,6 +160,26 @@ export function ExaminationWorkspace({ patientId }: { patientId: string }) {
 
   function updateMap(next: MapState) {
     setByMap((current) => ({ ...current, [definition.id]: next }));
+  }
+
+  function applySection(
+    target: (typeof anatomicalMaps)[number],
+    side?: MapState["side"],
+  ) {
+    setMapId(target.id);
+    setByMap((current) => {
+      const existing = current[target.id] ?? initialMapState;
+      return {
+        ...current,
+        [target.id]: {
+          side: side ?? existing.side,
+          marks: {
+            ...existing.marks,
+            ...markSectionNormal(target, side),
+          },
+        },
+      };
+    });
   }
 
   async function encounterForWrite(): Promise<string | null> {
@@ -125,6 +203,7 @@ export function ExaminationWorkspace({ patientId }: { patientId: string }) {
       encounterType: "consultation",
       startedAt: new Date().toISOString(),
     });
+    setCreatedEncounter(created);
     setEncounterId(created.publicId);
     return created.publicId;
   }
@@ -141,10 +220,9 @@ export function ExaminationWorkspace({ patientId }: { patientId: string }) {
       save.mutate(
         {
           encounterPublicId,
-          observations: toObservationCreates(
-            definition,
-            mapState.side,
-            mapState.marks,
+          observations: toAllObservationCreates(
+            anatomicalMaps,
+            byMap,
             new Date().toISOString(),
           ),
         },
@@ -186,6 +264,47 @@ export function ExaminationWorkspace({ patientId }: { patientId: string }) {
     );
   }
 
+  async function handleCopy() {
+    if (!copySource) {
+      return;
+    }
+    try {
+      const result = await copyForward.mutateAsync({
+        sourceEncounterId: copySource.publicId,
+        body: {
+          sitePublicId: copySource.sitePublicId,
+          startedAt: new Date().toISOString(),
+        },
+      });
+      setCreatedEncounter(result.encounter);
+      setEncounterId(result.encounter.publicId);
+      setCopySession(sessionFromCopy(copySource, result.encounter));
+      setByMap(
+        examinationStateFromCopy(
+          anatomicalMaps,
+          result.observations.items,
+          result.snapshots.items,
+          copySource.publicId,
+        ),
+      );
+    } catch {
+      return;
+    }
+  }
+
+  function handleConfirmAll() {
+    setByMap((current) => {
+      const next: Record<string, MapState> = {};
+      for (const [id, state] of Object.entries(current)) {
+        next[id] = { ...state, marks: confirmAllMarks(state.marks) };
+      }
+      return next;
+    });
+    setCopySession((current) =>
+      current ? { ...current, confirmed: true } : current,
+    );
+  }
+
   function putMark(region: MapRegionDefinition, mark: RegionMark) {
     const laterality = effectiveLaterality(region, mapState.side);
     updateMap({
@@ -195,6 +314,16 @@ export function ExaminationWorkspace({ patientId }: { patientId: string }) {
         [regionStorageKey(laterality, region.id)]: mark,
       },
     });
+  }
+
+  function confirmRegion(region: MapRegionDefinition) {
+    const laterality = effectiveLaterality(region, mapState.side);
+    const key = regionStorageKey(laterality, region.id);
+    const mark = mapState.marks[key];
+    if (!mark) {
+      return;
+    }
+    putMark(region, confirmMark(mark));
   }
 
   return (
@@ -231,6 +360,48 @@ export function ExaminationWorkspace({ patientId }: { patientId: string }) {
           </select>
         </label>
       ) : null}
+      <NormalsToolbar
+        canCopy={copySource !== null}
+        copying={copyForward.isPending}
+        onNormalAll={() => setByMap(markAllNormal(anatomicalMaps))}
+        onOtoscopyRight={() => applySection(tympanicMembraneMap, "right")}
+        onOtoscopyLeft={() => applySection(tympanicMembraneMap, "left")}
+        onRhinoscopy={() => applySection(nasalCavityMap)}
+        onOral={() => applySection(oralCavityMap)}
+        onNeck={() => applySection(neckLevelsMap)}
+        onCopy={() => {
+          void handleCopy();
+        }}
+        labels={{
+          group: t("normals.group"),
+          all: t("normals.all"),
+          otoscopyRight: t("normals.otoscopyRight"),
+          otoscopyLeft: t("normals.otoscopyLeft"),
+          rhinoscopy: t("normals.rhinoscopy"),
+          oral: t("normals.oral"),
+          neck: t("normals.neck"),
+          copy: t("copyForward.action"),
+          unavailable: t("copyForward.unavailable"),
+        }}
+      />
+      {copySession ? (
+        <CopyForwardPanel
+          whenLabel={formatDate(copySession.sourceStartedAt, locale)}
+          findingCountLabel={t("copyForward.findingCount", {
+            count: findingCount,
+          })}
+          historyText={copySession.historyText}
+          chiefComplaintSummary={copySession.chiefComplaintSummary}
+          complaints={copySession.complaints}
+          assessmentText={copySession.assessmentText}
+          planText={copySession.planText}
+          problems={problemLines}
+          problemsLoading={problems.isLoading}
+          problemsError={problems.isError}
+          confirmed={copySession.confirmed}
+          onConfirmAll={handleConfirmAll}
+        />
+      ) : null}
       <div
         className="flex flex-wrap gap-2"
         {...testIdProps(testIds.examination.mapSelect)}
@@ -241,6 +412,7 @@ export function ExaminationWorkspace({ patientId }: { patientId: string }) {
             type="button"
             variant={map.id === definition.id ? "default" : "secondary"}
             onClick={() => setMapId(map.id)}
+            {...testIdProps(examinationMapTestId(map.id))}
           >
             {examinationMapTitle(t, map.titleKey)}
           </Button>
@@ -260,6 +432,7 @@ export function ExaminationWorkspace({ patientId }: { patientId: string }) {
             putMark(region, markFromFinding(region, conceptCode))
           }
           onMarkNotExamined={(region) => putMark(region, markNotExamined())}
+          onConfirmMark={confirmRegion}
         />
         <section className="space-y-3 rounded-xl border border-border bg-card p-4">
           <h2 className="text-sm font-medium">{t("narrative.title")}</h2>
@@ -346,4 +519,31 @@ function encounterStatusLabel(
     default:
       return t("encounter.status.other");
   }
+}
+
+function sessionFromCopy(
+  source: EncounterRead,
+  created: EncounterRead,
+): CopySession {
+  return {
+    sourceEncounterId: source.publicId,
+    sourceStartedAt: source.startedAt,
+    historyText: created.historyText ?? null,
+    chiefComplaintSummary: created.chiefComplaintSummary ?? null,
+    complaints: created.complaints.flatMap((row) => {
+      const label = codedLabel(row.concept);
+      return label ? [{ id: row.publicId, label }] : [];
+    }),
+    assessmentText: created.assessmentText ?? null,
+    planText: created.planText ?? null,
+    confirmed: false,
+  };
+}
+
+function codedLabel(concept: CodeableConcept): string {
+  const display = concept.display?.trim();
+  if (display) {
+    return display;
+  }
+  return concept.code?.trim() ?? "";
 }

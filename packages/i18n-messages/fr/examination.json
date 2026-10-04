@@ -15,6 +15,35 @@
     "snapshotSaved": "Schéma enregistré.",
     "notExamined": "Non examiné"
   },
+  "normals": {
+    "all": "Examen ORL normal",
+    "group": "Normaux en un clic",
+    "neck": "Cou normal",
+    "oral": "Cavité orale et oropharynx normaux",
+    "otoscopyLeft": "Otoscopie gauche normale",
+    "otoscopyRight": "Otoscopie droite normale",
+    "rhinoscopy": "Rhinoscopie antérieure normale"
+  },
+  "copyForward": {
+    "action": "Reprendre la dernière visite",
+    "assessment": "Évaluation",
+    "banner": "Repris de la visite du {when}",
+    "complaint": "Motif principal",
+    "complaints": "Plaintes",
+    "complaintsEmpty": "Aucune plainte n’a été reprise.",
+    "confirmAll": "Confirmer tout ce qui a été repris",
+    "confirmRegion": "Confirmer",
+    "copiedBadge": "Repris",
+    "findingCount": "{count, plural, =0 {# constatations reprises.} one {# constatation reprise.} other {# constatations reprises.}}",
+    "history": "Histoire",
+    "historyEmpty": "Aucune histoire n’a été reprise.",
+    "plan": "Plan",
+    "problems": "Liste des problèmes",
+    "problemsEmpty": "Aucun problème actif.",
+    "problemsError": "Les problèmes n’ont pas pu être chargés.",
+    "problemsLoading": "Chargement des problèmes…",
+    "unavailable": "Aucune visite précédente à reprendre."
+  },
   "laterality": {
     "group": "Côté",
     "right": "Droit",

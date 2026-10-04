@@ -246,12 +246,32 @@ export const testIds = {
     save: testId("examination", "save"),
     snapshot: testId("examination", "snapshot"),
     narrative: testId("examination", "narrative"),
+    normals: {
+      group: testId("examination", "normals"),
+      all: testId("examination", "normal-all"),
+      otoscopyRight: testId("examination", "normal-otoscopy-right"),
+      otoscopyLeft: testId("examination", "normal-otoscopy-left"),
+      rhinoscopy: testId("examination", "normal-rhinoscopy"),
+      oral: testId("examination", "normal-oral"),
+      neck: testId("examination", "normal-neck"),
+    },
+    copyForward: {
+      action: testId("examination", "copy-forward"),
+      unavailable: testId("examination", "copy-forward-unavailable"),
+      banner: testId("examination", "copy-banner"),
+      confirmAll: testId("examination", "confirm-all-copied"),
+      history: testId("examination", "copy-history"),
+      complaints: testId("examination", "copy-complaints"),
+      problems: testId("examination", "copy-problems"),
+      findingCount: testId("examination", "copy-finding-count"),
+    },
     map: {
       root: testId("examination", "map", "root"),
       lateralityRight: testId("examination", "map", "laterality-right"),
       lateralityLeft: testId("examination", "map", "laterality-left"),
       findingPicker: testId("examination", "map", "finding-picker"),
       notExamined: testId("examination", "map", "not-examined"),
+      copiedBadge: testId("examination", "map", "copied-badge"),
     },
   },
   terminology: {
@@ -278,12 +298,20 @@ export const testIds = {
   },
 } as const;
 
+export function examinationMapTestId(mapId: string): string {
+  return testId("examination", "map-select", examinationToken(mapId));
+}
+
 export function examinationRegionTestId(regionId: string): string {
   return testId("examination", "map", "region", examinationToken(regionId));
 }
 
 export function examinationFindingTestId(conceptCode: string): string {
   return testId("examination", "map", "finding", examinationToken(conceptCode));
+}
+
+export function examinationRegionConfirmTestId(regionId: string): string {
+  return testId("examination", "map", "confirm", examinationToken(regionId));
 }
 
 function examinationToken(value: string): string {

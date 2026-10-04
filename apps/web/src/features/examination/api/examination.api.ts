@@ -1,5 +1,6 @@
 import { apiFetch } from "@/lib/api/client";
 import type {
+  EncounterCopyForward,
   EncounterCreate,
   EncounterRead,
   ExaminationSnapshotCreate,
@@ -9,6 +10,9 @@ import type {
   ObservationBatchCreate,
   ObservationRead,
   PageSchemaEncounterRead,
+  PageSchemaExaminationSnapshotRead,
+  PageSchemaObservationRead,
+  PageSchemaPatientProblemRead,
   PageSchemaSiteRead,
   ValueSetRead,
 } from "@/lib/api/generated";
@@ -73,6 +77,67 @@ export function recordExaminationSnapshot(
     `/api/v1/observations/patient/${patientId}/snapshots`,
     { ...scope, method: "POST", body: JSON.stringify(body) },
   );
+}
+
+export function copyEncounterForward(
+  encounterId: string,
+  body: EncounterCopyForward,
+  scope: Scope,
+): Promise<EncounterRead> {
+  return apiFetch<EncounterRead>(
+    `/api/v1/encounters/${encounterId}/copy-forward`,
+    { ...scope, method: "POST", body: JSON.stringify(body) },
+  );
+}
+
+export function fetchEncounterObservations(
+  encounterId: string,
+  scope: Scope,
+): Promise<PageSchemaObservationRead> {
+  return apiFetch<PageSchemaObservationRead>(
+    `/api/v1/observations/encounter/${encounterId}?limit=100&offset=0`,
+    scope,
+  );
+}
+
+export function fetchExaminationSnapshots(
+  patientId: string,
+  scope: Scope,
+): Promise<PageSchemaExaminationSnapshotRead> {
+  return apiFetch<PageSchemaExaminationSnapshotRead>(
+    `/api/v1/observations/patient/${patientId}/snapshots?limit=100&offset=0`,
+    scope,
+  );
+}
+
+export function fetchExaminationProblems(
+  patientId: string,
+  scope: Scope,
+): Promise<PageSchemaPatientProblemRead> {
+  return apiFetch<PageSchemaPatientProblemRead>(
+    `/api/v1/patients/${patientId}/problems?limit=100&offset=0`,
+    scope,
+  );
+}
+
+export type CopyForwardChart = {
+  encounter: EncounterRead;
+  observations: PageSchemaObservationRead;
+  snapshots: PageSchemaExaminationSnapshotRead;
+};
+
+export async function loadCopyForwardChart(
+  patientId: string,
+  sourceEncounterId: string,
+  body: EncounterCopyForward,
+  scope: Scope,
+): Promise<CopyForwardChart> {
+  const encounter = await copyEncounterForward(sourceEncounterId, body, scope);
+  const [observations, snapshots] = await Promise.all([
+    fetchEncounterObservations(sourceEncounterId, scope),
+    fetchExaminationSnapshots(patientId, scope),
+  ]);
+  return { encounter, observations, snapshots };
 }
 
 export function fetchExaminationValueSet(

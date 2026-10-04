@@ -41,6 +41,7 @@ export type SiteRead = Schemas["SiteRead"];
 export type SiteCreate = Schemas["SiteCreate"];
 export type SiteUpdate = Schemas["SiteUpdate"];
 export type PageSchemaSiteRead = Schemas["PageSchema_SiteRead_"];
+export type CodeableConcept = Schemas["CodeableConcept"];
 export type ClinicalSettingsRead = Schemas["ClinicalSettingsRead"];
 export type ClinicalSettingsPut = Schemas["ClinicalSettingsPut"];
 export type ResolvedSettingRead = Schemas["ResolvedSettingRead"];
@@ -138,8 +139,14 @@ export type NarrativeRenderRead = Schemas["NarrativeRenderRead"];
 export type ObservationCreate = Schemas["ObservationCreate"];
 export type ObservationBatchCreate = Schemas["ObservationBatchCreate"];
 export type ObservationRead = Schemas["ObservationRead"];
+export type PageSchemaObservationRead = Schemas["PageSchema_ObservationRead_"];
 export type ExaminationSnapshotCreate = Schemas["ExaminationSnapshotCreate"];
 export type ExaminationSnapshotRead = Schemas["ExaminationSnapshotRead"];
+export type PageSchemaExaminationSnapshotRead =
+  Schemas["PageSchema_ExaminationSnapshotRead_"];
+export type EncounterCopyForward = Schemas["EncounterCopyForward"];
 export type EncounterCreate = Schemas["EncounterCreate"];
 export type EncounterRead = Schemas["EncounterRead"];
 export type PageSchemaEncounterRead = Schemas["PageSchema_EncounterRead_"];
+export type PageSchemaPatientProblemRead =
+  Schemas["PageSchema_PatientProblemRead_"];

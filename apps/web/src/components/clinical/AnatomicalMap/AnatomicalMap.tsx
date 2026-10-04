@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { examinationRegionLabel } from "@/lib/anatomy/region-labels";
 import {
   effectiveLaterality,
+  isUntouchedCopy,
   regionStorageKey,
 } from "@/lib/anatomy/examination-state";
 import type {
@@ -18,6 +19,7 @@ import type {
 } from "@/lib/anatomy/types";
 import {
   examinationFindingTestId,
+  examinationRegionConfirmTestId,
   examinationRegionTestId,
   testIdProps,
   testIds,
@@ -35,6 +37,7 @@ export type AnatomicalMapProps = {
   onMarkNormal: (region: MapRegionDefinition) => void;
   onSelectFinding: (region: MapRegionDefinition, conceptCode: string) => void;
   onMarkNotExamined: (region: MapRegionDefinition) => void;
+  onConfirmMark?: (region: MapRegionDefinition) => void;
   onAttachPhoto?: (region: MapRegionDefinition) => void;
 };
 
@@ -49,6 +52,7 @@ export function AnatomicalMap({
   onSelectFinding,
   onMarkNormal,
   onMarkNotExamined,
+  onConfirmMark,
   onAttachPhoto,
 }: AnatomicalMapProps) {
   const t = useTranslations("examination");
@@ -159,6 +163,10 @@ export function AnatomicalMap({
       const laterality = effectiveLaterality(region, selectedSide);
       const mark = marks[regionStorageKey(laterality, region.id)];
       node.setAttribute("data-state", mark?.status ?? "not_examined");
+      node.setAttribute(
+        "data-copied",
+        mark && isUntouchedCopy(mark) ? "true" : "false",
+      );
       node.setAttribute("tabindex", index === focusIndex ? "0" : "-1");
       node.setAttribute(
         "aria-label",
@@ -234,6 +242,14 @@ export function AnatomicalMap({
   const findings = pickerRegion
     ? (findingsByValueSet[pickerRegion.valueSetCode] ?? [])
     : [];
+  const copiedRegions = definition.regions.filter((region) => {
+    const laterality = effectiveLaterality(region, selectedSide);
+    const mark = marks[regionStorageKey(laterality, region.id)];
+    return mark ? isUntouchedCopy(mark) : false;
+  });
+  const pickerCopied = pickerRegion
+    ? copiedRegions.some((region) => region.id === pickerRegion.id)
+    : false;
 
   return (
     <div className="space-y-3" {...testIdProps(testIds.examination.map.root)}>
@@ -260,6 +276,14 @@ export function AnatomicalMap({
           </Button>
         </div>
       ) : null}
+      {copiedRegions.length > 0 ? (
+        <p
+          className="inline-flex items-center rounded-full border border-indigo-300 bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-900"
+          {...testIdProps(testIds.examination.map.copiedBadge)}
+        >
+          {t("copyForward.copiedBadge")}
+        </p>
+      ) : null}
       <div
         ref={hostRef}
         dir="ltr"
@@ -270,6 +294,8 @@ export function AnatomicalMap({
           "[&_[data-region-id]]:fill-transparent [&_[data-region-id]]:stroke-[1.5]",
           "[&_[data-state=normal]]:fill-emerald-500/35",
           "[&_[data-state=abnormal]]:fill-amber-500/50",
+          "[&_[data-copied=true][data-region-id]]:fill-indigo-500/45",
+          "[&_[data-copied=true][data-region-id]]:stroke-indigo-700",
           "[&_[data-region-id]:focus]:outline [&_[data-region-id]:focus]:outline-2",
           "[&_[data-region-id]:focus]:outline-offset-2 [&_[data-region-id]:focus]:outline-ring",
         )}
@@ -283,6 +309,17 @@ export function AnatomicalMap({
           <p className="text-sm font-medium">
             {examinationRegionLabel(t, pickerRegion.labelKey)}
           </p>
+          {pickerCopied && onConfirmMark ? (
+            <Button
+              type="button"
+              variant="secondary"
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => onConfirmMark(pickerRegion)}
+              {...testIdProps(examinationRegionConfirmTestId(pickerRegion.id))}
+            >
+              {t("copyForward.confirmRegion")}
+            </Button>
+          ) : null}
           {findingsLoading ? (
             <p className="text-sm text-muted-foreground">
               {t("findingPicker.loading")}

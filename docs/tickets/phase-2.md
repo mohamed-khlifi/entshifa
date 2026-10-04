@@ -91,7 +91,7 @@ fr.
 
 ---
 
-## - [ ] P2-05 One-click normals and copy forward (frontend)
+## - [x] P2-05 One-click normals and copy forward (frontend)
 
 **Scope**
 - "Normal ENT examination" filling every section, and per-region normals.

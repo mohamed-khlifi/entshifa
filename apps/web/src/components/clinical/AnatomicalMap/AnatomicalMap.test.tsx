@@ -17,6 +17,7 @@ import {
 } from "@/lib/anatomy/region-labels";
 import {
   examinationFindingTestId,
+  examinationRegionConfirmTestId,
   examinationRegionTestId,
   testIds,
 } from "@/lib/test/test-id";
@@ -30,6 +31,7 @@ const messages = {
       empty: "No findings are configured for this region.",
     },
     actions: { notExamined: "Not examined" },
+    copyForward: { copiedBadge: "Copied", confirmRegion: "Confirm" },
     regions: { unknown: "Region" },
     maps: {
       tympanicMembrane: "Tympanic membrane",
@@ -151,6 +153,57 @@ describe("AnatomicalMap", () => {
       }),
       "FIND.CANAL.WAX",
     );
+  });
+});
+
+describe("copied marks", () => {
+  it("paints an unconfirmed copy in a distinct state until it is confirmed", () => {
+    const canal = tympanicMembraneMap.regions[0];
+    expect(canal).toBeDefined();
+    if (!canal) {
+      return;
+    }
+    const onConfirmMark = vi.fn();
+    const copied = {
+      ...markNormal(canal),
+      copied: true,
+      confirmed: false,
+      sourceEncounterId: "01SOURCEENCOUNTER0000000000",
+    };
+    const view = renderMap({
+      onConfirmMark,
+      marks: { [regionStorageKey("right", canal.id)]: copied },
+    });
+    const node = view.getByTestId(examinationRegionTestId(canal.id));
+    expect(node.getAttribute("data-copied")).toBe("true");
+    expect(node.getAttribute("data-state")).toBe("normal");
+    expect(view.getByTestId(testIds.examination.map.copiedBadge)).toBeTruthy();
+    fireEvent.click(node);
+    const confirm = view.getByTestId(examinationRegionConfirmTestId(canal.id));
+    fireEvent.click(confirm);
+    expect(onConfirmMark).toHaveBeenCalledWith(
+      expect.objectContaining({ id: canal.id }),
+    );
+
+    view.rerender(
+      wrap({
+        ...view.props,
+        onConfirmMark,
+        marks: {
+          [regionStorageKey("right", canal.id)]: {
+            ...copied,
+            copied: false,
+            confirmed: true,
+          },
+        },
+      }),
+    );
+    expect(
+      view
+        .getByTestId(examinationRegionTestId(canal.id))
+        .getAttribute("data-copied"),
+    ).toBe("false");
+    expect(view.queryByTestId(testIds.examination.map.copiedBadge)).toBeNull();
   });
 });
 

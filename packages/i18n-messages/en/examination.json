@@ -15,6 +15,35 @@
     "snapshotSaved": "Map snapshot saved.",
     "notExamined": "Not examined"
   },
+  "normals": {
+    "all": "Normal ENT examination",
+    "group": "One-click normals",
+    "neck": "Normal neck",
+    "oral": "Normal oral cavity and oropharynx",
+    "otoscopyLeft": "Normal otoscopy L",
+    "otoscopyRight": "Normal otoscopy R",
+    "rhinoscopy": "Normal anterior rhinoscopy"
+  },
+  "copyForward": {
+    "action": "Copy from last visit",
+    "assessment": "Assessment",
+    "banner": "Copied from {when}",
+    "complaint": "Chief complaint",
+    "complaints": "Complaints",
+    "complaintsEmpty": "No complaints were copied.",
+    "confirmAll": "Confirm all copied",
+    "confirmRegion": "Confirm",
+    "copiedBadge": "Copied",
+    "findingCount": "{count, plural, =0 {# findings copied.} one {# finding copied.} other {# findings copied.}}",
+    "history": "History",
+    "historyEmpty": "No history was copied.",
+    "plan": "Plan",
+    "problems": "Problem list",
+    "problemsEmpty": "No active problems.",
+    "problemsError": "Problems could not be loaded.",
+    "problemsLoading": "Loading problems…",
+    "unavailable": "No previous visit to copy."
+  },
   "laterality": {
     "group": "Side",
     "right": "Right",

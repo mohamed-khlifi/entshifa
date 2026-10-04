@@ -96,6 +96,12 @@ export const queryKeys = {
         mapId,
         signature,
       ] as const,
+    encounterObservations: (encounterId: string) =>
+      [...queryKeys.examination.all, "observations", encounterId] as const,
+    snapshots: (patientId: string) =>
+      [...queryKeys.examination.all, "snapshots", patientId] as const,
+    problems: (patientId: string) =>
+      [...queryKeys.examination.all, "problems", patientId] as const,
   },
   terminology: {
     all: ["terminology"] as const,
