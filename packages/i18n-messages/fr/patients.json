@@ -145,6 +145,8 @@
     "medications": "Médicaments",
     "flags": "Alertes de sécurité",
     "problems": "Problèmes",
+    "problemsActive": "Actifs",
+    "problemsResolved": "Résolus",
     "history": "Antécédents",
     "empty": "Aucun élément enregistré.",
     "active": "Actif",
@@ -172,6 +174,8 @@
     "diagnosis": "Diagnostic",
     "status": "Statut",
     "laterality": "Côté",
+    "onset": "Début {date}",
+    "resolvedOn": "Résolu le {date}",
     "addHistory": "Ajouter un antécédent",
     "freeText": "Description",
     "historyNeedsText": "Saisissez une description ou choisissez un concept codé."

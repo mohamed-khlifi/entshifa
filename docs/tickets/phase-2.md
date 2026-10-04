@@ -127,7 +127,7 @@ fr.
 
 ---
 
-## - [ ] P2-07 Diagnoses and problem list (backend and frontend)
+## - [x] P2-07 Diagnoses and problem list (backend and frontend)
 
 **Scope**
 - `diagnosis` and `problem_list_entry` models. ICD-10 concepts seeded for the

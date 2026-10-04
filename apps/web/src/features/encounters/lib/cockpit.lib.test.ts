@@ -5,7 +5,13 @@ import {
   composeClinicalNote,
   emptyToNull,
 } from "./clinical-note";
-import { problemStatusFor } from "./cockpit-state";
+import {
+  appendDiagnosis,
+  changeDiagnosis,
+  clinicianDiagnosis,
+  problemStatusFor,
+  removeDiagnosis,
+} from "./cockpit-state";
 import {
   groupComplaints,
   makePrimary,
@@ -37,6 +43,7 @@ const emptySnapshot = {
   assessmentText: null,
   planText: null,
   complaints: [],
+  diagnoses: [],
 };
 
 describe("clinical note", () => {
@@ -127,6 +134,50 @@ describe("encounter patch", () => {
   it("accepts only the laterality vocabulary", () => {
     expect(asLaterality("left")).toBe("left");
     expect(asLaterality("sideways")).toBeNull();
+  });
+
+  it("persists a coded diagnosis and clears copy-forward after an edit", () => {
+    const conceptPublicId = "01DIAGNOSIS000000000000000";
+    const copied = {
+      ...clinicianDiagnosis(conceptPublicId, "Otitis externa"),
+      laterality: "right" as const,
+      status: "confirmed" as const,
+      copied: true,
+      source: "copy_forward" as const,
+    };
+    const added = appendDiagnosis([], copied);
+    expect(added[0]?.isPrimary).toBe(true);
+    expect(
+      diffEncounterPatch(2, emptySnapshot, {
+        ...emptySnapshot,
+        diagnoses: added,
+      })?.diagnoses,
+    ).toEqual([
+      {
+        conceptPublicId,
+        isPrimary: true,
+        laterality: "right",
+        sortOrder: 0,
+        source: "copy_forward",
+        status: "confirmed",
+      },
+    ]);
+    const edited = changeDiagnosis(added, conceptPublicId, "right", {
+      laterality: "left",
+    });
+    expect(edited?.[0]).toMatchObject({
+      laterality: "left",
+      source: "clinician",
+      copied: false,
+    });
+    const both = appendDiagnosis(added, {
+      ...clinicianDiagnosis(conceptPublicId, "Otitis externa"),
+      laterality: "left",
+    });
+    expect(
+      changeDiagnosis(both, conceptPublicId, "right", { laterality: "left" }),
+    ).toBeNull();
+    expect(removeDiagnosis(added, conceptPublicId, "right")).toEqual([]);
   });
 });
 

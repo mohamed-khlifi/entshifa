@@ -145,6 +145,8 @@
     "medications": "الأدوية",
     "flags": "تنبيهات السلامة",
     "problems": "المشكلات",
+    "problemsActive": "نشطة",
+    "problemsResolved": "محلولة",
     "history": "السوابق",
     "empty": "لا يوجد تسجيل.",
     "active": "نشط",
@@ -172,6 +174,8 @@
     "diagnosis": "التشخيص",
     "status": "الحالة",
     "laterality": "الجانب",
+    "onset": "البداية {date}",
+    "resolvedOn": "تاريخ الحل {date}",
     "addHistory": "إضافة سابقة",
     "freeText": "الوصف",
     "historyNeedsText": "أدخل وصفًا أو اختر مفهومًا مرمّزًا."

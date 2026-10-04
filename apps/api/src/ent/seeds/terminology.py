@@ -422,6 +422,14 @@ async def seed_terminology(session: AsyncSession) -> TerminologySeedReport:
     value_sets_count += map_report.value_sets
     members_created += map_report.members
 
+    from ent.seeds.icd10_ent import seed_icd10_ent
+
+    icd_report = await seed_icd10_ent(session)
+    concepts_created += icd_report.concepts
+    translations_created += icd_report.translations
+    value_sets_count += icd_report.value_sets
+    members_created += icd_report.members
+
     return TerminologySeedReport(
         code_systems=1 if system else 0,
         concepts=concepts_created,

@@ -53,6 +53,19 @@ vi.mock("@/lib/forms/autosave", () => ({
   writeDraftSnapshot: vi.fn(async () => undefined),
 }));
 
+vi.mock("../api/encounters.api", async () => {
+  const actual = await vi.importActual<typeof import("../api/encounters.api")>(
+    "../api/encounters.api",
+  );
+  return {
+    ...actual,
+    listDiagnosisFavorites: vi.fn(async () => ({
+      items: [],
+      page: { limit: 50, offset: 0, total: 0 },
+    })),
+  };
+});
+
 vi.mock("../hooks/use-encounter-autosave", () => ({
   useEncounterAutosave: () => ({
     status: "idle",

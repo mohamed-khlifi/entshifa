@@ -6,11 +6,12 @@ import hashlib
 import json
 from dataclasses import dataclass
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 REFERENCE = (
     "Architecture §30: signing stores a SHA-256 of the canonical visit content "
     "with the signer, timestamp and IP so a later check can prove the record "
-    "was not altered. Addenda are the only legal change after that hash."
+    "was not altered. Addenda are the only legal change after that hash. "
+    "Version 1.1.0 includes coded diagnoses (concept, side, status, primary, order)."
 )
 
 
@@ -22,6 +23,17 @@ class ComplaintSnapshot:
     is_primary: bool
     laterality: str | None
     duration_text: str | None
+    sort_order: int
+
+
+@dataclass(frozen=True, slots=True)
+class DiagnosisSnapshot:
+    """One coded diagnosis included in the signed content."""
+
+    concept_code: str
+    laterality: str
+    status: str
+    is_primary: bool
     sort_order: int
 
 
@@ -40,6 +52,7 @@ class EncounterContent:
     plan_text: str | None
     previous_encounter_public_id: str | None
     complaints: tuple[ComplaintSnapshot, ...]
+    diagnoses: tuple[DiagnosisSnapshot, ...] = ()
 
 
 def canonical_json(content: EncounterContent) -> str:
@@ -48,6 +61,10 @@ def canonical_json(content: EncounterContent) -> str:
     complaints = sorted(
         content.complaints,
         key=lambda item: (item.sort_order, item.concept_code, item.laterality or ""),
+    )
+    diagnoses = sorted(
+        content.diagnoses,
+        key=lambda item: (item.sort_order, item.concept_code, item.laterality),
     )
     payload = {
         "assessmentText": content.assessment_text,
@@ -61,6 +78,16 @@ def canonical_json(content: EncounterContent) -> str:
                 "sortOrder": item.sort_order,
             }
             for item in complaints
+        ],
+        "diagnoses": [
+            {
+                "conceptCode": item.concept_code,
+                "isPrimary": item.is_primary,
+                "laterality": item.laterality,
+                "sortOrder": item.sort_order,
+                "status": item.status,
+            }
+            for item in diagnoses
         ],
         "encounterPublicId": content.encounter_public_id,
         "encounterType": content.encounter_type,

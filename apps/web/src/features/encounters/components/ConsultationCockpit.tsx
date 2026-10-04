@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -40,8 +40,10 @@ import { Can, usePermission } from "@/providers/permission-provider";
 
 import {
   addEncounterAddendum,
-  addProblem,
+  listDiagnosisFavorites,
+  promoteDiagnosis,
   recordVisitObservations,
+  replaceDiagnosisFavorites,
   searchDiagnoses,
   signEncounter,
 } from "../api/encounters.api";
@@ -57,9 +59,21 @@ import {
   type ComplaintChoice,
   type SelectedComplaint,
 } from "../lib/complaints";
-import type { DiagnosisDraft } from "../lib/cockpit-state";
-import { problemStatusFor } from "../lib/cockpit-state";
-import type { EncounterFieldSnapshot } from "../lib/encounter-patch";
+import {
+  appendDiagnosis,
+  changeDiagnosis,
+  clinicianDiagnosis,
+  diagnosisIdentity,
+  normalizeStoredDiagnoses,
+  removeDiagnosis,
+  type DiagnosisDraft,
+  type DiagnosisLaterality,
+} from "../lib/cockpit-state";
+import {
+  diagnosesFromRead,
+  mergeDiagnosisIdentity,
+  type EncounterFieldSnapshot,
+} from "../lib/encounter-patch";
 import { mapsForSections, unmappedSections } from "../lib/exam-sections";
 import { draftKey, resolveHydration } from "../lib/hydration";
 import type { CockpitDraftEnvelope } from "../lib/hydration";
@@ -177,7 +191,7 @@ export function ConsultationCockpit({
         setEditor({
           complaints: decision.state.complaints,
           redFlags: decision.state.redFlags,
-          diagnoses: decision.state.diagnoses,
+          diagnoses: normalizeStoredDiagnoses(decision.state.diagnoses),
           planItems: decision.state.planItems,
           examByMap: decision.state.examByMap,
           expandedMaps: decision.state.expandedMaps,
@@ -187,6 +201,7 @@ export function ConsultationCockpit({
         setEditor({
           ...emptyEditor,
           complaints: complaintsFromEncounter(encounter),
+          diagnoses: diagnosesFromRead(encounter.diagnoses),
         });
         form.reset({
           ...cockpitDefaultValues,
@@ -262,10 +277,12 @@ export function ConsultationCockpit({
         durationText: null,
         sortOrder: index,
       })),
+      diagnoses: editor.diagnoses,
     }),
     [
       assessmentText,
       editor.complaints,
+      editor.diagnoses,
       historyText,
       planText,
       primary?.display,
@@ -294,6 +311,17 @@ export function ConsultationCockpit({
     draft,
     resetToken,
     onVersion: setVersion,
+    onSaved: (saved) => {
+      setEditor((current) => ({
+        ...current,
+        diagnoses: mergeDiagnosisIdentity(current.diagnoses, saved.diagnoses),
+      }));
+    },
+  });
+  const favoritesQuery = useQuery({
+    queryKey: queryKeys.diagnoses.favorites(session.scope.locale),
+    enabled: session.scope.enabled,
+    queryFn: () => listDiagnosisFavorites(session.scope),
   });
   const findings = toFullNarrativeDrafts(anatomicalMaps, editor.examByMap);
   const narrative = useVisitNarrative(
@@ -376,6 +404,7 @@ export function ConsultationCockpit({
     setEditor({
       ...emptyEditor,
       complaints: complaintsFromEncounter(result.encounter),
+      diagnoses: diagnosesFromRead(result.encounter.diagnoses),
       examByMap: examinationStateFromCopy(
         anatomicalMaps,
         result.observations.items,
@@ -428,27 +457,102 @@ export function ConsultationCockpit({
   }
 
   async function promote(row: DiagnosisDraft) {
-    await addProblem(
-      patientId,
-      {
-        diagnosisConceptId: row.conceptPublicId,
-        laterality: row.laterality,
-        status: problemStatusFor(row.status),
-      },
-      session.scope,
-      crypto.randomUUID(),
+    if (!encounter) {
+      return;
+    }
+    let publicId = row.publicId;
+    if (!locked) {
+      const saved = await autosave.flush();
+      setEditor((current) => {
+        const merged = saved
+          ? mergeDiagnosisIdentity(current.diagnoses, saved.diagnoses)
+          : current.diagnoses;
+        publicId =
+          merged.find(
+            (item) => diagnosisIdentity(item) === diagnosisIdentity(row),
+          )?.publicId ?? publicId;
+        return { ...current, diagnoses: merged };
+      });
+    }
+    if (!publicId) {
+      toast.error(t("assessment.promoteFailed"));
+      return;
+    }
+    try {
+      const result = await promoteDiagnosis(
+        encounter.publicId,
+        publicId,
+        session.scope,
+      );
+      setEditor((current) => ({
+        ...current,
+        diagnoses: current.diagnoses.map((item) =>
+          diagnosisIdentity(item) === diagnosisIdentity(row)
+            ? { ...item, publicId: result.publicId, promoted: true }
+            : item,
+        ),
+      }));
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.patients.detail(patientId),
+      });
+    } catch {
+      toast.error(t("assessment.promoteFailed"));
+    }
+  }
+
+  async function saveFavorite(row: DiagnosisDraft) {
+    const currentIds = (favoritesQuery.data?.items ?? []).map(
+      (item) => item.concept.conceptId,
     );
+    const conceptPublicIds = currentIds.includes(row.conceptPublicId)
+      ? currentIds
+      : [...currentIds, row.conceptPublicId];
+    try {
+      await replaceDiagnosisFavorites(conceptPublicIds, session.scope);
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.diagnoses.favorites(session.scope.locale),
+      });
+      toast.success(t("assessment.favoriteSaved"));
+    } catch {
+      toast.error(t("layout.error"));
+    }
+  }
+
+  function addDiagnosis(row: DiagnosisDraft) {
+    if (locked) {
+      return;
+    }
     setEditor((current) => ({
       ...current,
-      diagnoses: current.diagnoses.map((item) =>
-        item.conceptPublicId === row.conceptPublicId
-          ? { ...item, promoted: true }
-          : item,
-      ),
+      diagnoses: appendDiagnosis(current.diagnoses, row),
     }));
-    await queryClient.invalidateQueries({
-      queryKey: queryKeys.patients.detail(patientId),
+  }
+
+  function updateDiagnosis(
+    conceptPublicId: string,
+    laterality: DiagnosisLaterality,
+    patch: Partial<Pick<DiagnosisDraft, "laterality" | "status">>,
+  ) {
+    if (locked) {
+      return;
+    }
+    let duplicate = false;
+    setEditor((current) => {
+      const next = changeDiagnosis(
+        current.diagnoses,
+        conceptPublicId,
+        laterality,
+        patch,
+      );
+      if (!next) {
+        duplicate = true;
+        return current;
+      }
+      return { ...current, diagnoses: next };
     });
+    if (duplicate) {
+      toast.error(t("assessment.duplicateSide"));
+    }
   }
 
   return (
@@ -593,37 +697,36 @@ export function ConsultationCockpit({
             <AssessmentPanel
               rows={editor.diagnoses}
               favorites={templateConfig.favoriteDiagnoses}
+              doctorFavorites={(favoritesQuery.data?.items ?? []).map(
+                (item) => ({
+                  conceptPublicId: item.concept.conceptId,
+                  display:
+                    item.concept.display ||
+                    item.concept.code ||
+                    item.concept.conceptId,
+                }),
+              )}
               disabled={locked}
-              onAdd={(row) =>
+              onAdd={addDiagnosis}
+              onChange={updateDiagnosis}
+              onRemove={(conceptPublicId, laterality) => {
+                if (locked) {
+                  return;
+                }
                 setEditor((current) => ({
                   ...current,
-                  diagnoses: current.diagnoses.some(
-                    (item) => item.conceptPublicId === row.conceptPublicId,
-                  )
-                    ? current.diagnoses
-                    : [...current.diagnoses, row],
-                }))
-              }
-              onChange={(conceptPublicId, patch) =>
-                setEditor((current) => ({
-                  ...current,
-                  diagnoses: current.diagnoses.map((row) =>
-                    row.conceptPublicId === conceptPublicId
-                      ? { ...row, ...patch }
-                      : row,
+                  diagnoses: removeDiagnosis(
+                    current.diagnoses,
+                    conceptPublicId,
+                    laterality,
                   ),
-                }))
-              }
-              onRemove={(conceptPublicId) =>
-                setEditor((current) => ({
-                  ...current,
-                  diagnoses: current.diagnoses.filter(
-                    (row) => row.conceptPublicId !== conceptPublicId,
-                  ),
-                }))
-              }
+                }));
+              }}
               onPromote={(row) => {
                 void promote(row);
+              }}
+              onSaveFavorite={(row) => {
+                void saveFavorite(row);
               }}
               onFavorite={(code) => {
                 void searchDiagnoses(code, session.scope).then((result) => {
@@ -634,23 +737,9 @@ export function ConsultationCockpit({
                     toast.error(t("assessment.favoriteMissing"));
                     return;
                   }
-                  setEditor((current) => ({
-                    ...current,
-                    diagnoses: current.diagnoses.some(
-                      (item) => item.conceptPublicId === match.publicId,
-                    )
-                      ? current.diagnoses
-                      : [
-                          ...current.diagnoses,
-                          {
-                            conceptPublicId: match.publicId,
-                            display: match.display,
-                            laterality: "na",
-                            status: "suspected",
-                            promoted: false,
-                          },
-                        ],
-                  }));
+                  addDiagnosis(
+                    clinicianDiagnosis(match.publicId, match.display),
+                  );
                 });
               }}
             />
@@ -873,6 +962,7 @@ function snapshotFromEncounter(
         },
       ];
     }),
+    diagnoses: diagnosesFromRead(encounter.diagnoses),
   };
 }
 

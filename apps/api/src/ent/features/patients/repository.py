@@ -5,7 +5,7 @@ from __future__ import annotations
 from datetime import date
 from typing import TypeVar
 
-from sqlalchemy import ColumnElement, func, or_, select
+from sqlalchemy import ColumnElement, case, func, or_, select
 from sqlalchemy.orm import load_only
 
 from ent.core.repository.base import BaseRepository
@@ -323,7 +323,37 @@ class PatientProblemRepository(BaseRepository[PatientProblem]):
     async def list_for_patient(
         self, patient_id: int, *, limit: int = 100, offset: int = 0
     ) -> list[PatientProblem]:
-        return await _list_children(self, patient_id, limit=limit, offset=offset)
+        rank = case(
+            (PatientProblem.status == "active", 0),
+            (PatientProblem.status == "suspected", 1),
+            (PatientProblem.status == "resolved", 2),
+            else_=3,
+        )
+        stmt = (
+            self._base_query()
+            .where(PatientProblem.patient_id == patient_id)
+            .order_by(
+                rank,
+                PatientProblem.onset_date.is_(None),
+                PatientProblem.onset_date.desc(),
+                PatientProblem.id.desc(),
+            )
+            .offset(offset)
+            .limit(limit)
+        )
+        return list((await self.session.scalars(stmt)).all())
+
+    async def matching_concept(
+        self, *, patient_id: int, concept_id: int, laterality: str
+    ) -> list[PatientProblem]:
+        result = await self.session.scalars(
+            self._base_query().where(
+                PatientProblem.patient_id == patient_id,
+                PatientProblem.diagnosis_concept_id == concept_id,
+                PatientProblem.laterality == laterality,
+            )
+        )
+        return list(result.all())
 
 
 class PatientHistoryRepository(BaseRepository[PatientHistory]):

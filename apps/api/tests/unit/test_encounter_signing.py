@@ -20,7 +20,7 @@ _CANONICAL = (
     '"laterality":"right","sortOrder":0},'
     '{"conceptCode":"CC.TINNITUS","durationText":null,"isPrimary":false,'
     '"laterality":"left","sortOrder":1}'
-    '],"encounterPublicId":"01ARZ3NDEKTSV4RRFFQ69G5FAV",'
+    '],"diagnoses":[],"encounterPublicId":"01ARZ3NDEKTSV4RRFFQ69G5FAV",'
     '"encounterType":"consultation","endedAt":null,"historyText":"sudden",'
     '"patientPublicId":"01ARZ3NDEKTSV4RRFFQ69G5FAW","planText":null,'
     '"previousEncounterPublicId":null,"startedAt":"2026-06-01T09:00:00.000000"}'
@@ -59,7 +59,7 @@ def _content(*, reversed_complaints: bool = False) -> EncounterContent:
 
 
 def test_signing_version_is_recorded() -> None:
-    assert VERSION == "1.0.0"
+    assert VERSION == "1.1.0"
 
 
 def test_locked_hash_matches_canonical_json() -> None:
@@ -73,6 +73,38 @@ def test_locked_hash_matches_canonical_json() -> None:
 
 def test_complaint_order_does_not_change_the_hash() -> None:
     assert locked_hash(_content()) == locked_hash(_content(reversed_complaints=True))
+
+
+def test_diagnosis_changes_the_locked_hash() -> None:
+    from ent.engines.encounters.signing import DiagnosisSnapshot
+
+    plain = _content()
+    coded = EncounterContent(
+        encounter_public_id=plain.encounter_public_id,
+        patient_public_id=plain.patient_public_id,
+        encounter_type=plain.encounter_type,
+        started_at=plain.started_at,
+        ended_at=plain.ended_at,
+        chief_complaint_summary=plain.chief_complaint_summary,
+        history_text=plain.history_text,
+        assessment_text=plain.assessment_text,
+        plan_text=plain.plan_text,
+        previous_encounter_public_id=plain.previous_encounter_public_id,
+        complaints=plain.complaints,
+        diagnoses=(
+            DiagnosisSnapshot(
+                concept_code="H60.9",
+                laterality="right",
+                status="confirmed",
+                is_primary=True,
+                sort_order=0,
+            ),
+        ),
+    )
+    assert locked_hash(plain) != locked_hash(coded)
+    rendered = canonical_json(coded)
+    assert '"conceptCode":"H60.9"' in rendered
+    assert '"status":"confirmed"' in rendered
 
 
 def test_unicode_history_is_not_escaped() -> None:

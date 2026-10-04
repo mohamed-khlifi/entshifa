@@ -10,6 +10,8 @@ import {
   writeDraftSnapshot,
 } from "@/lib/forms/autosave";
 
+import type { EncounterRead } from "@/lib/api/generated";
+
 import { patchEncounter } from "../api/encounters.api";
 import {
   diffEncounterPatch,
@@ -34,6 +36,7 @@ export function useEncounterAutosave(options: {
   draft: unknown;
   resetToken: number;
   onVersion: (version: number) => void;
+  onSaved?: (encounter: EncounterRead) => void;
 }) {
   const [status, setStatus] = useState<AutosaveStatus>("idle");
   const [conflict, setConflict] = useState<AutosaveConflict | null>(null);
@@ -45,12 +48,14 @@ export function useEncounterAutosave(options: {
   const enabledRef = useRef(options.enabled);
   const encounterIdRef = useRef(options.encounterId);
   const onVersionRef = useRef(options.onVersion);
+  const onSavedRef = useRef(options.onSaved);
   currentRef.current = options.currentSnapshot;
   scopeRef.current = options.scope;
   versionRef.current = options.version;
   enabledRef.current = options.enabled;
   encounterIdRef.current = options.encounterId;
   onVersionRef.current = options.onVersion;
+  onSavedRef.current = options.onSaved;
 
   const serverReady = options.serverSnapshot !== null;
   const serverSnapshotRef = useRef(options.serverSnapshot);
@@ -71,21 +76,21 @@ export function useEncounterAutosave(options: {
     );
   }, [options.draft, options.encounterId]);
 
-  const flush = useCallback(async () => {
+  const flush = useCallback(async (): Promise<EncounterRead | undefined> => {
     const encounterId = encounterIdRef.current;
     const baseline = baselineRef.current;
     const current = currentRef.current;
     if (!encounterId || !baseline || !current || !enabledRef.current) {
-      return;
+      return undefined;
     }
     const body = diffEncounterPatch(versionRef.current, baseline, current);
     if (!body) {
       setStatus((value) => (value === "conflict" ? value : "idle"));
-      return;
+      return undefined;
     }
     if (typeof navigator !== "undefined" && !navigator.onLine) {
       setStatus("offline");
-      return;
+      return undefined;
     }
     setStatus("saving");
     try {
@@ -94,7 +99,9 @@ export function useEncounterAutosave(options: {
       versionRef.current = saved.version;
       firstDirtyRef.current = null;
       onVersionRef.current(saved.version);
+      onSavedRef.current?.(saved);
       setStatus("saved");
+      return saved;
     } catch (error) {
       if (error instanceof ApiError && error.status === 409) {
         const serverVersion = Number(error.context.serverVersion);
@@ -106,9 +113,10 @@ export function useEncounterAutosave(options: {
             : versionRef.current,
         });
         setStatus("conflict");
-        return;
+        return undefined;
       }
       setStatus("error");
+      return undefined;
     }
   }, []);
 

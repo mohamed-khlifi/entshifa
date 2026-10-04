@@ -9,6 +9,7 @@ from pydantic import Field
 
 from ent.core.schemas.base import CamelModel
 from ent.core.schemas.common import Laterality
+from ent.features.diagnoses.schemas.requests import DiagnosisWrite
 
 EncounterType = Literal[
     "consultation",
@@ -47,6 +48,7 @@ class EncounterCreate(CamelModel):
     complaints: list[EncounterComplaintWrite] = Field(
         default_factory=list, max_length=20
     )
+    diagnoses: list[DiagnosisWrite] = Field(default_factory=list, max_length=30)
 
 
 class EncounterPatch(CamelModel):
@@ -59,6 +61,7 @@ class EncounterPatch(CamelModel):
     complaints: list[EncounterComplaintWrite] | None = Field(
         default=None, max_length=20
     )
+    diagnoses: list[DiagnosisWrite] | None = Field(default=None, max_length=30)
 
 
 class EncounterSign(CamelModel):

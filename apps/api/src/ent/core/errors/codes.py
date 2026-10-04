@@ -46,3 +46,6 @@ class ErrorCode(StrEnum):
     ENCOUNTER_INVALID_TRANSITION = "encounter.invalid_transition"
     ENCOUNTER_ALREADY_SIGNED = "encounter.already_signed"
     ENCOUNTER_TEMPLATE_NOT_FOUND = "encounter.template_not_found"
+
+    DIAGNOSIS_NOT_FOUND = "diagnosis.not_found"
+    DIAGNOSIS_INVALID_CONCEPT = "diagnosis.invalid_concept"

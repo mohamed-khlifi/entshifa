@@ -321,6 +321,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "clinic_public_id": other.public_id,
             "encounter_public_id": encounter_public_id,
             "encounter_id": encounter_public_id,
+            "diagnosis_id": new_ulid(),
         }
         forbidden = [
             patient.public_id,

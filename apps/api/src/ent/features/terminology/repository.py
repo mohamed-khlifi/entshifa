@@ -53,6 +53,14 @@ class TerminologyRepository:
         )
         return result.scalar_one_or_none()
 
+    async def list_concepts_by_public_ids(self, public_ids: set[str]) -> list[Concept]:
+        if not public_ids:
+            return []
+        result = await self.session.execute(
+            self._visible_concepts().where(Concept.public_id.in_(public_ids)),
+        )
+        return list(result.scalars().all())
+
     async def get_concept_by_code(self, code: str) -> Concept | None:
         result = await self.session.execute(
             self._visible_concepts().where(Concept.code == code),

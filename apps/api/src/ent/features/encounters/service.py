@@ -12,6 +12,8 @@ from ent.core.context import get_ip_address, set_clinic_id, set_user_id
 from ent.core.schemas.base import PageSchema, PaginationParams
 from ent.core.security.principal import CurrentUser
 from ent.engines.encounters.signing import locked_hash
+from ent.features.diagnoses.schemas.requests import DiagnosisWrite
+from ent.features.diagnoses.service import DiagnosisService
 from ent.features.encounters.exceptions import (
     EncounterNotFoundError,
     EncounterVersionConflictError,
@@ -53,6 +55,7 @@ class EncounterService:
         self._session = session
         self._audit = AuditRecorder(session)
         self._refs = EncounterReferences(session)
+        self._diagnoses = DiagnosisService(session)
 
     async def create_encounter(
         self,
@@ -96,6 +99,10 @@ class EncounterService:
         repo = self._encounters(user)
         await repo.add(encounter)
         await self._write_complaints(user, encounter, complaints, concepts)
+        if body.diagnoses:
+            await self._diagnoses.replace_for_encounter(
+                user=user, encounter=encounter, items=list(body.diagnoses)
+            )
         return await self._reload(user, encounter.public_id, content_locale)
 
     async def get_encounter(
@@ -159,6 +166,7 @@ class EncounterService:
         data = body.model_dump(exclude_unset=True)
         data.pop("version", None)
         raw_complaints = data.pop("complaints", None)
+        raw_diagnoses = data.pop("diagnoses", None)
         changes = {
             key: (
                 to_utc_naive(value)
@@ -190,7 +198,16 @@ class EncounterService:
             )
             await self._write_complaints(user, encounter, normalized, concepts)
             wrote_complaints = True
-        if changes or wrote_complaints:
+        wrote_diagnoses = False
+        if raw_diagnoses is not None:
+            parsed_diagnoses = [
+                DiagnosisWrite.model_validate(item) for item in raw_diagnoses
+            ]
+            await self._diagnoses.replace_for_encounter(
+                user=user, encounter=encounter, items=parsed_diagnoses
+            )
+            wrote_diagnoses = True
+        if changes or wrote_complaints or wrote_diagnoses:
             encounter.updated_by_id = user.user_id
             encounter.version = int(encounter.version) + 1
         return await self._reload(user, encounter.public_id, content_locale)
@@ -303,6 +320,9 @@ class EncounterService:
         ]
         if copied:
             await repo.replace_complaints(encounter, copied, deleted_by_id=user.user_id)
+        await self._diagnoses.copy_onto_encounter(
+            user=user, source=source, target=encounter
+        )
         return await self._reload(user, encounter.public_id, content_locale)
 
     def _bind(self, user: CurrentUser) -> None:
@@ -348,6 +368,9 @@ class EncounterService:
             for row in encounter.complaints
             if row.deleted_at is None
         }
+        concept_ids.update(
+            int(row.concept_id) for row in encounter.diagnoses if row.deleted_at is None
+        )
         labels = await self._refs.labels(user, concept_ids, content_locale)
         return to_encounter_read(encounter, labels)
 

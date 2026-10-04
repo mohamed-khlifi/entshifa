@@ -149,6 +149,12 @@ export type EncounterCopyForward = Schemas["EncounterCopyForward"];
 export type EncounterCreate = Schemas["EncounterCreate"];
 export type EncounterPatch = Schemas["EncounterPatch"];
 export type EncounterRead = Schemas["EncounterRead"];
+export type DiagnosisRead = Schemas["DiagnosisRead"];
+export type DiagnosisWrite = Schemas["DiagnosisWrite"];
+export type DiagnosisFavoriteRead = Schemas["DiagnosisFavoriteRead"];
+export type DiagnosisFavoriteReplace = Schemas["DiagnosisFavoriteReplace"];
+export type PageSchemaDiagnosisFavoriteRead =
+  Schemas["PageSchema_DiagnosisFavoriteRead_"];
 export type EncounterSign = Schemas["EncounterSign"];
 export type EncounterAddendumCreate = Schemas["EncounterAddendumCreate"];
 export type EncounterTemplateRead = Schemas["EncounterTemplateRead"];

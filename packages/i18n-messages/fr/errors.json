@@ -28,6 +28,10 @@
     "template_syntax": "Ce modèle contient une erreur de syntaxe.",
     "undeclared_placeholder": "Ce modèle utilise un champ non déclaré."
   },
+  "diagnosis": {
+    "invalid_concept": "Choisissez un diagnostic dans la terminologie de la clinique.",
+    "not_found": "Ce diagnostic est introuvable."
+  },
   "encounter": {
     "already_signed": "Cette visite est signée. Ajoutez un addendum au lieu de la modifier.",
     "invalid_transition": "Cette visite ne peut pas passer à ce statut.",

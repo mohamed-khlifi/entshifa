@@ -15,6 +15,7 @@ from ent.core.errors.handlers import register_exception_handlers
 from ent.features.attachments.router import router as attachments_router
 from ent.features.auth.router import router as auth_router
 from ent.features.clinics.router import router as clinics_router
+from ent.features.diagnoses.router import router as diagnoses_router
 from ent.features.documents.router import router as documents_router
 from ent.features.encounters.router import router as encounters_router
 from ent.features.encounters.templates.router import (
@@ -77,4 +78,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(narrative_router)
     app.include_router(encounters_router)
     app.include_router(encounter_templates_router)
+    app.include_router(diagnoses_router)
     return app

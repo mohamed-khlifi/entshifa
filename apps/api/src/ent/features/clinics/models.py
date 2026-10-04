@@ -37,6 +37,7 @@ REFERENCE_DATASETS: tuple[str, ...] = (
     "terminology",
     "permissions",
     "templates",
+    "encounter_templates",
 )
 
 

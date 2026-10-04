@@ -113,6 +113,7 @@ source_modules = [
     "ent.features.documents.repository",
     "ent.features.observations.repository",
     "ent.features.encounters.repository",
+    "ent.features.diagnoses.repository",
 ]
 forbidden_modules = [
     "ent.features.auth.service",
@@ -127,6 +128,7 @@ forbidden_modules = [
     "ent.features.documents.templates.service",
     "ent.features.observations.service",
     "ent.features.encounters.service",
+    "ent.features.diagnoses.service",
 ]
 
 [[tool.importlinter.contracts]]

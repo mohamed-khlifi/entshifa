@@ -541,6 +541,24 @@ export interface paths {
         patch: operations["patch_clinic_api_v1_clinic_patch"];
         trace?: never;
     };
+    "/api/v1/diagnoses/favorites": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Diagnosis Favorites */
+        get: operations["list_diagnosis_favorites_api_v1_diagnoses_favorites_get"];
+        /** Replace Diagnosis Favorites */
+        put: operations["replace_diagnosis_favorites_api_v1_diagnoses_favorites_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/document-templates": {
         parameters: {
             query?: never;
@@ -845,6 +863,23 @@ export interface paths {
         put?: never;
         /** Copy Encounter Forward */
         post: operations["copy_encounter_forward_api_v1_encounters__encounter_id__copy_forward_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/encounters/{encounter_id}/diagnoses/{diagnosis_id}/promote": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Promote Diagnosis */
+        post: operations["promote_diagnosis_api_v1_encounters__encounter_id__diagnoses__diagnosis_id__promote_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2245,6 +2280,72 @@ export interface components {
             /** Permissioncodes */
             permissionCodes?: string[] | null;
         };
+        /** DiagnosisFavoriteRead */
+        DiagnosisFavoriteRead: {
+            concept: components["schemas"]["CodeableConcept"];
+            /** Sortorder */
+            sortOrder: number;
+        };
+        /** DiagnosisFavoriteReplace */
+        DiagnosisFavoriteReplace: {
+            /** Conceptpublicids */
+            conceptPublicIds?: string[];
+        };
+        /** DiagnosisRead */
+        DiagnosisRead: {
+            concept: components["schemas"]["CodeableConcept"];
+            /** Derivedfrompublicid */
+            derivedFromPublicId?: string | null;
+            /** Isprimary */
+            isPrimary: boolean;
+            /** Laterality */
+            laterality: string;
+            /** Note */
+            note?: string | null;
+            /** Onsetdate */
+            onsetDate?: string | null;
+            /** Promotedproblempublicid */
+            promotedProblemPublicId?: string | null;
+            /** Publicid */
+            publicId: string;
+            /** Sortorder */
+            sortOrder: number;
+            /** Source */
+            source: string;
+            /** Status */
+            status: string;
+        };
+        /** DiagnosisWrite */
+        DiagnosisWrite: {
+            /** Conceptpublicid */
+            conceptPublicId: string;
+            /**
+             * Isprimary
+             * @default false
+             */
+            isPrimary: boolean;
+            laterality: components["schemas"]["Laterality"];
+            /** Note */
+            note?: string | null;
+            /** Onsetdate */
+            onsetDate?: string | null;
+            /**
+             * Sortorder
+             * @default 0
+             */
+            sortOrder: number;
+            /**
+             * Source
+             * @default clinician
+             * @enum {string}
+             */
+            source: "clinician" | "copy_forward";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "suspected" | "confirmed" | "ruled_out";
+        };
         /** DocumentCreate */
         DocumentCreate: {
             /** Locale */
@@ -2528,6 +2629,8 @@ export interface components {
             chiefComplaintSummary?: string | null;
             /** Complaints */
             complaints?: components["schemas"]["EncounterComplaintWrite"][];
+            /** Diagnoses */
+            diagnoses?: components["schemas"]["DiagnosisWrite"][];
             /**
              * Encountertype
              * @default consultation
@@ -2560,6 +2663,8 @@ export interface components {
             chiefComplaintSummary?: string | null;
             /** Complaints */
             complaints?: components["schemas"]["EncounterComplaintWrite"][] | null;
+            /** Diagnoses */
+            diagnoses?: components["schemas"]["DiagnosisWrite"][] | null;
             /** Endedat */
             endedAt?: string | null;
             /** Historytext */
@@ -2583,6 +2688,8 @@ export interface components {
             clinicianPublicId: string;
             /** Complaints */
             complaints: components["schemas"]["EncounterComplaintRead"][];
+            /** Diagnoses */
+            diagnoses?: components["schemas"]["DiagnosisRead"][];
             /** Encountertype */
             encounterType: string;
             /** Endedat */
@@ -3186,6 +3293,12 @@ export interface components {
         PageSchema_ConceptAdminRead_: {
             /** Items */
             items: components["schemas"]["ConceptAdminRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[DiagnosisFavoriteRead] */
+        PageSchema_DiagnosisFavoriteRead_: {
+            /** Items */
+            items: components["schemas"]["DiagnosisFavoriteRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[DocumentRead] */
@@ -5486,6 +5599,74 @@ export interface operations {
             };
         };
     };
+    list_diagnosis_favorites_api_v1_diagnoses_favorites_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_DiagnosisFavoriteRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    replace_diagnosis_favorites_api_v1_diagnoses_favorites_put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DiagnosisFavoriteReplace"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_DiagnosisFavoriteRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_document_templates_api_v1_document_templates_get: {
         parameters: {
             query?: {
@@ -6249,6 +6430,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["EncounterRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    promote_diagnosis_api_v1_encounters__encounter_id__diagnoses__diagnosis_id__promote_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                encounter_id: string;
+                diagnosis_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DiagnosisRead"];
                 };
             };
             /** @description Validation Error */

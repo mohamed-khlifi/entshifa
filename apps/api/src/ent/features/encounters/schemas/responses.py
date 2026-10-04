@@ -9,6 +9,7 @@ from pydantic import Field
 
 from ent.core.schemas.base import CamelModel
 from ent.core.schemas.common import CodeableConcept
+from ent.features.diagnoses.schemas.responses import DiagnosisRead
 
 
 class EncounterComplaintRead(CamelModel):
@@ -55,6 +56,7 @@ class EncounterRead(CamelModel):
     locked_hash: str | None = None
     previous_encounter_public_id: str | None = None
     complaints: list[EncounterComplaintRead]
+    diagnoses: list[DiagnosisRead] = Field(default_factory=list)
     addenda: list[EncounterAddendumRead]
     signatures: list[EncounterSignatureRead]
     version: int

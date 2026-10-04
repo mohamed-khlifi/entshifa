@@ -1858,6 +1858,198 @@
         "title": "CustomRoleUpdate",
         "type": "object"
       },
+      "DiagnosisFavoriteRead": {
+        "properties": {
+          "concept": {
+            "$ref": "#/components/schemas/CodeableConcept"
+          },
+          "sortOrder": {
+            "title": "Sortorder",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "concept",
+          "sortOrder"
+        ],
+        "title": "DiagnosisFavoriteRead",
+        "type": "object"
+      },
+      "DiagnosisFavoriteReplace": {
+        "properties": {
+          "conceptPublicIds": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 40,
+            "title": "Conceptpublicids",
+            "type": "array"
+          }
+        },
+        "title": "DiagnosisFavoriteReplace",
+        "type": "object"
+      },
+      "DiagnosisRead": {
+        "properties": {
+          "concept": {
+            "$ref": "#/components/schemas/CodeableConcept"
+          },
+          "derivedFromPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Derivedfrompublicid"
+          },
+          "isPrimary": {
+            "title": "Isprimary",
+            "type": "boolean"
+          },
+          "laterality": {
+            "title": "Laterality",
+            "type": "string"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "onsetDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Onsetdate"
+          },
+          "promotedProblemPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Promotedproblempublicid"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "sortOrder": {
+            "title": "Sortorder",
+            "type": "integer"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "concept",
+          "laterality",
+          "status",
+          "isPrimary",
+          "sortOrder",
+          "source"
+        ],
+        "title": "DiagnosisRead",
+        "type": "object"
+      },
+      "DiagnosisWrite": {
+        "properties": {
+          "conceptPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Conceptpublicid",
+            "type": "string"
+          },
+          "isPrimary": {
+            "default": false,
+            "title": "Isprimary",
+            "type": "boolean"
+          },
+          "laterality": {
+            "$ref": "#/components/schemas/Laterality"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 400,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "onsetDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Onsetdate"
+          },
+          "sortOrder": {
+            "default": 0,
+            "maximum": 1000.0,
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "type": "integer"
+          },
+          "source": {
+            "default": "clinician",
+            "enum": [
+              "clinician",
+              "copy_forward"
+            ],
+            "title": "Source",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "suspected",
+              "confirmed",
+              "ruled_out"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "conceptPublicId",
+          "laterality",
+          "status"
+        ],
+        "title": "DiagnosisWrite",
+        "type": "object"
+      },
       "DocumentCreate": {
         "properties": {
           "locale": {
@@ -2621,6 +2813,14 @@
             "title": "Complaints",
             "type": "array"
           },
+          "diagnoses": {
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisWrite"
+            },
+            "maxItems": 30,
+            "title": "Diagnoses",
+            "type": "array"
+          },
           "encounterType": {
             "default": "consultation",
             "enum": [
@@ -2750,6 +2950,21 @@
             ],
             "title": "Complaints"
           },
+          "diagnoses": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/DiagnosisWrite"
+                },
+                "maxItems": 30,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diagnoses"
+          },
           "endedAt": {
             "anyOf": [
               {
@@ -2849,6 +3064,13 @@
               "$ref": "#/components/schemas/EncounterComplaintRead"
             },
             "title": "Complaints",
+            "type": "array"
+          },
+          "diagnoses": {
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisRead"
+            },
+            "title": "Diagnoses",
             "type": "array"
           },
           "encounterType": {
@@ -5015,6 +5237,26 @@
           "page"
         ],
         "title": "PageSchema[ConceptAdminRead]",
+        "type": "object"
+      },
+      "PageSchema_DiagnosisFavoriteRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DiagnosisFavoriteRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[DiagnosisFavoriteRead]",
         "type": "object"
       },
       "PageSchema_DocumentRead_": {
@@ -11291,6 +11533,154 @@
         ]
       }
     },
+    "/api/v1/diagnoses/favorites": {
+      "get": {
+        "operationId": "list_diagnosis_favorites_api_v1_diagnoses_favorites_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_DiagnosisFavoriteRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Diagnosis Favorites",
+        "tags": [
+          "diagnoses"
+        ]
+      },
+      "put": {
+        "operationId": "replace_diagnosis_favorites_api_v1_diagnoses_favorites_put",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiagnosisFavoriteReplace"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_DiagnosisFavoriteRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Replace Diagnosis Favorites",
+        "tags": [
+          "diagnoses"
+        ]
+      }
+    },
     "/api/v1/document-templates": {
       "get": {
         "operationId": "list_document_templates_api_v1_document_templates_get",
@@ -12940,6 +13330,94 @@
         "summary": "Copy Encounter Forward",
         "tags": [
           "encounters"
+        ]
+      }
+    },
+    "/api/v1/encounters/{encounter_id}/diagnoses/{diagnosis_id}/promote": {
+      "post": {
+        "operationId": "promote_diagnosis_api_v1_encounters__encounter_id__diagnoses__diagnosis_id__promote_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "encounter_id",
+            "required": true,
+            "schema": {
+              "title": "Encounter Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "diagnosis_id",
+            "required": true,
+            "schema": {
+              "title": "Diagnosis Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiagnosisRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Promote Diagnosis",
+        "tags": [
+          "diagnoses"
         ]
       }
     },

@@ -10,15 +10,21 @@
     "title": "Signed visit"
   },
   "assessment": {
+    "copied": "Copied from the previous visit",
+    "doctorFavorites": "Your favourites",
+    "duplicateSide": "That diagnosis is already recorded for this side.",
     "empty": "No diagnosis yet.",
     "favorite": "Favourite {code}",
     "favoriteMissing": "That favourite is not in the clinic terminology yet.",
+    "favoriteSaved": "Saved to your favourites.",
     "laterality": "Side",
     "line": "{display} — {laterality} — {status}",
     "note": "Assessment note",
     "promote": "Add to problem list",
+    "promoteFailed": "Save the diagnosis before adding it to the problem list.",
     "promoted": "On the problem list",
     "remove": "Remove diagnosis",
+    "saveFavorite": "Save as favourite",
     "search": "Diagnosis",
     "side": {
       "bilateral": "Bilateral",

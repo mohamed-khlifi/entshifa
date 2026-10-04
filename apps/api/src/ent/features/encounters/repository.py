@@ -15,6 +15,7 @@ from ent.core.repository.pagination import (
     normalize_pagination,
 )
 from ent.core.schemas.base import PaginationParams
+from ent.features.diagnoses.models import Diagnosis
 from ent.features.encounters.exceptions import (
     EncounterInvalidTransitionError,
     EncounterLockedError,
@@ -29,6 +30,9 @@ from ent.features.encounters.models import (
 
 _DETAIL = (
     selectinload(Encounter.complaints).selectinload(EncounterComplaint.concept),
+    selectinload(Encounter.diagnoses).selectinload(Diagnosis.concept),
+    selectinload(Encounter.diagnoses).selectinload(Diagnosis.promoted_problem),
+    selectinload(Encounter.diagnoses).selectinload(Diagnosis.derived_from),
     selectinload(Encounter.addenda).selectinload(EncounterAddendum.author),
     selectinload(Encounter.signatures).selectinload(EncounterSignature.signer),
     selectinload(Encounter.patient),

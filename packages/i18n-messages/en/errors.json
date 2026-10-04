@@ -28,6 +28,10 @@
     "template_syntax": "This template has a syntax error.",
     "undeclared_placeholder": "This template uses a field that was not declared."
   },
+  "diagnosis": {
+    "invalid_concept": "Choose a diagnosis from the clinic terminology.",
+    "not_found": "That diagnosis was not found."
+  },
   "encounter": {
     "already_signed": "This visit is signed. Add an addendum instead of editing it.",
     "invalid_transition": "This visit cannot change to that status.",

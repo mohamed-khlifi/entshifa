@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from sqlalchemy import (
     Boolean,
@@ -28,6 +28,9 @@ from ent.features.patients.models import Patient
 from ent.features.scheduling.models import Appointment
 from ent.features.terminology.models import Concept
 from ent.features.users.models import User
+
+if TYPE_CHECKING:
+    from ent.features.diagnoses.models import Diagnosis
 
 _LATERALITY_SQL = "'right','left','bilateral','midline','na'"
 
@@ -224,6 +227,12 @@ class Encounter(ClinicalRecordMixin, Base):
         order_by="EncounterSignature.signed_at",
         lazy="selectin",
     )
+    diagnoses: Mapped[list[Diagnosis]] = relationship(
+        "Diagnosis",
+        back_populates="encounter",
+        order_by="Diagnosis.sort_order",
+        lazy="selectin",
+    )
 
 
 class EncounterComplaint(ClinicalRecordMixin, Base):
@@ -342,3 +351,5 @@ install_encounter_guards(
     EncounterAddendum,
     EncounterSignature,
 )
+
+from ent.features.diagnoses.models import Diagnosis as Diagnosis  # noqa: E402, F401

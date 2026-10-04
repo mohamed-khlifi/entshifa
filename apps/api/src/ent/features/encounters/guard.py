@@ -11,6 +11,20 @@ from ent.features.encounters.constants import LOCKED_STATUSES
 from ent.features.encounters.exceptions import EncounterLockedError
 
 _AMEND_FIELDS = frozenset({"status", "version", "updated_by_id", "updated_at"})
+_DIAGNOSIS_LINK_FIELDS = frozenset(
+    {"promoted_to_problem_id", "updated_by_id", "updated_at", "version"}
+)
+
+
+def install_diagnosis_guards(diagnosis: type[Any]) -> None:
+    """Block visit-diagnosis writes once the encounter has left draft.
+
+    Linking a row to the problem list is allowed after signing. That column is
+    not part of the signed content hash.
+    """
+
+    event.listen(diagnosis, "before_insert", _guard_diagnosis_insert)
+    event.listen(diagnosis, "before_update", _guard_diagnosis_update)
 
 
 def install_encounter_guards(
@@ -62,3 +76,34 @@ def _guard_addendum_update(_mapper: Any, _connection: Any, target: Any) -> None:
 
 def _guard_signature_update(_mapper: Any, _connection: Any, target: Any) -> None:
     raise EncounterLockedError(public_id=getattr(target, "public_id", None))
+
+
+def _encounter_status(connection: Any, encounter_id: int) -> str | None:
+    status = connection.execute(
+        text("SELECT status FROM encounter WHERE id = :encounter_id"),
+        {"encounter_id": encounter_id},
+    ).scalar_one_or_none()
+    if status is None:
+        return None
+    return str(status)
+
+
+def _guard_diagnosis_insert(_mapper: Any, connection: Any, target: Any) -> None:
+    status = _encounter_status(connection, int(target.encounter_id))
+    if status is None or status == "draft":
+        return
+    raise EncounterLockedError(status=status)
+
+
+def _guard_diagnosis_update(mapper: Any, connection: Any, target: Any) -> None:
+    status = _encounter_status(connection, int(target.encounter_id))
+    if status is None or status == "draft":
+        return
+    changed = {
+        attr.key
+        for attr in mapper.column_attrs
+        if get_history(target, attr.key).has_changes()
+    }
+    if changed <= _DIAGNOSIS_LINK_FIELDS:
+        return
+    raise EncounterLockedError(status=status)

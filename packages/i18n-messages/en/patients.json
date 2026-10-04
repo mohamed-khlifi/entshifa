@@ -145,6 +145,8 @@
     "medications": "Medications",
     "flags": "Safety flags",
     "problems": "Problems",
+    "problemsActive": "Active",
+    "problemsResolved": "Resolved",
     "history": "History",
     "empty": "Nothing recorded.",
     "active": "Active",
@@ -172,6 +174,8 @@
     "diagnosis": "Diagnosis",
     "status": "Status",
     "laterality": "Side",
+    "onset": "Onset {date}",
+    "resolvedOn": "Resolved {date}",
     "addHistory": "Add history",
     "freeText": "Description",
     "historyNeedsText": "Enter a description or choose a coded concept."

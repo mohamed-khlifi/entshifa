@@ -10,15 +10,21 @@
     "title": "Visite signée"
   },
   "assessment": {
+    "copied": "Repris de la visite précédente",
+    "doctorFavorites": "Vos favoris",
+    "duplicateSide": "Ce diagnostic est déjà enregistré pour ce côté.",
     "empty": "Aucun diagnostic pour le moment.",
     "favorite": "Favori {code}",
     "favoriteMissing": "Ce favori n’est pas encore dans la terminologie de la clinique.",
+    "favoriteSaved": "Ajouté à vos favoris.",
     "laterality": "Côté",
     "line": "{display} — {laterality} — {status}",
     "note": "Note d’évaluation",
     "promote": "Ajouter à la liste des problèmes",
+    "promoteFailed": "Enregistrez le diagnostic avant de l’ajouter à la liste des problèmes.",
     "promoted": "Dans la liste des problèmes",
     "remove": "Retirer le diagnostic",
+    "saveFavorite": "Enregistrer comme favori",
     "search": "Diagnostic",
     "side": {
       "bilateral": "Bilatéral",

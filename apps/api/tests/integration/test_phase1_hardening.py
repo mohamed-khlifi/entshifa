@@ -13,6 +13,7 @@ from ent.features.patients.models import Patient
 from ent.main import create_app
 from ent.seeds.system import seed_system
 from ent.seeds.versions import (
+    ENCOUNTER_TEMPLATES_VERSION,
     PERMISSIONS_VERSION,
     TEMPLATES_VERSION,
     TERMINOLOGY_VERSION,
@@ -56,6 +57,7 @@ async def test_seed_system_records_each_dataset_once() -> None:
                             PERMISSIONS_VERSION,
                             TERMINOLOGY_VERSION,
                             TEMPLATES_VERSION,
+                            ENCOUNTER_TEMPLATES_VERSION,
                         )
                     )
                 )
@@ -69,6 +71,7 @@ async def test_seed_system_records_each_dataset_once() -> None:
     assert found[("permissions", PERMISSIONS_VERSION)] == 1
     assert found[("terminology", TERMINOLOGY_VERSION)] == 1
     assert found[("templates", TEMPLATES_VERSION)] == 1
+    assert found[("encounter_templates", ENCOUNTER_TEMPLATES_VERSION)] == 1
 
 
 @pytest.mark.integration

@@ -171,6 +171,8 @@ export const testIds = {
     alertOnlyHearingEar: testId("patients", "alert-only-hearing-ear"),
     alertOther: testId("patients", "alert-other"),
     chart: testId("patients", "chart"),
+    problemsActive: testId("patients", "chart", "problems-active"),
+    problemsResolved: testId("patients", "chart", "problems-resolved"),
     chartRemove: (section: string, publicId: string) =>
       publicIdTestId(`patients.chart.${section}.remove`, publicId),
     conflict: testId("patients", "conflict"),
@@ -384,6 +386,24 @@ export function encounterMapToggleTestId(mapId: string): string {
 
 export function encounterVisitTestId(publicId: string): string {
   return publicIdTestId("encounters.visit", publicId);
+}
+
+export function diagnosisRowTestId(
+  conceptPublicId: string,
+  laterality: string,
+): string {
+  return `${publicIdTestId("encounters.diagnosis", conceptPublicId)}.${laterality}`;
+}
+
+export function diagnosisSaveFavoriteTestId(
+  conceptPublicId: string,
+  laterality: string,
+): string {
+  return `${diagnosisRowTestId(conceptPublicId, laterality)}.save-favorite`;
+}
+
+export function diagnosisFavoriteTestId(conceptPublicId: string): string {
+  return publicIdTestId("encounters.diagnosis.favorite", conceptPublicId);
 }
 
 export function patientRowTestId(publicId: string): string {

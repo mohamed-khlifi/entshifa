@@ -8,7 +8,12 @@ from typing import Literal
 from ent.core.errors.exceptions import ValidationError
 from ent.core.schemas.base import PageMeta, PageSchema
 from ent.core.schemas.common import CodeableConcept
-from ent.engines.encounters.signing import ComplaintSnapshot, EncounterContent
+from ent.engines.encounters.signing import (
+    ComplaintSnapshot,
+    DiagnosisSnapshot,
+    EncounterContent,
+)
+from ent.features.diagnoses.mapping import to_diagnosis_read
 from ent.features.encounters.models import (
     Encounter,
     EncounterAddendum,
@@ -86,6 +91,17 @@ def content_from_encounter(encounter: Encounter) -> EncounterContent:
             )
             for row in active
         ),
+        diagnoses=tuple(
+            DiagnosisSnapshot(
+                concept_code=row.concept.code,
+                laterality=row.laterality,
+                status=row.status,
+                is_primary=bool(row.is_primary),
+                sort_order=int(row.sort_order),
+            )
+            for row in encounter.diagnoses
+            if row.deleted_at is None
+        ),
     )
 
 
@@ -127,6 +143,11 @@ def to_encounter_read(encounter: Encounter, labels: _LABELS) -> EncounterRead:
             previous.public_id if previous is not None else None
         ),
         complaints=complaints,
+        diagnoses=[
+            to_diagnosis_read(row, labels)
+            for row in encounter.diagnoses
+            if row.deleted_at is None
+        ],
         addenda=addenda,
         signatures=signatures,
         version=int(encounter.version),

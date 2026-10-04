@@ -2,7 +2,7 @@
 
 import { AlertTriangle, Pill, ShieldAlert } from "lucide-react";
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -49,7 +49,8 @@ import {
   problemStatusLabel,
   severityLabel,
 } from "../lib/labels";
-import type { PatientRead } from "@/lib/api/generated";
+import type { PatientProblemRead, PatientRead } from "@/lib/api/generated";
+import { formatDate } from "@/lib/i18n/format";
 import { Permission } from "@/lib/permissions";
 import { testIdProps, testIds } from "@/lib/test/test-id";
 import { usePermission } from "@/providers/permission-provider";
@@ -104,9 +105,21 @@ function lateralityLabel(
 
 const LATERALITY = ["right", "left", "bilateral", "midline", "na"] as const;
 
+function formatChartDate(value: string, locale: string): string {
+  const dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!dateOnly) {
+    return formatDate(value, locale);
+  }
+  const year = Number(dateOnly[1]);
+  const month = Number(dateOnly[2]);
+  const day = Number(dateOnly[3]);
+  return formatDate(new Date(year, month - 1, day), locale);
+}
+
 export function PatientChart({ patient }: { patient: PatientRead }) {
   const t = useTranslations("patients");
   const tForms = useTranslations("forms");
+  const locale = useLocale();
   const canWrite = usePermission(Permission.PATIENT_WRITE);
 
   const requireConceptSelection = () => {
@@ -619,38 +632,55 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
         {patient.problems.length === 0 ? (
           <p className="text-sm text-muted-foreground">{t("chart.empty")}</p>
         ) : (
-          <ul className={listClass}>
-            {patient.problems.map((row) => (
-              <PatientChartRow
-                key={row.publicId}
-                title={conceptDisplayText(row.diagnosis)}
-                badges={
-                  <>
-                    <ChartBadge tone={problemStatusTone(row.status)}>
-                      {problemStatusLabel(t, row.status)}
-                    </ChartBadge>
-                    <ChartBadge tone="neutral">
-                      {lateralityLabel(tForms, t, row.laterality)}
-                    </ChartBadge>
-                  </>
-                }
-                canWrite={canWrite}
-                removeLabel={t("chart.remove")}
-                removeTestId={testIds.patients.chartRemove(
-                  "problem",
-                  row.publicId,
-                )}
-                onRemove={() => {
-                  void deleteProblem
-                    .mutateAsync({
-                      patientId: patient.publicId,
-                      itemId: row.publicId,
-                    })
-                    .catch(() => undefined);
-                }}
-              />
-            ))}
-          </ul>
+          <>
+            <ProblemGroup
+              title={t("chart.problemsActive")}
+              testId={testIds.patients.problemsActive}
+              rows={patient.problems.filter(
+                (row) => row.status === "active" || row.status === "suspected",
+              )}
+              emptyLabel={t("chart.empty")}
+              locale={locale}
+              canWrite={canWrite}
+              removeLabel={t("chart.remove")}
+              onsetLabel={(date) => t("chart.onset", { date })}
+              resolvedLabel={(date) => t("chart.resolvedOn", { date })}
+              statusLabel={(status) => problemStatusLabel(t, status)}
+              sideLabel={(value) => lateralityLabel(tForms, t, value)}
+              onRemove={(itemId) => {
+                void deleteProblem
+                  .mutateAsync({
+                    patientId: patient.publicId,
+                    itemId,
+                  })
+                  .catch(() => undefined);
+              }}
+            />
+            <ProblemGroup
+              title={t("chart.problemsResolved")}
+              testId={testIds.patients.problemsResolved}
+              rows={patient.problems.filter(
+                (row) =>
+                  row.status === "resolved" || row.status === "ruled_out",
+              )}
+              emptyLabel={t("chart.empty")}
+              locale={locale}
+              canWrite={canWrite}
+              removeLabel={t("chart.remove")}
+              onsetLabel={(date) => t("chart.onset", { date })}
+              resolvedLabel={(date) => t("chart.resolvedOn", { date })}
+              statusLabel={(status) => problemStatusLabel(t, status)}
+              sideLabel={(value) => lateralityLabel(tForms, t, value)}
+              onRemove={(itemId) => {
+                void deleteProblem
+                  .mutateAsync({
+                    patientId: patient.publicId,
+                    itemId,
+                  })
+                  .catch(() => undefined);
+              }}
+            />
+          </>
         )}
         {canWrite ? (
           <form
@@ -681,7 +711,8 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
               className="sm:col-span-2"
               name="problemDiagnosis"
               label={t("chart.diagnosis")}
-              valueSetCode="tm.findings"
+              kind="diagnosis"
+              valueSetCode="ent.diagnoses"
               selectedId={diagnosisId}
               selectedDisplay={diagnosisDisplay}
               onSelect={(concept) => {
@@ -828,6 +859,83 @@ export function PatientChart({ patient }: { patient: PatientRead }) {
           </form>
         ) : null}
       </section>
+    </div>
+  );
+}
+
+function ProblemGroup({
+  title,
+  testId,
+  rows,
+  emptyLabel,
+  locale,
+  canWrite,
+  removeLabel,
+  onsetLabel,
+  resolvedLabel,
+  statusLabel,
+  sideLabel,
+  onRemove,
+}: {
+  title: string;
+  testId: string;
+  rows: readonly PatientProblemRead[];
+  emptyLabel: string;
+  locale: string;
+  canWrite: boolean;
+  removeLabel: string;
+  onsetLabel: (date: string) => string;
+  resolvedLabel: (date: string) => string;
+  statusLabel: (status: string) => string;
+  sideLabel: (value: string) => string;
+  onRemove: (itemId: string) => void;
+}) {
+  return (
+    <div className="space-y-2" {...testIdProps(testId)}>
+      <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+      {rows.length === 0 ? (
+        <p className="text-sm text-muted-foreground">{emptyLabel}</p>
+      ) : (
+        <ul className={listClass}>
+          {rows.map((row) => (
+            <PatientChartRow
+              key={row.publicId}
+              title={
+                <>
+                  {conceptDisplayText(row.diagnosis)}
+                  {row.onsetDate ? (
+                    <span className="mt-1 block text-xs font-normal text-muted-foreground">
+                      {onsetLabel(formatChartDate(row.onsetDate, locale))}
+                    </span>
+                  ) : null}
+                  {row.resolvedDate ? (
+                    <span className="block text-xs font-normal text-muted-foreground">
+                      {resolvedLabel(formatChartDate(row.resolvedDate, locale))}
+                    </span>
+                  ) : null}
+                </>
+              }
+              badges={
+                <>
+                  <ChartBadge tone={problemStatusTone(row.status)}>
+                    {statusLabel(row.status)}
+                  </ChartBadge>
+                  <ChartBadge tone="neutral">
+                    {sideLabel(row.laterality)}
+                  </ChartBadge>
+                </>
+              }
+              canWrite={canWrite}
+              removeLabel={removeLabel}
+              removeTestId={testIds.patients.chartRemove(
+                "problem",
+                row.publicId,
+              )}
+              onRemove={() => onRemove(row.publicId)}
+            />
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

@@ -10,15 +10,21 @@
     "title": "زيارة موقّعة"
   },
   "assessment": {
+    "copied": "منسوخ من الزيارة السابقة",
+    "doctorFavorites": "مفضّلاتك",
+    "duplicateSide": "هذا التشخيص مسجّل بالفعل لهذا الجانب.",
     "empty": "لا يوجد تشخيص بعد.",
     "favorite": "مفضّل {code}",
     "favoriteMissing": "هذا المفضّل غير موجود بعد في مصطلحات العيادة.",
+    "favoriteSaved": "أُضيف إلى مفضّلاتك.",
     "laterality": "الجانب",
     "line": "{display} — {laterality} — {status}",
     "note": "ملاحظة التقييم",
     "promote": "إضافة إلى قائمة المشكلات",
+    "promoteFailed": "احفظ التشخيص قبل إضافته إلى قائمة المشكلات.",
     "promoted": "في قائمة المشكلات",
     "remove": "إزالة التشخيص",
+    "saveFavorite": "حفظ كمفضّل",
     "search": "التشخيص",
     "side": {
       "bilateral": "ثنائي الجانب",

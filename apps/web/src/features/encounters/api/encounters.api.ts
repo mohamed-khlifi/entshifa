@@ -1,6 +1,8 @@
 import { apiFetch } from "@/lib/api/client";
 import type {
   ConceptSearchResponse,
+  DiagnosisRead,
+  PageSchemaDiagnosisFavoriteRead,
   EncounterAddendumCreate,
   EncounterCreate,
   EncounterPatch,
@@ -146,6 +148,40 @@ export function recordVisitObservations(
   return apiFetch<ObservationRead[]>(
     `/api/v1/observations/patient/${patientId}/batch`,
     { ...scope, method: "POST", body: JSON.stringify(body) },
+  );
+}
+
+export function promoteDiagnosis(
+  encounterId: string,
+  diagnosisId: string,
+  scope: Scope,
+): Promise<DiagnosisRead> {
+  return apiFetch<DiagnosisRead>(
+    `/api/v1/encounters/${encounterId}/diagnoses/${diagnosisId}/promote`,
+    { ...scope, method: "POST" },
+  );
+}
+
+export function listDiagnosisFavorites(
+  scope: Scope,
+): Promise<PageSchemaDiagnosisFavoriteRead> {
+  return apiFetch<PageSchemaDiagnosisFavoriteRead>(
+    "/api/v1/diagnoses/favorites",
+    scope,
+  );
+}
+
+export function replaceDiagnosisFavorites(
+  conceptPublicIds: readonly string[],
+  scope: Scope,
+): Promise<PageSchemaDiagnosisFavoriteRead> {
+  return apiFetch<PageSchemaDiagnosisFavoriteRead>(
+    "/api/v1/diagnoses/favorites",
+    {
+      ...scope,
+      method: "PUT",
+      body: JSON.stringify({ conceptPublicIds }),
+    },
   );
 }
 

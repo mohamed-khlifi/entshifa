@@ -6,6 +6,7 @@ from ent.core.audit.models import AccessLog, AuditLog
 from ent.features.attachments.models import Attachment, MediaVariant
 from ent.features.auth.models import Permission, Role, RolePermission
 from ent.features.clinics.models import Clinic, ReferenceDataVersion, Setting, Site
+from ent.features.diagnoses.models import Diagnosis, UserDiagnosisFavorite
 from ent.features.documents.models import (
     Document,
     DocumentRecipient,
@@ -62,6 +63,7 @@ __all__ = [
     "AuditLog",
     "Clinic",
     "CodeSystem",
+    "Diagnosis",
     "Document",
     "DocumentRecipient",
     "DocumentTemplate",
@@ -99,6 +101,7 @@ __all__ = [
     "User",
     "UserClinicRole",
     "UserInvitation",
+    "UserDiagnosisFavorite",
     "UserSession",
     "ValueSet",
     "ValueSetMember",
