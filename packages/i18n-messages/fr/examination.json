@@ -10,6 +10,7 @@
   "actions": {
     "save": "Enregistrer les constatations",
     "saved": "Constatations enregistrées.",
+    "needsSite": "Ajoutez un site de clinique avant d’enregistrer ces constatations.",
     "saveSnapshot": "Enregistrer le schéma",
     "snapshotSaved": "Schéma enregistré.",
     "notExamined": "Non examiné"
@@ -30,7 +31,7 @@
   },
   "encounter": {
     "label": "Consultation",
-    "empty": "Aucune consultation n’est disponible pour rattacher ces constatations.",
+    "empty": "L’enregistrement ouvre une consultation pour ces constatations.",
     "option": "{when} · {status}",
     "status": {
       "draft": "Brouillon",

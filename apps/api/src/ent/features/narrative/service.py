@@ -8,7 +8,7 @@ from ent.core.context import set_clinic_id, set_user_id
 from ent.core.errors.exceptions import ValidationError
 from ent.core.security.principal import CurrentUser
 from ent.engines.narrative.grammar import NARRATIVE_LOCALES
-from ent.engines.narrative.render import render_examination_narrative
+from ent.engines.narrative.render import render_examination_preview
 from ent.engines.narrative.types import NarrativeFinding
 from ent.features.clinics.repository import ClinicRepository
 from ent.features.narrative.schemas import (
@@ -64,7 +64,7 @@ class NarrativeService:
             )
             for item in body.findings
         ]
-        text = render_examination_narrative(prepared, locale=locale)
+        text = render_examination_preview(prepared, locale=locale)
         return NarrativeRenderRead(locale=locale, text=text)
 
 

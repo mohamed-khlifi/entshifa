@@ -139,9 +139,11 @@ describe("AnatomicalMap", () => {
     expect(
       view.getByTestId(testIds.examination.map.findingPicker),
     ).toBeTruthy();
-    fireEvent.click(
-      view.getByTestId(examinationFindingTestId("FIND.CANAL.WAX")),
+    const finding = view.getByTestId(
+      examinationFindingTestId("FIND.CANAL.WAX"),
     );
+    expect(fireEvent.mouseDown(finding)).toBe(false);
+    fireEvent.click(finding);
     expect(onSelectFinding).toHaveBeenCalledWith(
       expect.objectContaining({
         id: "tm.canal",
@@ -149,6 +151,27 @@ describe("AnatomicalMap", () => {
       }),
       "FIND.CANAL.WAX",
     );
+  });
+});
+
+describe("AnatomicalMap focus", () => {
+  it("does not move focus when a mark changes", () => {
+    const focus = vi.spyOn(SVGElement.prototype, "focus");
+    const view = renderMap();
+    expect(focus).toHaveBeenCalledWith({ preventScroll: true });
+    focus.mockClear();
+    view.rerender(
+      wrap({
+        ...view.props,
+        marks: {
+          [regionStorageKey("right", "tm.canal")]: markNormal(
+            tympanicMembraneMap.regions[0]!,
+          ),
+        },
+      }),
+    );
+    expect(focus).not.toHaveBeenCalled();
+    focus.mockRestore();
   });
 });
 

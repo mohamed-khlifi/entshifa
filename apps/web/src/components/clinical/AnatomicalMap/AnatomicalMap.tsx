@@ -61,6 +61,7 @@ export function AnatomicalMap({
   const [fetched, setFetched] = useState("");
   const [focusIndex, setFocusIndex] = useState(0);
   const [pickerRegionId, setPickerRegionId] = useState<string | null>(null);
+  const focusIntentRef = useRef<"mount" | "keyboard" | "none">("mount");
   const labelId = useId();
   const markup = svgMarkup ?? fetched;
 
@@ -110,17 +111,9 @@ export function AnatomicalMap({
       if (!(node instanceof SVGElement)) {
         return;
       }
-      const laterality = effectiveLaterality(region, selectedSide);
-      const mark = marks[regionStorageKey(laterality, region.id)];
       node.setAttribute("role", "button");
       node.setAttribute("data-region-id", region.id);
       node.setAttribute("data-testid", examinationRegionTestId(region.id));
-      node.setAttribute("data-state", mark?.status ?? "not_examined");
-      node.setAttribute("tabindex", index === focusIndex ? "0" : "-1");
-      node.setAttribute(
-        "aria-label",
-        examinationRegionLabel(t, region.labelKey),
-      );
       const onClick = () => {
         handlersRef.current?.activateRegion(region);
       };
@@ -143,13 +136,6 @@ export function AnatomicalMap({
         node.removeEventListener("contextmenu", onContextMenu);
       });
     });
-    const current = definition.regions[focusIndex];
-    if (current) {
-      const focused = host.querySelector(`#${current.pathId}`);
-      if (focused instanceof SVGElement) {
-        focused.focus();
-      }
-    }
     return () => {
       for (const cleanup of cleanups) {
         cleanup();
@@ -158,6 +144,36 @@ export function AnatomicalMap({
         host.removeChild(host.firstChild);
       }
     };
+  }, [markup, definition]);
+
+  useLayoutEffect(() => {
+    const host = hostRef.current;
+    if (!host) {
+      return;
+    }
+    definition.regions.forEach((region, index) => {
+      const node = host.querySelector(`#${region.pathId}`);
+      if (!(node instanceof SVGElement)) {
+        return;
+      }
+      const laterality = effectiveLaterality(region, selectedSide);
+      const mark = marks[regionStorageKey(laterality, region.id)];
+      node.setAttribute("data-state", mark?.status ?? "not_examined");
+      node.setAttribute("tabindex", index === focusIndex ? "0" : "-1");
+      node.setAttribute(
+        "aria-label",
+        examinationRegionLabel(t, region.labelKey),
+      );
+    });
+    if (focusIntentRef.current === "none") {
+      return;
+    }
+    const current = definition.regions[focusIndex];
+    const focused = current ? host.querySelector(`#${current.pathId}`) : null;
+    if (focused instanceof SVGElement) {
+      focused.focus({ preventScroll: true });
+      focusIntentRef.current = "none";
+    }
   }, [markup, definition, marks, selectedSide, focusIndex, t]);
 
   function activateRegion(region: MapRegionDefinition) {
@@ -174,11 +190,13 @@ export function AnatomicalMap({
   function handleRegionKey(event: KeyboardEvent, index: number) {
     if (event.key === "ArrowDown" || event.key === "ArrowRight") {
       event.preventDefault();
+      focusIntentRef.current = "keyboard";
       setFocusIndex((index + 1) % definition.regions.length);
       return;
     }
     if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
       event.preventDefault();
+      focusIntentRef.current = "keyboard";
       setFocusIndex(
         (index - 1 + definition.regions.length) % definition.regions.length,
       );
@@ -281,6 +299,7 @@ export function AnatomicalMap({
                 key={finding.code}
                 type="button"
                 variant="secondary"
+                onMouseDown={(event) => event.preventDefault()}
                 onClick={() => {
                   onSelectFinding(pickerRegion, finding.code);
                   setPickerRegionId(null);
@@ -294,6 +313,7 @@ export function AnatomicalMap({
           <Button
             type="button"
             variant="ghost"
+            onMouseDown={(event) => event.preventDefault()}
             onClick={() => {
               onMarkNotExamined(pickerRegion);
               setPickerRegionId(null);

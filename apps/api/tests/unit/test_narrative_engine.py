@@ -8,6 +8,7 @@ from ent.engines.narrative.render import (
     VERSION,
     NarrativeLocaleError,
     render_examination_narrative,
+    render_examination_preview,
 )
 from ent.engines.narrative.types import NarrativeFinding
 
@@ -32,7 +33,7 @@ def _finding(
 
 
 def test_version_is_recorded() -> None:
-    assert VERSION == "1.0.0"
+    assert VERSION == "1.1.0"
 
 
 def test_right_precedes_left_and_not_examined_is_omitted() -> None:
@@ -166,6 +167,78 @@ def test_empty_template_uses_body_site_and_blank_phrases_are_omitted() -> None:
         locale="en",
     )
     assert text == "Right — Septum. Midline — Tongue."
+
+
+def test_preview_lists_each_finding_under_its_side() -> None:
+    text = render_examination_preview(
+        [
+            _finding(
+                laterality="left",
+                status="normal",
+                sort_index=0,
+                body_site="Tympanic membrane",
+                template="{{bodySite}}: normal",
+                code="FIND.TM.NORMAL",
+            ),
+            _finding(
+                laterality="right",
+                status="not_examined",
+                sort_index=0,
+                body_site="External auditory canal",
+                template="{{bodySite}}: normal",
+            ),
+            _finding(
+                laterality="right",
+                status="normal",
+                sort_index=1,
+                body_site="Anterosuperior quadrant",
+                template="{{bodySite}}: normal",
+                code="FIND.TM.AS.NORMAL",
+            ),
+            _finding(
+                laterality="right",
+                status="abnormal",
+                sort_index=3,
+                body_site="Anteroinferior quadrant",
+                template="{{bodySite}}: perforation",
+                code="FIND.TM.PERFORATION",
+            ),
+            _finding(
+                laterality="custom",
+                status="abnormal",
+                sort_index=0,
+                body_site="Septum",
+                template="   ",
+                code="FIND.NOSE.SEPTUM",
+            ),
+            _finding(
+                laterality="blank",
+                status="abnormal",
+                sort_index=0,
+                body_site="",
+                template="{{missing}}",
+                code="FIND.BLANK",
+            ),
+        ],
+        locale="en",
+    )
+    assert text == (
+        "Right\n"
+        "Anteroinferior quadrant: perforation\n"
+        "Anterosuperior quadrant: normal\n"
+        "\n"
+        "Left\n"
+        "Tympanic membrane: normal\n"
+        "\n"
+        "custom\n"
+        "Septum"
+    )
+
+
+def test_preview_rejects_an_unknown_locale() -> None:
+    with pytest.raises(NarrativeLocaleError) as caught:
+        render_examination_preview([], locale="de")
+    assert caught.value.locale == "de"
 
 
 def test_three_negatives_use_the_list_separator_and_final_joiner() -> None:

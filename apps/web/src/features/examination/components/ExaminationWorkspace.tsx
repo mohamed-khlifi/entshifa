@@ -7,6 +7,8 @@ import { toast } from "sonner";
 import { AnatomicalMap } from "@/components/clinical/AnatomicalMap/AnatomicalMap";
 import { Button } from "@/components/ui/button";
 import {
+  useCreateExaminationEncounter,
+  useExaminationSites,
   useExaminationValueSets,
   useNarrativePreview,
   usePatientEncounters,
@@ -15,11 +17,12 @@ import {
 } from "../hooks/use-examination";
 import { anatomicalMaps } from "@/lib/anatomy";
 import {
-  markFinding,
+  markFromFinding,
   markNormal,
   markNotExamined,
   regionStorageKey,
   effectiveLaterality,
+  dirtyMarks,
   toNarrativeDrafts,
   toObservationCreates,
 } from "@/lib/anatomy/examination-state";
@@ -72,6 +75,16 @@ export function ExaminationWorkspace({ patientId }: { patientId: string }) {
   );
   const save = useRecordObservations(patientId);
   const snapshot = useRecordSnapshot(patientId);
+  const sites = useExaminationSites();
+  const createEncounter = useCreateExaminationEncounter(patientId);
+  const hasFindings =
+    dirtyMarks(definition, mapState.side, mapState.marks).length > 0;
+  const writing =
+    save.isPending || snapshot.isPending || createEncounter.isPending;
+  const canAttach =
+    selectedEncounter?.status === "draft" ||
+    rows.some((row) => row.status === "draft") ||
+    (sites.data?.items.length ?? 0) > 0;
 
   const findingsByValueSet = useMemo(() => {
     const grouped: Record<string, MapFindingOption[]> = {};
@@ -89,6 +102,88 @@ export function ExaminationWorkspace({ patientId }: { patientId: string }) {
 
   function updateMap(next: MapState) {
     setByMap((current) => ({ ...current, [definition.id]: next }));
+  }
+
+  async function encounterForWrite(): Promise<string | null> {
+    if (selectedEncounter?.status === "draft") {
+      return selectedEncounter.publicId;
+    }
+    const draft = rows.find((row) => row.status === "draft");
+    if (draft) {
+      setEncounterId(draft.publicId);
+      return draft.publicId;
+    }
+    const site =
+      sites.data?.items.find((item) => item.isPrimary) ?? sites.data?.items[0];
+    if (!site) {
+      toast.error(t("actions.needsSite"));
+      return null;
+    }
+    const created = await createEncounter.mutateAsync({
+      patientPublicId: patientId,
+      sitePublicId: site.publicId,
+      encounterType: "consultation",
+      startedAt: new Date().toISOString(),
+    });
+    setEncounterId(created.publicId);
+    return created.publicId;
+  }
+
+  async function handleSave() {
+    if (!hasFindings) {
+      return;
+    }
+    try {
+      const encounterPublicId = await encounterForWrite();
+      if (!encounterPublicId) {
+        return;
+      }
+      save.mutate(
+        {
+          encounterPublicId,
+          observations: toObservationCreates(
+            definition,
+            mapState.side,
+            mapState.marks,
+            new Date().toISOString(),
+          ),
+        },
+        {
+          onSuccess: () => {
+            toast.success(t("actions.saved"));
+          },
+        },
+      );
+    } catch {
+      return;
+    }
+  }
+
+  async function handleSnapshot() {
+    let encounterPublicId: string | null = null;
+    if (canAttach) {
+      try {
+        encounterPublicId = await encounterForWrite();
+      } catch {
+        return;
+      }
+    }
+    snapshot.mutate(
+      {
+        encounterPublicId,
+        mapId: definition.id,
+        laterality: mapState.side,
+        payload: {
+          side: mapState.side,
+          marks: mapState.marks,
+        } as unknown as ExaminationSnapshotCreate["payload"],
+      },
+      {
+        onSuccess: () => {
+          toast.success(t("actions.snapshotSaved"));
+        },
+      },
+    );
   }
 
   function putMark(region: MapRegionDefinition, mark: RegionMark) {
@@ -162,47 +257,22 @@ export function ExaminationWorkspace({ patientId }: { patientId: string }) {
           onSelectedSideChange={(side) => updateMap({ ...mapState, side })}
           onMarkNormal={(region) => putMark(region, markNormal(region))}
           onSelectFinding={(region, conceptCode) =>
-            putMark(region, markFinding(conceptCode))
+            putMark(region, markFromFinding(region, conceptCode))
           }
           onMarkNotExamined={(region) => putMark(region, markNotExamined())}
         />
         <section className="space-y-3 rounded-xl border border-border bg-card p-4">
           <h2 className="text-sm font-medium">{t("narrative.title")}</h2>
-          <p
-            className="min-h-16 text-sm leading-6"
-            dir="ltr"
-            {...testIdProps(testIds.examination.narrative)}
-          >
-            {narrative.data?.text || t("narrative.empty")}
-          </p>
+          <NarrativePreview
+            text={narrative.data?.text ?? ""}
+            empty={t("narrative.empty")}
+          />
           <div className="flex flex-wrap gap-2">
             <Button
               type="button"
-              disabled={!activeEncounterId || save.isPending}
+              disabled={!hasFindings || writing || !canAttach}
               onClick={() => {
-                if (!activeEncounterId) {
-                  return;
-                }
-                const observations = toObservationCreates(
-                  definition,
-                  mapState.side,
-                  mapState.marks,
-                  new Date().toISOString(),
-                );
-                if (observations.length === 0) {
-                  return;
-                }
-                save.mutate(
-                  {
-                    encounterPublicId: activeEncounterId,
-                    observations,
-                  },
-                  {
-                    onSuccess: () => {
-                      toast.success(t("actions.saved"));
-                    },
-                  },
-                );
+                void handleSave();
               }}
               {...testIdProps(testIds.examination.save)}
             >
@@ -211,27 +281,9 @@ export function ExaminationWorkspace({ patientId }: { patientId: string }) {
             <Button
               type="button"
               variant="secondary"
-              disabled={!activeEncounterId || snapshot.isPending}
+              disabled={writing}
               onClick={() => {
-                if (!activeEncounterId) {
-                  return;
-                }
-                snapshot.mutate(
-                  {
-                    encounterPublicId: activeEncounterId,
-                    mapId: definition.id,
-                    laterality: mapState.side,
-                    payload: {
-                      side: mapState.side,
-                      marks: mapState.marks,
-                    } as unknown as ExaminationSnapshotCreate["payload"],
-                  },
-                  {
-                    onSuccess: () => {
-                      toast.success(t("actions.snapshotSaved"));
-                    },
-                  },
-                );
+                void handleSnapshot();
               }}
               {...testIdProps(testIds.examination.snapshot)}
             >
@@ -240,6 +292,42 @@ export function ExaminationWorkspace({ patientId }: { patientId: string }) {
           </div>
         </section>
       </div>
+    </div>
+  );
+}
+
+function NarrativePreview({ text, empty }: { text: string; empty: string }) {
+  const blocks = text
+    .split("\n\n")
+    .map((block) => block.split("\n").filter((line) => line.length > 0))
+    .filter((lines) => lines.length > 0);
+  if (blocks.length === 0) {
+    return (
+      <p
+        className="min-h-16 text-sm leading-6 text-muted-foreground"
+        {...testIdProps(testIds.examination.narrative)}
+      >
+        {empty}
+      </p>
+    );
+  }
+  return (
+    <div
+      className="min-h-16 space-y-4"
+      {...testIdProps(testIds.examination.narrative)}
+    >
+      {blocks.map((lines, blockIndex) => (
+        <div key={`${lines[0]}-${blockIndex}`} className="space-y-1">
+          <p className="text-sm font-medium">{lines[0]}</p>
+          <ul className="list-disc space-y-1 ps-5">
+            {lines.slice(1).map((line, lineIndex) => (
+              <li key={`${line}-${lineIndex}`} className="text-sm leading-6">
+                {line}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   );
 }

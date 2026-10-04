@@ -10,6 +10,7 @@
   "actions": {
     "save": "Save findings",
     "saved": "Findings saved.",
+    "needsSite": "Add a clinic site before saving these findings.",
     "saveSnapshot": "Save map snapshot",
     "snapshotSaved": "Map snapshot saved.",
     "notExamined": "Not examined"
@@ -30,7 +31,7 @@
   },
   "encounter": {
     "label": "Encounter",
-    "empty": "There is no encounter to attach these findings to yet.",
+    "empty": "Saving starts a visit for these findings.",
     "option": "{when} · {status}",
     "status": {
       "draft": "Draft",

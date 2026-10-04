@@ -8,11 +8,13 @@ from collections.abc import Sequence
 from ent.engines.narrative.grammar import GRAMMAR, NarrativeGrammar
 from ent.engines.narrative.types import NarrativeFinding
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 REFERENCE = (
     "Feature specification §6.8 and architecture §21: right before left, "
-    "positives before negatives within a side, negatives joined as one group, "
-    "not-examined omitted. Phrase templates are data on the finding concept."
+    "positives before negatives within a side, not-examined omitted. "
+    "The report sentence groups negatives; the examination preview lists "
+    "one finding per line under its side. Phrase templates are data on "
+    "the finding concept."
 )
 
 _SIDE_RANK = {"right": 0, "midline": 1, "na": 2, "bilateral": 3, "left": 4}
@@ -34,12 +36,46 @@ def render_examination_narrative(
 ) -> str:
     """Return one paragraph. Empty when every finding is not examined."""
 
+    grammar = _grammar(locale)
+    sentences: list[str] = []
+    for side, group in _grouped(findings):
+        clause = _side_clause(group, grammar)
+        if clause:
+            side_label = grammar.side.get(side, side)
+            sentences.append(grammar.sentence.format(side=side_label, clauses=clause))
+    return " ".join(sentences)
+
+
+def render_examination_preview(
+    findings: Sequence[NarrativeFinding],
+    *,
+    locale: str,
+) -> str:
+    """Return one finding per line, grouped under each side."""
+
+    grammar = _grammar(locale)
+    blocks: list[str] = []
+    for side, group in _grouped(findings):
+        lines = [line for line in (_phrase(item) for item in group) if line]
+        if not lines:
+            continue
+        blocks.append("\n".join([grammar.side.get(side, side), *lines]))
+    return "\n\n".join(blocks)
+
+
+def _grammar(locale: str) -> NarrativeGrammar:
     grammar = GRAMMAR.get(locale)
     if grammar is None:
         raise NarrativeLocaleError(locale)
+    return grammar
+
+
+def _grouped(
+    findings: Sequence[NarrativeFinding],
+) -> list[tuple[str, list[NarrativeFinding]]]:
     visible = [item for item in findings if item.status != "not_examined"]
     ordered = sorted(visible, key=_sort_key)
-    sentences: list[str] = []
+    groups: list[tuple[str, list[NarrativeFinding]]] = []
     index = 0
     while index < len(ordered):
         side = ordered[index].laterality
@@ -47,11 +83,8 @@ def render_examination_narrative(
         while index < len(ordered) and ordered[index].laterality == side:
             group.append(ordered[index])
             index += 1
-        clause = _side_clause(group, grammar)
-        if clause:
-            side_label = grammar.side.get(side, side)
-            sentences.append(grammar.sentence.format(side=side_label, clauses=clause))
-    return " ".join(sentences)
+        groups.append((side, group))
+    return groups
 
 
 def _sort_key(item: NarrativeFinding) -> tuple[int, int, int, str]:

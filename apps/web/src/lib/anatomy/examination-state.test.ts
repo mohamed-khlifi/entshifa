@@ -3,12 +3,31 @@ import { describe, expect, it } from "vitest";
 import { oralCavityMap } from "@/lib/anatomy/oral-cavity.map";
 import {
   markFinding,
+  markFromFinding,
   markNormal,
   regionStorageKey,
   toObservationCreates,
 } from "@/lib/anatomy/examination-state";
 
 const at = "2026-06-01T09:00:00.000Z";
+
+describe("markFromFinding", () => {
+  it("records the normal concept as normal and any other concept as abnormal", () => {
+    const tonsil = oralCavityMap.regions.find(
+      (region) => region.id === "oral.tonsil",
+    );
+    expect(tonsil).toBeDefined();
+    if (!tonsil) {
+      return;
+    }
+    expect(markFromFinding(tonsil, tonsil.defaultNormalCode).status).toBe(
+      "normal",
+    );
+    expect(markFromFinding(tonsil, "FIND.TONSIL.BRODSKY_2").status).toBe(
+      "abnormal",
+    );
+  });
+});
 
 describe("toObservationCreates", () => {
   it("writes a tonsil grade on the selected side", () => {

@@ -1,5 +1,6 @@
 import { apiFetch } from "@/lib/api/client";
 import type {
+  EncounterCreate,
   EncounterRead,
   ExaminationSnapshotCreate,
   ExaminationSnapshotRead,
@@ -8,10 +9,28 @@ import type {
   ObservationBatchCreate,
   ObservationRead,
   PageSchemaEncounterRead,
+  PageSchemaSiteRead,
   ValueSetRead,
 } from "@/lib/api/generated";
 
 type Scope = { locale: string; clinicPublicId: string };
+
+export function fetchExaminationSites(
+  scope: Scope,
+): Promise<PageSchemaSiteRead> {
+  return apiFetch<PageSchemaSiteRead>("/api/v1/sites?limit=20&offset=0", scope);
+}
+
+export function createExaminationEncounter(
+  body: EncounterCreate,
+  scope: Scope,
+): Promise<EncounterRead> {
+  return apiFetch<EncounterRead>("/api/v1/encounters", {
+    ...scope,
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
 
 export function fetchPatientEncounters(
   patientId: string,

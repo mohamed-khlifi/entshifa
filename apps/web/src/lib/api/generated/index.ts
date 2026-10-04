@@ -140,5 +140,6 @@ export type ObservationBatchCreate = Schemas["ObservationBatchCreate"];
 export type ObservationRead = Schemas["ObservationRead"];
 export type ExaminationSnapshotCreate = Schemas["ExaminationSnapshotCreate"];
 export type ExaminationSnapshotRead = Schemas["ExaminationSnapshotRead"];
+export type EncounterCreate = Schemas["EncounterCreate"];
 export type EncounterRead = Schemas["EncounterRead"];
 export type PageSchemaEncounterRead = Schemas["PageSchema_EncounterRead_"];

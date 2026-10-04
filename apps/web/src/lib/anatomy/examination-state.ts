@@ -47,6 +47,16 @@ export function markFinding(conceptCode: string): RegionMark {
   };
 }
 
+export function markFromFinding(
+  region: MapRegionDefinition,
+  conceptCode: string,
+): RegionMark {
+  if (conceptCode === region.defaultNormalCode) {
+    return markNormal(region);
+  }
+  return markFinding(conceptCode);
+}
+
 export function markNotExamined(): RegionMark {
   return {
     status: "not_examined",

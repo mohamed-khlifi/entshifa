@@ -10,6 +10,8 @@ import { useLocale, useTranslations } from "next-intl";
 import { toast } from "sonner";
 
 import {
+  createExaminationEncounter,
+  fetchExaminationSites,
   fetchExaminationValueSet,
   fetchPatientEncounters,
   recordExaminationSnapshot,
@@ -17,6 +19,7 @@ import {
   renderNarrative,
 } from "../api/examination.api";
 import type {
+  EncounterCreate,
   ExaminationSnapshotCreate,
   NarrativeRenderRequest,
   ObservationBatchCreate,
@@ -48,6 +51,39 @@ function useExaminationErrorToast(): (error: unknown) => void {
         : tErrors("generic");
     toast.error(message);
   };
+}
+
+export function useExaminationSites() {
+  const scope = useScope();
+  return useQuery({
+    queryKey: queryKeys.clinics.sites({ limit: 20 }),
+    queryFn: () =>
+      fetchExaminationSites({
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    enabled: scope.enabled,
+    staleTime: 300_000,
+  });
+}
+
+export function useCreateExaminationEncounter(patientId: string) {
+  const scope = useScope();
+  const toastError = useExaminationErrorToast();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (body: EncounterCreate) =>
+      createExaminationEncounter(body, {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.examination.encounters(patientId),
+      });
+    },
+    onError: toastError,
+  });
 }
 
 export function usePatientEncounters(patientId: string) {

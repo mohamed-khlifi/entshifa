@@ -87,8 +87,11 @@ async def test_map_value_sets_and_narrative_order() -> None:
         body = rendered.json()
         assert body["locale"] == "en"
         assert body["text"] == (
-            "Right — Anteroinferior quadrant: perforation. "
-            "Left — Anterosuperior quadrant: normal."
+            "Right\n"
+            "Anteroinferior quadrant: perforation\n"
+            "\n"
+            "Left\n"
+            "Anterosuperior quadrant: normal"
         )
 
         created = await client.post(
