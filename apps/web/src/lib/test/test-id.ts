@@ -86,6 +86,7 @@ export const testIds = {
   settings: {
     securityRoot: testId("settings", "security-root"),
     mfaEnroll: testId("settings", "mfa-enroll"),
+    mfaQr: testId("settings", "mfa-qr"),
     mfaConfirmCode: testId("settings", "mfa-confirm-code"),
     mfaConfirmSubmit: testId("settings", "mfa-confirm-submit"),
     mfaDisablePassword: testId("settings", "mfa-disable-password"),

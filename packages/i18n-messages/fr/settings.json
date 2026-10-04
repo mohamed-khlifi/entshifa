@@ -8,6 +8,7 @@
     "mfaDisabled": "L'authentification à deux facteurs n'est pas activée.",
     "enroll": "Configurer",
     "scanQr": "Scannez le code QR, puis saisissez le code de vérification.",
+    "qrAlt": "Code QR de l'application d'authentification",
     "secretLabel": "Clé manuelle",
     "confirmCode": "Code de vérification",
     "confirmSubmit": "Activer",

@@ -1,7 +1,8 @@
 "use client";
 
 import { useLocale, useTranslations } from "next-intl";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import QRCode from "qrcode";
 
 import { confirmMfa, disableMfa, enrollMfa, useMeQuery } from "@/features/auth";
 import { Button } from "@/components/ui/button";
@@ -140,9 +141,7 @@ export function MfaSecurityPanel() {
         {enroll ? (
           <div className="space-y-4 rounded-lg border border-border bg-muted/30 p-4">
             <p className="text-sm">{t("security.scanQr")}</p>
-            <p className="break-all font-mono text-xs text-muted-foreground">
-              {enroll.provisioningUri}
-            </p>
+            <AuthenticatorQr value={enroll.provisioningUri} />
             <div className="space-y-2">
               <Label>{t("security.secretLabel")}</Label>
               <p className="font-mono text-sm">{enroll.secret}</p>
@@ -208,5 +207,65 @@ export function MfaSecurityPanel() {
         ) : null}
       </CardContent>
     </Card>
+  );
+}
+
+function AuthenticatorQr({ value }: { value: string }) {
+  const t = useTranslations("settings");
+  const [src, setSrc] = useState<string | null>(null);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    setSrc(null);
+    setFailed(false);
+    void QRCode.toDataURL(value, {
+      margin: 1,
+      width: 220,
+      errorCorrectionLevel: "M",
+      color: { dark: "#111827", light: "#ffffff" },
+    })
+      .then((url) => {
+        if (active) {
+          setSrc(url);
+        }
+      })
+      .catch(() => {
+        if (active) {
+          setFailed(true);
+        }
+      });
+    return () => {
+      active = false;
+    };
+  }, [value]);
+
+  if (failed) {
+    return (
+      <p className="break-all font-mono text-xs text-muted-foreground">
+        {value}
+      </p>
+    );
+  }
+
+  return (
+    <div className="flex justify-center">
+      <div className="rounded-2xl border border-border bg-white p-3 shadow-sm">
+        {src ? (
+          // Drawn in the browser from the setup link. The secret is not sent out.
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={src}
+            width={220}
+            height={220}
+            alt={t("security.qrAlt")}
+            className="h-[220px] w-[220px]"
+            {...testIdProps(testIds.settings.mfaQr)}
+          />
+        ) : (
+          <div className="h-[220px] w-[220px] animate-pulse rounded-lg bg-muted" />
+        )}
+      </div>
+    </div>
   );
 }

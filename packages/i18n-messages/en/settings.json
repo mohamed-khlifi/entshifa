@@ -8,6 +8,7 @@
     "mfaDisabled": "Two-factor authentication is not enabled.",
     "enroll": "Set up authenticator",
     "scanQr": "Scan this QR code with your authenticator app, then enter the verification code.",
+    "qrAlt": "Authenticator QR code",
     "secretLabel": "Manual entry key",
     "confirmCode": "Verification code",
     "confirmSubmit": "Confirm and enable",
