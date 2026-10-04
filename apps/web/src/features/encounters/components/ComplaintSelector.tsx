@@ -6,6 +6,7 @@ import { useWatch } from "react-hook-form";
 import { TextField } from "@/components/forms/TextField";
 import {
   encounterComplaintTestId,
+  encounterMakePrimaryTestId,
   encounterRegionTestId,
   testIdProps,
   testIds,
@@ -93,6 +94,7 @@ export function ComplaintSelector({
                         disabled={disabled}
                         className="text-xs text-primary underline-offset-2 hover:underline"
                         onClick={() => onMakePrimary(item.code)}
+                        {...testIdProps(encounterMakePrimaryTestId(item.code))}
                       >
                         {t("complaints.makePrimary")}
                       </button>

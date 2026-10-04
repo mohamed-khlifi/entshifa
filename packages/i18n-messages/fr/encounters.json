@@ -113,6 +113,7 @@
   "plan": {
     "add": "Ajouter un élément",
     "addFollowUp": "Suivi : {days, plural, one {# jour} other {# jours}}",
+    "followUpDetail": "{days, plural, one {# jour} other {# jours}}",
     "detail": "Détail",
     "empty": "Aucun élément de plan.",
     "kind": "Élément du plan",

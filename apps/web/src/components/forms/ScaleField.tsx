@@ -58,7 +58,10 @@ export function ScaleField<T extends FieldValues>({
             id={groupId}
             role="radiogroup"
             aria-invalid={fieldState.invalid}
-            className="flex flex-wrap gap-1.5"
+            className="grid gap-1"
+            style={{
+              gridTemplateColumns: `repeat(${values.length}, minmax(0, 1fr))`,
+            }}
             {...testIdProps(groupId)}
           >
             {values.map((value) => {
@@ -74,7 +77,7 @@ export function ScaleField<T extends FieldValues>({
                   key={value}
                   htmlFor={optionId}
                   className={cn(
-                    "inline-flex size-9 cursor-pointer items-center justify-center rounded-lg border text-sm font-medium transition-colors",
+                    "inline-flex h-9 w-full min-w-0 cursor-pointer items-center justify-center rounded-lg border text-sm font-medium transition-colors",
                     selected
                       ? "border-primary bg-primary text-primary-foreground"
                       : "border-input bg-card hover:bg-accent/40",

@@ -356,6 +356,10 @@ export function encounterComplaintTestId(code: string): string {
   return testId("encounters", "complaint", examinationToken(code));
 }
 
+export function encounterMakePrimaryTestId(code: string): string {
+  return testId("encounters", "make-primary", examinationToken(code));
+}
+
 export function encounterRedFlagTestId(flagId: string): string {
   return testId("encounters", "red-flag", examinationToken(flagId));
 }

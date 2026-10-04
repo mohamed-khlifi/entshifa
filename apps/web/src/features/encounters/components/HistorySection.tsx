@@ -83,6 +83,7 @@ export function HistorySection({ fields, disabled }: HistorySectionProps) {
           name="severity"
           label={t("history.severity")}
           disabled={disabled}
+          className="sm:col-span-2"
         />
         <TextField
           name="triggers"

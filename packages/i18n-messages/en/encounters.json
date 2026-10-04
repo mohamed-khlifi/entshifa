@@ -113,6 +113,7 @@
   "plan": {
     "add": "Add plan item",
     "addFollowUp": "Follow-up: {days, plural, one {# day} other {# days}}",
+    "followUpDetail": "{days, plural, one {# day} other {# days}}",
     "detail": "Detail",
     "empty": "No plan items yet.",
     "kind": "Plan item",

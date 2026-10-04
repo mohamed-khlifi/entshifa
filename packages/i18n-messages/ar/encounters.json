@@ -113,6 +113,7 @@
   "plan": {
     "add": "إضافة بند",
     "addFollowUp": "متابعة: {days, plural, zero {# يوم} one {يوم واحد} two {يومان} few {# أيام} many {# يومًا} other {# يوم}}",
+    "followUpDetail": "{days, plural, zero {# يوم} one {يوم واحد} two {يومان} few {# أيام} many {# يومًا} other {# يوم}}",
     "detail": "التفصيل",
     "empty": "لا توجد بنود في الخطة.",
     "kind": "بند الخطة",

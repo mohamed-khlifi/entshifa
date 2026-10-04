@@ -13,6 +13,7 @@ type NormalsToolbarProps = {
   onOral: () => void;
   onNeck: () => void;
   onCopy: () => void;
+  compact?: boolean;
   labels: {
     group: string;
     all: string;
@@ -36,15 +37,18 @@ export function NormalsToolbar({
   onOral,
   onNeck,
   onCopy,
+  compact = false,
   labels,
 }: NormalsToolbarProps) {
   return (
     <section
-      className="space-y-2"
+      className={compact ? "flex min-w-0 flex-wrap items-center gap-2" : "space-y-2"}
       {...testIdProps(testIds.examination.normals.group)}
     >
-      <h2 className="text-sm font-medium">{labels.group}</h2>
-      <div className="flex flex-wrap gap-2">
+      <h2 className={compact ? "sr-only" : "text-sm font-medium"}>
+        {labels.group}
+      </h2>
+      <div className={compact ? "contents" : "flex flex-wrap gap-2"}>
         <Button
           type="button"
           onClick={onNormalAll}
@@ -96,13 +100,14 @@ export function NormalsToolbar({
           type="button"
           variant="secondary"
           disabled={!canCopy || copying}
+          title={canCopy ? undefined : labels.unavailable}
           onClick={onCopy}
           {...testIdProps(testIds.examination.copyForward.action)}
         >
           {labels.copy}
         </Button>
       </div>
-      {!canCopy ? (
+      {!canCopy && !compact ? (
         <p
           className="text-sm text-muted-foreground"
           {...testIdProps(testIds.examination.copyForward.unavailable)}

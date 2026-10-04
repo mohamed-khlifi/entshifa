@@ -452,9 +452,9 @@ export function ConsultationCockpit({
   }
 
   return (
-    <div className="pb-28" {...testIdProps(testIds.encounters.root)}>
+    <div className="pb-36" {...testIdProps(testIds.encounters.root)}>
       <div className="grid items-start gap-4 lg:grid-cols-12">
-        <div className="lg:col-span-3 print:hidden">
+        <div className="lg:sticky lg:top-0 lg:col-span-3 lg:max-h-[calc(100svh-15rem)] lg:self-start lg:overflow-y-auto print:hidden">
           <CockpitPatientColumn
             patient={session.patient.data}
             visits={session.recentVisits}
@@ -566,7 +566,7 @@ export function ConsultationCockpit({
                     current.planItems,
                     "follow-up",
                     "follow_up",
-                    t("plan.addFollowUp", {
+                    t("plan.followUpDetail", {
                       days: templateConfig.defaultFollowUpDays ?? 0,
                     }),
                     crypto.randomUUID(),
@@ -690,7 +690,7 @@ export function ConsultationCockpit({
             </Can>
           ) : null}
         </div>
-        <div className="lg:col-span-3 lg:sticky lg:top-4">
+        <div className="lg:sticky lg:top-0 lg:col-span-3 lg:max-h-[calc(100svh-15rem)] lg:self-start lg:overflow-y-auto">
           <ReportPreview
             complaints={editor.complaints
               .map((item) => item.display)
@@ -706,12 +706,34 @@ export function ConsultationCockpit({
         </div>
       </div>
       <div
-        className="fixed inset-x-0 bottom-0 z-20 border-t border-border bg-card/95 p-3 backdrop-blur print:hidden"
+        className="fixed bottom-0 end-0 start-0 z-20 border-t border-border bg-card/95 backdrop-blur md:start-56 print:hidden"
         {...testIdProps(testIds.encounters.bottomBar)}
       >
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3">
-          <AutosaveIndicator status={autosave.status} />
+        <div className="space-y-2 px-3 py-2">
+          <div className="flex items-center gap-2">
+            <div className="me-auto">
+              <AutosaveIndicator status={autosave.status} />
+            </div>
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => window.print()}
+              {...testIdProps(testIds.encounters.print)}
+            >
+              {t("actions.print")}
+            </Button>
+            {canSign && !locked ? (
+              <Button
+                type="button"
+                onClick={() => setSignOpen(true)}
+                {...testIdProps(testIds.encounters.sign)}
+              >
+                {t("actions.sign")}
+              </Button>
+            ) : null}
+          </div>
           <NormalsToolbar
+            compact
             canCopy={copySource !== null && !locked}
             copying={copyVisit.isPending}
             onNormalAll={() =>
@@ -741,23 +763,6 @@ export function ConsultationCockpit({
               unavailable: tExam("copyForward.unavailable"),
             }}
           />
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => window.print()}
-            {...testIdProps(testIds.encounters.print)}
-          >
-            {t("actions.print")}
-          </Button>
-          {canSign && !locked ? (
-            <Button
-              type="button"
-              onClick={() => setSignOpen(true)}
-              {...testIdProps(testIds.encounters.sign)}
-            >
-              {t("actions.sign")}
-            </Button>
-          ) : null}
         </div>
       </div>
       <SignDialog
