@@ -12,6 +12,14 @@ from ent.core.schemas.base import PaginationParams
 from ent.features.scheduling.constants import WAITING_ROOM_STATUSES
 from ent.features.scheduling.models import Appointment, AppointmentType
 
+# MySQL rejects NULLS LAST. `arrived_at IS NULL` sorts 0 before 1, so timed
+# arrivals stay ahead of rows that have not arrived yet.
+_WAITING_ROOM_ORDER = (
+    Appointment.arrived_at.is_(None),
+    Appointment.arrived_at.asc(),
+    Appointment.starts_at.asc(),
+)
+
 
 class AppointmentTypeRepository(BaseRepository[AppointmentType]):
     model = AppointmentType
@@ -81,9 +89,7 @@ class AppointmentRepository(BaseRepository[Appointment]):
                 Appointment.starts_at >= day_start,
                 Appointment.starts_at < day_end,
             )
-            .order_by(
-                Appointment.arrived_at.asc().nulls_last(), Appointment.starts_at.asc()
-            )
+            .order_by(*_WAITING_ROOM_ORDER)
         )
         if site_id is not None:
             stmt = stmt.where(Appointment.site_id == site_id)
