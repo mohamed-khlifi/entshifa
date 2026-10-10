@@ -38,5 +38,23 @@
     "not_found": "Cette visite est introuvable.",
     "template_not_found": "Modèle de consultation introuvable.",
     "version_conflict": "Cette visite a été modifiée. Rechargez puis réessayez."
+  },
+  "prescription": {
+    "allergy_conflict": "Ce médicament correspond à une allergie active. Indiquez le motif d'un dépassement pour continuer.",
+    "breastfeeding_caution": "Ce médicament est signalé pendant l'allaitement.",
+    "dose_above_maximum": "Cette dose dépasse le maximum du formulaire.",
+    "dosing_input_invalid": "Ces données ne permettent pas de calculer la dose.",
+    "dosing_rule_invalid": "Cette règle de posologie du formulaire est incomplète.",
+    "duplicate_class": "Un autre médicament de la même classe est déjà actif.",
+    "formulary_not_found": "Cette entrée du formulaire est introuvable.",
+    "idempotency_mismatch": "Cette clé d'idempotence a déjà servi pour une autre ordonnance.",
+    "invalid_status": "Cette ordonnance ne peut pas changer à partir de son statut actuel.",
+    "not_found": "Cette ordonnance est introuvable.",
+    "ototoxic_with_hearing_loss": "Ce médicament est ototoxique et une perte auditive figure sur la liste des problèmes.",
+    "pediatric_weight_missing": "Une ordonnance pédiatrique exige un poids enregistré.",
+    "pregnancy_caution": "Ce médicament est signalé pendant la grossesse.",
+    "safety_blocked": "Les contrôles de sécurité ont bloqué cette ordonnance.",
+    "unstructured_item": "Cette ligne libre n'a pas été contrôlée avec le formulaire.",
+    "version_conflict": "Cette ordonnance a été modifiée. Rechargez puis réessayez."
   }
 }

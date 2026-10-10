@@ -16,6 +16,34 @@
         "title": "ActiveClinicRequest",
         "type": "object"
       },
+      "AgeCapWrite": {
+        "properties": {
+          "maxCompletedYears": {
+            "maximum": 120.0,
+            "minimum": 0.0,
+            "title": "Maxcompletedyears",
+            "type": "integer"
+          },
+          "maxMgPerDay": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Maxmgperday"
+          }
+        },
+        "required": [
+          "maxCompletedYears",
+          "maxMgPerDay"
+        ],
+        "title": "AgeCapWrite",
+        "type": "object"
+      },
       "AppointmentCancel": {
         "properties": {
           "cancellationReason": {
@@ -876,6 +904,67 @@
           "upload"
         ],
         "title": "AttachmentUploadUrlResponse",
+        "type": "object"
+      },
+      "CalculationRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "flags": {
+            "items": {
+              "$ref": "#/components/schemas/FlagRead"
+            },
+            "title": "Flags",
+            "type": "array"
+          },
+          "formula": {
+            "title": "Formula",
+            "type": "string"
+          },
+          "inputs": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Inputs",
+            "type": "object"
+          },
+          "reference": {
+            "title": "Reference",
+            "type": "string"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "value",
+          "unit",
+          "formula",
+          "version",
+          "reference",
+          "flags",
+          "inputs"
+        ],
+        "title": "CalculationRead",
         "type": "object"
       },
       "ClinicMembershipList": {
@@ -2597,6 +2686,247 @@
         "title": "DocumentTemplateVersionRead",
         "type": "object"
       },
+      "DosingRuleWrite": {
+        "description": "Clinic-authored rule. Numbers are stored as exact decimal strings.",
+        "properties": {
+          "ageCaps": {
+            "items": {
+              "$ref": "#/components/schemas/AgeCapWrite"
+            },
+            "title": "Agecaps",
+            "type": "array"
+          },
+          "defaultDurationDays": {
+            "anyOf": [
+              {
+                "maximum": 3650.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Defaultdurationdays"
+          },
+          "dosesPerDay": {
+            "anyOf": [
+              {
+                "maximum": 24.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dosesperday"
+          },
+          "indications": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/IndicationWrite"
+            },
+            "title": "Indications",
+            "type": "object"
+          },
+          "maxMgPerDay": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maxmgperday"
+          },
+          "mgPerKgPerDay": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mgperkgperday"
+          },
+          "taper": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TaperWrite"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "title": "DosingRuleWrite",
+        "type": "object"
+      },
+      "DrugFormRead": {
+        "properties": {
+          "concentrationMgPerMl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Concentrationmgperml"
+          },
+          "form": {
+            "title": "Form",
+            "type": "string"
+          },
+          "packageDescription": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Packagedescription"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "strengthUnit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Strengthunit"
+          },
+          "strengthValue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Strengthvalue"
+          }
+        },
+        "required": [
+          "publicId",
+          "form",
+          "strengthValue",
+          "strengthUnit",
+          "concentrationMgPerMl",
+          "packageDescription"
+        ],
+        "title": "DrugFormRead",
+        "type": "object"
+      },
+      "DrugRead": {
+        "properties": {
+          "atcCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Atccode"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "concept": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CodeableConcept"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "drugClass": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Drugclass"
+          },
+          "forms": {
+            "items": {
+              "$ref": "#/components/schemas/DrugFormRead"
+            },
+            "title": "Forms",
+            "type": "array"
+          },
+          "innName": {
+            "title": "Innname",
+            "type": "string"
+          },
+          "isAnticoagulant": {
+            "title": "Isanticoagulant",
+            "type": "boolean"
+          },
+          "isOtotoxic": {
+            "title": "Isototoxic",
+            "type": "boolean"
+          },
+          "pregnancyCategory": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pregnancycategory"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "code",
+          "innName",
+          "atcCode",
+          "drugClass",
+          "isOtotoxic",
+          "isAnticoagulant",
+          "pregnancyCategory",
+          "concept",
+          "forms"
+        ],
+        "title": "DrugRead",
+        "type": "object"
+      },
       "EncounterAddendumCreate": {
         "properties": {
           "body": {
@@ -3580,6 +3910,308 @@
         "title": "ExaminationSnapshotRead",
         "type": "object"
       },
+      "FlagRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "detail": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Detail",
+            "type": "object"
+          }
+        },
+        "required": [
+          "code",
+          "detail"
+        ],
+        "title": "FlagRead",
+        "type": "object"
+      },
+      "FormularyEntryCreate": {
+        "properties": {
+          "brandName": {
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Brandname",
+            "type": "string"
+          },
+          "currencyCode": {
+            "anyOf": [
+              {
+                "maxLength": 3,
+                "minLength": 3,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currencycode"
+          },
+          "dosingRules": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DosingRuleWrite"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "drugFormPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Drugformpublicid",
+            "type": "string"
+          },
+          "isAvailable": {
+            "default": true,
+            "title": "Isavailable",
+            "type": "boolean"
+          },
+          "localCode": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Localcode"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "price": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price"
+          }
+        },
+        "required": [
+          "drugFormPublicId",
+          "brandName"
+        ],
+        "title": "FormularyEntryCreate",
+        "type": "object"
+      },
+      "FormularyEntryRead": {
+        "properties": {
+          "brandName": {
+            "title": "Brandname",
+            "type": "string"
+          },
+          "currencyCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currencycode"
+          },
+          "dosingRules": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dosingrules"
+          },
+          "drug": {
+            "$ref": "#/components/schemas/DrugRead"
+          },
+          "isAvailable": {
+            "title": "Isavailable",
+            "type": "boolean"
+          },
+          "localCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Localcode"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "price": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "publicId",
+          "brandName",
+          "isAvailable",
+          "localCode",
+          "price",
+          "currencyCode",
+          "notes",
+          "dosingRules",
+          "version",
+          "drug"
+        ],
+        "title": "FormularyEntryRead",
+        "type": "object"
+      },
+      "FormularyEntryUpdate": {
+        "properties": {
+          "brandName": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brandname"
+          },
+          "currencyCode": {
+            "anyOf": [
+              {
+                "maxLength": 3,
+                "minLength": 3,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currencycode"
+          },
+          "dosingRules": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DosingRuleWrite"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "isAvailable": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isavailable"
+          },
+          "localCode": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Localcode"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "price": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Price"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "FormularyEntryUpdate",
+        "type": "object"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -3653,6 +4285,68 @@
           "fieldType"
         ],
         "title": "HistoryFieldConfig",
+        "type": "object"
+      },
+      "IndicationWrite": {
+        "properties": {
+          "defaultDurationDays": {
+            "anyOf": [
+              {
+                "maximum": 3650.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Defaultdurationdays"
+          },
+          "dosesPerDay": {
+            "anyOf": [
+              {
+                "maximum": 24.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dosesperday"
+          },
+          "maxMgPerDay": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maxmgperday"
+          },
+          "mgPerKgPerDay": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mgperkgperday"
+          }
+        },
+        "title": "IndicationWrite",
         "type": "object"
       },
       "InvitationAccept": {
@@ -5299,6 +5993,26 @@
         "title": "PageSchema[DocumentTemplateRead]",
         "type": "object"
       },
+      "PageSchema_DrugRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/DrugRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[DrugRead]",
+        "type": "object"
+      },
       "PageSchema_EncounterRead_": {
         "properties": {
           "items": {
@@ -5337,6 +6051,26 @@
           "page"
         ],
         "title": "PageSchema[ExaminationSnapshotRead]",
+        "type": "object"
+      },
+      "PageSchema_FormularyEntryRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/FormularyEntryRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[FormularyEntryRead]",
         "type": "object"
       },
       "PageSchema_ObservationRead_": {
@@ -5497,6 +6231,46 @@
           "page"
         ],
         "title": "PageSchema[PatientSummaryRead]",
+        "type": "object"
+      },
+      "PageSchema_PrescriptionRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PrescriptionRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[PrescriptionRead]",
+        "type": "object"
+      },
+      "PageSchema_PrescriptionTemplateRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PrescriptionTemplateRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[PrescriptionTemplateRead]",
         "type": "object"
       },
       "PageSchema_SchedulableDoctorRead_": {
@@ -8133,6 +8907,47 @@
         "title": "PatientUpdate",
         "type": "object"
       },
+      "PediatricDoseRequest": {
+        "properties": {
+          "formularyEntryPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Formularyentrypublicid",
+            "type": "string"
+          },
+          "indicationCode": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicationcode"
+          },
+          "weightKg": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 999.99,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Weightkg"
+          }
+        },
+        "required": [
+          "formularyEntryPublicId",
+          "weightKg"
+        ],
+        "title": "PediatricDoseRequest",
+        "type": "object"
+      },
       "PermissionRead": {
         "properties": {
           "code": {
@@ -8175,6 +8990,746 @@
           "type"
         ],
         "title": "PlaceholderSpec",
+        "type": "object"
+      },
+      "PrescriptionCreate": {
+        "properties": {
+          "encounterPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Encounterpublicid",
+            "type": "string"
+          },
+          "isPediatric": {
+            "default": false,
+            "title": "Ispediatric",
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PrescriptionItemWrite"
+            },
+            "maxItems": 40,
+            "minItems": 1,
+            "title": "Items",
+            "type": "array"
+          },
+          "locale": {
+            "maxLength": 10,
+            "minLength": 2,
+            "title": "Locale",
+            "type": "string"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "weightKg": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 999.99,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weightkg"
+          }
+        },
+        "required": [
+          "encounterPublicId",
+          "locale",
+          "items"
+        ],
+        "title": "PrescriptionCreate",
+        "type": "object"
+      },
+      "PrescriptionItemRead": {
+        "properties": {
+          "concept": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CodeableConcept"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "doseAmount": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doseamount"
+          },
+          "doseUnit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doseunit"
+          },
+          "dosingEngineVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dosingengineversion"
+          },
+          "drugClass": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Drugclass"
+          },
+          "drugCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Drugcode"
+          },
+          "drugInn": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Druginn"
+          },
+          "durationDays": {
+            "title": "Durationdays",
+            "type": "integer"
+          },
+          "form": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Form"
+          },
+          "freeTextName": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Freetextname"
+          },
+          "frequencyPerDay": {
+            "title": "Frequencyperday",
+            "type": "integer"
+          },
+          "instructionsText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instructionstext"
+          },
+          "intervalHours": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Intervalhours"
+          },
+          "isRenewable": {
+            "title": "Isrenewable",
+            "type": "boolean"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "route": {
+            "title": "Route",
+            "type": "string"
+          },
+          "safetyOverrides": {
+            "items": {
+              "$ref": "#/components/schemas/SafetyOverrideRead"
+            },
+            "title": "Safetyoverrides",
+            "type": "array"
+          },
+          "sortOrder": {
+            "title": "Sortorder",
+            "type": "integer"
+          },
+          "substitutionAllowed": {
+            "title": "Substitutionallowed",
+            "type": "boolean"
+          },
+          "taperSchedule": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Taperschedule"
+          },
+          "volumeMl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Volumeml"
+          }
+        },
+        "required": [
+          "publicId",
+          "freeTextName",
+          "drugCode",
+          "drugInn",
+          "drugClass",
+          "form",
+          "concept",
+          "doseAmount",
+          "doseUnit",
+          "volumeMl",
+          "route",
+          "frequencyPerDay",
+          "intervalHours",
+          "durationDays",
+          "quantity",
+          "instructionsText",
+          "taperSchedule",
+          "isRenewable",
+          "substitutionAllowed",
+          "safetyOverrides",
+          "sortOrder",
+          "dosingEngineVersion"
+        ],
+        "title": "PrescriptionItemRead",
+        "type": "object"
+      },
+      "PrescriptionItemWrite": {
+        "properties": {
+          "calculateFromFormulary": {
+            "default": false,
+            "title": "Calculatefromformulary",
+            "type": "boolean"
+          },
+          "doseAmount": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 100000.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doseamount"
+          },
+          "doseUnit": {
+            "anyOf": [
+              {
+                "maxLength": 20,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Doseunit"
+          },
+          "durationDays": {
+            "maximum": 3650.0,
+            "minimum": 1.0,
+            "title": "Durationdays",
+            "type": "integer"
+          },
+          "formularyEntryPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Formularyentrypublicid"
+          },
+          "freeTextName": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Freetextname"
+          },
+          "frequencyPerDay": {
+            "maximum": 24.0,
+            "minimum": 1.0,
+            "title": "Frequencyperday",
+            "type": "integer"
+          },
+          "indicationCode": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicationcode"
+          },
+          "instructionsText": {
+            "anyOf": [
+              {
+                "maxLength": 400,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instructionstext"
+          },
+          "intervalHours": {
+            "anyOf": [
+              {
+                "maximum": 168.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Intervalhours"
+          },
+          "isRenewable": {
+            "default": false,
+            "title": "Isrenewable",
+            "type": "boolean"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "route": {
+            "enum": [
+              "oral",
+              "nasal",
+              "otic",
+              "topical",
+              "injection"
+            ],
+            "title": "Route",
+            "type": "string"
+          },
+          "safetyOverrides": {
+            "items": {
+              "$ref": "#/components/schemas/SafetyOverrideWrite"
+            },
+            "title": "Safetyoverrides",
+            "type": "array"
+          },
+          "sortOrder": {
+            "default": 0,
+            "maximum": 200.0,
+            "minimum": 0.0,
+            "title": "Sortorder",
+            "type": "integer"
+          },
+          "substitutionAllowed": {
+            "default": true,
+            "title": "Substitutionallowed",
+            "type": "boolean"
+          },
+          "taper": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TaperWrite"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "useFormularyTaper": {
+            "default": false,
+            "title": "Useformularytaper",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "route",
+          "frequencyPerDay",
+          "durationDays"
+        ],
+        "title": "PrescriptionItemWrite",
+        "type": "object"
+      },
+      "PrescriptionRead": {
+        "properties": {
+          "encounterPublicId": {
+            "title": "Encounterpublicid",
+            "type": "string"
+          },
+          "isPediatric": {
+            "title": "Ispediatric",
+            "type": "boolean"
+          },
+          "issuedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issuedat"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PrescriptionItemRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "locale": {
+            "title": "Locale",
+            "type": "string"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "patientPublicId": {
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "safetyAlerts": {
+            "items": {
+              "$ref": "#/components/schemas/SafetyAlertRead"
+            },
+            "title": "Safetyalerts",
+            "type": "array"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "weightKg": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weightkg"
+          }
+        },
+        "required": [
+          "publicId",
+          "patientPublicId",
+          "encounterPublicId",
+          "status",
+          "locale",
+          "isPediatric",
+          "weightKg",
+          "issuedAt",
+          "notes",
+          "version",
+          "safetyAlerts",
+          "items"
+        ],
+        "title": "PrescriptionRead",
+        "type": "object"
+      },
+      "PrescriptionTemplateCreate": {
+        "properties": {
+          "code": {
+            "maxLength": 60,
+            "minLength": 1,
+            "pattern": "^[a-z0-9_]+$",
+            "title": "Code",
+            "type": "string"
+          },
+          "complaintConceptIds": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 20,
+            "title": "Complaintconceptids",
+            "type": "array"
+          },
+          "isPediatric": {
+            "default": false,
+            "title": "Ispediatric",
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PrescriptionItemWrite"
+            },
+            "maxItems": 40,
+            "minItems": 1,
+            "title": "Items",
+            "type": "array"
+          },
+          "nameKey": {
+            "maxLength": 80,
+            "minLength": 3,
+            "pattern": "^[a-z0-9]+(\\.[a-z0-9_]+)+$",
+            "title": "Namekey",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "nameKey",
+          "items"
+        ],
+        "title": "PrescriptionTemplateCreate",
+        "type": "object"
+      },
+      "PrescriptionTemplateRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "complaintConceptIds": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Complaintconceptids",
+            "type": "array"
+          },
+          "isPediatric": {
+            "title": "Ispediatric",
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "type": "object"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "nameKey": {
+            "title": "Namekey",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "publicId",
+          "code",
+          "nameKey",
+          "isPediatric",
+          "complaintConceptIds",
+          "items",
+          "version"
+        ],
+        "title": "PrescriptionTemplateRead",
+        "type": "object"
+      },
+      "PrescriptionUpdate": {
+        "properties": {
+          "isPediatric": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ispediatric"
+          },
+          "items": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/PrescriptionItemWrite"
+                },
+                "maxItems": 40,
+                "minItems": 1,
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Items"
+          },
+          "locale": {
+            "anyOf": [
+              {
+                "maxLength": 10,
+                "minLength": 2,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locale"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          },
+          "weightKg": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 999.99,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weightkg"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "PrescriptionUpdate",
         "type": "object"
       },
       "PresignedUrlResponse": {
@@ -8442,6 +9997,126 @@
           "permissionCodes"
         ],
         "title": "RoleRead",
+        "type": "object"
+      },
+      "SafetyAlertRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "itemIndex": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Itemindex"
+          },
+          "severity": {
+            "title": "Severity",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "severity"
+        ],
+        "title": "SafetyAlertRead",
+        "type": "object"
+      },
+      "SafetyCheckRequest": {
+        "properties": {
+          "isPediatric": {
+            "default": false,
+            "title": "Ispediatric",
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PrescriptionItemWrite"
+            },
+            "maxItems": 40,
+            "minItems": 1,
+            "title": "Items",
+            "type": "array"
+          },
+          "weightKg": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 999.99,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weightkg"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "SafetyCheckRequest",
+        "type": "object"
+      },
+      "SafetyOverrideRead": {
+        "properties": {
+          "at": {
+            "title": "At",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "reason": {
+            "title": "Reason",
+            "type": "string"
+          },
+          "userPublicId": {
+            "title": "Userpublicid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "reason",
+          "userPublicId",
+          "at"
+        ],
+        "title": "SafetyOverrideRead",
+        "type": "object"
+      },
+      "SafetyOverrideWrite": {
+        "properties": {
+          "code": {
+            "enum": [
+              "prescription.allergy_conflict",
+              "prescription.dose_above_maximum"
+            ],
+            "title": "Code",
+            "type": "string"
+          },
+          "reason": {
+            "maxLength": 400,
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "reason"
+        ],
+        "title": "SafetyOverrideWrite",
         "type": "object"
       },
       "SchedulableDoctorRead": {
@@ -8748,6 +10423,114 @@
           }
         },
         "title": "SiteUpdate",
+        "type": "object"
+      },
+      "TaperRequest": {
+        "properties": {
+          "daysPerStep": {
+            "maximum": 31.0,
+            "minimum": 1.0,
+            "title": "Daysperstep",
+            "type": "integer"
+          },
+          "minimumMg": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "default": "0",
+            "title": "Minimummg"
+          },
+          "startMg": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Startmg"
+          },
+          "stepMg": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Stepmg"
+          }
+        },
+        "required": [
+          "startMg",
+          "stepMg",
+          "daysPerStep"
+        ],
+        "title": "TaperRequest",
+        "type": "object"
+      },
+      "TaperWrite": {
+        "properties": {
+          "daysPerStep": {
+            "maximum": 31.0,
+            "minimum": 1.0,
+            "title": "Daysperstep",
+            "type": "integer"
+          },
+          "minimumMg": {
+            "anyOf": [
+              {
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "default": "0",
+            "title": "Minimummg"
+          },
+          "startMg": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Startmg"
+          },
+          "stepMg": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Stepmg"
+          }
+        },
+        "required": [
+          "startMg",
+          "stepMg",
+          "daysPerStep"
+        ],
+        "title": "TaperWrite",
         "type": "object"
       },
       "TranslationCoverageItem": {
@@ -12505,6 +14288,116 @@
         ]
       }
     },
+    "/api/v1/drugs": {
+      "get": {
+        "operationId": "search_drugs_api_v1_drugs_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 80,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_DrugRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Search Drugs",
+        "tags": [
+          "prescriptions"
+        ]
+      }
+    },
     "/api/v1/encounter-templates": {
       "get": {
         "operationId": "list_encounter_templates_api_v1_encounter_templates_get",
@@ -13507,6 +15400,283 @@
         "summary": "Sign Encounter",
         "tags": [
           "encounters"
+        ]
+      }
+    },
+    "/api/v1/formulary": {
+      "get": {
+        "operationId": "list_formulary_api_v1_formulary_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 80,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_FormularyEntryRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Formulary",
+        "tags": [
+          "prescriptions"
+        ]
+      },
+      "post": {
+        "operationId": "create_formulary_entry_api_v1_formulary_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FormularyEntryCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FormularyEntryRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Formulary Entry",
+        "tags": [
+          "prescriptions"
+        ]
+      }
+    },
+    "/api/v1/formulary/{formulary_id}": {
+      "patch": {
+        "operationId": "update_formulary_entry_api_v1_formulary__formulary_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "formulary_id",
+            "required": true,
+            "schema": {
+              "title": "Formulary Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FormularyEntryUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FormularyEntryRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Formulary Entry",
+        "tags": [
+          "prescriptions"
         ]
       }
     },
@@ -16362,6 +18532,434 @@
         ]
       }
     },
+    "/api/v1/patients/{patient_id}/prescriptions": {
+      "get": {
+        "operationId": "list_patient_prescriptions_api_v1_patients__patient_id__prescriptions_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_PrescriptionRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Patient Prescriptions",
+        "tags": [
+          "prescriptions"
+        ]
+      },
+      "post": {
+        "operationId": "create_prescription_api_v1_patients__patient_id__prescriptions_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrescriptionCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrescriptionRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Prescription",
+        "tags": [
+          "prescriptions"
+        ]
+      }
+    },
+    "/api/v1/patients/{patient_id}/prescriptions/calculate-dose": {
+      "post": {
+        "operationId": "calculate_pediatric_dose_api_v1_patients__patient_id__prescriptions_calculate_dose_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PediatricDoseRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculationRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Calculate Pediatric Dose",
+        "tags": [
+          "prescriptions"
+        ]
+      }
+    },
+    "/api/v1/patients/{patient_id}/prescriptions/check-safety": {
+      "post": {
+        "operationId": "check_prescription_safety_api_v1_patients__patient_id__prescriptions_check_safety_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SafetyCheckRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SafetyAlertRead"
+                  },
+                  "title": "Response Check Prescription Safety Api V1 Patients  Patient Id  Prescriptions Check Safety Post",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Check Prescription Safety",
+        "tags": [
+          "prescriptions"
+        ]
+      }
+    },
+    "/api/v1/patients/{patient_id}/prescriptions/generate-taper": {
+      "post": {
+        "operationId": "generate_prescription_taper_api_v1_patients__patient_id__prescriptions_generate_taper_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TaperRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculationRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Generate Prescription Taper",
+        "tags": [
+          "prescriptions"
+        ]
+      }
+    },
     "/api/v1/patients/{patient_id}/problems": {
       "get": {
         "operationId": "list_problems_api_v1_patients__patient_id__problems_get",
@@ -16718,6 +19316,469 @@
         "summary": "List Permissions",
         "tags": [
           "users"
+        ]
+      }
+    },
+    "/api/v1/prescription-templates": {
+      "get": {
+        "operationId": "list_prescription_templates_api_v1_prescription_templates_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_PrescriptionTemplateRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Prescription Templates",
+        "tags": [
+          "prescriptions"
+        ]
+      },
+      "post": {
+        "operationId": "create_prescription_template_api_v1_prescription_templates_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrescriptionTemplateCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrescriptionTemplateRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Prescription Template",
+        "tags": [
+          "prescriptions"
+        ]
+      }
+    },
+    "/api/v1/prescriptions/{prescription_id}": {
+      "get": {
+        "operationId": "get_prescription_api_v1_prescriptions__prescription_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "prescription_id",
+            "required": true,
+            "schema": {
+              "title": "Prescription Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrescriptionRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Prescription",
+        "tags": [
+          "prescriptions"
+        ]
+      },
+      "patch": {
+        "operationId": "update_prescription_api_v1_prescriptions__prescription_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "prescription_id",
+            "required": true,
+            "schema": {
+              "title": "Prescription Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrescriptionUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrescriptionRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Prescription",
+        "tags": [
+          "prescriptions"
+        ]
+      }
+    },
+    "/api/v1/prescriptions/{prescription_id}/cancel": {
+      "post": {
+        "operationId": "cancel_prescription_api_v1_prescriptions__prescription_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "prescription_id",
+            "required": true,
+            "schema": {
+              "title": "Prescription Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrescriptionRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Cancel Prescription",
+        "tags": [
+          "prescriptions"
+        ]
+      }
+    },
+    "/api/v1/prescriptions/{prescription_id}/issue": {
+      "post": {
+        "operationId": "issue_prescription_api_v1_prescriptions__prescription_id__issue_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "prescription_id",
+            "required": true,
+            "schema": {
+              "title": "Prescription Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrescriptionRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Issue Prescription",
+        "tags": [
+          "prescriptions"
         ]
       }
     },

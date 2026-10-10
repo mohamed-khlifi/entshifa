@@ -33,6 +33,7 @@ from ent.features.patients.constants import (
     PROBLEM_STATUSES,
     SEX_VALUES,
 )
+from ent.features.prescriptions.models import Drug, PrescriptionItem
 
 _LATERALITY_SQL = ",".join(f"'{value}'" for value in LATERALITY_VALUES)
 
@@ -246,8 +247,11 @@ class PatientMedication(ClinicalRecordMixin, Base):
         ForeignKey("patient.id", ondelete="RESTRICT", onupdate="RESTRICT"),
         nullable=False,
     )
-    # FK to drug deferred until the formulary table exists.
-    drug_id: Mapped[int | None] = mapped_column(unsigned_bigint(), nullable=True)
+    drug_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(Drug.id, ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=True,
+    )
     free_text_name: Mapped[str | None] = mapped_column(String(160), nullable=True)
     dose: Mapped[str | None] = mapped_column(String(60), nullable=True)
     frequency: Mapped[str | None] = mapped_column(String(60), nullable=True)
@@ -264,6 +268,11 @@ class PatientMedication(ClinicalRecordMixin, Base):
         Boolean, nullable=False, default=False, server_default=text("0")
     )
     source: Mapped[str] = mapped_column(String(30), nullable=False)
+    prescription_item_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(PrescriptionItem.id, ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=True,
+    )
 
     patient: Mapped[Patient] = relationship(back_populates="medications")
 

@@ -49,3 +49,15 @@ class ErrorCode(StrEnum):
 
     DIAGNOSIS_NOT_FOUND = "diagnosis.not_found"
     DIAGNOSIS_INVALID_CONCEPT = "diagnosis.invalid_concept"
+
+    PRESCRIPTION_NOT_FOUND = "prescription.not_found"
+    PRESCRIPTION_FORMULARY_NOT_FOUND = "prescription.formulary_not_found"
+    PRESCRIPTION_INVALID_STATUS = "prescription.invalid_status"
+    PRESCRIPTION_VERSION_CONFLICT = "prescription.version_conflict"
+    PRESCRIPTION_IDEMPOTENCY_MISMATCH = "prescription.idempotency_mismatch"
+    PRESCRIPTION_DOSING_RULE_INVALID = "prescription.dosing_rule_invalid"
+    PRESCRIPTION_DOSING_INPUT_INVALID = "prescription.dosing_input_invalid"
+    PRESCRIPTION_ALLERGY_CONFLICT = "prescription.allergy_conflict"
+    PRESCRIPTION_PEDIATRIC_WEIGHT_MISSING = "prescription.pediatric_weight_missing"
+    PRESCRIPTION_DOSE_ABOVE_MAXIMUM = "prescription.dose_above_maximum"
+    PRESCRIPTION_SAFETY_BLOCKED = "prescription.safety_blocked"

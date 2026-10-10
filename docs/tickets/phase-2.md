@@ -142,7 +142,7 @@ fr.
 
 ---
 
-## - [ ] P2-08 Prescriptions (backend)
+## - [x] P2-08 Prescriptions (backend)
 
 **Scope**
 - Models: `drug`, `drug_form`, `formulary_entry`, `prescription`,

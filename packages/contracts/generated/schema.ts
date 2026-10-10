@@ -731,6 +731,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/drugs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Search Drugs */
+        get: operations["search_drugs_api_v1_drugs_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/encounter-templates": {
         parameters: {
             query?: never;
@@ -901,6 +918,41 @@ export interface paths {
         options?: never;
         head?: never;
         patch?: never;
+        trace?: never;
+    };
+    "/api/v1/formulary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Formulary */
+        get: operations["list_formulary_api_v1_formulary_get"];
+        put?: never;
+        /** Create Formulary Entry */
+        post: operations["create_formulary_entry_api_v1_formulary_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/formulary/{formulary_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Formulary Entry */
+        patch: operations["update_formulary_entry_api_v1_formulary__formulary_id__patch"];
         trace?: never;
     };
     "/api/v1/invitations": {
@@ -1303,6 +1355,75 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/patients/{patient_id}/prescriptions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Patient Prescriptions */
+        get: operations["list_patient_prescriptions_api_v1_patients__patient_id__prescriptions_get"];
+        put?: never;
+        /** Create Prescription */
+        post: operations["create_prescription_api_v1_patients__patient_id__prescriptions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/prescriptions/calculate-dose": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Calculate Pediatric Dose */
+        post: operations["calculate_pediatric_dose_api_v1_patients__patient_id__prescriptions_calculate_dose_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/prescriptions/check-safety": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Check Prescription Safety */
+        post: operations["check_prescription_safety_api_v1_patients__patient_id__prescriptions_check_safety_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/prescriptions/generate-taper": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Generate Prescription Taper */
+        post: operations["generate_prescription_taper_api_v1_patients__patient_id__prescriptions_generate_taper_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/patients/{patient_id}/problems": {
         parameters: {
             query?: never;
@@ -1366,6 +1487,76 @@ export interface paths {
         get: operations["list_permissions_api_v1_permissions_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/prescription-templates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Prescription Templates */
+        get: operations["list_prescription_templates_api_v1_prescription_templates_get"];
+        put?: never;
+        /** Create Prescription Template */
+        post: operations["create_prescription_template_api_v1_prescription_templates_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/prescriptions/{prescription_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Prescription */
+        get: operations["get_prescription_api_v1_prescriptions__prescription_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Prescription */
+        patch: operations["update_prescription_api_v1_prescriptions__prescription_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/prescriptions/{prescription_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Prescription */
+        post: operations["cancel_prescription_api_v1_prescriptions__prescription_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/prescriptions/{prescription_id}/issue": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Issue Prescription */
+        post: operations["issue_prescription_api_v1_prescriptions__prescription_id__issue_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1765,6 +1956,13 @@ export interface components {
             /** Clinicpublicid */
             clinicPublicId: string;
         };
+        /** AgeCapWrite */
+        AgeCapWrite: {
+            /** Maxcompletedyears */
+            maxCompletedYears: number;
+            /** Maxmgperday */
+            maxMgPerDay: number | string;
+        };
         /** AppointmentCancel */
         AppointmentCancel: {
             /** Cancellationreason */
@@ -2023,6 +2221,27 @@ export interface components {
             upload: components["schemas"]["PresignedUrlResponse"];
             /** Uploadtoken */
             uploadToken: string;
+        };
+        /** CalculationRead */
+        CalculationRead: {
+            /** Code */
+            code: string;
+            /** Flags */
+            flags: components["schemas"]["FlagRead"][];
+            /** Formula */
+            formula: string;
+            /** Inputs */
+            inputs: {
+                [key: string]: string;
+            };
+            /** Reference */
+            reference: string;
+            /** Unit */
+            unit: string | null;
+            /** Value */
+            value: string;
+            /** Version */
+            version: string;
         };
         /** ClinicMembershipList */
         ClinicMembershipList: {
@@ -2558,6 +2777,64 @@ export interface components {
             /** Version */
             version: number;
         };
+        /**
+         * DosingRuleWrite
+         * @description Clinic-authored rule. Numbers are stored as exact decimal strings.
+         */
+        DosingRuleWrite: {
+            /** Agecaps */
+            ageCaps?: components["schemas"]["AgeCapWrite"][];
+            /** Defaultdurationdays */
+            defaultDurationDays?: number | null;
+            /** Dosesperday */
+            dosesPerDay?: number | null;
+            /** Indications */
+            indications?: {
+                [key: string]: components["schemas"]["IndicationWrite"];
+            };
+            /** Maxmgperday */
+            maxMgPerDay?: number | string | null;
+            /** Mgperkgperday */
+            mgPerKgPerDay?: number | string | null;
+            taper?: components["schemas"]["TaperWrite"] | null;
+        };
+        /** DrugFormRead */
+        DrugFormRead: {
+            /** Concentrationmgperml */
+            concentrationMgPerMl: string | null;
+            /** Form */
+            form: string;
+            /** Packagedescription */
+            packageDescription: string | null;
+            /** Publicid */
+            publicId: string;
+            /** Strengthunit */
+            strengthUnit: string | null;
+            /** Strengthvalue */
+            strengthValue: string | null;
+        };
+        /** DrugRead */
+        DrugRead: {
+            /** Atccode */
+            atcCode: string | null;
+            /** Code */
+            code: string;
+            concept: components["schemas"]["CodeableConcept"] | null;
+            /** Drugclass */
+            drugClass: string | null;
+            /** Forms */
+            forms: components["schemas"]["DrugFormRead"][];
+            /** Innname */
+            innName: string;
+            /** Isanticoagulant */
+            isAnticoagulant: boolean;
+            /** Isototoxic */
+            isOtotoxic: boolean;
+            /** Pregnancycategory */
+            pregnancyCategory: string | null;
+            /** Publicid */
+            publicId: string;
+        };
         /** EncounterAddendumCreate */
         EncounterAddendumCreate: {
             /** Body */
@@ -2845,6 +3122,76 @@ export interface components {
             /** Version */
             version: number;
         };
+        /** FlagRead */
+        FlagRead: {
+            /** Code */
+            code: string;
+            /** Detail */
+            detail: {
+                [key: string]: string;
+            };
+        };
+        /** FormularyEntryCreate */
+        FormularyEntryCreate: {
+            /** Brandname */
+            brandName: string;
+            /** Currencycode */
+            currencyCode?: string | null;
+            dosingRules?: components["schemas"]["DosingRuleWrite"] | null;
+            /** Drugformpublicid */
+            drugFormPublicId: string;
+            /**
+             * Isavailable
+             * @default true
+             */
+            isAvailable: boolean;
+            /** Localcode */
+            localCode?: string | null;
+            /** Notes */
+            notes?: string | null;
+            /** Price */
+            price?: number | string | null;
+        };
+        /** FormularyEntryRead */
+        FormularyEntryRead: {
+            /** Brandname */
+            brandName: string;
+            /** Currencycode */
+            currencyCode: string | null;
+            /** Dosingrules */
+            dosingRules: Record<string, never> | null;
+            drug: components["schemas"]["DrugRead"];
+            /** Isavailable */
+            isAvailable: boolean;
+            /** Localcode */
+            localCode: string | null;
+            /** Notes */
+            notes: string | null;
+            /** Price */
+            price: string | null;
+            /** Publicid */
+            publicId: string;
+            /** Version */
+            version: number;
+        };
+        /** FormularyEntryUpdate */
+        FormularyEntryUpdate: {
+            /** Brandname */
+            brandName?: string | null;
+            /** Currencycode */
+            currencyCode?: string | null;
+            dosingRules?: components["schemas"]["DosingRuleWrite"] | null;
+            /** Isavailable */
+            isAvailable?: boolean | null;
+            /** Localcode */
+            localCode?: string | null;
+            /** Notes */
+            notes?: string | null;
+            /** Price */
+            price?: number | string | null;
+            /** Version */
+            version: number;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
@@ -2870,6 +3217,17 @@ export interface components {
              * @default false
              */
             required: boolean;
+        };
+        /** IndicationWrite */
+        IndicationWrite: {
+            /** Defaultdurationdays */
+            defaultDurationDays?: number | null;
+            /** Dosesperday */
+            dosesPerDay?: number | null;
+            /** Maxmgperday */
+            maxMgPerDay?: number | string | null;
+            /** Mgperkgperday */
+            mgPerKgPerDay?: number | string | null;
         };
         /** InvitationAccept */
         InvitationAccept: {
@@ -3313,6 +3671,12 @@ export interface components {
             items: components["schemas"]["DocumentTemplateRead"][];
             page: components["schemas"]["PageMeta"];
         };
+        /** PageSchema[DrugRead] */
+        PageSchema_DrugRead_: {
+            /** Items */
+            items: components["schemas"]["DrugRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
         /** PageSchema[EncounterRead] */
         PageSchema_EncounterRead_: {
             /** Items */
@@ -3323,6 +3687,12 @@ export interface components {
         PageSchema_ExaminationSnapshotRead_: {
             /** Items */
             items: components["schemas"]["ExaminationSnapshotRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[FormularyEntryRead] */
+        PageSchema_FormularyEntryRead_: {
+            /** Items */
+            items: components["schemas"]["FormularyEntryRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[ObservationRead] */
@@ -3371,6 +3741,18 @@ export interface components {
         PageSchema_PatientSummaryRead_: {
             /** Items */
             items: components["schemas"]["PatientSummaryRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[PrescriptionRead] */
+        PageSchema_PrescriptionRead_: {
+            /** Items */
+            items: components["schemas"]["PrescriptionRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[PrescriptionTemplateRead] */
+        PageSchema_PrescriptionTemplateRead_: {
+            /** Items */
+            items: components["schemas"]["PrescriptionTemplateRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[SchedulableDoctorRead] */
@@ -4054,6 +4436,15 @@ export interface components {
             /** Version */
             version: number;
         };
+        /** PediatricDoseRequest */
+        PediatricDoseRequest: {
+            /** Formularyentrypublicid */
+            formularyEntryPublicId: string;
+            /** Indicationcode */
+            indicationCode?: string | null;
+            /** Weightkg */
+            weightKg: number | string;
+        };
         /** PermissionRead */
         PermissionRead: {
             /** Code */
@@ -4073,6 +4464,201 @@ export interface components {
              * @enum {string}
              */
             type: "string" | "integer" | "date" | "code" | "code_list" | "text_list";
+        };
+        /** PrescriptionCreate */
+        PrescriptionCreate: {
+            /** Encounterpublicid */
+            encounterPublicId: string;
+            /**
+             * Ispediatric
+             * @default false
+             */
+            isPediatric: boolean;
+            /** Items */
+            items: components["schemas"]["PrescriptionItemWrite"][];
+            /** Locale */
+            locale: string;
+            /** Notes */
+            notes?: string | null;
+            /** Weightkg */
+            weightKg?: number | string | null;
+        };
+        /** PrescriptionItemRead */
+        PrescriptionItemRead: {
+            concept: components["schemas"]["CodeableConcept"] | null;
+            /** Doseamount */
+            doseAmount: string | null;
+            /** Doseunit */
+            doseUnit: string | null;
+            /** Dosingengineversion */
+            dosingEngineVersion: string | null;
+            /** Drugclass */
+            drugClass: string | null;
+            /** Drugcode */
+            drugCode: string | null;
+            /** Druginn */
+            drugInn: string | null;
+            /** Durationdays */
+            durationDays: number;
+            /** Form */
+            form: string | null;
+            /** Freetextname */
+            freeTextName: string | null;
+            /** Frequencyperday */
+            frequencyPerDay: number;
+            /** Instructionstext */
+            instructionsText: string | null;
+            /** Intervalhours */
+            intervalHours: number | null;
+            /** Isrenewable */
+            isRenewable: boolean;
+            /** Publicid */
+            publicId: string;
+            /** Quantity */
+            quantity: string | null;
+            /** Route */
+            route: string;
+            /** Safetyoverrides */
+            safetyOverrides: components["schemas"]["SafetyOverrideRead"][];
+            /** Sortorder */
+            sortOrder: number;
+            /** Substitutionallowed */
+            substitutionAllowed: boolean;
+            /** Taperschedule */
+            taperSchedule: Record<string, never>[] | null;
+            /** Volumeml */
+            volumeMl: string | null;
+        };
+        /** PrescriptionItemWrite */
+        PrescriptionItemWrite: {
+            /**
+             * Calculatefromformulary
+             * @default false
+             */
+            calculateFromFormulary: boolean;
+            /** Doseamount */
+            doseAmount?: number | string | null;
+            /** Doseunit */
+            doseUnit?: string | null;
+            /** Durationdays */
+            durationDays: number;
+            /** Formularyentrypublicid */
+            formularyEntryPublicId?: string | null;
+            /** Freetextname */
+            freeTextName?: string | null;
+            /** Frequencyperday */
+            frequencyPerDay: number;
+            /** Indicationcode */
+            indicationCode?: string | null;
+            /** Instructionstext */
+            instructionsText?: string | null;
+            /** Intervalhours */
+            intervalHours?: number | null;
+            /**
+             * Isrenewable
+             * @default false
+             */
+            isRenewable: boolean;
+            /** Quantity */
+            quantity?: string | null;
+            /**
+             * Route
+             * @enum {string}
+             */
+            route: "oral" | "nasal" | "otic" | "topical" | "injection";
+            /** Safetyoverrides */
+            safetyOverrides?: components["schemas"]["SafetyOverrideWrite"][];
+            /**
+             * Sortorder
+             * @default 0
+             */
+            sortOrder: number;
+            /**
+             * Substitutionallowed
+             * @default true
+             */
+            substitutionAllowed: boolean;
+            taper?: components["schemas"]["TaperWrite"] | null;
+            /**
+             * Useformularytaper
+             * @default false
+             */
+            useFormularyTaper: boolean;
+        };
+        /** PrescriptionRead */
+        PrescriptionRead: {
+            /** Encounterpublicid */
+            encounterPublicId: string;
+            /** Ispediatric */
+            isPediatric: boolean;
+            /** Issuedat */
+            issuedAt: string | null;
+            /** Items */
+            items: components["schemas"]["PrescriptionItemRead"][];
+            /** Locale */
+            locale: string;
+            /** Notes */
+            notes: string | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Publicid */
+            publicId: string;
+            /** Safetyalerts */
+            safetyAlerts: components["schemas"]["SafetyAlertRead"][];
+            /** Status */
+            status: string;
+            /** Version */
+            version: number;
+            /** Weightkg */
+            weightKg: string | null;
+        };
+        /** PrescriptionTemplateCreate */
+        PrescriptionTemplateCreate: {
+            /** Code */
+            code: string;
+            /** Complaintconceptids */
+            complaintConceptIds?: string[];
+            /**
+             * Ispediatric
+             * @default false
+             */
+            isPediatric: boolean;
+            /** Items */
+            items: components["schemas"]["PrescriptionItemWrite"][];
+            /** Namekey */
+            nameKey: string;
+        };
+        /** PrescriptionTemplateRead */
+        PrescriptionTemplateRead: {
+            /** Code */
+            code: string;
+            /** Complaintconceptids */
+            complaintConceptIds: string[];
+            /** Ispediatric */
+            isPediatric: boolean;
+            /** Items */
+            items: Record<string, never>[];
+            /** Namekey */
+            nameKey: string;
+            /** Publicid */
+            publicId: string;
+            /** Version */
+            version: number;
+        };
+        /** PrescriptionUpdate */
+        PrescriptionUpdate: {
+            /** Ispediatric */
+            isPediatric?: boolean | null;
+            /** Items */
+            items?: components["schemas"]["PrescriptionItemWrite"][] | null;
+            /** Locale */
+            locale?: string | null;
+            /** Notes */
+            notes?: string | null;
+            /** Version */
+            version: number;
+            /** Weightkg */
+            weightKg?: number | string | null;
         };
         /** PresignedUrlResponse */
         PresignedUrlResponse: {
@@ -4175,6 +4761,48 @@ export interface components {
             /** Publicid */
             publicId: string;
         };
+        /** SafetyAlertRead */
+        SafetyAlertRead: {
+            /** Code */
+            code: string;
+            /** Itemindex */
+            itemIndex?: number | null;
+            /** Severity */
+            severity: string;
+        };
+        /** SafetyCheckRequest */
+        SafetyCheckRequest: {
+            /**
+             * Ispediatric
+             * @default false
+             */
+            isPediatric: boolean;
+            /** Items */
+            items: components["schemas"]["PrescriptionItemWrite"][];
+            /** Weightkg */
+            weightKg?: number | string | null;
+        };
+        /** SafetyOverrideRead */
+        SafetyOverrideRead: {
+            /** At */
+            at: string;
+            /** Code */
+            code: string;
+            /** Reason */
+            reason: string;
+            /** Userpublicid */
+            userPublicId: string;
+        };
+        /** SafetyOverrideWrite */
+        SafetyOverrideWrite: {
+            /**
+             * Code
+             * @enum {string}
+             */
+            code: "prescription.allergy_conflict" | "prescription.dose_above_maximum";
+            /** Reason */
+            reason: string;
+        };
         /** SchedulableDoctorRead */
         SchedulableDoctorRead: {
             /** Firstname */
@@ -4258,6 +4886,34 @@ export interface components {
             phone?: string | null;
             /** Postalcode */
             postalCode?: string | null;
+        };
+        /** TaperRequest */
+        TaperRequest: {
+            /** Daysperstep */
+            daysPerStep: number;
+            /**
+             * Minimummg
+             * @default 0
+             */
+            minimumMg: number | string;
+            /** Startmg */
+            startMg: number | string;
+            /** Stepmg */
+            stepMg: number | string;
+        };
+        /** TaperWrite */
+        TaperWrite: {
+            /** Daysperstep */
+            daysPerStep: number;
+            /**
+             * Minimummg
+             * @default 0
+             */
+            minimumMg: number | string;
+            /** Startmg */
+            startMg: number | string;
+            /** Stepmg */
+            stepMg: number | string;
         };
         /** TranslationCoverageItem */
         TranslationCoverageItem: {
@@ -6084,6 +6740,42 @@ export interface operations {
             };
         };
     };
+    search_drugs_api_v1_drugs_get: {
+        parameters: {
+            query?: {
+                q?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_DrugRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_encounter_templates_api_v1_encounter_templates_get: {
         parameters: {
             query?: never;
@@ -6503,6 +7195,116 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["EncounterRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_formulary_api_v1_formulary_get: {
+        parameters: {
+            query?: {
+                q?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_FormularyEntryRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_formulary_entry_api_v1_formulary_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FormularyEntryCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FormularyEntryRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_formulary_entry_api_v1_formulary__formulary_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                formulary_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FormularyEntryUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FormularyEntryRead"];
                 };
             };
             /** @description Validation Error */
@@ -7679,6 +8481,193 @@ export interface operations {
             };
         };
     };
+    list_patient_prescriptions_api_v1_patients__patient_id__prescriptions_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_PrescriptionRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_prescription_api_v1_patients__patient_id__prescriptions_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+                "Idempotency-Key"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PrescriptionCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PrescriptionRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    calculate_pediatric_dose_api_v1_patients__patient_id__prescriptions_calculate_dose_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PediatricDoseRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CalculationRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    check_prescription_safety_api_v1_patients__patient_id__prescriptions_check_safety_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SafetyCheckRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SafetyAlertRead"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    generate_prescription_taper_api_v1_patients__patient_id__prescriptions_generate_taper_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TaperRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CalculationRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_problems_api_v1_patients__patient_id__problems_get: {
         parameters: {
             query?: {
@@ -7836,6 +8825,215 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PermissionRead"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_prescription_templates_api_v1_prescription_templates_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_PrescriptionTemplateRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_prescription_template_api_v1_prescription_templates_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PrescriptionTemplateCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PrescriptionTemplateRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_prescription_api_v1_prescriptions__prescription_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                prescription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PrescriptionRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_prescription_api_v1_prescriptions__prescription_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                prescription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PrescriptionUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PrescriptionRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_prescription_api_v1_prescriptions__prescription_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                prescription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PrescriptionRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    issue_prescription_api_v1_prescriptions__prescription_id__issue_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                prescription_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PrescriptionRead"];
                 };
             };
             /** @description Validation Error */

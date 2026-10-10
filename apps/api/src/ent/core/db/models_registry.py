@@ -37,6 +37,16 @@ from ent.features.patients.models import (
     PatientProblem,
     PatientRequestIdempotency,
 )
+from ent.features.prescriptions.models import (
+    CalculationResultRow,
+    Drug,
+    DrugForm,
+    FormularyEntry,
+    Prescription,
+    PrescriptionItem,
+    PrescriptionRequestIdempotency,
+    PrescriptionTemplate,
+)
 from ent.features.scheduling.models import Appointment, AppointmentType
 from ent.features.terminology.models import (
     CodeSystem,
@@ -61,7 +71,11 @@ __all__ = [
     "AccessLog",
     "Attachment",
     "AuditLog",
+    "CalculationResultRow",
     "Clinic",
+    "Drug",
+    "DrugForm",
+    "FormularyEntry",
     "CodeSystem",
     "Diagnosis",
     "Document",
@@ -93,6 +107,10 @@ __all__ = [
     "PatientProblem",
     "PatientRequestIdempotency",
     "Permission",
+    "Prescription",
+    "PrescriptionItem",
+    "PrescriptionRequestIdempotency",
+    "PrescriptionTemplate",
     "PhraseLibrary",
     "ReferenceDataVersion",
     "Role",

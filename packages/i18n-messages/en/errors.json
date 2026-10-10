@@ -38,5 +38,23 @@
     "not_found": "That visit was not found.",
     "template_not_found": "Visit template not found.",
     "version_conflict": "This visit was updated by someone else. Reload and try again."
+  },
+  "prescription": {
+    "allergy_conflict": "This drug matches an active allergy. Record an override reason to continue.",
+    "breastfeeding_caution": "This drug is flagged for breastfeeding.",
+    "dose_above_maximum": "This dose is above the formulary maximum.",
+    "dosing_input_invalid": "The dosing inputs cannot be calculated.",
+    "dosing_rule_invalid": "This formulary dosing rule is incomplete.",
+    "duplicate_class": "Another drug from the same class is already active.",
+    "formulary_not_found": "That formulary entry was not found.",
+    "idempotency_mismatch": "This idempotency key was already used for a different prescription.",
+    "invalid_status": "This prescription cannot change from its current status.",
+    "not_found": "That prescription was not found.",
+    "ototoxic_with_hearing_loss": "This drug is ototoxic and hearing loss is on the problem list.",
+    "pediatric_weight_missing": "A pediatric prescription needs a recorded weight.",
+    "pregnancy_caution": "This drug is flagged for pregnancy.",
+    "safety_blocked": "Safety checks blocked this prescription.",
+    "unstructured_item": "This free-text item was not checked against the formulary.",
+    "version_conflict": "This prescription was updated by someone else. Reload and try again."
   }
 }

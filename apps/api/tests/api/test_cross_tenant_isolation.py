@@ -322,6 +322,8 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "encounter_public_id": encounter_public_id,
             "encounter_id": encounter_public_id,
             "diagnosis_id": new_ulid(),
+            "prescription_id": new_ulid(),
+            "formulary_id": new_ulid(),
         }
         forbidden = [
             patient.public_id,
@@ -418,6 +420,9 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
                 "q": concept_code,
                 "limit": "100",
             },
+            ("GET", "/api/v1/drugs"): {"q": "amoxicillin", "limit": "100"},
+            ("GET", "/api/v1/formulary"): {"q": "SecretBrand", "limit": "100"},
+            ("GET", "/api/v1/prescription-templates"): {"limit": "100"},
             ("GET", "/api/v1/observations/cohort"): {
                 "conceptCode": "FIND.TM.NORMAL",
                 "ordinal": "3",

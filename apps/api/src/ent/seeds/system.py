@@ -8,11 +8,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from ent.features.documents.seed import ensure_patient_summary_template
 from ent.seeds.encounter_templates import seed_encounter_templates
+from ent.seeds.formulary import seed_formulary
 from ent.seeds.identity import ensure_all_permissions
 from ent.seeds.reference_data import record_reference_data_version
 from ent.seeds.terminology import TerminologySeedReport, seed_terminology
 from ent.seeds.versions import (
     ENCOUNTER_TEMPLATES_VERSION,
+    FORMULARY_VERSION,
     PERMISSIONS_VERSION,
     TEMPLATES_VERSION,
     TERMINOLOGY_VERSION,
@@ -33,6 +35,7 @@ async def seed_system(session: AsyncSession) -> SystemSeedReport:
     terminology = await seed_terminology(session)
     await ensure_patient_summary_template(session)
     encounter_templates_created = await seed_encounter_templates(session)
+    await seed_formulary(session)
     created = 0
     if await record_reference_data_version(
         session,
@@ -60,6 +63,13 @@ async def seed_system(session: AsyncSession) -> SystemSeedReport:
         dataset="encounter_templates",
         version=ENCOUNTER_TEMPLATES_VERSION,
         notes=f"seed_system encounter templates ({encounter_templates_created} created)",
+    ):
+        created += 1
+    if await record_reference_data_version(
+        session,
+        dataset="formulary",
+        version=FORMULARY_VERSION,
+        notes="seed_system drug catalog without dosing rules",
     ):
         created += 1
     return SystemSeedReport(
