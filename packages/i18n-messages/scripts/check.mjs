@@ -33,6 +33,7 @@ const NAMESPACES = [
   'documents',
   'examination',
   'encounters',
+  'prescriptions',
 ];
 
 /**

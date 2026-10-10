@@ -128,6 +128,17 @@ export const queryKeys = {
     narrative: (patientId: string, signature: string) =>
       [...queryKeys.encounters.all, "narrative", patientId, signature] as const,
   },
+  prescriptions: {
+    all: ["prescriptions"] as const,
+    drugs: (q: string) => [...queryKeys.prescriptions.all, "drugs", q] as const,
+    formulary: (q: string) =>
+      [...queryKeys.prescriptions.all, "formulary", q] as const,
+    templates: () => [...queryKeys.prescriptions.all, "templates"] as const,
+    patient: (patientId: string) =>
+      [...queryKeys.prescriptions.all, "patient", patientId] as const,
+    detail: (prescriptionId: string) =>
+      [...queryKeys.prescriptions.all, "detail", prescriptionId] as const,
+  },
   terminology: {
     all: ["terminology"] as const,
     adminConcepts: (params?: { q?: string; limit?: number; offset?: number }) =>

@@ -21,4 +21,6 @@ export const Permission = {
   ENCOUNTER_AMEND: "encounter.amend",
   DOCUMENT_SEND: "document.send",
   ADMIN_TEMPLATES: "admin.templates",
+  PRESCRIPTION_CREATE: "prescription.create",
+  PRESCRIPTION_SIGN: "prescription.sign",
 } as const;

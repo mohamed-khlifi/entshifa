@@ -1,0 +1,142 @@
+{
+  "gate": {
+    "forbidden": "Vous n’avez pas l’autorisation de prescrire."
+  },
+  "page": {
+    "title": "Ordonnances",
+    "description": "Posologies du formulaire de la clinique, contrôles de sécurité et impression.",
+    "loading": "Chargement des ordonnances…",
+    "error": "Les ordonnances n’ont pas pu être chargées.",
+    "empty": "Aucune ordonnance pour ce patient."
+  },
+  "list": {
+    "print": "Imprimer",
+    "count": "{count, plural, one {# ligne} other {# lignes}}"
+  },
+  "status": {
+    "draft": "Brouillon",
+    "issued": "Émise",
+    "cancelled": "Annulée",
+    "unknown": "Statut inconnu"
+  },
+  "encounter": {
+    "label": "Consultation",
+    "empty": "Ouvrez une consultation en brouillon avant de rédiger une ordonnance."
+  },
+  "builder": {
+    "title": "Ordonnance",
+    "search": "Rechercher dans le formulaire",
+    "searchEmpty": "Aucun médicament ne correspond.",
+    "formularyHeading": "Formulaire de la clinique",
+    "catalogHeading": "Catalogue hors formulaire",
+    "templatesHeading": "Modèles enregistrés",
+    "freeText": "Ajouter une ligne libre",
+    "freeTextName": "Nom de la ligne",
+    "pediatric": "Ordonnance pédiatrique",
+    "weight": "Poids",
+    "notes": "Notes",
+    "saveDraft": "Enregistrer le brouillon",
+    "issue": "Émettre",
+    "cancel": "Annuler l’ordonnance",
+    "print": "Imprimer",
+    "saved": "Brouillon enregistré.",
+    "issued": "Ordonnance émise.",
+    "cancelled": "Ordonnance annulée.",
+    "blocked": "Levez les blocages de sécurité avant d’émettre.",
+    "templateSaved": "Modèle enregistré."
+  },
+  "validation": {
+    "required": "Ce champ est obligatoire.",
+    "item": "Ajoutez au moins une ligne.",
+    "identity": "Choisissez un médicament du formulaire ou un nom libre.",
+    "dose": "Saisissez la dose, ou calculez-la depuis le formulaire.",
+    "range": "Saisissez un nombre entier dans la plage autorisée.",
+    "taper": "Renseignez tout le palier, ou utilisez le palier du formulaire.",
+    "code": "Utilisez un code court de lettres, chiffres et tirets bas."
+  },
+  "item": {
+    "dose": "Dose",
+    "unit": "Unité",
+    "route": "Voie",
+    "frequency": "Fois par jour",
+    "duration": "Durée en jours",
+    "quantity": "Quantité",
+    "instructions": "Instructions",
+    "renewable": "Renouvelable",
+    "substitution": "Substitution autorisée",
+    "remove": "Retirer",
+    "calculate": "Calculer depuis le formulaire",
+    "formularyTaper": "Utiliser le palier du formulaire",
+    "preview": "Calcul du formulaire",
+    "overrideAllergy": "Motif de dérogation pour l’allergie",
+    "overrideDose": "Motif de dérogation pour la dose"
+  },
+  "route": {
+    "oral": "Orale",
+    "nasal": "Nasale",
+    "otic": "Auriculaire",
+    "topical": "Topique",
+    "injection": "Injectable",
+    "unknown": "Voie"
+  },
+  "helpers": {
+    "title": "Conseils de technique",
+    "saline": "Lavage nasal",
+    "salineVolume": "Volume",
+    "salineFrequency": "Fois par jour",
+    "salineApply": "Ajouter les consignes de lavage",
+    "salineText": "Lavage nasal au sérum salé : {volume} de chaque côté, {frequency, plural, one {# fois par jour} other {# fois par jour}}. Se pencher en avant et laisser le liquide s’écouler.",
+    "spray": "Technique du spray",
+    "sprayApply": "Ajouter la technique du spray",
+    "sprayText": "Incliner légèrement la tête vers l’avant. Tenir le flacon de la main opposée et diriger le jet vers la paroi externe du nez, loin de la cloison. Inspirer doucement en pulvérisant.",
+    "drops": "Gouttes auriculaires",
+    "dropsApply": "Ajouter la technique des gouttes",
+    "dropsText": "S’allonger, oreille traitée vers le haut. Instiller les gouttes, puis presser doucement le tragus pour les faire progresser. Rester dans cette position un court moment.",
+    "taper": "Décroissance corticoïde",
+    "taperStart": "Dose de départ",
+    "taperStep": "Palier",
+    "taperDays": "Jours à chaque dose",
+    "taperFloor": "Dose plancher",
+    "taperPreview": "Prévisualiser le schéma",
+    "taperApply": "Joindre cette décroissance",
+    "taperCount": "{count, plural, one {# jour} other {# jours}}",
+    "taperDay": "Jour {day} : {dose} mg"
+  },
+  "safety": {
+    "title": "Contrôles de sécurité",
+    "allergyConflict": "Ce médicament correspond à une allergie active.",
+    "doseAboveMaximum": "Cette dose dépasse le maximum du formulaire.",
+    "pediatricWeightMissing": "Une ordonnance pédiatrique exige un poids enregistré.",
+    "ototoxic": "Ce médicament est ototoxique et une surdité figure sur la liste des problèmes.",
+    "duplicateClass": "Un autre médicament de la même classe est déjà actif.",
+    "pregnancy": "Ce médicament est signalé pour la grossesse.",
+    "breastfeeding": "Ce médicament est signalé pour l’allaitement.",
+    "unstructured": "Cette ligne libre n’a pas été contrôlée sur le formulaire.",
+    "unknown": "Un contrôle de sécurité doit être relu."
+  },
+  "templates": {
+    "apply": "Appliquer le modèle",
+    "save": "Enregistrer comme modèle",
+    "code": "Code du modèle",
+    "empty": "Aucun modèle enregistré ne correspond à cette consultation."
+  },
+  "print": {
+    "title": "Ordonnance",
+    "patient": "Patient",
+    "born": "Né(e) le {date}",
+    "mrn": "IPP {mrn}",
+    "weight": "Poids {weight} kg",
+    "line": "{dose} {unit}, {route}, {frequency, plural, one {# fois par jour} other {# fois par jour}}, pendant {duration, plural, one {# jour} other {# jours}}",
+    "renewable": "Renouvelable",
+    "noSubstitution": "Non substituable",
+    "substitutionAllowed": "Substitution autorisée",
+    "signature": "Signature du prescripteur",
+    "identifier": "Ordonnance {id}",
+    "registration": "Immatriculation {value}",
+    "tax": "Identifiant fiscal {value}"
+  },
+  "tags": {
+    "ototoxic": "Ototoxique",
+    "anticoagulant": "Anticoagulant"
+  }
+}

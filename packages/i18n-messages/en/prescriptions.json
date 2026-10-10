@@ -1,0 +1,142 @@
+{
+  "gate": {
+    "forbidden": "You do not have permission to prescribe."
+  },
+  "page": {
+    "title": "Prescriptions",
+    "description": "Clinic formulary doses, safety checks, and the printed prescription.",
+    "loading": "Loading prescriptions…",
+    "error": "Prescriptions could not be loaded.",
+    "empty": "No prescriptions for this patient yet."
+  },
+  "list": {
+    "print": "Print",
+    "count": "{count, plural, one {# item} other {# items}}"
+  },
+  "status": {
+    "draft": "Draft",
+    "issued": "Issued",
+    "cancelled": "Cancelled",
+    "unknown": "Unknown status"
+  },
+  "encounter": {
+    "label": "Visit",
+    "empty": "Start a draft consultation before writing a prescription."
+  },
+  "builder": {
+    "title": "Prescription",
+    "search": "Search the formulary",
+    "searchEmpty": "No drug matches that search.",
+    "formularyHeading": "Clinic formulary",
+    "catalogHeading": "Catalog outside the formulary",
+    "templatesHeading": "Saved templates",
+    "freeText": "Add free-text item",
+    "freeTextName": "Item name",
+    "pediatric": "Pediatric prescription",
+    "weight": "Weight",
+    "notes": "Notes",
+    "saveDraft": "Save draft",
+    "issue": "Issue",
+    "cancel": "Cancel prescription",
+    "print": "Print",
+    "saved": "Draft saved.",
+    "issued": "Prescription issued.",
+    "cancelled": "Prescription cancelled.",
+    "blocked": "Resolve the safety blocks before issuing.",
+    "templateSaved": "Template saved."
+  },
+  "validation": {
+    "required": "This field is required.",
+    "item": "Add at least one item.",
+    "identity": "Choose a formulary drug or a free-text name.",
+    "dose": "Enter the dose, or calculate it from the formulary.",
+    "range": "Enter a whole number in the allowed range.",
+    "taper": "Enter every taper step, or use the formulary taper.",
+    "code": "Use a short code of letters, numbers, and underscores."
+  },
+  "item": {
+    "dose": "Dose",
+    "unit": "Unit",
+    "route": "Route",
+    "frequency": "Times per day",
+    "duration": "Duration in days",
+    "quantity": "Quantity",
+    "instructions": "Instructions",
+    "renewable": "Renewable",
+    "substitution": "Substitution allowed",
+    "remove": "Remove",
+    "calculate": "Calculate from the formulary",
+    "formularyTaper": "Use the formulary taper",
+    "preview": "Formulary calculation",
+    "overrideAllergy": "Allergy override reason",
+    "overrideDose": "Dose override reason"
+  },
+  "route": {
+    "oral": "Oral",
+    "nasal": "Nasal",
+    "otic": "Otic",
+    "topical": "Topical",
+    "injection": "Injection",
+    "unknown": "Route"
+  },
+  "helpers": {
+    "title": "Technique notes",
+    "saline": "Saline irrigation",
+    "salineVolume": "Volume",
+    "salineFrequency": "Times per day",
+    "salineApply": "Add irrigation instructions",
+    "salineText": "Nasal saline irrigation: {volume} each side, {frequency, plural, one {# time a day} other {# times a day}}. Lean forward and let the wash drain.",
+    "spray": "Spray technique",
+    "sprayApply": "Add spray technique",
+    "sprayText": "Tilt the head slightly forward. Hold the bottle in the opposite hand and aim toward the outer wall of the nose, away from the septum. Breathe in gently while spraying.",
+    "drops": "Ear drops",
+    "dropsApply": "Add ear-drop technique",
+    "dropsText": "Lie with the treated ear upward. Instil the drops, then press the tragus gently so the drops pass inward. Stay in that position for a short while.",
+    "taper": "Steroid taper",
+    "taperStart": "Starting dose",
+    "taperStep": "Step down",
+    "taperDays": "Days at each dose",
+    "taperFloor": "Lowest dose",
+    "taperPreview": "Preview the schedule",
+    "taperApply": "Attach this taper",
+    "taperCount": "{count, plural, one {# day} other {# days}}",
+    "taperDay": "Day {day}: {dose} mg"
+  },
+  "safety": {
+    "title": "Safety checks",
+    "allergyConflict": "This drug matches an active allergy.",
+    "doseAboveMaximum": "This dose is above the formulary maximum.",
+    "pediatricWeightMissing": "A pediatric prescription needs a recorded weight.",
+    "ototoxic": "This drug is ototoxic and hearing loss is on the problem list.",
+    "duplicateClass": "Another drug from the same class is already active.",
+    "pregnancy": "This drug is flagged for pregnancy.",
+    "breastfeeding": "This drug is flagged for breastfeeding.",
+    "unstructured": "This free-text item was not checked against the formulary.",
+    "unknown": "A safety check needs review."
+  },
+  "templates": {
+    "apply": "Apply template",
+    "save": "Save as template",
+    "code": "Template code",
+    "empty": "No saved template matches this visit."
+  },
+  "print": {
+    "title": "Prescription",
+    "patient": "Patient",
+    "born": "Born {date}",
+    "mrn": "MRN {mrn}",
+    "weight": "Weight {weight} kg",
+    "line": "{dose} {unit}, {route}, {frequency, plural, one {# time a day} other {# times a day}}, for {duration, plural, one {# day} other {# days}}",
+    "renewable": "Renewable",
+    "noSubstitution": "Do not substitute",
+    "substitutionAllowed": "Substitution allowed",
+    "signature": "Prescriber signature",
+    "identifier": "Prescription {id}",
+    "registration": "Registration {value}",
+    "tax": "Tax identifier {value}"
+  },
+  "tags": {
+    "ototoxic": "Ototoxic",
+    "anticoagulant": "Anticoagulant"
+  }
+}

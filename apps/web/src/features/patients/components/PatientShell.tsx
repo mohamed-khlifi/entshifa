@@ -23,11 +23,13 @@ export function PatientShell({
   const pathname = usePathname();
   const canReadAttachments = usePermission(Permission.ATTACHMENT_READ);
   const canFinalizeDocuments = usePermission(Permission.DOCUMENT_FINALIZE);
+  const canPrescribe = usePermission(Permission.PRESCRIPTION_CREATE);
   const patient = usePatientQuery(patientId);
   const overviewHref = `/patients/${patientId}`;
   const attachmentsHref = `/patients/${patientId}/attachments`;
   const documentsHref = `/patients/${patientId}/documents`;
   const examinationHref = `/patients/${patientId}/examination`;
+  const prescriptionsHref = `/patients/${patientId}/prescriptions`;
 
   if (patient.isLoading) {
     return (
@@ -110,6 +112,20 @@ export function PatientShell({
         >
           {t("nav.examination")}
         </Link>
+        {canPrescribe ? (
+          <Link
+            href={prescriptionsHref}
+            className={cn(
+              "rounded-full px-3 py-1.5 text-sm font-medium",
+              pathname === prescriptionsHref
+                ? "bg-primary/10 text-primary"
+                : "text-muted-foreground hover:bg-muted",
+            )}
+            {...testIdProps(testIds.patients.navPrescriptions)}
+          >
+            {t("nav.prescriptions")}
+          </Link>
+        ) : null}
         {canFinalizeDocuments ? (
           <Link
             href={documentsHref}

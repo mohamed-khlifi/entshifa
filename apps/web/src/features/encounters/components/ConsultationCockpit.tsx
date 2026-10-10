@@ -12,6 +12,7 @@ import { Form } from "@/components/forms/Form";
 import { TextAreaField } from "@/components/forms/TextAreaField";
 import { Button } from "@/components/ui/button";
 import { NormalsToolbar, selectCopySource } from "@/features/examination";
+import { PrescriptionBuilder } from "@/features/prescriptions";
 import {
   anatomicalMaps,
   nasalCavityMap,
@@ -160,6 +161,7 @@ export function ConsultationCockpit({
   const [resetToken, setResetToken] = useState(0);
   const [version, setVersion] = useState(1);
   const [signOpen, setSignOpen] = useState(false);
+  const [prescriptionOpen, setPrescriptionOpen] = useState(false);
   const hydratedKey = useRef<string | null>(null);
   const form = useForm<CockpitFormValues>({
     resolver: zodResolver(cockpitFormSchema),
@@ -746,15 +748,19 @@ export function ConsultationCockpit({
             <PlanPanel
               items={editor.planItems}
               disabled={locked}
-              onAdd={(kind, detail) =>
+              onAdd={(kind, detail) => {
                 setEditor((current) => ({
                   ...current,
                   planItems: [
                     ...current.planItems,
                     { id: crypto.randomUUID(), kind, detail },
                   ],
-                }))
-              }
+                }));
+                if (kind === "medication") {
+                  setPrescriptionOpen(true);
+                }
+              }}
+              onPrescribe={() => setPrescriptionOpen(true)}
               onRemove={(id) =>
                 setEditor((current) => ({
                   ...current,
@@ -763,6 +769,15 @@ export function ConsultationCockpit({
               }
             />
           </Form>
+          {prescriptionOpen && encounter ? (
+            <PrescriptionBuilder
+              patientId={patientId}
+              encounterId={encounter.publicId}
+              complaintConceptIds={editor.complaints.map(
+                (complaint) => complaint.conceptPublicId,
+              )}
+            />
+          ) : null}
           {locked ? (
             <Can permission={Permission.ENCOUNTER_AMEND}>
               <AddendumForm

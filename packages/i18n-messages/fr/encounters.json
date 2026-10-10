@@ -118,6 +118,7 @@
   },
   "plan": {
     "add": "Ajouter un élément",
+    "prescribe": "Rédiger l’ordonnance",
     "addFollowUp": "Suivi : {days, plural, one {# jour} other {# jours}}",
     "followUpDetail": "{days, plural, one {# jour} other {# jours}}",
     "detail": "Détail",

@@ -7,7 +7,8 @@
     "attachments": "الصور والمستندات",
     "consultation": "الاستشارة",
     "documents": "المستندات",
-    "examination": "الفحص"
+    "examination": "الفحص",
+    "prescriptions": "الوصفات"
   },
   "state": {
     "loading": "جارٍ تحميل الملف…",

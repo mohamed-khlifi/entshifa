@@ -7,7 +7,8 @@
     "attachments": "Images et documents",
     "consultation": "Consultation",
     "documents": "Documents",
-    "examination": "Examen"
+    "examination": "Examen",
+    "prescriptions": "Ordonnances"
   },
   "state": {
     "loading": "Chargement du dossier…",

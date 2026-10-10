@@ -164,7 +164,7 @@ fr.
 
 ---
 
-## - [ ] P2-09 Prescriptions (frontend)
+## - [x] P2-09 Prescriptions (frontend)
 
 **Scope**
 - Drug search with clinic formulary first and complaint-specific favourites on

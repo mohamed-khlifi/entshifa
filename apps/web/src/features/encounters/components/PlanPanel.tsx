@@ -22,6 +22,7 @@ type PlanPanelProps = {
   disabled: boolean;
   onAdd: (kind: PlanKind, detail: string) => void;
   onRemove: (id: string) => void;
+  onPrescribe?: () => void;
 };
 
 export function PlanPanel({
@@ -29,6 +30,7 @@ export function PlanPanel({
   disabled,
   onAdd,
   onRemove,
+  onPrescribe,
 }: PlanPanelProps) {
   const t = useTranslations("encounters");
   const form = useFormContext<CockpitFormValues>();
@@ -65,6 +67,17 @@ export function PlanPanel({
       >
         {t("plan.add")}
       </Button>
+      {onPrescribe ? (
+        <Button
+          type="button"
+          variant="secondary"
+          disabled={disabled}
+          onClick={onPrescribe}
+          {...testIdProps(testIds.prescriptions.open)}
+        >
+          {t("plan.prescribe")}
+        </Button>
+      ) : null}
       {items.length === 0 ? (
         <p className="text-sm text-muted-foreground">{t("plan.empty")}</p>
       ) : (

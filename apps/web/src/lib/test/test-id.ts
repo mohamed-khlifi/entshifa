@@ -160,6 +160,7 @@ export const testIds = {
     chartNav: testId("patients", "chart-nav"),
     navOverview: testId("patients", "nav-overview"),
     navExamination: testId("patients", "nav-examination"),
+    navPrescriptions: testId("patients", "nav-prescriptions"),
     navConsultation: testId("patients", "nav-consultation"),
     navAttachments: testId("patients", "nav-attachments"),
     header: testId("patients", "header"),
@@ -331,6 +332,52 @@ export const testIds = {
       locale: testId("terminology", "coverage", "locale"),
     },
   },
+  prescriptions: {
+    root: testId("prescriptions", "root"),
+    gate: testId("prescriptions", "gate"),
+    loading: testId("prescriptions", "loading"),
+    error: testId("prescriptions", "error"),
+    empty: testId("prescriptions", "empty"),
+    list: testId("prescriptions", "list"),
+    encounter: testId("prescriptions", "encounter"),
+    needsEncounter: testId("prescriptions", "needs-encounter"),
+    builder: testId("prescriptions", "builder"),
+    search: testId("prescriptions", "search"),
+    searchEmpty: testId("prescriptions", "search-empty"),
+    formularyHeading: testId("prescriptions", "formulary-heading"),
+    catalogHeading: testId("prescriptions", "catalog-heading"),
+    templatesHeading: testId("prescriptions", "templates-heading"),
+    freeText: testId("prescriptions", "free-text"),
+    freeTextName: testId("prescriptions", "free-text-name"),
+    pediatric: testId("prescriptions", "pediatric"),
+    weight: testId("prescriptions", "weight"),
+    notes: testId("prescriptions", "notes"),
+    safety: testId("prescriptions", "safety"),
+    saveDraft: testId("prescriptions", "save-draft"),
+    issue: testId("prescriptions", "issue"),
+    cancel: testId("prescriptions", "cancel"),
+    print: testId("prescriptions", "print"),
+    paper: testId("prescriptions", "paper"),
+    helpers: testId("prescriptions", "helpers"),
+    salineVolume: testId("prescriptions", "saline-volume"),
+    salineFrequency: testId("prescriptions", "saline-frequency"),
+    salineApply: testId("prescriptions", "saline-apply"),
+    sprayApply: testId("prescriptions", "spray-apply"),
+    dropsApply: testId("prescriptions", "drops-apply"),
+    taperStart: testId("prescriptions", "taper-start"),
+    taperStep: testId("prescriptions", "taper-step"),
+    taperDays: testId("prescriptions", "taper-days"),
+    taperFloor: testId("prescriptions", "taper-floor"),
+    taperPreview: testId("prescriptions", "taper-preview"),
+    taperApply: testId("prescriptions", "taper-apply"),
+    taperSchedule: testId("prescriptions", "taper-schedule"),
+    dosePreview: testId("prescriptions", "dose-preview"),
+    calculateDose: testId("prescriptions", "calculate-dose"),
+    templateCode: testId("prescriptions", "template-code"),
+    templateSave: testId("prescriptions", "template-save"),
+    open: testId("prescriptions", "open"),
+    blocked: testId("prescriptions", "blocked"),
+  },
 } as const;
 
 export function examinationMapTestId(mapId: string): string {
@@ -408,6 +455,23 @@ export function diagnosisFavoriteTestId(conceptPublicId: string): string {
 
 export function patientRowTestId(publicId: string): string {
   return publicIdTestId("patients.list.row", publicId);
+}
+
+export function prescriptionRowTestId(publicId: string): string {
+  return publicIdTestId("prescriptions.row", publicId);
+}
+
+export function prescriptionFormularyTestId(publicId: string): string {
+  return publicIdTestId("prescriptions.formulary", publicId);
+}
+
+export function prescriptionTemplateTestId(publicId: string): string {
+  return publicIdTestId("prescriptions.template", publicId);
+}
+
+export function prescriptionAlertTestId(code: string): string {
+  const segment = code.replace(/^prescription\./, "").replace(/_/g, "-");
+  return testId("prescriptions", "alert", segment);
 }
 
 export function publicIdTestId(scope: string, publicId: string): string {

@@ -163,3 +163,29 @@ export type EncounterTemplateRouteRequest =
 export type PageSchemaEncounterRead = Schemas["PageSchema_EncounterRead_"];
 export type PageSchemaPatientProblemRead =
   Schemas["PageSchema_PatientProblemRead_"];
+
+export type DrugRead = Schemas["DrugRead"];
+export type DrugFormRead = Schemas["DrugFormRead"];
+export type PageSchemaDrugRead = Schemas["PageSchema_DrugRead_"];
+export type FormularyEntryRead = Schemas["FormularyEntryRead"];
+export type PageSchemaFormularyEntryRead =
+  Schemas["PageSchema_FormularyEntryRead_"];
+export type PrescriptionRead = Schemas["PrescriptionRead"];
+export type PrescriptionCreate = Schemas["PrescriptionCreate"];
+export type PrescriptionUpdate = Schemas["PrescriptionUpdate"];
+export type PrescriptionItemRead = Schemas["PrescriptionItemRead"];
+export type PrescriptionItemWrite = Schemas["PrescriptionItemWrite"];
+export type PageSchemaPrescriptionRead =
+  Schemas["PageSchema_PrescriptionRead_"];
+export type PrescriptionTemplateRead = Schemas["PrescriptionTemplateRead"];
+export type PrescriptionTemplateCreate = Schemas["PrescriptionTemplateCreate"];
+export type PageSchemaPrescriptionTemplateRead =
+  Schemas["PageSchema_PrescriptionTemplateRead_"];
+export type SafetyCheckRequest = Schemas["SafetyCheckRequest"];
+export type SafetyAlertRead = Schemas["SafetyAlertRead"];
+export type SafetyOverrideWrite = Schemas["SafetyOverrideWrite"];
+export type PediatricDoseRequest = Schemas["PediatricDoseRequest"];
+export type TaperRequest = Schemas["TaperRequest"];
+export type TaperWrite = Schemas["TaperWrite"];
+export type CalculationRead = Schemas["CalculationRead"];
+export type FlagRead = Schemas["FlagRead"];
