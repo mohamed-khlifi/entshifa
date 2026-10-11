@@ -1,0 +1,113 @@
+{
+  "actionTypes": {
+    "call": "مكالمة هاتفية",
+    "document": "مستند",
+    "questionnaire": "استبيان",
+    "test": "فحص",
+    "visit": "زيارة"
+  },
+  "actions": {
+    "book": "حجز",
+    "call": "اتصال",
+    "cancel": "إلغاء المتابعة",
+    "email": "بريد",
+    "sms": "رسالة قصيرة",
+    "unreachable": "تعذر الوصول",
+    "whatsapp": "واتساب"
+  },
+  "attempts": "{count, plural, zero {لا محاولات} one {محاولة واحدة} two {محاولتان} few {# محاولات} many {# محاولة} other {# محاولة}}",
+  "buckets": {
+    "active": "مفتوحة",
+    "overdue": "متأخرة",
+    "unreachable": "تعذر الوصول",
+    "upcoming": "قادمة"
+  },
+  "columns": {
+    "actions": "إجراءات",
+    "attempts": "المحاولات",
+    "due": "الاستحقاق",
+    "patient": "المريض",
+    "reason": "السبب",
+    "status": "الحالة"
+  },
+  "counters": {
+    "active": "مفتوحة",
+    "overdue": "متأخرة",
+    "unreachable": "تعذر الوصول",
+    "upcoming": "خلال ٤ أسابيع"
+  },
+  "dialog": {
+    "bookSubmit": "حجز الموعد",
+    "bookTitle": "حجز من هذه المتابعة",
+    "close": "إغلاق",
+    "createSubmit": "إنشاء المتابعة",
+    "createTitle": "متابعة جديدة"
+  },
+  "form": {
+    "actionType": "المطلوب",
+    "appointmentType": "نوع الموعد",
+    "bookNow": "حجز موعد الآن",
+    "doctor": "الطبيب",
+    "interval": "الموعد",
+    "laterality": "الجهة",
+    "missing": "اختر مريضاً وسبباً، وموعداً كاملاً عند الحجز.",
+    "none": "بدون",
+    "patientSearch": "بحث عن مريض",
+    "reason": "السبب",
+    "room": "الغرفة",
+    "site": "الموقع",
+    "startsAt": "البداية",
+    "test": "الفحص",
+    "window": "مهلة السماح بالأيام"
+  },
+  "gate": {
+    "forbidden": "ليست لديك صلاحية عرض المتابعات."
+  },
+  "intervals": {
+    "days14": "أسبوعان",
+    "days180": "٦ أشهر",
+    "days28": "٤ أسابيع",
+    "days365": "سنة",
+    "days42": "٦ أسابيع",
+    "days7": "أسبوع",
+    "days90": "٣ أشهر"
+  },
+  "outcomes": {
+    "confirmed": "مؤكد",
+    "declined": "مرفوض",
+    "noAnswer": "لا إجابة",
+    "reached": "تم الوصول",
+    "unreachable": "تعذر الوصول",
+    "voicemail": "بريد صوتي"
+  },
+  "overlap": "{count, plural, zero {لا متابعة مفتوحة أخرى} one {متابعة مفتوحة أخرى} two {متابعتان مفتوحتان} few {# متابعات مفتوحة} many {# متابعة مفتوحة} other {# متابعة مفتوحة}}",
+  "page": {
+    "create": "متابعة جديدة",
+    "description": "متابعات متأخرة أو قادمة للاتصال أو المراسلة أو الحجز.",
+    "title": "المتابعات"
+  },
+  "state": {
+    "empty": "لا متابعات في هذه القائمة.",
+    "error": "تعذر تحميل قائمة المتابعات.",
+    "loading": "جارٍ تحميل المتابعات…"
+  },
+  "status": {
+    "booked": "محجوز",
+    "cancelled": "ملغى",
+    "done": "تم",
+    "overdue": "متأخر",
+    "pending": "قيد الانتظار",
+    "unreachable": "تعذر الوصول"
+  },
+  "tests": {
+    "audiogram": "مخطط سمع",
+    "endoscopy": "تنظير",
+    "imaging": "تصوير",
+    "tympanometry": "قياس الطبلة"
+  },
+  "toast": {
+    "booked": "تم حجز الموعد من المتابعة.",
+    "created": "تم إنشاء المتابعة.",
+    "logged": "سُجّلت المحاولة."
+  }
+}

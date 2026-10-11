@@ -126,6 +126,18 @@ export function PatientShell({
             {t("nav.prescriptions")}
           </Link>
         ) : null}
+        <Link
+          href={`/patients/${patientId}/timeline`}
+          className={cn(
+            "rounded-full px-3 py-1.5 text-sm font-medium",
+            pathname === `/patients/${patientId}/timeline`
+              ? "bg-primary/10 text-primary"
+              : "text-muted-foreground hover:bg-muted",
+          )}
+          {...testIdProps(testIds.patients.navTimeline)}
+        >
+          {t("nav.timeline")}
+        </Link>
         {canFinalizeDocuments ? (
           <Link
             href={documentsHref}

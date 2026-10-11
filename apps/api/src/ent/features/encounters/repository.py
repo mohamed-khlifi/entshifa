@@ -151,6 +151,14 @@ class EncounterRepository(BaseRepository[Encounter]):
             row.encounter_id = int(encounter.id)
             await complaints.add(row)
 
+    async def public_ids_for(self, ids: set[int]) -> dict[int, str]:
+        if not ids:
+            return {}
+        rows = (
+            await self.session.scalars(self._base_query().where(Encounter.id.in_(ids)))
+        ).all()
+        return {int(row.id): row.public_id for row in rows}
+
 
 class EncounterComplaintRepository(BaseRepository[EncounterComplaint]):
     model = EncounterComplaint

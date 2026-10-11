@@ -20,6 +20,7 @@ import {
   type VisitDocumentKind,
 } from "@/features/documents";
 import { PrescriptionBuilder } from "@/features/prescriptions";
+import { RecallComposer } from "@/features/recalls";
 import {
   anatomicalMaps,
   nasalCavityMap,
@@ -169,6 +170,10 @@ export function ConsultationCockpit({
   const [version, setVersion] = useState(1);
   const [signOpen, setSignOpen] = useState(false);
   const [prescriptionOpen, setPrescriptionOpen] = useState(false);
+  const [recallDraft, setRecallDraft] = useState<{
+    kind: "follow_up" | "test_requested";
+    detail: string;
+  } | null>(null);
   const [visitKind, setVisitKind] = useState<VisitDocumentKind | null>(null);
   const hydratedKey = useRef<string | null>(null);
   const form = useForm<CockpitFormValues>({
@@ -767,6 +772,9 @@ export function ConsultationCockpit({
                 if (kind === "medication") {
                   setPrescriptionOpen(true);
                 }
+                if (kind === "follow_up" || kind === "test_requested") {
+                  setRecallDraft({ kind, detail });
+                }
                 const documentKind = documentKindForPlan(kind);
                 if (documentKind) {
                   setVisitKind(documentKind);
@@ -800,6 +808,16 @@ export function ConsultationCockpit({
               complaintConceptIds={editor.complaints.map(
                 (complaint) => complaint.conceptPublicId,
               )}
+            />
+          ) : null}
+          {recallDraft && encounter ? (
+            <RecallComposer
+              heading={t("plan.createRecall")}
+              patientId={patientId}
+              encounterId={encounter.publicId}
+              preset={recallDraft.kind}
+              initialReason={recallDraft.detail}
+              onClose={() => setRecallDraft(null)}
             />
           ) : null}
           {locked ? (

@@ -198,7 +198,7 @@ skill for each.
 
 ---
 
-## - [ ] P2-11 Manual recalls and the patient timeline (backend and frontend)
+## - [x] P2-11 Manual recalls and the patient timeline (backend and frontend)
 
 **Scope**
 - `recall` and `recall_action` models, manual creation from the plan.

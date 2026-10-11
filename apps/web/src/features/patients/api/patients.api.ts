@@ -3,6 +3,7 @@ import type {
   ConceptDictionaryResponse,
   ConceptSearchResponse,
   PageSchemaPatientSummaryRead,
+  PageSchemaPatientTimelineItemRead,
   ValueSetRead,
   PatientAllergyCreate,
   PatientCreate,
@@ -68,9 +69,24 @@ export function fetchPatient(
 export function fetchPatientTimeline(
   patientId: string,
   scope: Scope,
-): Promise<PageSchemaPatientSummaryRead> {
-  return apiFetch<PageSchemaPatientSummaryRead>(
-    `/api/v1/patients/${patientId}/timeline`,
+  params: {
+    types?: string;
+    laterality?: string;
+    problemId?: string;
+    limit?: number;
+    cursor?: string;
+    summary?: boolean;
+  } = {},
+): Promise<PageSchemaPatientTimelineItemRead> {
+  return apiFetch<PageSchemaPatientTimelineItemRead>(
+    `/api/v1/patients/${patientId}/timeline${query({
+      types: params.types,
+      laterality: params.laterality,
+      problem_id: params.problemId,
+      limit: params.limit,
+      cursor: params.cursor,
+      summary: params.summary ? "true" : undefined,
+    })}`,
     scope,
   );
 }

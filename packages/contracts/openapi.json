@@ -6481,6 +6481,26 @@
         "title": "PageSchema[PatientSummaryRead]",
         "type": "object"
       },
+      "PageSchema_PatientTimelineItemRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PatientTimelineItemRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[PatientTimelineItemRead]",
+        "type": "object"
+      },
       "PageSchema_PrescriptionRead_": {
         "properties": {
           "items": {
@@ -6519,6 +6539,26 @@
           "page"
         ],
         "title": "PageSchema[PrescriptionTemplateRead]",
+        "type": "object"
+      },
+      "PageSchema_RecallRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RecallRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[RecallRead]",
         "type": "object"
       },
       "PageSchema_SchedulableDoctorRead_": {
@@ -8729,6 +8769,101 @@
         "title": "PatientSummaryRead",
         "type": "object"
       },
+      "PatientTimelineItemRead": {
+        "description": "One longitudinal event. Display text is a code, a concept, or user-authored.",
+        "properties": {
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "concept": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CodeableConcept"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "detailLocale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detaillocale"
+          },
+          "detailText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detailtext"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "eventType": {
+            "title": "Eventtype",
+            "type": "string"
+          },
+          "laterality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Laterality"
+          },
+          "occurredAt": {
+            "format": "date-time",
+            "title": "Occurredat",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "eventType",
+          "occurredAt",
+          "status"
+        ],
+        "title": "PatientTimelineItemRead",
+        "type": "object"
+      },
       "PatientUpdate": {
         "properties": {
           "addressLine1": {
@@ -10060,6 +10195,632 @@
           "checks"
         ],
         "title": "ReadyHealthResponse",
+        "type": "object"
+      },
+      "RecallActionConfig": {
+        "properties": {
+          "instrument": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "pattern": "^[a-z0-9_]+$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instrument"
+          },
+          "test": {
+            "anyOf": [
+              {
+                "enum": [
+                  "audiogram",
+                  "tympanometry",
+                  "endoscopy",
+                  "imaging"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test"
+          }
+        },
+        "title": "RecallActionConfig",
+        "type": "object"
+      },
+      "RecallActionCreate": {
+        "properties": {
+          "action": {
+            "enum": [
+              "sms",
+              "call",
+              "email",
+              "whatsapp",
+              "booked"
+            ],
+            "title": "Action",
+            "type": "string"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "noteLocale": {
+            "anyOf": [
+              {
+                "maxLength": 10,
+                "minLength": 2,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notelocale"
+          },
+          "outcome": {
+            "anyOf": [
+              {
+                "enum": [
+                  "reached",
+                  "no_answer",
+                  "voicemail",
+                  "unreachable",
+                  "confirmed",
+                  "declined"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outcome"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "action",
+          "version"
+        ],
+        "title": "RecallActionCreate",
+        "type": "object"
+      },
+      "RecallAppointmentCreate": {
+        "properties": {
+          "appointmentTypeId": {
+            "title": "Appointmenttypeid",
+            "type": "string"
+          },
+          "endsAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Endsat"
+          },
+          "room": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Room"
+          },
+          "siteId": {
+            "title": "Siteid",
+            "type": "string"
+          },
+          "startsAt": {
+            "format": "date-time",
+            "title": "Startsat",
+            "type": "string"
+          },
+          "userId": {
+            "title": "Userid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "siteId",
+          "userId",
+          "appointmentTypeId",
+          "startsAt"
+        ],
+        "title": "RecallAppointmentCreate",
+        "type": "object"
+      },
+      "RecallBook": {
+        "properties": {
+          "appointment": {
+            "$ref": "#/components/schemas/RecallAppointmentCreate"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "appointment",
+          "version"
+        ],
+        "title": "RecallBook",
+        "type": "object"
+      },
+      "RecallCancel": {
+        "properties": {
+          "reason": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "reason",
+          "version"
+        ],
+        "title": "RecallCancel",
+        "type": "object"
+      },
+      "RecallComplete": {
+        "properties": {
+          "completedEncounterId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completedencounterid"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "RecallComplete",
+        "type": "object"
+      },
+      "RecallCreate": {
+        "properties": {
+          "actionConfig": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RecallActionConfig"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "actionType": {
+            "enum": [
+              "visit",
+              "test",
+              "call",
+              "questionnaire",
+              "document"
+            ],
+            "title": "Actiontype",
+            "type": "string"
+          },
+          "appointment": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RecallAppointmentCreate"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assignedToId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assignedtoid"
+          },
+          "dueOn": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dueon"
+          },
+          "intervalDays": {
+            "anyOf": [
+              {
+                "maximum": 3650.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Intervaldays"
+          },
+          "laterality": {
+            "anyOf": [
+              {
+                "enum": [
+                  "right",
+                  "left",
+                  "bilateral",
+                  "midline",
+                  "na"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Laterality"
+          },
+          "patientId": {
+            "title": "Patientid",
+            "type": "string"
+          },
+          "reasonLocale": {
+            "maxLength": 10,
+            "minLength": 2,
+            "title": "Reasonlocale",
+            "type": "string"
+          },
+          "reasonText": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Reasontext",
+            "type": "string"
+          },
+          "sourceEncounterId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourceencounterid"
+          },
+          "windowDays": {
+            "default": 14,
+            "maximum": 180.0,
+            "minimum": 0.0,
+            "title": "Windowdays",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "patientId",
+          "reasonText",
+          "reasonLocale",
+          "actionType"
+        ],
+        "title": "RecallCreate",
+        "type": "object"
+      },
+      "RecallRead": {
+        "properties": {
+          "actionConfig": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actionconfig"
+          },
+          "actionType": {
+            "title": "Actiontype",
+            "type": "string"
+          },
+          "appointmentId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Appointmentid"
+          },
+          "assignedToId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assignedtoid"
+          },
+          "attempts": {
+            "title": "Attempts",
+            "type": "integer"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "title": "Createdat",
+            "type": "string"
+          },
+          "dueOn": {
+            "format": "date",
+            "title": "Dueon",
+            "type": "string"
+          },
+          "lastAttemptAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastattemptat"
+          },
+          "laterality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Laterality"
+          },
+          "overlapCount": {
+            "default": 0,
+            "title": "Overlapcount",
+            "type": "integer"
+          },
+          "patientDisplayName": {
+            "title": "Patientdisplayname",
+            "type": "string"
+          },
+          "patientId": {
+            "title": "Patientid",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "reasonLocale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reasonlocale"
+          },
+          "reasonText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reasontext"
+          },
+          "sourceEncounterId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourceencounterid"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "title": "Updatedat",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "windowDays": {
+            "title": "Windowdays",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "publicId",
+          "patientId",
+          "patientDisplayName",
+          "reasonText",
+          "reasonLocale",
+          "dueOn",
+          "windowDays",
+          "actionType",
+          "actionConfig",
+          "laterality",
+          "status",
+          "appointmentId",
+          "attempts",
+          "lastAttemptAt",
+          "sourceEncounterId",
+          "assignedToId",
+          "version",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "RecallRead",
+        "type": "object"
+      },
+      "RecallSummaryRead": {
+        "properties": {
+          "active": {
+            "title": "Active",
+            "type": "integer"
+          },
+          "overdue": {
+            "title": "Overdue",
+            "type": "integer"
+          },
+          "unreachable": {
+            "title": "Unreachable",
+            "type": "integer"
+          },
+          "upcoming": {
+            "title": "Upcoming",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "overdue",
+          "upcoming",
+          "unreachable",
+          "active"
+        ],
+        "title": "RecallSummaryRead",
+        "type": "object"
+      },
+      "RecallUpdate": {
+        "properties": {
+          "assignedToId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assignedtoid"
+          },
+          "dueOn": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dueon"
+          },
+          "reasonLocale": {
+            "anyOf": [
+              {
+                "maxLength": 10,
+                "minLength": 2,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reasonlocale"
+          },
+          "reasonText": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reasontext"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          },
+          "windowDays": {
+            "anyOf": [
+              {
+                "maximum": 180.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Windowdays"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "RecallUpdate",
         "type": "object"
       },
       "ReferralInput": {
@@ -19619,6 +20380,97 @@
             }
           },
           {
+            "in": "query",
+            "name": "types",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Types"
+            }
+          },
+          {
+            "in": "query",
+            "name": "laterality",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 10,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Laterality"
+            }
+          },
+          {
+            "in": "query",
+            "name": "problem_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Problem Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 200,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          },
+          {
+            "in": "query",
+            "name": "summary",
+            "required": false,
+            "schema": {
+              "default": false,
+              "title": "Summary",
+              "type": "boolean"
+            }
+          },
+          {
             "in": "header",
             "name": "X-Clinic-Id",
             "required": false,
@@ -19633,6 +20485,22 @@
               ],
               "title": "X-Clinic-Id"
             }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
           }
         ],
         "responses": {
@@ -19640,7 +20508,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PageSchema_PatientSummaryRead_"
+                  "$ref": "#/components/schemas/PageSchema_PatientTimelineItemRead_"
                 }
               }
             },
@@ -20186,6 +21054,713 @@
         "summary": "Issue Prescription",
         "tags": [
           "prescriptions"
+        ]
+      }
+    },
+    "/api/v1/recalls": {
+      "get": {
+        "operationId": "list_recalls_api_v1_recalls_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "bucket",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "overdue",
+                    "upcoming",
+                    "unreachable",
+                    "active"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Bucket"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 20,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "in": "query",
+            "name": "action_type",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 30,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Action Type"
+            }
+          },
+          {
+            "in": "query",
+            "name": "patient_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Patient Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_RecallRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Recalls",
+        "tags": [
+          "recalls"
+        ]
+      },
+      "post": {
+        "operationId": "create_recall_api_v1_recalls_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecallCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecallRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Recall",
+        "tags": [
+          "recalls"
+        ]
+      }
+    },
+    "/api/v1/recalls/summary": {
+      "get": {
+        "operationId": "recall_summary_api_v1_recalls_summary_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecallSummaryRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Recall Summary",
+        "tags": [
+          "recalls"
+        ]
+      }
+    },
+    "/api/v1/recalls/{recall_id}": {
+      "get": {
+        "operationId": "get_recall_api_v1_recalls__recall_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recall_id",
+            "required": true,
+            "schema": {
+              "title": "Recall Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecallRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Recall",
+        "tags": [
+          "recalls"
+        ]
+      },
+      "patch": {
+        "operationId": "update_recall_api_v1_recalls__recall_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recall_id",
+            "required": true,
+            "schema": {
+              "title": "Recall Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecallUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecallRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Recall",
+        "tags": [
+          "recalls"
+        ]
+      }
+    },
+    "/api/v1/recalls/{recall_id}/actions": {
+      "post": {
+        "operationId": "log_recall_action_api_v1_recalls__recall_id__actions_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recall_id",
+            "required": true,
+            "schema": {
+              "title": "Recall Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecallActionCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecallRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Log Recall Action",
+        "tags": [
+          "recalls"
+        ]
+      }
+    },
+    "/api/v1/recalls/{recall_id}/book": {
+      "post": {
+        "operationId": "book_recall_api_v1_recalls__recall_id__book_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recall_id",
+            "required": true,
+            "schema": {
+              "title": "Recall Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecallBook"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecallRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Book Recall",
+        "tags": [
+          "recalls"
+        ]
+      }
+    },
+    "/api/v1/recalls/{recall_id}/cancel": {
+      "post": {
+        "operationId": "cancel_recall_api_v1_recalls__recall_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recall_id",
+            "required": true,
+            "schema": {
+              "title": "Recall Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecallCancel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecallRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Cancel Recall",
+        "tags": [
+          "recalls"
+        ]
+      }
+    },
+    "/api/v1/recalls/{recall_id}/complete": {
+      "post": {
+        "operationId": "complete_recall_api_v1_recalls__recall_id__complete_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "recall_id",
+            "required": true,
+            "schema": {
+              "title": "Recall Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RecallComplete"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecallRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Complete Recall",
+        "tags": [
+          "recalls"
         ]
       }
     },

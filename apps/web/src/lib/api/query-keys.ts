@@ -34,8 +34,17 @@ export const queryKeys = {
     }) => [...queryKeys.patients.all, "list", filters ?? {}] as const,
     detail: (publicId: string) =>
       [...queryKeys.patients.all, "detail", publicId] as const,
-    timeline: (publicId: string) =>
-      [...queryKeys.patients.all, "detail", publicId, "timeline"] as const,
+    timeline: (
+      publicId: string,
+      filters?: { type?: string; laterality?: string; problemId?: string },
+    ) =>
+      [
+        ...queryKeys.patients.all,
+        "detail",
+        publicId,
+        "timeline",
+        filters ?? {},
+      ] as const,
   },
   scheduling: {
     all: ["scheduling"] as const,
@@ -140,6 +149,16 @@ export const queryKeys = {
       [...queryKeys.prescriptions.all, "patient", patientId] as const,
     detail: (prescriptionId: string) =>
       [...queryKeys.prescriptions.all, "detail", prescriptionId] as const,
+  },
+  recalls: {
+    all: ["recalls"] as const,
+    summary: () => [...queryKeys.recalls.all, "summary"] as const,
+    list: (filters?: {
+      bucket?: string;
+      patientId?: string;
+      limit?: number;
+      offset?: number;
+    }) => [...queryKeys.recalls.all, "list", filters ?? {}] as const,
   },
   terminology: {
     all: ["terminology"] as const,

@@ -171,6 +171,16 @@ export type EncounterTemplateRouteRequest =
 export type PageSchemaEncounterRead = Schemas["PageSchema_EncounterRead_"];
 export type PageSchemaPatientProblemRead =
   Schemas["PageSchema_PatientProblemRead_"];
+export type PatientTimelineItemRead = Schemas["PatientTimelineItemRead"];
+export type PageSchemaPatientTimelineItemRead =
+  Schemas["PageSchema_PatientTimelineItemRead_"];
+export type RecallRead = Schemas["RecallRead"];
+export type RecallCreate = Schemas["RecallCreate"];
+export type RecallSummaryRead = Schemas["RecallSummaryRead"];
+export type RecallActionCreate = Schemas["RecallActionCreate"];
+export type RecallBook = Schemas["RecallBook"];
+export type RecallCancel = Schemas["RecallCancel"];
+export type PageSchemaRecallRead = Schemas["PageSchema_RecallRead_"];
 
 export type DrugRead = Schemas["DrugRead"];
 export type DrugFormRead = Schemas["DrugFormRead"];

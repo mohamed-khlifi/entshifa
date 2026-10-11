@@ -80,6 +80,21 @@ class PatientHistoryRead(CamelModel):
     version: int
 
 
+class PatientTimelineItemRead(CamelModel):
+    """One longitudinal event. Display text is a code, a concept, or user-authored."""
+
+    public_id: str
+    event_type: str
+    occurred_at: datetime
+    status: str
+    category: str | None = None
+    laterality: str | None = None
+    detail_text: str | None = None
+    detail_locale: str | None = None
+    concept: CodeableConcept | None = None
+    encounter_public_id: str | None = None
+
+
 class PatientSummaryRead(CamelModel):
     public_id: str
     mrn: str

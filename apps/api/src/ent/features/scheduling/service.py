@@ -259,6 +259,21 @@ class SchedulingService:
         body: AppointmentCreate,
     ) -> AppointmentRead:
         self._bind(user)
+        row, overlaps = await self.stage_appointment(user=user, body=body)
+        await self._session.commit()
+        read = await self._appointment_read(user, row)
+        read.overlap_warnings = _overlap_warnings(overlaps)
+        return read
+
+    async def stage_appointment(
+        self,
+        *,
+        user: CurrentUser,
+        body: AppointmentCreate,
+        created_from_recall_id: int | None = None,
+    ) -> tuple[Appointment, list[Appointment]]:
+        """Insert an appointment without committing, so a recall can share the transaction."""
+
         refs = await self._resolve_appointment_refs(user, body)
         starts = to_utc_naive(body.starts_at)
         ends = (
@@ -287,6 +302,7 @@ class SchedulingService:
             status="scheduled",
             room=body.room,
             reason_text=body.reason_text,
+            created_from_recall_id=created_from_recall_id,
             created_by_id=user.user_id,
             updated_by_id=user.user_id,
         )
@@ -299,10 +315,7 @@ class SchedulingService:
             patient_id=row.patient_id,
             after=_appointment_snapshot(row),
         )
-        await self._session.commit()
-        read = await self._appointment_read(user, row)
-        read.overlap_warnings = _overlap_warnings(overlaps)
-        return read
+        return row, overlaps
 
     async def update_appointment(
         self,

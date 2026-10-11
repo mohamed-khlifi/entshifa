@@ -1,0 +1,113 @@
+{
+  "actionTypes": {
+    "call": "Phone call",
+    "document": "Document",
+    "questionnaire": "Questionnaire",
+    "test": "Test",
+    "visit": "Visit"
+  },
+  "actions": {
+    "book": "Book",
+    "call": "Call",
+    "cancel": "Cancel recall",
+    "email": "Email",
+    "sms": "SMS",
+    "unreachable": "Unreachable",
+    "whatsapp": "WhatsApp"
+  },
+  "attempts": "{count, plural, =0 {# attempts} one {# attempt} other {# attempts}}",
+  "buckets": {
+    "active": "Open",
+    "overdue": "Overdue",
+    "unreachable": "Unreachable",
+    "upcoming": "Upcoming"
+  },
+  "columns": {
+    "actions": "Actions",
+    "attempts": "Attempts",
+    "due": "Due",
+    "patient": "Patient",
+    "reason": "Reason",
+    "status": "Status"
+  },
+  "counters": {
+    "active": "Open",
+    "overdue": "Overdue",
+    "unreachable": "Unreachable",
+    "upcoming": "Due within 4 weeks"
+  },
+  "dialog": {
+    "bookSubmit": "Book the appointment",
+    "bookTitle": "Book from this recall",
+    "close": "Close",
+    "createSubmit": "Create recall",
+    "createTitle": "New recall"
+  },
+  "form": {
+    "actionType": "What to do",
+    "appointmentType": "Appointment type",
+    "bookNow": "Book an appointment now",
+    "doctor": "Clinician",
+    "interval": "When",
+    "laterality": "Side",
+    "missing": "Choose a patient, a reason, and a complete slot when booking.",
+    "none": "None",
+    "patientSearch": "Search patients",
+    "reason": "Reason",
+    "room": "Room",
+    "site": "Site",
+    "startsAt": "Starts",
+    "test": "Test",
+    "window": "Grace window in days"
+  },
+  "gate": {
+    "forbidden": "You do not have permission to view recalls."
+  },
+  "intervals": {
+    "days14": "2 weeks",
+    "days180": "6 months",
+    "days28": "4 weeks",
+    "days365": "1 year",
+    "days42": "6 weeks",
+    "days7": "1 week",
+    "days90": "3 months"
+  },
+  "outcomes": {
+    "confirmed": "Confirmed",
+    "declined": "Declined",
+    "noAnswer": "No answer",
+    "reached": "Reached",
+    "unreachable": "Unreachable",
+    "voicemail": "Voicemail"
+  },
+  "overlap": "{count, plural, =0 {# open recalls} one {# other open recall} other {# other open recalls}}",
+  "page": {
+    "create": "New recall",
+    "description": "Overdue and upcoming recalls to call, message, or book.",
+    "title": "Recalls"
+  },
+  "state": {
+    "empty": "No recalls in this list.",
+    "error": "The recall list could not be loaded.",
+    "loading": "Loading recalls…"
+  },
+  "status": {
+    "booked": "Booked",
+    "cancelled": "Cancelled",
+    "done": "Done",
+    "overdue": "Overdue",
+    "pending": "Pending",
+    "unreachable": "Unreachable"
+  },
+  "tests": {
+    "audiogram": "Audiogram",
+    "endoscopy": "Endoscopy",
+    "imaging": "Imaging",
+    "tympanometry": "Tympanometry"
+  },
+  "toast": {
+    "booked": "Appointment booked from the recall.",
+    "created": "Recall created.",
+    "logged": "Attempt recorded."
+  }
+}

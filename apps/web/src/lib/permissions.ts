@@ -23,4 +23,6 @@ export const Permission = {
   ADMIN_TEMPLATES: "admin.templates",
   PRESCRIPTION_CREATE: "prescription.create",
   PRESCRIPTION_SIGN: "prescription.sign",
+  RECALL_READ: "recall.read",
+  RECALL_WRITE: "recall.write",
 } as const;

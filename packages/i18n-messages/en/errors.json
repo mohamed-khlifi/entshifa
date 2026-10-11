@@ -60,5 +60,12 @@
     "safety_blocked": "Safety checks blocked this prescription.",
     "unstructured_item": "This free-text item was not checked against the formulary.",
     "version_conflict": "This prescription was updated by someone else. Reload and try again."
+  },
+  "recall": {
+    "due_required": "A recall needs either a due date or an interval in days.",
+    "idempotency_mismatch": "This idempotency key was already used for a different recall.",
+    "invalid_status": "This recall cannot change from its current status.",
+    "not_found": "That recall was not found.",
+    "version_conflict": "This recall was updated by someone else. Reload and try again."
   }
 }

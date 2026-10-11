@@ -180,6 +180,16 @@ export const testIds = {
     conflictReload: testId("patients", "conflict-reload"),
     loading: testId("patients", "loading"),
     error: testId("patients", "error"),
+    navTimeline: testId("patients", "nav-timeline"),
+    timeline: testId("patients", "timeline"),
+    timelineType: testId("patients", "timeline-type"),
+    timelineLaterality: testId("patients", "timeline-laterality"),
+    timelineProblem: testId("patients", "timeline-problem"),
+    timelinePrint: testId("patients", "timeline-print"),
+    timelineList: testId("patients", "timeline-list"),
+    timelineEmpty: testId("patients", "timeline-empty"),
+    timelineError: testId("patients", "timeline-error"),
+    timelinePrintSheet: testId("patients", "timeline-print-sheet"),
   },
   documents: {
     nav: testId("documents", "nav"),
@@ -262,6 +272,34 @@ export const testIds = {
       publicIdTestId("scheduling.appointment", publicId),
     waitingRow: (publicId: string) =>
       publicIdTestId("scheduling.waiting", publicId),
+  },
+  recalls: {
+    nav: testId("recalls", "nav"),
+    gate: testId("recalls", "gate"),
+    counters: testId("recalls", "counters"),
+    counterOverdue: testId("recalls", "counter-overdue"),
+    counterUpcoming: testId("recalls", "counter-upcoming"),
+    counterUnreachable: testId("recalls", "counter-unreachable"),
+    counterActive: testId("recalls", "counter-active"),
+    list: testId("recalls", "list"),
+    create: testId("recalls", "create"),
+    composer: testId("recalls", "composer"),
+    reason: testId("recalls", "reason"),
+    interval: testId("recalls", "interval"),
+    actionType: testId("recalls", "action-type"),
+    test: testId("recalls", "test"),
+    laterality: testId("recalls", "laterality"),
+    window: testId("recalls", "window"),
+    bookNow: testId("recalls", "book-now"),
+    patientSearch: testId("recalls", "patient-search"),
+    doctor: testId("recalls", "doctor"),
+    appointmentType: testId("recalls", "appointment-type"),
+    site: testId("recalls", "site"),
+    startsAt: testId("recalls", "starts-at"),
+    room: testId("recalls", "room"),
+    submit: testId("recalls", "submit"),
+    close: testId("recalls", "close"),
+    missing: testId("recalls", "missing"),
   },
   examination: {
     root: testId("examination", "root"),
@@ -475,6 +513,18 @@ export function diagnosisFavoriteTestId(conceptPublicId: string): string {
 
 export function patientRowTestId(publicId: string): string {
   return publicIdTestId("patients.list.row", publicId);
+}
+
+export function timelineRowTestId(publicId: string): string {
+  return publicIdTestId("patients.timeline.row", publicId);
+}
+
+export function recallRowTestId(publicId: string): string {
+  return publicIdTestId("recalls.row", publicId);
+}
+
+export function recallActionTestId(action: string, publicId: string): string {
+  return publicIdTestId(`recalls.action.${action}`, publicId);
 }
 
 export function prescriptionRowTestId(publicId: string): string {

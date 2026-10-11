@@ -1,0 +1,113 @@
+{
+  "actionTypes": {
+    "call": "Appel téléphonique",
+    "document": "Document",
+    "questionnaire": "Questionnaire",
+    "test": "Examen",
+    "visit": "Visite"
+  },
+  "actions": {
+    "book": "Planifier",
+    "call": "Appeler",
+    "cancel": "Annuler le rappel",
+    "email": "Courriel",
+    "sms": "SMS",
+    "unreachable": "Injoignable",
+    "whatsapp": "WhatsApp"
+  },
+  "attempts": "{count, plural, =0 {# tentatives} one {# tentative} other {# tentatives}}",
+  "buckets": {
+    "active": "Ouverts",
+    "overdue": "En retard",
+    "unreachable": "Injoignables",
+    "upcoming": "À venir"
+  },
+  "columns": {
+    "actions": "Actions",
+    "attempts": "Tentatives",
+    "due": "Échéance",
+    "patient": "Patient",
+    "reason": "Motif",
+    "status": "Statut"
+  },
+  "counters": {
+    "active": "Ouverts",
+    "overdue": "En retard",
+    "unreachable": "Injoignables",
+    "upcoming": "Dans les 4 semaines"
+  },
+  "dialog": {
+    "bookSubmit": "Planifier le rendez-vous",
+    "bookTitle": "Planifier depuis ce rappel",
+    "close": "Fermer",
+    "createSubmit": "Créer le rappel",
+    "createTitle": "Nouveau rappel"
+  },
+  "form": {
+    "actionType": "À faire",
+    "appointmentType": "Type de rendez-vous",
+    "bookNow": "Planifier un rendez-vous maintenant",
+    "doctor": "Clinicien",
+    "interval": "Quand",
+    "laterality": "Côté",
+    "missing": "Choisissez un patient, un motif, et un créneau complet pour planifier.",
+    "none": "Aucun",
+    "patientSearch": "Rechercher un patient",
+    "reason": "Motif",
+    "room": "Salle",
+    "site": "Site",
+    "startsAt": "Début",
+    "test": "Examen",
+    "window": "Fenêtre de grâce en jours"
+  },
+  "gate": {
+    "forbidden": "Vous n’avez pas le droit de consulter les rappels."
+  },
+  "intervals": {
+    "days14": "2 semaines",
+    "days180": "6 mois",
+    "days28": "4 semaines",
+    "days365": "1 an",
+    "days42": "6 semaines",
+    "days7": "1 semaine",
+    "days90": "3 mois"
+  },
+  "outcomes": {
+    "confirmed": "Confirmé",
+    "declined": "Refusé",
+    "noAnswer": "Sans réponse",
+    "reached": "Joint",
+    "unreachable": "Injoignable",
+    "voicemail": "Messagerie"
+  },
+  "overlap": "{count, plural, =0 {# rappels ouverts} one {# autre rappel ouvert} other {# autres rappels ouverts}}",
+  "page": {
+    "create": "Nouveau rappel",
+    "description": "Rappels en retard ou à venir, à appeler, à écrire ou à planifier.",
+    "title": "Rappels"
+  },
+  "state": {
+    "empty": "Aucun rappel dans cette liste.",
+    "error": "La liste des rappels n’a pas pu être chargée.",
+    "loading": "Chargement des rappels…"
+  },
+  "status": {
+    "booked": "Planifié",
+    "cancelled": "Annulé",
+    "done": "Fait",
+    "overdue": "En retard",
+    "pending": "En attente",
+    "unreachable": "Injoignable"
+  },
+  "tests": {
+    "audiogram": "Audiogramme",
+    "endoscopy": "Endoscopie",
+    "imaging": "Imagerie",
+    "tympanometry": "Tympanométrie"
+  },
+  "toast": {
+    "booked": "Rendez-vous planifié depuis le rappel.",
+    "created": "Rappel créé.",
+    "logged": "Tentative enregistrée."
+  }
+}

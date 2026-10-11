@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import pytest
@@ -31,6 +31,7 @@ from ent.features.patients.models import (
     PatientMedication,
     PatientProblem,
 )
+from ent.features.recalls.models import Recall
 from ent.features.scheduling.models import Appointment, AppointmentType
 from ent.features.terminology.models import CodeSystem, Concept
 from ent.features.users.models import User
@@ -300,6 +301,22 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
         )
         session.add(observation)
         await session.flush()
+        recall_public_id = new_ulid()
+        session.add(
+            Recall(
+                public_id=recall_public_id,
+                clinic_id=other.id,
+                patient_id=patient.id,
+                source_type="manual",
+                reason_text="secret recall",
+                due_on=date(2026, 8, 1),
+                action_type="visit",
+                status="pending",
+                created_by_id=other_user.id,
+                updated_by_id=other_user.id,
+            )
+        )
+        await session.flush()
 
         ids = {
             "patient_id": patient.public_id,
@@ -324,6 +341,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "diagnosis_id": new_ulid(),
             "prescription_id": new_ulid(),
             "formulary_id": new_ulid(),
+            "recall_id": recall_public_id,
         }
         forbidden = [
             patient.public_id,
@@ -341,6 +359,8 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             room,
             observation.public_id,
             encounter_public_id,
+            recall_public_id,
+            "secret recall",
         ]
         await session.commit()
 
@@ -430,6 +450,8 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
                 "effectiveTo": "2027-01-01T00:00:00",
                 "limit": "100",
             },
+            ("GET", "/api/v1/recalls"): {"limit": "100"},
+            ("GET", "/api/v1/recalls/summary"): {},
         }
         try:
             ZoneInfo("Europe/Paris")

@@ -118,6 +118,7 @@
   },
   "plan": {
     "add": "إضافة بند",
+    "createRecall": "إنشاء المتابعة",
     "prescribe": "كتابة الوصفة",
     "addFollowUp": "متابعة: {days, plural, zero {# يوم} one {يوم واحد} two {يومان} few {# أيام} many {# يومًا} other {# يوم}}",
     "followUpDetail": "{days, plural, zero {# يوم} one {يوم واحد} two {يومان} few {# أيام} many {# يومًا} other {# يوم}}",

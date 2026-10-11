@@ -60,5 +60,12 @@
     "safety_blocked": "Les contrôles de sécurité ont bloqué cette ordonnance.",
     "unstructured_item": "Cette ligne libre n'a pas été contrôlée avec le formulaire.",
     "version_conflict": "Cette ordonnance a été modifiée. Rechargez puis réessayez."
+  },
+  "recall": {
+    "due_required": "Un rappel exige une date d’échéance ou un intervalle en jours.",
+    "idempotency_mismatch": "Cette clé d’idempotence a déjà servi pour un autre rappel.",
+    "invalid_status": "Ce rappel ne peut pas changer à partir de son statut actuel.",
+    "not_found": "Ce rappel est introuvable.",
+    "version_conflict": "Ce rappel a été modifié. Rechargez puis réessayez."
   }
 }

@@ -25,6 +25,8 @@ dependencies = [
     "pymysql==1.1.1",
     "python-ulid==3.0.0",
     "sqlalchemy[asyncio]==2.0.39",
+    # Windows CPython has no IANA database; clinic-local due dates need it.
+    "tzdata==2025.2",
     # P0-04 security core.
     "argon2-cffi==23.1.0",
     "pyjwt==2.15.0",
@@ -108,6 +110,7 @@ source_modules = [
     "ent.features.attachments.repository",
     "ent.features.clinics.repository",
     "ent.features.patients.repository",
+    "ent.features.patients.timeline_repository",
     "ent.features.users.repository",
     "ent.features.terminology.repository",
     "ent.features.documents.repository",
@@ -115,6 +118,7 @@ source_modules = [
     "ent.features.encounters.repository",
     "ent.features.diagnoses.repository",
     "ent.features.prescriptions.repository",
+    "ent.features.recalls.repository",
 ]
 forbidden_modules = [
     "ent.features.auth.service",
@@ -131,6 +135,7 @@ forbidden_modules = [
     "ent.features.encounters.service",
     "ent.features.diagnoses.service",
     "ent.features.prescriptions.service",
+    "ent.features.recalls.service",
 ]
 
 [[tool.importlinter.contracts]]

@@ -8,7 +8,8 @@
     "consultation": "الاستشارة",
     "documents": "المستندات",
     "examination": "الفحص",
-    "prescriptions": "الوصفات"
+    "prescriptions": "الوصفات",
+    "timeline": "السجل"
   },
   "state": {
     "loading": "جارٍ تحميل الملف…",
@@ -225,5 +226,62 @@
   "laterality": {
     "midline": "الخط الناصف",
     "na": "غير منطبق"
+  },
+  "timeline": {
+    "empty": "لا يوجد في هذا السجل ما يطابق عوامل التصفية.",
+    "error": "تعذر تحميل السجل.",
+    "events": {
+      "appointment": "موعد",
+      "attachment": "صورة أو مستند",
+      "consultation": "استشارة",
+      "diagnosis": "تشخيص",
+      "document": "مستند",
+      "followUp": "زيارة متابعة",
+      "noShow": "موعد فائت",
+      "phoneCall": "مكالمة هاتفية",
+      "postOp": "زيارة بعد الجراحة",
+      "prescription": "وصفة",
+      "procedure": "إجراء",
+      "recall": "متابعة",
+      "recallSent": "رسالة متابعة",
+      "resultReview": "مراجعة نتيجة",
+      "teleconsultation": "استشارة عن بعد"
+    },
+    "filters": {
+      "allProblems": "كل المشكلات",
+      "allSides": "كل الجهات",
+      "allTypes": "كل الأنواع",
+      "laterality": "الجهة",
+      "problem": "المشكلة",
+      "type": "النوع"
+    },
+    "laterality": {
+      "bilateral": "الجهتان",
+      "left": "أيسر",
+      "midline": "الخط الناصف",
+      "na": "غير منطبق",
+      "right": "أيمن"
+    },
+    "loading": "جارٍ تحميل السجل…",
+    "print": "طباعة سجل من صفحة واحدة",
+    "printing": "جارٍ تجهيز السجل من صفحة واحدة…",
+    "status": {
+      "active": "نشط",
+      "amended": "مُعدَّل",
+      "arrived": "وصل",
+      "booked": "محجوز",
+      "cancelled": "ملغى",
+      "completed": "مكتمل",
+      "done": "تم",
+      "draft": "مسودة",
+      "inRoom": "في الغرفة",
+      "overdue": "متأخر",
+      "pending": "قيد الانتظار",
+      "recorded": "مسجّل",
+      "scheduled": "مجدول",
+      "signed": "موقّع",
+      "unreachable": "تعذر الوصول"
+    },
+    "title": "السجل"
   }
 }

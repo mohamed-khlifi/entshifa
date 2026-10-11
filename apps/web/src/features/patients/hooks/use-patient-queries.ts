@@ -19,7 +19,6 @@ import {
   deletePatientProblem,
   fetchConceptDictionary,
   fetchPatient,
-  fetchPatientTimeline,
   fetchPatients,
   fetchValueSet,
   searchConcepts,
@@ -98,20 +97,6 @@ export function usePatientQuery(patientId: string) {
     enabled: scope.enabled && patientId.length > 0,
     staleTime: 60_000,
     gcTime: 5 * 60_000,
-  });
-}
-
-export function usePatientTimelineQuery(patientId: string) {
-  const scope = useScope();
-  return useQuery({
-    queryKey: queryKeys.patients.timeline(patientId),
-    queryFn: () =>
-      fetchPatientTimeline(patientId, {
-        locale: scope.locale,
-        clinicPublicId: scope.clinicPublicId,
-      }),
-    enabled: scope.enabled && patientId.length > 0,
-    staleTime: 30_000,
   });
 }
 

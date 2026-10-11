@@ -1580,6 +1580,127 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/recalls": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Recalls */
+        get: operations["list_recalls_api_v1_recalls_get"];
+        put?: never;
+        /** Create Recall */
+        post: operations["create_recall_api_v1_recalls_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/recalls/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Recall Summary */
+        get: operations["recall_summary_api_v1_recalls_summary_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/recalls/{recall_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Recall */
+        get: operations["get_recall_api_v1_recalls__recall_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Recall */
+        patch: operations["update_recall_api_v1_recalls__recall_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/recalls/{recall_id}/actions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Log Recall Action */
+        post: operations["log_recall_action_api_v1_recalls__recall_id__actions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/recalls/{recall_id}/book": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Book Recall */
+        post: operations["book_recall_api_v1_recalls__recall_id__book_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/recalls/{recall_id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Cancel Recall */
+        post: operations["cancel_recall_api_v1_recalls__recall_id__cancel_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/recalls/{recall_id}/complete": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Complete Recall */
+        post: operations["complete_recall_api_v1_recalls__recall_id__complete_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/roles": {
         parameters: {
             query?: never;
@@ -3819,6 +3940,12 @@ export interface components {
             items: components["schemas"]["PatientSummaryRead"][];
             page: components["schemas"]["PageMeta"];
         };
+        /** PageSchema[PatientTimelineItemRead] */
+        PageSchema_PatientTimelineItemRead_: {
+            /** Items */
+            items: components["schemas"]["PatientTimelineItemRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
         /** PageSchema[PrescriptionRead] */
         PageSchema_PrescriptionRead_: {
             /** Items */
@@ -3829,6 +3956,12 @@ export interface components {
         PageSchema_PrescriptionTemplateRead_: {
             /** Items */
             items: components["schemas"]["PrescriptionTemplateRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[RecallRead] */
+        PageSchema_RecallRead_: {
+            /** Items */
+            items: components["schemas"]["RecallRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[SchedulableDoctorRead] */
@@ -4439,6 +4572,34 @@ export interface components {
             /** Version */
             version: number;
         };
+        /**
+         * PatientTimelineItemRead
+         * @description One longitudinal event. Display text is a code, a concept, or user-authored.
+         */
+        PatientTimelineItemRead: {
+            /** Category */
+            category?: string | null;
+            concept?: components["schemas"]["CodeableConcept"] | null;
+            /** Detaillocale */
+            detailLocale?: string | null;
+            /** Detailtext */
+            detailText?: string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Eventtype */
+            eventType: string;
+            /** Laterality */
+            laterality?: string | null;
+            /**
+             * Occurredat
+             * Format: date-time
+             */
+            occurredAt: string;
+            /** Publicid */
+            publicId: string;
+            /** Status */
+            status: string;
+        };
         /** PatientUpdate */
         PatientUpdate: {
             /** Addressline1 */
@@ -4773,6 +4934,179 @@ export interface components {
             checks: components["schemas"]["ReadinessCheck"][];
             /** Status */
             status: string;
+        };
+        /** RecallActionConfig */
+        RecallActionConfig: {
+            /** Instrument */
+            instrument?: string | null;
+            /** Test */
+            test?: ("audiogram" | "tympanometry" | "endoscopy" | "imaging") | null;
+        };
+        /** RecallActionCreate */
+        RecallActionCreate: {
+            /**
+             * Action
+             * @enum {string}
+             */
+            action: "sms" | "call" | "email" | "whatsapp" | "booked";
+            /** Note */
+            note?: string | null;
+            /** Notelocale */
+            noteLocale?: string | null;
+            /** Outcome */
+            outcome?: ("reached" | "no_answer" | "voicemail" | "unreachable" | "confirmed" | "declined") | null;
+            /** Version */
+            version: number;
+        };
+        /** RecallAppointmentCreate */
+        RecallAppointmentCreate: {
+            /** Appointmenttypeid */
+            appointmentTypeId: string;
+            /** Endsat */
+            endsAt?: string | null;
+            /** Room */
+            room?: string | null;
+            /** Siteid */
+            siteId: string;
+            /**
+             * Startsat
+             * Format: date-time
+             */
+            startsAt: string;
+            /** Userid */
+            userId: string;
+        };
+        /** RecallBook */
+        RecallBook: {
+            appointment: components["schemas"]["RecallAppointmentCreate"];
+            /** Version */
+            version: number;
+        };
+        /** RecallCancel */
+        RecallCancel: {
+            /** Reason */
+            reason: string;
+            /** Version */
+            version: number;
+        };
+        /** RecallComplete */
+        RecallComplete: {
+            /** Completedencounterid */
+            completedEncounterId?: string | null;
+            /** Version */
+            version: number;
+        };
+        /** RecallCreate */
+        RecallCreate: {
+            actionConfig?: components["schemas"]["RecallActionConfig"] | null;
+            /**
+             * Actiontype
+             * @enum {string}
+             */
+            actionType: "visit" | "test" | "call" | "questionnaire" | "document";
+            appointment?: components["schemas"]["RecallAppointmentCreate"] | null;
+            /** Assignedtoid */
+            assignedToId?: string | null;
+            /** Dueon */
+            dueOn?: string | null;
+            /** Intervaldays */
+            intervalDays?: number | null;
+            /** Laterality */
+            laterality?: ("right" | "left" | "bilateral" | "midline" | "na") | null;
+            /** Patientid */
+            patientId: string;
+            /** Reasonlocale */
+            reasonLocale: string;
+            /** Reasontext */
+            reasonText: string;
+            /** Sourceencounterid */
+            sourceEncounterId?: string | null;
+            /**
+             * Windowdays
+             * @default 14
+             */
+            windowDays: number;
+        };
+        /** RecallRead */
+        RecallRead: {
+            /** Actionconfig */
+            actionConfig: Record<string, never> | null;
+            /** Actiontype */
+            actionType: string;
+            /** Appointmentid */
+            appointmentId: string | null;
+            /** Assignedtoid */
+            assignedToId: string | null;
+            /** Attempts */
+            attempts: number;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /**
+             * Dueon
+             * Format: date
+             */
+            dueOn: string;
+            /** Lastattemptat */
+            lastAttemptAt: string | null;
+            /** Laterality */
+            laterality: string | null;
+            /**
+             * Overlapcount
+             * @default 0
+             */
+            overlapCount: number;
+            /** Patientdisplayname */
+            patientDisplayName: string;
+            /** Patientid */
+            patientId: string;
+            /** Publicid */
+            publicId: string;
+            /** Reasonlocale */
+            reasonLocale: string | null;
+            /** Reasontext */
+            reasonText: string | null;
+            /** Sourceencounterid */
+            sourceEncounterId: string | null;
+            /** Status */
+            status: string;
+            /**
+             * Updatedat
+             * Format: date-time
+             */
+            updatedAt: string;
+            /** Version */
+            version: number;
+            /** Windowdays */
+            windowDays: number;
+        };
+        /** RecallSummaryRead */
+        RecallSummaryRead: {
+            /** Active */
+            active: number;
+            /** Overdue */
+            overdue: number;
+            /** Unreachable */
+            unreachable: number;
+            /** Upcoming */
+            upcoming: number;
+        };
+        /** RecallUpdate */
+        RecallUpdate: {
+            /** Assignedtoid */
+            assignedToId?: string | null;
+            /** Dueon */
+            dueOn?: string | null;
+            /** Reasonlocale */
+            reasonLocale?: string | null;
+            /** Reasontext */
+            reasonText?: string | null;
+            /** Version */
+            version: number;
+            /** Windowdays */
+            windowDays?: number | null;
         };
         /** ReferralInput */
         ReferralInput: {
@@ -8920,9 +9254,17 @@ export interface operations {
     };
     patient_timeline_api_v1_patients__patient_id__timeline_get: {
         parameters: {
-            query?: never;
+            query?: {
+                types?: string[] | null;
+                laterality?: string | null;
+                problem_id?: string | null;
+                limit?: number;
+                cursor?: string | null;
+                summary?: boolean;
+            };
             header?: {
                 "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
             };
             path: {
                 patient_id: string;
@@ -8937,7 +9279,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["PageSchema_PatientSummaryRead_"];
+                    "application/json": components["schemas"]["PageSchema_PatientTimelineItemRead_"];
                 };
             };
             /** @description Validation Error */
@@ -9178,6 +9520,329 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PrescriptionRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_recalls_api_v1_recalls_get: {
+        parameters: {
+            query?: {
+                bucket?: ("overdue" | "upcoming" | "unreachable" | "active") | null;
+                status?: string | null;
+                action_type?: string | null;
+                patient_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_RecallRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_recall_api_v1_recalls_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Idempotency-Key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecallCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecallRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    recall_summary_api_v1_recalls_summary_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecallSummaryRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_recall_api_v1_recalls__recall_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                recall_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecallRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_recall_api_v1_recalls__recall_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                recall_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecallUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecallRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    log_recall_action_api_v1_recalls__recall_id__actions_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                recall_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecallActionCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecallRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    book_recall_api_v1_recalls__recall_id__book_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                recall_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecallBook"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecallRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    cancel_recall_api_v1_recalls__recall_id__cancel_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                recall_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecallCancel"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecallRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    complete_recall_api_v1_recalls__recall_id__complete_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                recall_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RecallComplete"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecallRead"];
                 };
             };
             /** @description Validation Error */

@@ -37,6 +37,7 @@ from ent.features.patients.schemas.responses import (
     PatientProblemRead,
     PatientRead,
     PatientSummaryRead,
+    PatientTimelineItemRead,
 )
 from ent.features.patients.service import PatientService
 
@@ -134,13 +135,33 @@ async def merge_patient(
     return await service.merge_patients(user=user, public_id=patient_id, body=body)
 
 
-@router.get("/{patient_id}/timeline", response_model=PageSchema[PatientSummaryRead])
+@router.get(
+    "/{patient_id}/timeline",
+    response_model=PageSchema[PatientTimelineItemRead],
+)
 async def patient_timeline(
     patient_id: str,
+    types: list[str] | None = Query(default=None),
+    laterality: str | None = Query(default=None, max_length=10),
+    problem_id: str | None = Query(default=None),
+    limit: int = Query(default=50, ge=1, le=100),
+    cursor: str | None = Query(default=None, max_length=200),
+    summary: bool = Query(default=False),
     user: CurrentUser = Depends(require_patient_read()),
     service: PatientService = Depends(get_patient_service),
-) -> PageSchema[PatientSummaryRead]:
-    return await service.timeline(user=user, public_id=patient_id)
+    content_locale: str = Depends(get_content_locale),
+) -> PageSchema[PatientTimelineItemRead]:
+    return await service.timeline(
+        user=user,
+        public_id=patient_id,
+        content_locale=content_locale,
+        types=types,
+        laterality=laterality,
+        problem_public_id=problem_id,
+        limit=limit,
+        cursor=cursor,
+        summary=summary,
+    )
 
 
 @router.get(

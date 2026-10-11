@@ -75,6 +75,13 @@ from ent.features.patients.schemas.responses import (
     PatientProblemRead,
     PatientRead,
     PatientSummaryRead,
+    PatientTimelineItemRead,
+)
+from ent.features.patients.timeline_repository import (
+    TIMELINE_EVENT_TYPES,
+    PatientTimelineRepository,
+    TimelineEntry,
+    decode_timeline_cursor,
 )
 
 _CHART_LIMIT = 100
@@ -365,18 +372,73 @@ class PatientService:
         )
 
     async def timeline(
-        self, *, user: CurrentUser, public_id: str
-    ) -> PageSchema[PatientSummaryRead]:
-        """Empty until encounters exist. Confirms the patient is visible."""
-
+        self,
+        *,
+        user: CurrentUser,
+        public_id: str,
+        content_locale: str,
+        types: list[str] | None,
+        laterality: str | None,
+        problem_public_id: str | None,
+        limit: int,
+        cursor: str | None,
+        summary: bool,
+    ) -> PageSchema[PatientTimelineItemRead]:
         self._bind(user)
         patient = await self._visible(user, public_id)
+        selected = _timeline_types(types)
+        if laterality is not None and laterality not in {
+            "right",
+            "left",
+            "bilateral",
+            "midline",
+            "na",
+        }:
+            raise ValidationError(reason="invalid_laterality")
+        problem = None
+        if problem_public_id is not None:
+            problem = await PatientProblemRepository(
+                self._session, clinic_id=user.clinic_id
+            ).get_by_public_id(problem_public_id)
+            if problem is None or int(problem.patient_id) != int(patient.id):
+                raise NotFoundError(
+                    resource="patient_problem", public_id=problem_public_id
+                )
+        decoded = None
+        if cursor:
+            try:
+                decoded = decode_timeline_cursor(cursor)
+            except (ValueError, UnicodeError) as exc:
+                raise ValidationError(reason="invalid_cursor") from exc
+        page_limit = 24 if summary else limit
+        result = await PatientTimelineRepository(
+            self._session, clinic_id=user.clinic_id
+        ).page(
+            patient_id=int(patient.id),
+            types=selected,
+            laterality=laterality,
+            problem=problem,
+            limit=page_limit,
+            cursor=None if summary else decoded,
+        )
+        concept_ids = {
+            int(item.concept_id) for item in result.items if item.concept_id is not None
+        }
+        labels = await self._concept_labels(
+            user, concept_ids, content_locale=content_locale
+        )
+        items = [_timeline_item(item, labels) for item in result.items]
         await self._access_patient(
             user, patient, action="timeline", entity_type="patient"
         )
         return PageSchema(
-            items=[],
-            page=PageMeta(total=0, limit=25, offset=0, next_cursor=None),
+            items=items,
+            page=PageMeta(
+                total=result.total,
+                limit=result.limit,
+                offset=0,
+                next_cursor=None if summary else result.next_cursor,
+            ),
         )
 
     async def list_identifiers(
@@ -1423,4 +1485,31 @@ def _history(
         occurred_date=row.occurred_date,
         detail=row.detail,
         version=row.version,
+    )
+
+
+def _timeline_types(types: list[str] | None) -> frozenset[str] | None:
+    if not types:
+        return None
+    unknown = [name for name in types if name not in TIMELINE_EVENT_TYPES]
+    if unknown:
+        raise ValidationError(reason="invalid_timeline_type", types=unknown)
+    return frozenset(types)
+
+
+def _timeline_item(
+    row: TimelineEntry,
+    labels: dict[int, tuple[str, str, str | None]],
+) -> PatientTimelineItemRead:
+    concept = _concept(labels, row.concept_id) if row.concept_id is not None else None
+    return PatientTimelineItemRead(
+        public_id=row.public_id,
+        event_type=row.event_type,
+        occurred_at=row.occurred_at,
+        status=row.status,
+        category=row.category,
+        laterality=row.laterality,
+        detail_text=row.detail_text,
+        concept=concept,
+        encounter_public_id=row.encounter_public_id,
     )

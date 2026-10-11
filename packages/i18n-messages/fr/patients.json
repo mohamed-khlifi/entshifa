@@ -8,7 +8,8 @@
     "consultation": "Consultation",
     "documents": "Documents",
     "examination": "Examen",
-    "prescriptions": "Ordonnances"
+    "prescriptions": "Ordonnances",
+    "timeline": "Historique"
   },
   "state": {
     "loading": "Chargement du dossier…",
@@ -225,5 +226,62 @@
   "laterality": {
     "midline": "Ligne médiane",
     "na": "Sans objet"
+  },
+  "timeline": {
+    "empty": "Aucun élément de cet historique ne correspond aux filtres.",
+    "error": "L’historique n’a pas pu être chargé.",
+    "events": {
+      "appointment": "Rendez-vous",
+      "attachment": "Image ou document",
+      "consultation": "Consultation",
+      "diagnosis": "Diagnostic",
+      "document": "Document",
+      "followUp": "Visite de suivi",
+      "noShow": "Rendez-vous manqué",
+      "phoneCall": "Appel téléphonique",
+      "postOp": "Visite post-opératoire",
+      "prescription": "Ordonnance",
+      "procedure": "Geste",
+      "recall": "Rappel",
+      "recallSent": "Message de rappel",
+      "resultReview": "Revue de résultat",
+      "teleconsultation": "Téléconsultation"
+    },
+    "filters": {
+      "allProblems": "Tous les problèmes",
+      "allSides": "Tous les côtés",
+      "allTypes": "Tous les types",
+      "laterality": "Côté",
+      "problem": "Problème",
+      "type": "Type"
+    },
+    "laterality": {
+      "bilateral": "Les deux côtés",
+      "left": "Gauche",
+      "midline": "Ligne médiane",
+      "na": "Sans objet",
+      "right": "Droit"
+    },
+    "loading": "Chargement de l’historique…",
+    "print": "Imprimer l’historique d’une page",
+    "printing": "Préparation de l’historique d’une page…",
+    "status": {
+      "active": "Actif",
+      "amended": "Amendé",
+      "arrived": "Arrivé",
+      "booked": "Planifié",
+      "cancelled": "Annulé",
+      "completed": "Terminé",
+      "done": "Fait",
+      "draft": "Brouillon",
+      "inRoom": "En salle",
+      "overdue": "En retard",
+      "pending": "En attente",
+      "recorded": "Enregistré",
+      "scheduled": "Programmé",
+      "signed": "Signé",
+      "unreachable": "Injoignable"
+    },
+    "title": "Historique"
   }
 }

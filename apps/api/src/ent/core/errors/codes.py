@@ -65,3 +65,9 @@ class ErrorCode(StrEnum):
     PRESCRIPTION_PEDIATRIC_WEIGHT_MISSING = "prescription.pediatric_weight_missing"
     PRESCRIPTION_DOSE_ABOVE_MAXIMUM = "prescription.dose_above_maximum"
     PRESCRIPTION_SAFETY_BLOCKED = "prescription.safety_blocked"
+
+    RECALL_NOT_FOUND = "recall.not_found"
+    RECALL_VERSION_CONFLICT = "recall.version_conflict"
+    RECALL_INVALID_STATUS = "recall.invalid_status"
+    RECALL_IDEMPOTENCY_MISMATCH = "recall.idempotency_mismatch"
+    RECALL_DUE_REQUIRED = "recall.due_required"

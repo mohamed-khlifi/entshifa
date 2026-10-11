@@ -8,7 +8,8 @@
     "consultation": "Consultation",
     "documents": "Documents",
     "examination": "Examination",
-    "prescriptions": "Prescriptions"
+    "prescriptions": "Prescriptions",
+    "timeline": "History"
   },
   "state": {
     "loading": "Loading the chart…",
@@ -225,5 +226,62 @@
   "laterality": {
     "midline": "Midline",
     "na": "Not applicable"
+  },
+  "timeline": {
+    "empty": "Nothing in this history matches the filters.",
+    "error": "The history could not be loaded.",
+    "events": {
+      "appointment": "Appointment",
+      "attachment": "Image or document",
+      "consultation": "Consultation",
+      "diagnosis": "Diagnosis",
+      "document": "Document",
+      "followUp": "Follow-up visit",
+      "noShow": "Missed appointment",
+      "phoneCall": "Phone call",
+      "postOp": "Post-operative visit",
+      "prescription": "Prescription",
+      "procedure": "Procedure",
+      "recall": "Recall",
+      "recallSent": "Recall message",
+      "resultReview": "Result review",
+      "teleconsultation": "Teleconsultation"
+    },
+    "filters": {
+      "allProblems": "All problems",
+      "allSides": "All sides",
+      "allTypes": "All types",
+      "laterality": "Side",
+      "problem": "Problem",
+      "type": "Type"
+    },
+    "laterality": {
+      "bilateral": "Both sides",
+      "left": "Left",
+      "midline": "Midline",
+      "na": "Not applicable",
+      "right": "Right"
+    },
+    "loading": "Loading the history…",
+    "print": "Print one-page history",
+    "printing": "Preparing the one-page history…",
+    "status": {
+      "active": "Active",
+      "amended": "Amended",
+      "arrived": "Arrived",
+      "booked": "Booked",
+      "cancelled": "Cancelled",
+      "completed": "Completed",
+      "done": "Done",
+      "draft": "Draft",
+      "inRoom": "In room",
+      "overdue": "Overdue",
+      "pending": "Pending",
+      "recorded": "Recorded",
+      "scheduled": "Scheduled",
+      "signed": "Signed",
+      "unreachable": "Unreachable"
+    },
+    "title": "History"
   }
 }
