@@ -92,6 +92,11 @@
     "not_found": "This laryngoscopy exam does not exist.",
     "version_conflict": "This laryngoscopy exam was updated by someone else."
   },
+  "office_procedure": {
+    "invalid": "This office procedure cannot be stored.",
+    "not_found": "That office procedure was not found.",
+    "version_conflict": "This office procedure was updated by someone else. Reload and try again."
+  },
   "otology": {
     "device_not_found": "That ear device was not found.",
     "invalid_exam": "This otology exam cannot be stored.",

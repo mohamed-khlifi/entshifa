@@ -447,6 +447,14 @@ async def seed_terminology(session: AsyncSession) -> TerminologySeedReport:
     value_sets_count += otology_report.value_sets
     members_created += otology_report.members
 
+    from ent.seeds.office_procedures import seed_office_procedures
+
+    office_report = await seed_office_procedures(session, system, by_code)
+    concepts_created += office_report.concepts
+    translations_created += office_report.translations
+    value_sets_count += office_report.value_sets
+    members_created += office_report.members
+
     from ent.seeds.icd10_ent import seed_icd10_ent
 
     icd_report = await seed_icd10_ent(session)

@@ -37,6 +37,7 @@ def to_recall_read(
         patient_display_name=f"{patient.first_name} {patient.last_name}".strip(),
         reason_text=row.reason_text,
         reason_locale=row.reason_locale,
+        reason_key=row.reason_key,
         due_on=row.due_on,
         window_days=row.window_days,
         action_type=row.action_type,

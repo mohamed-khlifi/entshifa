@@ -163,6 +163,7 @@ export const testIds = {
     navEndoscopy: testId("patients", "nav-endoscopy"),
     navLaryngoscopy: testId("patients", "nav-laryngoscopy"),
     navOtology: testId("patients", "nav-otology"),
+    navProcedures: testId("patients", "nav-procedures"),
     navPrescriptions: testId("patients", "nav-prescriptions"),
     navConsultation: testId("patients", "nav-consultation"),
     navAttachments: testId("patients", "nav-attachments"),
@@ -547,6 +548,39 @@ export const testIds = {
     pas: testId("laryngoscopy", "fees", "pas"),
     folds: testId("laryngoscopy", "folds"),
   },
+  officeProcedures: {
+    root: testId("office-procedures", "root"),
+    loading: testId("office-procedures", "loading"),
+    error: testId("office-procedures", "error"),
+    empty: testId("office-procedures", "empty"),
+    list: testId("office-procedures", "list"),
+    newProcedure: testId("office-procedures", "new"),
+    save: testId("office-procedures", "save"),
+    sign: testId("office-procedures", "sign"),
+    confirmSign: testId("office-procedures", "confirm-sign"),
+    cancelSign: testId("office-procedures", "cancel-sign"),
+    validation: testId("office-procedures", "validation"),
+    report: testId("office-procedures", "report"),
+    subtype: testId("office-procedures", "subtype"),
+    performedAt: testId("office-procedures", "performed-at"),
+    laterality: testId("office-procedures", "laterality"),
+    anesthesia: testId("office-procedures", "anesthesia"),
+    method: testId("office-procedures", "method"),
+    packType: testId("office-procedures", "pack-type"),
+    packRemoval: testId("office-procedures", "pack-removal"),
+    systolic: testId("office-procedures", "systolic"),
+    diastolic: testId("office-procedures", "diastolic"),
+    anticoagulant: testId("office-procedures", "anticoagulant"),
+    advice: testId("office-procedures", "advice"),
+    siteFound: testId("office-procedures", "site-found"),
+    bleedingSite: testId("office-procedures", "bleeding-site"),
+    laboratory: testId("office-procedures", "laboratory"),
+    resultDue: testId("office-procedures", "result-due"),
+    splintType: testId("office-procedures", "splint-type"),
+    splintRemoval: testId("office-procedures", "splint-removal"),
+    followUp: testId("office-procedures", "follow-up"),
+    note: testId("office-procedures", "note"),
+  },
   otology: {
     root: testId("otology", "root"),
     loading: testId("otology", "loading"),
@@ -582,6 +616,10 @@ export function patientEarFlagTestId(code: string, laterality: string): string {
     examinationToken(code),
     examinationToken(laterality || "unspecified"),
   );
+}
+
+export function officeProcedureTestId(publicId: string): string {
+  return publicIdTestId("office-procedures.item", publicId);
 }
 
 export function otologyExamTestId(publicId: string): string {

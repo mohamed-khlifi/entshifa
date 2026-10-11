@@ -180,5 +180,7 @@ async def test_value_set_tm_findings() -> None:
         )
         assert value_set.code == TM_FINDINGS_VALUE_SET
         assert len(value_set.members) == 9
-        assert any(member.code == "FIND.TM.CHOLESTEATOMA" for member in value_set.members)
+        assert any(
+            member.code == "FIND.TM.CHOLESTEATOMA" for member in value_set.members
+        )
         assert any(m.is_default for m in value_set.members)

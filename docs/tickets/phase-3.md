@@ -106,7 +106,7 @@ Reference: feature spec section 7. Architecture section 25.7.
 
 ---
 
-## - [ ] P3-07 Short office procedure forms (backend and frontend)
+## - [x] P3-07 Short office procedure forms (backend and frontend)
 
 **Scope**
 Structured short forms for: epistaxis management, fine needle aspiration,

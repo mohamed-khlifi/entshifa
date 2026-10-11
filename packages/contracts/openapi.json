@@ -930,6 +930,299 @@
         "title": "AttachmentUploadUrlResponse",
         "type": "object"
       },
+      "BiopsyWrite": {
+        "properties": {
+          "laboratoryLocale": {
+            "enum": [
+              "en",
+              "fr",
+              "ar"
+            ],
+            "title": "Laboratorylocale",
+            "type": "string"
+          },
+          "laboratoryText": {
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Laboratorytext",
+            "type": "string"
+          },
+          "noteLocale": {
+            "anyOf": [
+              {
+                "enum": [
+                  "en",
+                  "fr",
+                  "ar"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notelocale"
+          },
+          "noteText": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notetext"
+          },
+          "resultDueDate": {
+            "format": "date",
+            "title": "Resultduedate",
+            "type": "string"
+          },
+          "site": {
+            "enum": [
+              "oral_cavity",
+              "tongue",
+              "palate",
+              "tonsil",
+              "oropharynx",
+              "hypopharynx"
+            ],
+            "title": "Site",
+            "type": "string"
+          },
+          "subtype": {
+            "const": "oral_pharyngeal_biopsy",
+            "title": "Subtype",
+            "type": "string"
+          },
+          "technique": {
+            "enum": [
+              "punch",
+              "incisional",
+              "excisional"
+            ],
+            "title": "Technique",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "site",
+          "technique",
+          "laboratoryText",
+          "laboratoryLocale",
+          "resultDueDate"
+        ],
+        "title": "BiopsyWrite",
+        "type": "object"
+      },
+      "BotulinumInjectionSiteWrite-Input": {
+        "properties": {
+          "doseUnits": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 100.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Doseunits"
+          },
+          "muscle": {
+            "enum": [
+              "thyroarytenoid",
+              "lateral_cricoarytenoid",
+              "parotid",
+              "submandibular",
+              "cricopharyngeus"
+            ],
+            "title": "Muscle",
+            "type": "string"
+          },
+          "side": {
+            "enum": [
+              "right",
+              "left",
+              "bilateral",
+              "midline"
+            ],
+            "title": "Side",
+            "type": "string"
+          }
+        },
+        "required": [
+          "muscle",
+          "side",
+          "doseUnits"
+        ],
+        "title": "BotulinumInjectionSiteWrite",
+        "type": "object"
+      },
+      "BotulinumInjectionSiteWrite-Output": {
+        "properties": {
+          "doseUnits": {
+            "title": "Doseunits",
+            "type": "string"
+          },
+          "muscle": {
+            "enum": [
+              "thyroarytenoid",
+              "lateral_cricoarytenoid",
+              "parotid",
+              "submandibular",
+              "cricopharyngeus"
+            ],
+            "title": "Muscle",
+            "type": "string"
+          },
+          "side": {
+            "enum": [
+              "right",
+              "left",
+              "bilateral",
+              "midline"
+            ],
+            "title": "Side",
+            "type": "string"
+          }
+        },
+        "required": [
+          "muscle",
+          "side",
+          "doseUnits"
+        ],
+        "title": "BotulinumInjectionSiteWrite",
+        "type": "object"
+      },
+      "BotulinumWrite-Input": {
+        "properties": {
+          "indication": {
+            "enum": [
+              "spasmodic_dysphonia",
+              "sialorrhea",
+              "cricopharyngeal"
+            ],
+            "title": "Indication",
+            "type": "string"
+          },
+          "injections": {
+            "items": {
+              "$ref": "#/components/schemas/BotulinumInjectionSiteWrite-Input"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Injections",
+            "type": "array"
+          },
+          "noteLocale": {
+            "anyOf": [
+              {
+                "enum": [
+                  "en",
+                  "fr",
+                  "ar"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notelocale"
+          },
+          "noteText": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notetext"
+          },
+          "subtype": {
+            "const": "botulinum_injection",
+            "title": "Subtype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "indication",
+          "injections"
+        ],
+        "title": "BotulinumWrite",
+        "type": "object"
+      },
+      "BotulinumWrite-Output": {
+        "properties": {
+          "indication": {
+            "enum": [
+              "spasmodic_dysphonia",
+              "sialorrhea",
+              "cricopharyngeal"
+            ],
+            "title": "Indication",
+            "type": "string"
+          },
+          "injections": {
+            "items": {
+              "$ref": "#/components/schemas/BotulinumInjectionSiteWrite-Output"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Injections",
+            "type": "array"
+          },
+          "noteLocale": {
+            "anyOf": [
+              {
+                "enum": [
+                  "en",
+                  "fr",
+                  "ar"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notelocale"
+          },
+          "noteText": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notetext"
+          },
+          "subtype": {
+            "const": "botulinum_injection",
+            "title": "Subtype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "indication",
+          "injections"
+        ],
+        "title": "BotulinumWrite",
+        "type": "object"
+      },
       "CalculationRead": {
         "properties": {
           "code": {
@@ -4741,6 +5034,163 @@
         "title": "EndoscopyUpdate",
         "type": "object"
       },
+      "EpistaxisWrite": {
+        "properties": {
+          "adviceLocale": {
+            "anyOf": [
+              {
+                "enum": [
+                  "en",
+                  "fr",
+                  "ar"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Advicelocale"
+          },
+          "adviceText": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Advicetext"
+          },
+          "anticoagulantStatus": {
+            "enum": [
+              "yes",
+              "no",
+              "unknown"
+            ],
+            "title": "Anticoagulantstatus",
+            "type": "string"
+          },
+          "bleedingSite": {
+            "anyOf": [
+              {
+                "enum": [
+                  "little_area",
+                  "septum",
+                  "inferior_turbinate",
+                  "nasal_floor",
+                  "nasopharynx"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bleedingsite"
+          },
+          "diastolicBp": {
+            "maximum": 200.0,
+            "minimum": 30.0,
+            "title": "Diastolicbp",
+            "type": "integer"
+          },
+          "method": {
+            "enum": [
+              "silver_nitrate",
+              "electrocautery",
+              "anterior_pack",
+              "posterior_pack",
+              "balloon"
+            ],
+            "title": "Method",
+            "type": "string"
+          },
+          "noteLocale": {
+            "anyOf": [
+              {
+                "enum": [
+                  "en",
+                  "fr",
+                  "ar"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notelocale"
+          },
+          "noteText": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notetext"
+          },
+          "packRemovalDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Packremovaldate"
+          },
+          "packType": {
+            "anyOf": [
+              {
+                "enum": [
+                  "merocel",
+                  "rapid_rhino",
+                  "ribbon_gauze"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Packtype"
+          },
+          "siteFound": {
+            "title": "Sitefound",
+            "type": "boolean"
+          },
+          "subtype": {
+            "const": "epistaxis_management",
+            "title": "Subtype",
+            "type": "string"
+          },
+          "systolicBp": {
+            "maximum": 300.0,
+            "minimum": 50.0,
+            "title": "Systolicbp",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "subtype",
+          "siteFound",
+          "method",
+          "systolicBp",
+          "diastolicBp",
+          "anticoagulantStatus"
+        ],
+        "title": "EpistaxisWrite",
+        "type": "object"
+      },
       "ExaminationSnapshotCreate": {
         "properties": {
           "encounterPublicId": {
@@ -4892,6 +5342,130 @@
           "consistencies"
         ],
         "title": "FeesWrite",
+        "type": "object"
+      },
+      "FineNeedleAspirationWrite": {
+        "properties": {
+          "laboratoryLocale": {
+            "enum": [
+              "en",
+              "fr",
+              "ar"
+            ],
+            "title": "Laboratorylocale",
+            "type": "string"
+          },
+          "laboratoryText": {
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Laboratorytext",
+            "type": "string"
+          },
+          "needleGauge": {
+            "maximum": 27.0,
+            "minimum": 18.0,
+            "title": "Needlegauge",
+            "type": "integer"
+          },
+          "noteLocale": {
+            "anyOf": [
+              {
+                "enum": [
+                  "en",
+                  "fr",
+                  "ar"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notelocale"
+          },
+          "noteText": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notetext"
+          },
+          "passes": {
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Passes",
+            "type": "integer"
+          },
+          "resultDueDate": {
+            "format": "date",
+            "title": "Resultduedate",
+            "type": "string"
+          },
+          "site": {
+            "enum": [
+              "thyroid",
+              "parotid",
+              "submandibular",
+              "neck_node",
+              "other"
+            ],
+            "title": "Site",
+            "type": "string"
+          },
+          "siteNote": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sitenote"
+          },
+          "siteNoteLocale": {
+            "anyOf": [
+              {
+                "enum": [
+                  "en",
+                  "fr",
+                  "ar"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sitenotelocale"
+          },
+          "subtype": {
+            "const": "fine_needle_aspiration",
+            "title": "Subtype",
+            "type": "string"
+          },
+          "ultrasoundGuided": {
+            "title": "Ultrasoundguided",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "subtype",
+          "site",
+          "needleGauge",
+          "passes",
+          "ultrasoundGuided",
+          "laboratoryText",
+          "laboratoryLocale",
+          "resultDueDate"
+        ],
+        "title": "FineNeedleAspirationWrite",
         "type": "object"
       },
       "FlagRead": {
@@ -7011,6 +7585,65 @@
         "title": "NarrativeRenderRequest",
         "type": "object"
       },
+      "NasalFractureWrite": {
+        "properties": {
+          "noteLocale": {
+            "anyOf": [
+              {
+                "enum": [
+                  "en",
+                  "fr",
+                  "ar"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notelocale"
+          },
+          "noteText": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notetext"
+          },
+          "splintRemovalDate": {
+            "format": "date",
+            "title": "Splintremovaldate",
+            "type": "string"
+          },
+          "splintType": {
+            "enum": [
+              "thermoplastic",
+              "plaster",
+              "denver",
+              "tape"
+            ],
+            "title": "Splinttype",
+            "type": "string"
+          },
+          "subtype": {
+            "const": "nasal_fracture_reduction",
+            "title": "Subtype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "splintType",
+          "splintRemovalDate"
+        ],
+        "title": "NasalFractureWrite",
+        "type": "object"
+      },
       "ObservationBatchCreate": {
         "properties": {
           "encounterPublicId": {
@@ -8023,45 +8656,239 @@
         "title": "ObservationUpdate",
         "type": "object"
       },
-      "OfficeProcedureRead": {
+      "OfficeProcedureCreate": {
         "properties": {
-          "payload": {
-            "additionalProperties": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ]
-            },
-            "title": "Payload",
-            "type": "object"
+          "anesthesia": {
+            "default": "none",
+            "enum": [
+              "none",
+              "topical_spray",
+              "local_infiltration",
+              "general"
+            ],
+            "title": "Anesthesia",
+            "type": "string"
           },
-          "removalDueDate": {
+          "detail": {
+            "discriminator": {
+              "mapping": {
+                "botulinum_injection": "#/components/schemas/BotulinumWrite-Input",
+                "epistaxis_management": "#/components/schemas/EpistaxisWrite",
+                "fine_needle_aspiration": "#/components/schemas/FineNeedleAspirationWrite",
+                "nasal_fracture_reduction": "#/components/schemas/NasalFractureWrite",
+                "oral_pharyngeal_biopsy": "#/components/schemas/BiopsyWrite",
+                "peritonsillar_drainage": "#/components/schemas/PeritonsillarWrite-Input",
+                "sialendoscopy": "#/components/schemas/SialendoscopyWrite"
+              },
+              "propertyName": "subtype"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/EpistaxisWrite"
+              },
+              {
+                "$ref": "#/components/schemas/FineNeedleAspirationWrite"
+              },
+              {
+                "$ref": "#/components/schemas/BiopsyWrite"
+              },
+              {
+                "$ref": "#/components/schemas/BotulinumWrite-Input"
+              },
+              {
+                "$ref": "#/components/schemas/PeritonsillarWrite-Input"
+              },
+              {
+                "$ref": "#/components/schemas/NasalFractureWrite"
+              },
+              {
+                "$ref": "#/components/schemas/SialendoscopyWrite"
+              }
+            ],
+            "title": "Detail"
+          },
+          "encounterPublicId": {
             "anyOf": [
               {
-                "format": "date",
+                "maxLength": 26,
+                "minLength": 26,
                 "type": "string"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Removalduedate"
+            "title": "Encounterpublicid"
           },
-          "subtype": {
-            "title": "Subtype",
+          "indicationText": {
+            "anyOf": [
+              {
+                "maxLength": 400,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicationtext"
+          },
+          "laterality": {
+            "$ref": "#/components/schemas/Laterality"
+          },
+          "patientPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Patientpublicid",
             "type": "string"
+          },
+          "performedAt": {
+            "format": "date-time",
+            "title": "Performedat",
+            "type": "string"
+          },
+          "tolerance": {
+            "anyOf": [
+              {
+                "enum": [
+                  "well_tolerated",
+                  "mild_discomfort",
+                  "moderate_discomfort",
+                  "poorly_tolerated",
+                  "aborted"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tolerance"
           }
         },
         "required": [
-          "subtype",
-          "payload",
-          "removalDueDate"
+          "performedAt",
+          "laterality",
+          "detail",
+          "patientPublicId"
         ],
-        "title": "OfficeProcedureRead",
+        "title": "OfficeProcedureCreate",
+        "type": "object"
+      },
+      "OfficeProcedureUpdate": {
+        "properties": {
+          "anesthesia": {
+            "default": "none",
+            "enum": [
+              "none",
+              "topical_spray",
+              "local_infiltration",
+              "general"
+            ],
+            "title": "Anesthesia",
+            "type": "string"
+          },
+          "detail": {
+            "discriminator": {
+              "mapping": {
+                "botulinum_injection": "#/components/schemas/BotulinumWrite-Input",
+                "epistaxis_management": "#/components/schemas/EpistaxisWrite",
+                "fine_needle_aspiration": "#/components/schemas/FineNeedleAspirationWrite",
+                "nasal_fracture_reduction": "#/components/schemas/NasalFractureWrite",
+                "oral_pharyngeal_biopsy": "#/components/schemas/BiopsyWrite",
+                "peritonsillar_drainage": "#/components/schemas/PeritonsillarWrite-Input",
+                "sialendoscopy": "#/components/schemas/SialendoscopyWrite"
+              },
+              "propertyName": "subtype"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/EpistaxisWrite"
+              },
+              {
+                "$ref": "#/components/schemas/FineNeedleAspirationWrite"
+              },
+              {
+                "$ref": "#/components/schemas/BiopsyWrite"
+              },
+              {
+                "$ref": "#/components/schemas/BotulinumWrite-Input"
+              },
+              {
+                "$ref": "#/components/schemas/PeritonsillarWrite-Input"
+              },
+              {
+                "$ref": "#/components/schemas/NasalFractureWrite"
+              },
+              {
+                "$ref": "#/components/schemas/SialendoscopyWrite"
+              }
+            ],
+            "title": "Detail"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "indicationText": {
+            "anyOf": [
+              {
+                "maxLength": 400,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicationtext"
+          },
+          "laterality": {
+            "$ref": "#/components/schemas/Laterality"
+          },
+          "performedAt": {
+            "format": "date-time",
+            "title": "Performedat",
+            "type": "string"
+          },
+          "tolerance": {
+            "anyOf": [
+              {
+                "enum": [
+                  "well_tolerated",
+                  "mild_discomfort",
+                  "moderate_discomfort",
+                  "poorly_tolerated",
+                  "aborted"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tolerance"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "performedAt",
+          "laterality",
+          "detail",
+          "version"
+        ],
+        "title": "OfficeProcedureUpdate",
         "type": "object"
       },
       "OtologyCreate": {
@@ -8447,7 +9274,7 @@
           "procedure": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/OfficeProcedureRead"
+                "$ref": "#/components/schemas/ent__features__otology__schemas__responses__OfficeProcedureRead"
               },
               {
                 "type": "null"
@@ -9261,6 +10088,26 @@
           "page"
         ],
         "title": "PageSchema[ObservationRead]",
+        "type": "object"
+      },
+      "PageSchema_OfficeProcedureRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ent__features__office_procedures__schemas__responses__OfficeProcedureRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[OfficeProcedureRead]",
         "type": "object"
       },
       "PageSchema_OtologyExamRead_": {
@@ -12296,6 +13143,137 @@
         "title": "PediatricDoseRequest",
         "type": "object"
       },
+      "PeritonsillarWrite-Input": {
+        "properties": {
+          "cultureSent": {
+            "title": "Culturesent",
+            "type": "boolean"
+          },
+          "method": {
+            "enum": [
+              "aspiration",
+              "incision"
+            ],
+            "title": "Method",
+            "type": "string"
+          },
+          "noteLocale": {
+            "anyOf": [
+              {
+                "enum": [
+                  "en",
+                  "fr",
+                  "ar"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notelocale"
+          },
+          "noteText": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notetext"
+          },
+          "subtype": {
+            "const": "peritonsillar_drainage",
+            "title": "Subtype",
+            "type": "string"
+          },
+          "volumeMl": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 30.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Volumeml"
+          }
+        },
+        "required": [
+          "subtype",
+          "method",
+          "volumeMl",
+          "cultureSent"
+        ],
+        "title": "PeritonsillarWrite",
+        "type": "object"
+      },
+      "PeritonsillarWrite-Output": {
+        "properties": {
+          "cultureSent": {
+            "title": "Culturesent",
+            "type": "boolean"
+          },
+          "method": {
+            "enum": [
+              "aspiration",
+              "incision"
+            ],
+            "title": "Method",
+            "type": "string"
+          },
+          "noteLocale": {
+            "anyOf": [
+              {
+                "enum": [
+                  "en",
+                  "fr",
+                  "ar"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notelocale"
+          },
+          "noteText": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notetext"
+          },
+          "subtype": {
+            "const": "peritonsillar_drainage",
+            "title": "Subtype",
+            "type": "string"
+          },
+          "volumeMl": {
+            "title": "Volumeml",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "method",
+          "volumeMl",
+          "cultureSent"
+        ],
+        "title": "PeritonsillarWrite",
+        "type": "object"
+      },
       "PermissionRead": {
         "properties": {
           "code": {
@@ -14199,6 +15177,17 @@
             "title": "Publicid",
             "type": "string"
           },
+          "reasonKey": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reasonkey"
+          },
           "reasonLocale": {
             "anyOf": [
               {
@@ -14256,6 +15245,7 @@
           "patientDisplayName",
           "reasonText",
           "reasonLocale",
+          "reasonKey",
           "dueOn",
           "windowDays",
           "actionType",
@@ -14886,6 +15876,83 @@
           "sessionPublicId"
         ],
         "title": "SessionResponse",
+        "type": "object"
+      },
+      "SialendoscopyWrite": {
+        "properties": {
+          "findings": {
+            "items": {
+              "enum": [
+                "stone",
+                "stenosis",
+                "mucus_plug"
+              ],
+              "type": "string"
+            },
+            "maxItems": 3,
+            "minItems": 1,
+            "title": "Findings",
+            "type": "array"
+          },
+          "followUpDate": {
+            "format": "date",
+            "title": "Followupdate",
+            "type": "string"
+          },
+          "gland": {
+            "enum": [
+              "parotid",
+              "submandibular"
+            ],
+            "title": "Gland",
+            "type": "string"
+          },
+          "noteLocale": {
+            "anyOf": [
+              {
+                "enum": [
+                  "en",
+                  "fr",
+                  "ar"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notelocale"
+          },
+          "noteText": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notetext"
+          },
+          "stoneRemoved": {
+            "title": "Stoneremoved",
+            "type": "boolean"
+          },
+          "subtype": {
+            "const": "sialendoscopy",
+            "title": "Subtype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "gland",
+          "findings",
+          "stoneRemoved",
+          "followUpDate"
+        ],
+        "title": "SialendoscopyWrite",
         "type": "object"
       },
       "SickLeaveInput": {
@@ -16162,6 +17229,213 @@
           "wickType"
         ],
         "title": "WickWrite",
+        "type": "object"
+      },
+      "ent__features__office_procedures__schemas__responses__OfficeProcedureRead": {
+        "properties": {
+          "anesthesia": {
+            "title": "Anesthesia",
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "title": "Createdat",
+            "type": "string"
+          },
+          "detail": {
+            "discriminator": {
+              "mapping": {
+                "botulinum_injection": "#/components/schemas/BotulinumWrite-Output",
+                "epistaxis_management": "#/components/schemas/EpistaxisWrite",
+                "fine_needle_aspiration": "#/components/schemas/FineNeedleAspirationWrite",
+                "nasal_fracture_reduction": "#/components/schemas/NasalFractureWrite",
+                "oral_pharyngeal_biopsy": "#/components/schemas/BiopsyWrite",
+                "peritonsillar_drainage": "#/components/schemas/PeritonsillarWrite-Output",
+                "sialendoscopy": "#/components/schemas/SialendoscopyWrite"
+              },
+              "propertyName": "subtype"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/EpistaxisWrite"
+              },
+              {
+                "$ref": "#/components/schemas/FineNeedleAspirationWrite"
+              },
+              {
+                "$ref": "#/components/schemas/BiopsyWrite"
+              },
+              {
+                "$ref": "#/components/schemas/BotulinumWrite-Output"
+              },
+              {
+                "$ref": "#/components/schemas/PeritonsillarWrite-Output"
+              },
+              {
+                "$ref": "#/components/schemas/NasalFractureWrite"
+              },
+              {
+                "$ref": "#/components/schemas/SialendoscopyWrite"
+              }
+            ],
+            "title": "Detail"
+          },
+          "encounterId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterid"
+          },
+          "indicationText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicationtext"
+          },
+          "laterality": {
+            "title": "Laterality",
+            "type": "string"
+          },
+          "patientId": {
+            "title": "Patientid",
+            "type": "string"
+          },
+          "performedAt": {
+            "format": "date-time",
+            "title": "Performedat",
+            "type": "string"
+          },
+          "procedure": {
+            "$ref": "#/components/schemas/CodeableConcept"
+          },
+          "procedureId": {
+            "title": "Procedureid",
+            "type": "string"
+          },
+          "procedureStatus": {
+            "title": "Procedurestatus",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "removalDueDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Removalduedate"
+          },
+          "resultDueDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resultduedate"
+          },
+          "tolerance": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tolerance"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "title": "Updatedat",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "publicId",
+          "version",
+          "procedureId",
+          "procedureStatus",
+          "procedure",
+          "patientId",
+          "encounterId",
+          "performedAt",
+          "laterality",
+          "anesthesia",
+          "tolerance",
+          "indicationText",
+          "detail",
+          "removalDueDate",
+          "resultDueDate",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "OfficeProcedureRead",
+        "type": "object"
+      },
+      "ent__features__otology__schemas__responses__OfficeProcedureRead": {
+        "properties": {
+          "payload": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Payload",
+            "type": "object"
+          },
+          "removalDueDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Removalduedate"
+          },
+          "subtype": {
+            "title": "Subtype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "payload",
+          "removalDueDate"
+        ],
+        "title": "OfficeProcedureRead",
         "type": "object"
       }
     },
@@ -22597,6 +23871,252 @@
         ]
       }
     },
+    "/api/v1/office-procedures": {
+      "post": {
+        "operationId": "create_office_procedure_api_v1_office_procedures_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfficeProcedureCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ent__features__office_procedures__schemas__responses__OfficeProcedureRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Office Procedure",
+        "tags": [
+          "office-procedures"
+        ]
+      }
+    },
+    "/api/v1/office-procedures/{office_procedure_id}": {
+      "get": {
+        "operationId": "get_office_procedure_api_v1_office_procedures__office_procedure_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "office_procedure_id",
+            "required": true,
+            "schema": {
+              "title": "Office Procedure Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ent__features__office_procedures__schemas__responses__OfficeProcedureRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Office Procedure",
+        "tags": [
+          "office-procedures"
+        ]
+      },
+      "put": {
+        "operationId": "update_office_procedure_api_v1_office_procedures__office_procedure_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "office_procedure_id",
+            "required": true,
+            "schema": {
+              "title": "Office Procedure Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfficeProcedureUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ent__features__office_procedures__schemas__responses__OfficeProcedureRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Office Procedure",
+        "tags": [
+          "office-procedures"
+        ]
+      }
+    },
     "/api/v1/otology-exams": {
       "post": {
         "operationId": "create_otology_exam_api_v1_otology_exams_post",
@@ -24964,6 +26484,108 @@
         ]
       }
     },
+    "/api/v1/patients/{patient_id}/office-procedures": {
+      "get": {
+        "operationId": "list_patient_office_procedures_api_v1_patients__patient_id__office_procedures_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_OfficeProcedureRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Patient Office Procedures",
+        "tags": [
+          "office-procedures"
+        ]
+      }
+    },
     "/api/v1/patients/{patient_id}/otology-exams": {
       "get": {
         "operationId": "list_patient_otology_exams_api_v1_patients__patient_id__otology_exams_get",
@@ -27124,6 +28746,85 @@
         "summary": "Get Procedure Laryngoscopy",
         "tags": [
           "laryngoscopy"
+        ]
+      }
+    },
+    "/api/v1/procedures/{procedure_id}/office-procedure": {
+      "get": {
+        "operationId": "get_procedure_office_procedure_api_v1_procedures__procedure_id__office_procedure_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "procedure_id",
+            "required": true,
+            "schema": {
+              "title": "Procedure Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ent__features__office_procedures__schemas__responses__OfficeProcedureRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Procedure Office Procedure",
+        "tags": [
+          "office-procedures"
         ]
       }
     },

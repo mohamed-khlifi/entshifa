@@ -86,6 +86,12 @@
     "description": "Overdue and upcoming recalls to call, message, or book.",
     "title": "Recalls"
   },
+  "reasons": {
+    "packRemoval": "Pack removal",
+    "sialendoscopyReview": "Sialendoscopy follow-up",
+    "specimenReview": "Specimen result review",
+    "splintRemoval": "Splint removal"
+  },
   "state": {
     "empty": "No recalls in this list.",
     "error": "The recall list could not be loaded.",

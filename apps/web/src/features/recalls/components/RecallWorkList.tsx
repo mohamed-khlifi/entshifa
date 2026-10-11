@@ -23,6 +23,7 @@ import {
   useRecallSummaryQuery,
 } from "../hooks/use-recall-queries";
 import { recallBucketLabel, recallStatusLabel } from "../lib/labels";
+import { recallReasonLabel } from "../lib/reason-label";
 
 const BUCKETS = ["overdue", "upcoming", "unreachable", "active"] as const;
 
@@ -89,7 +90,8 @@ export function RecallWorkList() {
       {
         id: "reason",
         header: t("columns.reason"),
-        cell: ({ row }) => row.original.reasonText ?? "",
+        cell: ({ row }) =>
+          recallReasonLabel(t, row.original.reasonKey, row.original.reasonText),
       },
       {
         id: "due",

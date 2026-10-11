@@ -1,0 +1,201 @@
+{
+  "actions": {
+    "cancelSign": "Keep editing",
+    "confirmSign": "Sign this procedure",
+    "newProcedure": "New procedure",
+    "save": "Save",
+    "saved": "Procedure saved.",
+    "sign": "Sign",
+    "signed": "Procedure signed."
+  },
+  "anesthesia": {
+    "general": "General",
+    "local_infiltration": "Local infiltration",
+    "none": "None",
+    "topical_spray": "Topical spray"
+  },
+  "anticoagulant": {
+    "no": "Not taking",
+    "unknown": "Unknown",
+    "yes": "Taking"
+  },
+  "biopsySite": {
+    "hypopharynx": "Hypopharynx",
+    "oral_cavity": "Oral cavity",
+    "oropharynx": "Oropharynx",
+    "palate": "Palate",
+    "tongue": "Tongue",
+    "tonsil": "Tonsil"
+  },
+  "bleedingSite": {
+    "inferior_turbinate": "Inferior turbinate",
+    "little_area": "Little's area",
+    "nasal_floor": "Nasal floor",
+    "nasopharynx": "Nasopharynx",
+    "septum": "Septum"
+  },
+  "drainage": {
+    "aspiration": "Aspiration",
+    "incision": "Incision"
+  },
+  "empty": "No office procedure yet.",
+  "fields": {
+    "advice": "Advice given",
+    "anesthesia": "Anesthesia",
+    "anticoagulant": "Anticoagulant status",
+    "biopsySite": "Biopsy site",
+    "cultureSent": "Culture sent",
+    "diastolic": "Diastolic blood pressure",
+    "dose": "Dose",
+    "findings": "Findings",
+    "followUp": "Follow-up date",
+    "fnaSite": "Aspiration site",
+    "gland": "Gland",
+    "indication": "Indication",
+    "injections": "Injection sites",
+    "laboratory": "Laboratory",
+    "laterality": "Side",
+    "method": "Method",
+    "muscle": "Muscle",
+    "needleGauge": "Needle gauge",
+    "note": "Note",
+    "packRemoval": "Pack removal date",
+    "packType": "Pack type",
+    "passes": "Passes",
+    "performedAt": "Performed",
+    "procedure": "Procedure",
+    "resultDue": "Result review date",
+    "siteFound": "Bleeding site found",
+    "siteNote": "Site detail",
+    "splintRemoval": "Splint removal date",
+    "splintType": "Splint type",
+    "stoneRemoved": "Stone removed",
+    "subtype": "Procedure",
+    "systolic": "Systolic blood pressure",
+    "technique": "Technique",
+    "tolerance": "Tolerance",
+    "ultrasound": "Ultrasound guided",
+    "volume": "Volume"
+  },
+  "finding": {
+    "mucus_plug": "Mucus plug",
+    "stenosis": "Stenosis",
+    "stone": "Stone"
+  },
+  "fnaSite": {
+    "neck_node": "Neck node",
+    "other": "Other",
+    "parotid": "Parotid",
+    "submandibular": "Submandibular",
+    "thyroid": "Thyroid"
+  },
+  "gland": {
+    "parotid": "Parotid",
+    "submandibular": "Submandibular"
+  },
+  "indication": {
+    "cricopharyngeal": "Cricopharyngeal",
+    "sialorrhea": "Sialorrhea",
+    "spasmodic_dysphonia": "Spasmodic dysphonia"
+  },
+  "injectionSide": {
+    "bilateral": "Bilateral",
+    "left": "Left",
+    "midline": "Midline",
+    "right": "Right"
+  },
+  "laterality": {
+    "bilateral": "Bilateral",
+    "left": "Left",
+    "midline": "Midline",
+    "na": "Not applicable",
+    "right": "Right"
+  },
+  "method": {
+    "anterior_pack": "Anterior pack",
+    "balloon": "Balloon",
+    "electrocautery": "Electrocautery",
+    "posterior_pack": "Posterior pack",
+    "silver_nitrate": "Silver nitrate cautery"
+  },
+  "muscle": {
+    "cricopharyngeus": "Cricopharyngeus",
+    "lateral_cricoarytenoid": "Lateral cricoarytenoid",
+    "parotid": "Parotid",
+    "submandibular": "Submandibular",
+    "thyroarytenoid": "Thyroarytenoid"
+  },
+  "packType": {
+    "merocel": "Merocel",
+    "rapid_rhino": "Rapid Rhino",
+    "ribbon_gauze": "Ribbon gauze"
+  },
+  "page": {
+    "description": "Document a short office procedure and sign it before the patient leaves.",
+    "title": "Office procedures"
+  },
+  "recordStatus": {
+    "amended": "Amended",
+    "draft": "Draft",
+    "signed": "Signed"
+  },
+  "report": {
+    "followUp": "Follow-up",
+    "removalDue": "Planned removal",
+    "resultDue": "Result review",
+    "title": "Procedure report"
+  },
+  "splint": {
+    "denver": "Denver",
+    "plaster": "Plaster",
+    "tape": "Tape",
+    "thermoplastic": "Thermoplastic"
+  },
+  "state": {
+    "error": "The procedure list could not be loaded.",
+    "loading": "Loading procedures…"
+  },
+  "subtype": {
+    "botulinum_injection": "Botulinum toxin injection",
+    "epistaxis_management": "Epistaxis management",
+    "fine_needle_aspiration": "Fine needle aspiration",
+    "nasal_fracture_reduction": "Nasal fracture reduction",
+    "oral_pharyngeal_biopsy": "Oral or pharyngeal biopsy",
+    "peritonsillar_drainage": "Peritonsillar abscess drainage",
+    "sialendoscopy": "Sialendoscopy"
+  },
+  "technique": {
+    "excisional": "Excisional",
+    "incisional": "Incisional",
+    "punch": "Punch"
+  },
+  "tolerance": {
+    "aborted": "Aborted",
+    "mild_discomfort": "Mild discomfort",
+    "moderate_discomfort": "Moderate discomfort",
+    "none": "Not recorded",
+    "poorly_tolerated": "Poorly tolerated",
+    "well_tolerated": "Well tolerated"
+  },
+  "validation": {
+    "advice": "Add the locale for the advice, or clear it.",
+    "bleedingSite": "Choose the bleeding site.",
+    "bloodPressure": "Enter the blood pressure.",
+    "dose": "Enter a dose for each injection.",
+    "followUp": "Choose the follow-up date.",
+    "injections": "Add at least one injection site.",
+    "laboratory": "Name the laboratory.",
+    "laterality": "Choose the right or left side.",
+    "packRemoval": "Choose the pack removal date.",
+    "packType": "Choose the pack type.",
+    "performedAt": "Choose when the procedure was performed.",
+    "resultDue": "Choose the result review date.",
+    "siteNote": "Describe the other site.",
+    "splintRemoval": "Choose the splint removal date.",
+    "summary": "Complete the highlighted fields before saving."
+  },
+  "values": {
+    "no": "No",
+    "yes": "Yes"
+  }
+}

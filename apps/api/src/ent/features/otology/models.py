@@ -20,6 +20,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from ent.core.db.base import Base
 from ent.core.db.mixins import ClinicalRecordMixin
 from ent.core.db.mysql_types import mysql_json, unsigned_bigint
+from ent.features.office_procedures.constants import SHORT_OFFICE_SUBTYPES
 from ent.features.otology.constants import (
     DEVICE_STATUSES,
     DEVICE_TYPES,
@@ -118,13 +119,13 @@ class OtologyExam(ClinicalRecordMixin, Base):
 
 
 class OfficeProcedure(ClinicalRecordMixin, Base):
-    """Subtype block for an office ear procedure. Payload is a validated object."""
+    """Subtype payload for an office procedure. Ear and short forms share this row."""
 
     __tablename__ = "office_procedure"
     __audit_writes__ = True
     __table_args__ = (
         CheckConstraint(
-            _in("subtype", OFFICE_SUBTYPES, nullable=False),
+            _in("subtype", OFFICE_SUBTYPES + SHORT_OFFICE_SUBTYPES, nullable=False),
             name="ck_office_procedure__subtype",
         ),
         Index("uq_office_procedure__live", "live_procedure_id", unique=True),
@@ -148,12 +149,17 @@ class OfficeProcedure(ClinicalRecordMixin, Base):
     subtype: Mapped[str] = mapped_column(String(40), nullable=False)
     payload: Mapped[dict[str, Any]] = mapped_column(mysql_json(), nullable=False)
     removal_due_date: Mapped[date | None] = mapped_column(Date, nullable=True)
+    result_due_date: Mapped[date | None] = mapped_column(Date, nullable=True)
     live_procedure_id: Mapped[int | None] = mapped_column(
         unsigned_bigint(),
         Computed(
             "CASE WHEN deleted_at IS NULL THEN procedure_record_id ELSE NULL END",
             persisted=True,
         ),
+    )
+    procedure_record: Mapped[ProcedureRecord] = relationship(
+        foreign_keys=[procedure_record_id],
+        lazy="selectin",
     )
 
 

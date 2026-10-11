@@ -1214,6 +1214,41 @@ export interface paths {
         patch: operations["update_observation_api_v1_observations__public_id__patch"];
         trace?: never;
     };
+    "/api/v1/office-procedures": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Office Procedure */
+        post: operations["create_office_procedure_api_v1_office_procedures_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/office-procedures/{office_procedure_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Office Procedure */
+        get: operations["get_office_procedure_api_v1_office_procedures__office_procedure_id__get"];
+        /** Update Office Procedure */
+        put: operations["update_office_procedure_api_v1_office_procedures__office_procedure_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/otology-exams": {
         parameters: {
             query?: never;
@@ -1545,6 +1580,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/patients/{patient_id}/office-procedures": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Patient Office Procedures */
+        get: operations["list_patient_office_procedures_api_v1_patients__patient_id__office_procedures_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/patients/{patient_id}/otology-exams": {
         parameters: {
             query?: never;
@@ -1866,6 +1918,23 @@ export interface paths {
         };
         /** Get Procedure Laryngoscopy */
         get: operations["get_procedure_laryngoscopy_api_v1_procedures__procedure_id__laryngoscopy_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/procedures/{procedure_id}/office-procedure": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Procedure Office Procedure */
+        get: operations["get_procedure_office_procedure_api_v1_procedures__procedure_id__office_procedure_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2691,6 +2760,108 @@ export interface components {
             upload: components["schemas"]["PresignedUrlResponse"];
             /** Uploadtoken */
             uploadToken: string;
+        };
+        /** BiopsyWrite */
+        BiopsyWrite: {
+            /**
+             * Laboratorylocale
+             * @enum {string}
+             */
+            laboratoryLocale: "en" | "fr" | "ar";
+            /** Laboratorytext */
+            laboratoryText: string;
+            /** Notelocale */
+            noteLocale?: ("en" | "fr" | "ar") | null;
+            /** Notetext */
+            noteText?: string | null;
+            /**
+             * Resultduedate
+             * Format: date
+             */
+            resultDueDate: string;
+            /**
+             * Site
+             * @enum {string}
+             */
+            site: "oral_cavity" | "tongue" | "palate" | "tonsil" | "oropharynx" | "hypopharynx";
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "oral_pharyngeal_biopsy";
+            /**
+             * Technique
+             * @enum {string}
+             */
+            technique: "punch" | "incisional" | "excisional";
+        };
+        /** BotulinumInjectionSiteWrite */
+        "BotulinumInjectionSiteWrite-Input": {
+            /** Doseunits */
+            doseUnits: number | string;
+            /**
+             * Muscle
+             * @enum {string}
+             */
+            muscle: "thyroarytenoid" | "lateral_cricoarytenoid" | "parotid" | "submandibular" | "cricopharyngeus";
+            /**
+             * Side
+             * @enum {string}
+             */
+            side: "right" | "left" | "bilateral" | "midline";
+        };
+        /** BotulinumInjectionSiteWrite */
+        "BotulinumInjectionSiteWrite-Output": {
+            /** Doseunits */
+            doseUnits: string;
+            /**
+             * Muscle
+             * @enum {string}
+             */
+            muscle: "thyroarytenoid" | "lateral_cricoarytenoid" | "parotid" | "submandibular" | "cricopharyngeus";
+            /**
+             * Side
+             * @enum {string}
+             */
+            side: "right" | "left" | "bilateral" | "midline";
+        };
+        /** BotulinumWrite */
+        "BotulinumWrite-Input": {
+            /**
+             * Indication
+             * @enum {string}
+             */
+            indication: "spasmodic_dysphonia" | "sialorrhea" | "cricopharyngeal";
+            /** Injections */
+            injections: components["schemas"]["BotulinumInjectionSiteWrite-Input"][];
+            /** Notelocale */
+            noteLocale?: ("en" | "fr" | "ar") | null;
+            /** Notetext */
+            noteText?: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "botulinum_injection";
+        };
+        /** BotulinumWrite */
+        "BotulinumWrite-Output": {
+            /**
+             * Indication
+             * @enum {string}
+             */
+            indication: "spasmodic_dysphonia" | "sialorrhea" | "cricopharyngeal";
+            /** Injections */
+            injections: components["schemas"]["BotulinumInjectionSiteWrite-Output"][];
+            /** Notelocale */
+            noteLocale?: ("en" | "fr" | "ar") | null;
+            /** Notetext */
+            noteText?: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "botulinum_injection";
         };
         /** CalculationRead */
         CalculationRead: {
@@ -3845,6 +4016,44 @@ export interface components {
             /** Version */
             version: number;
         };
+        /** EpistaxisWrite */
+        EpistaxisWrite: {
+            /** Advicelocale */
+            adviceLocale?: ("en" | "fr" | "ar") | null;
+            /** Advicetext */
+            adviceText?: string | null;
+            /**
+             * Anticoagulantstatus
+             * @enum {string}
+             */
+            anticoagulantStatus: "yes" | "no" | "unknown";
+            /** Bleedingsite */
+            bleedingSite?: ("little_area" | "septum" | "inferior_turbinate" | "nasal_floor" | "nasopharynx") | null;
+            /** Diastolicbp */
+            diastolicBp: number;
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "silver_nitrate" | "electrocautery" | "anterior_pack" | "posterior_pack" | "balloon";
+            /** Notelocale */
+            noteLocale?: ("en" | "fr" | "ar") | null;
+            /** Notetext */
+            noteText?: string | null;
+            /** Packremovaldate */
+            packRemovalDate?: string | null;
+            /** Packtype */
+            packType?: ("merocel" | "rapid_rhino" | "ribbon_gauze") | null;
+            /** Sitefound */
+            siteFound: boolean;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "epistaxis_management";
+            /** Systolicbp */
+            systolicBp: number;
+        };
         /** ExaminationSnapshotCreate */
         ExaminationSnapshotCreate: {
             /** Encounterpublicid */
@@ -3884,6 +4093,45 @@ export interface components {
             pasScore: number;
             /** Residuesitecodes */
             residueSiteCodes?: string[];
+        };
+        /** FineNeedleAspirationWrite */
+        FineNeedleAspirationWrite: {
+            /**
+             * Laboratorylocale
+             * @enum {string}
+             */
+            laboratoryLocale: "en" | "fr" | "ar";
+            /** Laboratorytext */
+            laboratoryText: string;
+            /** Needlegauge */
+            needleGauge: number;
+            /** Notelocale */
+            noteLocale?: ("en" | "fr" | "ar") | null;
+            /** Notetext */
+            noteText?: string | null;
+            /** Passes */
+            passes: number;
+            /**
+             * Resultduedate
+             * Format: date
+             */
+            resultDueDate: string;
+            /**
+             * Site
+             * @enum {string}
+             */
+            site: "thyroid" | "parotid" | "submandibular" | "neck_node" | "other";
+            /** Sitenote */
+            siteNote?: string | null;
+            /** Sitenotelocale */
+            siteNoteLocale?: ("en" | "fr" | "ar") | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "fine_needle_aspiration";
+            /** Ultrasoundguided */
+            ultrasoundGuided: boolean;
         };
         /** FlagRead */
         FlagRead: {
@@ -4508,6 +4756,28 @@ export interface components {
             /** Findings */
             findings?: components["schemas"]["NarrativeFindingIn"][];
         };
+        /** NasalFractureWrite */
+        NasalFractureWrite: {
+            /** Notelocale */
+            noteLocale?: ("en" | "fr" | "ar") | null;
+            /** Notetext */
+            noteText?: string | null;
+            /**
+             * Splintremovaldate
+             * Format: date
+             */
+            splintRemovalDate: string;
+            /**
+             * Splinttype
+             * @enum {string}
+             */
+            splintType: "thermoplastic" | "plaster" | "denver" | "tape";
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "nasal_fracture_reduction";
+        };
         /** ObservationBatchCreate */
         ObservationBatchCreate: {
             /** Encounterpublicid */
@@ -4738,16 +5008,55 @@ export interface components {
             /** Version */
             version: number;
         };
-        /** OfficeProcedureRead */
-        OfficeProcedureRead: {
-            /** Payload */
-            payload: {
-                [key: string]: string | null;
-            };
-            /** Removalduedate */
-            removalDueDate: string | null;
-            /** Subtype */
-            subtype: string;
+        /** OfficeProcedureCreate */
+        OfficeProcedureCreate: {
+            /**
+             * Anesthesia
+             * @default none
+             * @enum {string}
+             */
+            anesthesia: "none" | "topical_spray" | "local_infiltration" | "general";
+            /** Detail */
+            detail: components["schemas"]["EpistaxisWrite"] | components["schemas"]["FineNeedleAspirationWrite"] | components["schemas"]["BiopsyWrite"] | components["schemas"]["BotulinumWrite-Input"] | components["schemas"]["PeritonsillarWrite-Input"] | components["schemas"]["NasalFractureWrite"] | components["schemas"]["SialendoscopyWrite"];
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Indicationtext */
+            indicationText?: string | null;
+            laterality: components["schemas"]["Laterality"];
+            /** Patientpublicid */
+            patientPublicId: string;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Tolerance */
+            tolerance?: ("well_tolerated" | "mild_discomfort" | "moderate_discomfort" | "poorly_tolerated" | "aborted") | null;
+        };
+        /** OfficeProcedureUpdate */
+        OfficeProcedureUpdate: {
+            /**
+             * Anesthesia
+             * @default none
+             * @enum {string}
+             */
+            anesthesia: "none" | "topical_spray" | "local_infiltration" | "general";
+            /** Detail */
+            detail: components["schemas"]["EpistaxisWrite"] | components["schemas"]["FineNeedleAspirationWrite"] | components["schemas"]["BiopsyWrite"] | components["schemas"]["BotulinumWrite-Input"] | components["schemas"]["PeritonsillarWrite-Input"] | components["schemas"]["NasalFractureWrite"] | components["schemas"]["SialendoscopyWrite"];
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Indicationtext */
+            indicationText?: string | null;
+            laterality: components["schemas"]["Laterality"];
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Tolerance */
+            tolerance?: ("well_tolerated" | "mild_discomfort" | "moderate_discomfort" | "poorly_tolerated" | "aborted") | null;
+            /** Version */
+            version: number;
         };
         /** OtologyCreate */
         OtologyCreate: {
@@ -4840,7 +5149,7 @@ export interface components {
              * Format: date-time
              */
             performedAt: string;
-            procedure: components["schemas"]["OfficeProcedureRead"] | null;
+            procedure: components["schemas"]["ent__features__otology__schemas__responses__OfficeProcedureRead"] | null;
             /** Procedurecode */
             procedureCode: string;
             /** Procedureid */
@@ -5052,6 +5361,12 @@ export interface components {
         PageSchema_ObservationRead_: {
             /** Items */
             items: components["schemas"]["ObservationRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[OfficeProcedureRead] */
+        PageSchema_OfficeProcedureRead_: {
+            /** Items */
+            items: components["schemas"]["ent__features__office_procedures__schemas__responses__OfficeProcedureRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[OtologyExamRead] */
@@ -5850,6 +6165,48 @@ export interface components {
             /** Weightkg */
             weightKg: number | string;
         };
+        /** PeritonsillarWrite */
+        "PeritonsillarWrite-Input": {
+            /** Culturesent */
+            cultureSent: boolean;
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "aspiration" | "incision";
+            /** Notelocale */
+            noteLocale?: ("en" | "fr" | "ar") | null;
+            /** Notetext */
+            noteText?: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "peritonsillar_drainage";
+            /** Volumeml */
+            volumeMl: number | string;
+        };
+        /** PeritonsillarWrite */
+        "PeritonsillarWrite-Output": {
+            /** Culturesent */
+            cultureSent: boolean;
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "aspiration" | "incision";
+            /** Notelocale */
+            noteLocale?: ("en" | "fr" | "ar") | null;
+            /** Notetext */
+            noteText?: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "peritonsillar_drainage";
+            /** Volumeml */
+            volumeMl: string;
+        };
         /** PermissionRead */
         PermissionRead: {
             /** Code */
@@ -6389,6 +6746,8 @@ export interface components {
             patientId: string;
             /** Publicid */
             publicId: string;
+            /** Reasonkey */
+            reasonKey: string | null;
             /** Reasonlocale */
             reasonLocale: string | null;
             /** Reasontext */
@@ -6613,6 +6972,32 @@ export interface components {
             sessionPublicId: string;
             /** Userpublicid */
             userPublicId: string;
+        };
+        /** SialendoscopyWrite */
+        SialendoscopyWrite: {
+            /** Findings */
+            findings: ("stone" | "stenosis" | "mucus_plug")[];
+            /**
+             * Followupdate
+             * Format: date
+             */
+            followUpDate: string;
+            /**
+             * Gland
+             * @enum {string}
+             */
+            gland: "parotid" | "submandibular";
+            /** Notelocale */
+            noteLocale?: ("en" | "fr" | "ar") | null;
+            /** Notetext */
+            noteText?: string | null;
+            /** Stoneremoved */
+            stoneRemoved: boolean;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "sialendoscopy";
         };
         /** SickLeaveInput */
         SickLeaveInput: {
@@ -7006,6 +7391,62 @@ export interface components {
              * @enum {string}
              */
             wickType: "pope" | "ribbon" | "merocel";
+        };
+        /** OfficeProcedureRead */
+        ent__features__office_procedures__schemas__responses__OfficeProcedureRead: {
+            /** Anesthesia */
+            anesthesia: string;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /** Detail */
+            detail: components["schemas"]["EpistaxisWrite"] | components["schemas"]["FineNeedleAspirationWrite"] | components["schemas"]["BiopsyWrite"] | components["schemas"]["BotulinumWrite-Output"] | components["schemas"]["PeritonsillarWrite-Output"] | components["schemas"]["NasalFractureWrite"] | components["schemas"]["SialendoscopyWrite"];
+            /** Encounterid */
+            encounterId: string | null;
+            /** Indicationtext */
+            indicationText: string | null;
+            /** Laterality */
+            laterality: string;
+            /** Patientid */
+            patientId: string;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            procedure: components["schemas"]["CodeableConcept"];
+            /** Procedureid */
+            procedureId: string;
+            /** Procedurestatus */
+            procedureStatus: string;
+            /** Publicid */
+            publicId: string;
+            /** Removalduedate */
+            removalDueDate: string | null;
+            /** Resultduedate */
+            resultDueDate: string | null;
+            /** Tolerance */
+            tolerance: string | null;
+            /**
+             * Updatedat
+             * Format: date-time
+             */
+            updatedAt: string;
+            /** Version */
+            version: number;
+        };
+        /** OfficeProcedureRead */
+        ent__features__otology__schemas__responses__OfficeProcedureRead: {
+            /** Payload */
+            payload: {
+                [key: string]: string | null;
+            };
+            /** Removalduedate */
+            removalDueDate: string | null;
+            /** Subtype */
+            subtype: string;
         };
     };
     responses: never;
@@ -9985,6 +10426,114 @@ export interface operations {
             };
         };
     };
+    create_office_procedure_api_v1_office_procedures_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OfficeProcedureCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ent__features__office_procedures__schemas__responses__OfficeProcedureRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_office_procedure_api_v1_office_procedures__office_procedure_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                office_procedure_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ent__features__office_procedures__schemas__responses__OfficeProcedureRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_office_procedure_api_v1_office_procedures__office_procedure_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                office_procedure_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OfficeProcedureUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ent__features__office_procedures__schemas__responses__OfficeProcedureRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     create_otology_exam_api_v1_otology_exams_post: {
         parameters: {
             query?: never;
@@ -10963,6 +11512,43 @@ export interface operations {
             };
         };
     };
+    list_patient_office_procedures_api_v1_patients__patient_id__office_procedures_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_OfficeProcedureRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_patient_otology_exams_api_v1_patients__patient_id__otology_exams_get: {
         parameters: {
             query?: {
@@ -11848,6 +12434,40 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LaryngoscopyExamRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_procedure_office_procedure_api_v1_procedures__procedure_id__office_procedure_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                procedure_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ent__features__office_procedures__schemas__responses__OfficeProcedureRead"];
                 };
             };
             /** @description Validation Error */

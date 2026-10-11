@@ -86,6 +86,12 @@
     "description": "Rappels en retard ou à venir, à appeler, à écrire ou à planifier.",
     "title": "Rappels"
   },
+  "reasons": {
+    "packRemoval": "Retrait du méchage",
+    "sialendoscopyReview": "Suivi de sialendoscopie",
+    "specimenReview": "Revue du résultat",
+    "splintRemoval": "Retrait de l'attelle"
+  },
   "state": {
     "empty": "Aucun rappel dans cette liste.",
     "error": "La liste des rappels n’a pas pu être chargée.",

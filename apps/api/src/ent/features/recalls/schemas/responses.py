@@ -24,6 +24,7 @@ class RecallRead(CamelModel):
     patient_display_name: str
     reason_text: str | None
     reason_locale: str | None
+    reason_key: str | None
     due_on: date
     window_days: int
     action_type: str

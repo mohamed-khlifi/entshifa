@@ -1,0 +1,201 @@
+{
+  "actions": {
+    "cancelSign": "Continuer la saisie",
+    "confirmSign": "Signer ce geste",
+    "newProcedure": "Nouveau geste",
+    "save": "Enregistrer",
+    "saved": "Geste enregistré.",
+    "sign": "Signer",
+    "signed": "Geste signé."
+  },
+  "anesthesia": {
+    "general": "Générale",
+    "local_infiltration": "Infiltration locale",
+    "none": "Aucune",
+    "topical_spray": "Pulvérisation locale"
+  },
+  "anticoagulant": {
+    "no": "Ne prend pas",
+    "unknown": "Inconnu",
+    "yes": "Prend"
+  },
+  "biopsySite": {
+    "hypopharynx": "Hypopharynx",
+    "oral_cavity": "Cavité buccale",
+    "oropharynx": "Oropharynx",
+    "palate": "Palais",
+    "tongue": "Langue",
+    "tonsil": "Amygdale"
+  },
+  "bleedingSite": {
+    "inferior_turbinate": "Cornet inférieur",
+    "little_area": "Tache vasculaire",
+    "nasal_floor": "Plancher nasal",
+    "nasopharynx": "Rhinopharynx",
+    "septum": "Cloison"
+  },
+  "drainage": {
+    "aspiration": "Aspiration",
+    "incision": "Incision"
+  },
+  "empty": "Aucun geste au cabinet pour l'instant.",
+  "fields": {
+    "advice": "Conseils donnés",
+    "anesthesia": "Anesthésie",
+    "anticoagulant": "Traitement anticoagulant",
+    "biopsySite": "Site de biopsie",
+    "cultureSent": "Prélèvement envoyé en culture",
+    "diastolic": "Pression artérielle diastolique",
+    "dose": "Dose",
+    "findings": "Constatations",
+    "followUp": "Date de suivi",
+    "fnaSite": "Site de ponction",
+    "gland": "Glande",
+    "indication": "Indication",
+    "injections": "Sites d'injection",
+    "laboratory": "Laboratoire",
+    "laterality": "Côté",
+    "method": "Méthode",
+    "muscle": "Muscle",
+    "needleGauge": "Calibre de l'aiguille",
+    "note": "Note",
+    "packRemoval": "Date de retrait du méchage",
+    "packType": "Type de méchage",
+    "passes": "Passages",
+    "performedAt": "Réalisé",
+    "procedure": "Geste",
+    "resultDue": "Date de revue du résultat",
+    "siteFound": "Site du saignement identifié",
+    "siteNote": "Précision du site",
+    "splintRemoval": "Date de retrait de l'attelle",
+    "splintType": "Type d'attelle",
+    "stoneRemoved": "Calcul retiré",
+    "subtype": "Geste",
+    "systolic": "Pression artérielle systolique",
+    "technique": "Technique",
+    "tolerance": "Tolérance",
+    "ultrasound": "Guidage échographique",
+    "volume": "Volume"
+  },
+  "finding": {
+    "mucus_plug": "Bouchon muqueux",
+    "stenosis": "Sténose",
+    "stone": "Calcul"
+  },
+  "fnaSite": {
+    "neck_node": "Ganglion cervical",
+    "other": "Autre",
+    "parotid": "Parotide",
+    "submandibular": "Sous-mandibulaire",
+    "thyroid": "Thyroïde"
+  },
+  "gland": {
+    "parotid": "Parotide",
+    "submandibular": "Sous-mandibulaire"
+  },
+  "indication": {
+    "cricopharyngeal": "Cricopharyngien",
+    "sialorrhea": "Sialorrhée",
+    "spasmodic_dysphonia": "Dysphonie spasmodique"
+  },
+  "injectionSide": {
+    "bilateral": "Bilatéral",
+    "left": "Gauche",
+    "midline": "Ligne médiane",
+    "right": "Droit"
+  },
+  "laterality": {
+    "bilateral": "Bilatéral",
+    "left": "Gauche",
+    "midline": "Ligne médiane",
+    "na": "Sans objet",
+    "right": "Droit"
+  },
+  "method": {
+    "anterior_pack": "Méchage antérieur",
+    "balloon": "Ballonnet",
+    "electrocautery": "Électrocoagulation",
+    "posterior_pack": "Méchage postérieur",
+    "silver_nitrate": "Cautérisation au nitrate d'argent"
+  },
+  "muscle": {
+    "cricopharyngeus": "Cricopharyngien",
+    "lateral_cricoarytenoid": "Crico-aryténoïdien latéral",
+    "parotid": "Parotide",
+    "submandibular": "Sous-mandibulaire",
+    "thyroarytenoid": "Thyro-aryténoïdien"
+  },
+  "packType": {
+    "merocel": "Merocel",
+    "rapid_rhino": "Rapid Rhino",
+    "ribbon_gauze": "Mèche en gaze"
+  },
+  "page": {
+    "description": "Documenter un geste court au cabinet et le signer avant le départ du patient.",
+    "title": "Gestes au cabinet"
+  },
+  "recordStatus": {
+    "amended": "Amendé",
+    "draft": "Brouillon",
+    "signed": "Signé"
+  },
+  "report": {
+    "followUp": "Suivi",
+    "removalDue": "Retrait prévu",
+    "resultDue": "Revue du résultat",
+    "title": "Compte rendu du geste"
+  },
+  "splint": {
+    "denver": "Denver",
+    "plaster": "Plâtre",
+    "tape": "Sparadrap",
+    "thermoplastic": "Thermoplastique"
+  },
+  "state": {
+    "error": "La liste des gestes n'a pas pu être chargée.",
+    "loading": "Chargement des gestes…"
+  },
+  "subtype": {
+    "botulinum_injection": "Injection de toxine botulique",
+    "epistaxis_management": "Prise en charge d'épistaxis",
+    "fine_needle_aspiration": "Cytoponction à l'aiguille fine",
+    "nasal_fracture_reduction": "Réduction de fracture des os propres du nez",
+    "oral_pharyngeal_biopsy": "Biopsie buccale ou pharyngée",
+    "peritonsillar_drainage": "Drainage d'abcès péri-amygdalien",
+    "sialendoscopy": "Sialendoscopie"
+  },
+  "technique": {
+    "excisional": "Exérèse",
+    "incisional": "Incisionnelle",
+    "punch": "Punch"
+  },
+  "tolerance": {
+    "aborted": "Interrompu",
+    "mild_discomfort": "Inconfort léger",
+    "moderate_discomfort": "Inconfort modéré",
+    "none": "Non renseignée",
+    "poorly_tolerated": "Mal toléré",
+    "well_tolerated": "Bien toléré"
+  },
+  "validation": {
+    "advice": "Indiquez la langue du conseil, ou effacez-le.",
+    "bleedingSite": "Choisissez le site du saignement.",
+    "bloodPressure": "Saisissez la pression artérielle.",
+    "dose": "Saisissez une dose pour chaque injection.",
+    "followUp": "Choisissez la date de suivi.",
+    "injections": "Ajoutez au moins un site d'injection.",
+    "laboratory": "Nommez le laboratoire.",
+    "laterality": "Choisissez le côté droit ou gauche.",
+    "packRemoval": "Choisissez la date de retrait du méchage.",
+    "packType": "Choisissez le type de méchage.",
+    "performedAt": "Choisissez l'heure du geste.",
+    "resultDue": "Choisissez la date de revue du résultat.",
+    "siteNote": "Décrivez l'autre site.",
+    "splintRemoval": "Choisissez la date de retrait de l'attelle.",
+    "summary": "Complétez les champs signalés avant d'enregistrer."
+  },
+  "values": {
+    "no": "Non",
+    "yes": "Oui"
+  }
+}

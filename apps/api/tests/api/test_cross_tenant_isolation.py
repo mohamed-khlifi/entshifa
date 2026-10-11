@@ -24,7 +24,7 @@ from ent.features.encounters.models import Encounter
 from ent.features.endoscopy.models import EndoscopyExam
 from ent.features.laryngoscopy.models import LaryngoscopyExam
 from ent.features.observations.models import Observation
-from ent.features.otology.models import EarDevice, OtologyExam
+from ent.features.otology.models import EarDevice, OfficeProcedure, OtologyExam
 from ent.features.patients.models import (
     Patient,
     PatientAllergy,
@@ -385,6 +385,21 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
                 updated_by_id=other_user.id,
             )
         )
+        office_public_id = new_ulid()
+        session.add(
+            OfficeProcedure(
+                public_id=office_public_id,
+                clinic_id=other.id,
+                procedure_record_id=int(procedure.id),
+                subtype="epistaxis_management",
+                payload={
+                    "subtype": "epistaxis_management",
+                    "noteText": "secret office",
+                },
+                created_by_id=other_user.id,
+                updated_by_id=other_user.id,
+            )
+        )
         device_public_id = new_ulid()
         session.add(
             EarDevice(
@@ -433,6 +448,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "laryngoscopy_id": laryngoscopy_public_id,
             "exam_id": exam_public_id,
             "device_id": device_public_id,
+            "office_procedure_id": office_public_id,
         }
         forbidden = [
             patient.public_id,
@@ -456,6 +472,8 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             laryngoscopy_public_id,
             exam_public_id,
             device_public_id,
+            office_public_id,
+            "secret office",
             "secret recall",
             "secret procedure",
             "secret endoscopy",

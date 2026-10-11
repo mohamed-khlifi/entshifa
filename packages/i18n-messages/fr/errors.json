@@ -92,6 +92,11 @@
     "not_found": "Cet examen de laryngoscopie n'existe pas.",
     "version_conflict": "Cet examen de laryngoscopie a été modifié par quelqu'un d'autre."
   },
+  "office_procedure": {
+    "invalid": "Ce geste au cabinet ne peut pas être enregistré.",
+    "not_found": "Ce geste au cabinet est introuvable.",
+    "version_conflict": "Ce geste a été modifié. Rechargez puis réessayez."
+  },
   "otology": {
     "device_not_found": "Ce dispositif auriculaire est introuvable.",
     "invalid_exam": "Cet examen otologique ne peut pas être enregistré.",

@@ -1,0 +1,201 @@
+{
+  "actions": {
+    "cancelSign": "متابعة التحرير",
+    "confirmSign": "توقيع هذا الإجراء",
+    "newProcedure": "إجراء جديد",
+    "save": "حفظ",
+    "saved": "تم حفظ الإجراء.",
+    "sign": "توقيع",
+    "signed": "تم توقيع الإجراء."
+  },
+  "anesthesia": {
+    "general": "عام",
+    "local_infiltration": "ارتشاح موضعي",
+    "none": "بدون",
+    "topical_spray": "بخاخ موضعي"
+  },
+  "anticoagulant": {
+    "no": "لا يتناول",
+    "unknown": "غير معروف",
+    "yes": "يتناول"
+  },
+  "biopsySite": {
+    "hypopharynx": "البلعوم السفلي",
+    "oral_cavity": "جوف الفم",
+    "oropharynx": "البلعوم الفموي",
+    "palate": "الحنك",
+    "tongue": "اللسان",
+    "tonsil": "اللوزة"
+  },
+  "bleedingSite": {
+    "inferior_turbinate": "القرين السفلي",
+    "little_area": "باحة كيسيلباخ",
+    "nasal_floor": "أرضية الأنف",
+    "nasopharynx": "البلعوم الأنفي",
+    "septum": "الحاجز"
+  },
+  "drainage": {
+    "aspiration": "شفط",
+    "incision": "شق"
+  },
+  "empty": "لا يوجد إجراء مكتبي بعد.",
+  "fields": {
+    "advice": "النصائح المقدمة",
+    "anesthesia": "التخدير",
+    "anticoagulant": "حالة مضاد التخثر",
+    "biopsySite": "موقع الخزعة",
+    "cultureSent": "أُرسلت زراعة",
+    "diastolic": "ضغط الدم الانبساطي",
+    "dose": "الجرعة",
+    "findings": "الموجودات",
+    "followUp": "تاريخ المتابعة",
+    "fnaSite": "موقع الشفط",
+    "gland": "الغدة",
+    "indication": "الاستطباب",
+    "injections": "مواقع الحقن",
+    "laboratory": "المختبر",
+    "laterality": "الجانب",
+    "method": "الطريقة",
+    "muscle": "العضلة",
+    "needleGauge": "عيار الإبرة",
+    "note": "ملاحظة",
+    "packRemoval": "تاريخ نزع الحشوة",
+    "packType": "نوع الحشوة",
+    "passes": "عدد التمريرات",
+    "performedAt": "وقت الإجراء",
+    "procedure": "الإجراء",
+    "resultDue": "تاريخ مراجعة النتيجة",
+    "siteFound": "تم تحديد موقع النزف",
+    "siteNote": "تفصيل الموقع",
+    "splintRemoval": "تاريخ نزع الجبيرة",
+    "splintType": "نوع الجبيرة",
+    "stoneRemoved": "أُزيلت الحصاة",
+    "subtype": "الإجراء",
+    "systolic": "ضغط الدم الانقباضي",
+    "technique": "التقنية",
+    "tolerance": "التحمل",
+    "ultrasound": "بتوجيه الأمواج فوق الصوتية",
+    "volume": "الحجم"
+  },
+  "finding": {
+    "mucus_plug": "سدادة مخاطية",
+    "stenosis": "تضيق",
+    "stone": "حصاة"
+  },
+  "fnaSite": {
+    "neck_node": "عقدة رقبية",
+    "other": "أخرى",
+    "parotid": "النكفية",
+    "submandibular": "تحت الفك",
+    "thyroid": "الدرقية"
+  },
+  "gland": {
+    "parotid": "النكفية",
+    "submandibular": "تحت الفك"
+  },
+  "indication": {
+    "cricopharyngeal": "العضلة الحلقية البلعومية",
+    "sialorrhea": "سيلان اللعاب",
+    "spasmodic_dysphonia": "بحة تشنجية"
+  },
+  "injectionSide": {
+    "bilateral": "ثنائي",
+    "left": "أيسر",
+    "midline": "الخط الناصف",
+    "right": "أيمن"
+  },
+  "laterality": {
+    "bilateral": "ثنائي",
+    "left": "أيسر",
+    "midline": "الخط الناصف",
+    "na": "لا ينطبق",
+    "right": "أيمن"
+  },
+  "method": {
+    "anterior_pack": "حشوة أمامية",
+    "balloon": "بالون",
+    "electrocautery": "كي كهربائي",
+    "posterior_pack": "حشوة خلفية",
+    "silver_nitrate": "كي بنترات الفضة"
+  },
+  "muscle": {
+    "cricopharyngeus": "الحلقية البلعومية",
+    "lateral_cricoarytenoid": "الحلقية الطرجهالية الوحشية",
+    "parotid": "النكفية",
+    "submandibular": "تحت الفك",
+    "thyroarytenoid": "الدرقية الطرجهالية"
+  },
+  "packType": {
+    "merocel": "ميروسيل",
+    "rapid_rhino": "رابيد راينو",
+    "ribbon_gauze": "شاش شريطي"
+  },
+  "page": {
+    "description": "وثّق إجراءً مكتبياً قصيراً ووقّعه قبل مغادرة المريض.",
+    "title": "إجراءات العيادة"
+  },
+  "recordStatus": {
+    "amended": "مُعدَّل",
+    "draft": "مسودة",
+    "signed": "موقَّع"
+  },
+  "report": {
+    "followUp": "المتابعة",
+    "removalDue": "النزع المخطط",
+    "resultDue": "مراجعة النتيجة",
+    "title": "تقرير الإجراء"
+  },
+  "splint": {
+    "denver": "دنفر",
+    "plaster": "جبس",
+    "tape": "لاصق",
+    "thermoplastic": "لدن حراري"
+  },
+  "state": {
+    "error": "تعذر تحميل قائمة الإجراءات.",
+    "loading": "جارٍ تحميل الإجراءات…"
+  },
+  "subtype": {
+    "botulinum_injection": "حقن ذيفان الوشيقية",
+    "epistaxis_management": "علاج الرعاف",
+    "fine_needle_aspiration": "شفط بالإبرة الدقيقة",
+    "nasal_fracture_reduction": "رد كسر عظام الأنف",
+    "oral_pharyngeal_biopsy": "خزعة الفم أو البلعوم",
+    "peritonsillar_drainage": "تصريف خراج حول اللوزة",
+    "sialendoscopy": "تنظير الغدة اللعابية"
+  },
+  "technique": {
+    "excisional": "استئصالية",
+    "incisional": "شقية",
+    "punch": "لكمة"
+  },
+  "tolerance": {
+    "aborted": "أُوقف",
+    "mild_discomfort": "انزعاج خفيف",
+    "moderate_discomfort": "انزعاج متوسط",
+    "none": "غير مسجَّل",
+    "poorly_tolerated": "تحمّل سيئ",
+    "well_tolerated": "تحمّل جيد"
+  },
+  "validation": {
+    "advice": "أضف لغة النصيحة أو امسحها.",
+    "bleedingSite": "اختر موقع النزف.",
+    "bloodPressure": "أدخل ضغط الدم.",
+    "dose": "أدخل جرعة لكل موضع حقن.",
+    "followUp": "اختر تاريخ المتابعة.",
+    "injections": "أضف موضعاً واحداً للحقن على الأقل.",
+    "laboratory": "سمِّ المختبر.",
+    "laterality": "اختر الجانب الأيمن أو الأيسر.",
+    "packRemoval": "اختر تاريخ نزع الحشوة.",
+    "packType": "اختر نوع الحشوة.",
+    "performedAt": "اختر وقت الإجراء.",
+    "resultDue": "اختر تاريخ مراجعة النتيجة.",
+    "siteNote": "صِف الموقع الآخر.",
+    "splintRemoval": "اختر تاريخ نزع الجبيرة.",
+    "summary": "أكمل الحقول المحددة قبل الحفظ."
+  },
+  "values": {
+    "no": "لا",
+    "yes": "نعم"
+  }
+}

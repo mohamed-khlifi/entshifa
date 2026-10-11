@@ -129,6 +129,13 @@ export const queryKeys = {
     detail: (examId: string) =>
       [...queryKeys.laryngoscopy.all, "detail", examId] as const,
   },
+  officeProcedures: {
+    all: ["office-procedures"] as const,
+    patient: (patientId: string) =>
+      [...queryKeys.officeProcedures.all, "patient", patientId] as const,
+    detail: (procedureId: string) =>
+      [...queryKeys.officeProcedures.all, "detail", procedureId] as const,
+  },
   otology: {
     all: ["otology"] as const,
     patient: (patientId: string) =>

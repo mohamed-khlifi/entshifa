@@ -233,6 +233,12 @@ export type GrbasRead = Schemas["GrbasRead"];
 export type FeesWrite = Schemas["FeesWrite"];
 export type PageSchemaLaryngoscopyExamRead =
   Schemas["PageSchema_LaryngoscopyExamRead_"];
+export type OfficeProcedureCreate = Schemas["OfficeProcedureCreate"];
+export type OfficeProcedureUpdate = Schemas["OfficeProcedureUpdate"];
+export type OfficeProcedureRead =
+  Schemas["ent__features__office_procedures__schemas__responses__OfficeProcedureRead"];
+export type PageSchemaOfficeProcedureRead =
+  Schemas["PageSchema_OfficeProcedureRead_"];
 export type OtologyCreate = Schemas["OtologyCreate"];
 export type OtologyUpdate = Schemas["OtologyUpdate"];
 export type OtologyExamRead = Schemas["OtologyExamRead"];
