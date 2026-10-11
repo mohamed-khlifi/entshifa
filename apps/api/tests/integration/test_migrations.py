@@ -3,7 +3,11 @@
 from __future__ import annotations
 
 import concurrent.futures
+import os
+import subprocess
+import sys
 from pathlib import Path
+from urllib.parse import quote_plus
 
 import pytest
 from sqlalchemy import create_engine, inspect, text
@@ -11,7 +15,6 @@ from sqlalchemy.orm import Session
 
 from alembic import command
 from alembic.config import Config
-from ent.core.db.migration_guard import assert_downgrade_allowed
 from ent.core.utils.ids import new_ulid
 from ent.settings import get_settings
 
@@ -33,6 +36,9 @@ def _alembic_config() -> Config:
     return Config(str(API_ROOT / "alembic.ini"))
 
 
+_PROBE = "entshifa_migration_ci"
+
+
 def _sync_url() -> str:
     async_url = get_settings().database_url
     if async_url.startswith("mysql+aiomysql://"):
@@ -40,29 +46,78 @@ def _sync_url() -> str:
     return async_url
 
 
+def _root_engine():
+    settings = get_settings()
+    url = (
+        "mysql+pymysql://root:"
+        + quote_plus(settings.mysql_root_password)
+        + f"@{settings.mysql_host}:{settings.mysql_port}/mysql"
+    )
+    return create_engine(url, isolation_level="AUTOCOMMIT")
+
+
+def _probe_url(driver: str) -> str:
+    settings = get_settings()
+    return (
+        f"mysql+{driver}://root:"
+        + quote_plus(settings.mysql_root_password)
+        + f"@{settings.mysql_host}:{settings.mysql_port}/{_PROBE}"
+    )
+
+
+def _alembic_on_probe(*args: str) -> None:
+    env = os.environ.copy()
+    env["DATABASE_URL"] = _probe_url("aiomysql")
+    completed = subprocess.run(
+        [sys.executable, "-m", "alembic", *args],
+        cwd=API_ROOT,
+        env=env,
+        check=False,
+    )
+    if completed.returncode != 0:
+        raise AssertionError(f"alembic {' '.join(args)} failed on {_PROBE}")
+
+
 @pytest.mark.integration
 def test_migration_upgrade_and_downgrade() -> None:
-    cfg = _alembic_config()
-    engine = create_engine(_sync_url())
+    """Upgrade and downgrade a private schema. The clinic database is never used."""
 
+    settings = get_settings()
+    if settings.mysql_database == _PROBE:
+        pytest.fail("disposable schema name matches the application database")
+    root = _root_engine()
     try:
-        with engine.connect() as conn:
-            conn.execute(text("SELECT 1"))
+        with root.connect() as connection:
+            connection.execute(text("SELECT 1"))
     except Exception as exc:  # noqa: BLE001 — skip if Docker MySQL is down
         pytest.skip(f"MySQL not reachable: {exc}")
 
-    assert_downgrade_allowed(engine)
-    command.downgrade(cfg, "base")
-    command.upgrade(cfg, "head")
+    with root.connect() as connection:
+        connection.execute(text(f"DROP DATABASE IF EXISTS `{_PROBE}`"))
+        connection.execute(
+            text(
+                f"CREATE DATABASE `{_PROBE}` CHARACTER SET utf8mb4 "
+                "COLLATE utf8mb4_0900_ai_ci"
+            )
+        )
+    probe = create_engine(_probe_url("pymysql"))
+    try:
+        _alembic_on_probe("upgrade", "head")
+        assert set(inspect(probe).get_table_names()) >= IDENTITY_TABLES
 
-    inspector = inspect(engine)
-    assert set(inspector.get_table_names()) >= IDENTITY_TABLES
+        _alembic_on_probe("downgrade", "base")
+        assert IDENTITY_TABLES.isdisjoint(set(inspect(probe).get_table_names()))
 
-    command.downgrade(cfg, "base")
-    inspector = inspect(engine)
-    assert IDENTITY_TABLES.isdisjoint(set(inspector.get_table_names()))
-
-    command.upgrade(cfg, "head")
+        _alembic_on_probe("upgrade", "head")
+        assert set(inspect(probe).get_table_names()) >= IDENTITY_TABLES
+    finally:
+        probe.dispose()
+        with root.connect() as connection:
+            current = connection.execute(text("SELECT DATABASE()")).scalar()
+            if current == settings.mysql_database:
+                raise AssertionError("refusing to drop the application database")
+            connection.execute(text(f"DROP DATABASE IF EXISTS `{_PROBE}`"))
+        root.dispose()
 
 
 @pytest.mark.integration
