@@ -49,6 +49,7 @@ export const MESSAGE_NAMESPACES = [
   "scheduling",
   "documents",
   "examination",
+  "endoscopy",
   "encounters",
   "prescriptions",
   "recalls",

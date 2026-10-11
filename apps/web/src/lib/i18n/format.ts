@@ -14,6 +14,7 @@ export const MEDICAL_UNITS = {
   mmHg: "mmHg",
   kg: "kg",
   mm: "mm",
+  percent: "%",
 } as const;
 
 export type MedicalUnit = (typeof MEDICAL_UNITS)[keyof typeof MEDICAL_UNITS];

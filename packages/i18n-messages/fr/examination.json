@@ -4,6 +4,7 @@
   "maps": {
     "tympanicMembrane": "Membrane tympanique",
     "nasalCavity": "Fosse nasale",
+    "nasalEndoscopy": "Endoscopie nasale",
     "oralCavity": "Cavité orale et oropharynx",
     "neckLevels": "Cou"
   },
@@ -90,6 +91,25 @@
       "inferiorTurbinate": "Cornet inférieur",
       "middleTurbinate": "Cornet moyen",
       "mucosa": "Muqueuse nasale"
+    }
+  },
+  "endo": {
+    "regions": {
+      "vestibule": "Vestibule nasal",
+      "valve": "Valve nasale",
+      "septum": "Septum nasal",
+      "inferiorTurbinate": "Cornet inférieur",
+      "inferiorMeatus": "Méat inférieur",
+      "middleTurbinate": "Cornet moyen",
+      "middleMeatus": "Méat moyen",
+      "uncinate": "Processus unciné",
+      "bulla": "Bulle ethmoïdale",
+      "superiorTurbinate": "Cornet supérieur",
+      "superiorMeatus": "Méat supérieur",
+      "sphenoethmoidalRecess": "Récessus sphéno-ethmoïdal",
+      "olfactoryCleft": "Fente olfactive",
+      "nasopharynx": "Nasopharynx",
+      "postFess": "Cavité après chirurgie endoscopique"
     }
   },
   "oral": {

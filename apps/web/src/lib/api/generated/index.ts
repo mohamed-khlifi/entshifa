@@ -205,5 +205,16 @@ export type SafetyOverrideWrite = Schemas["SafetyOverrideWrite"];
 export type PediatricDoseRequest = Schemas["PediatricDoseRequest"];
 export type TaperRequest = Schemas["TaperRequest"];
 export type TaperWrite = Schemas["TaperWrite"];
+export type EndoscopyCreate = Schemas["EndoscopyCreate"];
+export type EndoscopyUpdate = Schemas["EndoscopyUpdate"];
+export type EndoscopyExamRead = Schemas["EndoscopyExamRead"];
+export type EndoscopyStructureRead = Schemas["EndoscopyStructureRead"];
+export type EndoscopyStructureWrite = Schemas["EndoscopyStructureWrite"];
+export type LundKennedySideRead = Schemas["LundKennedySideRead"];
+export type LundKennedySideWrite = Schemas["LundKennedySideWrite"];
+export type ScoreStampRead = Schemas["ScoreStampRead"];
+export type PageSchemaEndoscopyExamRead =
+  Schemas["PageSchema_EndoscopyExamRead_"];
+export type ProcedureSign = Schemas["ProcedureSign"];
 export type CalculationRead = Schemas["CalculationRead"];
 export type FlagRead = Schemas["FlagRead"];

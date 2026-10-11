@@ -1,0 +1,155 @@
+{
+  "title": "تنظير الأنف",
+  "loading": "جارٍ تحميل التنظير…",
+  "loadError": "تعذر تحميل فحوصات التنظير.",
+  "empty": "لا يوجد تنظير مسجّل لهذا المريض.",
+  "newExam": "تنظير جديد",
+  "listTitle": "الفحوصات",
+  "dirty": "في هذا التنظير تغييرات غير محفوظة.",
+  "conflict": "عُدّل هذا التنظير في مكان آخر. أعد تحميله قبل الحفظ.",
+  "templates": {
+    "group": "قوالب",
+    "normal": "تنظير طبيعي",
+    "postFess": "مراجعة جوف ما بعد جراحة الجيوب",
+    "epistaxis": "تحديد موضع الرعاف",
+    "postFessHint": "سجّل جوف ما بعد جراحة الجيوب: سالكية فغر الفك، والردب الجبهي، وفوهة الوتدي، والقشور، والالتصاقات، والسلائل الناكسة.",
+    "epistaxisHint": "حدّد موضع النزف، بدءًا من الدهليز والحاجز."
+  },
+  "fields": {
+    "performedAt": "أُجري",
+    "scope": "المنظار",
+    "anesthesia": "التخدير",
+    "setting": "المكان",
+    "decongestant": "استُعمل مزيل احتقان",
+    "instrument": "الأداة",
+    "indication": "الاستطباب",
+    "tolerance": "التحمل",
+    "conclusion": "الخلاصة",
+    "laterality": "الجانب"
+  },
+  "scope": {
+    "flexible": "مرن",
+    "rigid0": "صلب 0°",
+    "rigid30": "صلب 30°",
+    "rigid70": "صلب 70°"
+  },
+  "anesthesia": {
+    "none": "بدون",
+    "topicalSpray": "بخاخ موضعي",
+    "localInfiltration": "ارتشاح موضعي",
+    "general": "عام"
+  },
+  "setting": {
+    "office": "العيادة",
+    "ot": "غرفة العمليات"
+  },
+  "tolerance": {
+    "unset": "غير مسجّل",
+    "wellTolerated": "تحمّل جيد",
+    "mildDiscomfort": "انزعاج خفيف",
+    "moderateDiscomfort": "انزعاج متوسط",
+    "poorlyTolerated": "تحمّل سيئ",
+    "aborted": "أُوقف"
+  },
+  "laterality": {
+    "bilateral": "جانبان",
+    "right": "أيمن",
+    "left": "أيسر",
+    "midline": "الخط الناصف",
+    "na": "لا ينطبق"
+  },
+  "structures": {
+    "title": "البُنى",
+    "finding": "الموجودة",
+    "findingEmpty": "اختر موجودة",
+    "status": "الحالة"
+  },
+  "status": {
+    "unset": "غير مسجّل",
+    "normal": "طبيعي",
+    "abnormal": "غير طبيعي",
+    "notExamined": "غير مرئي",
+    "unknown": "غير معروف"
+  },
+  "scores": {
+    "title": "الدرجات",
+    "lundKennedy": "لوند-كندي",
+    "modified": "لوند-كندي المعدّل",
+    "polypGrade": "درجة السليلة",
+    "adenoid": "انسداد الناميات",
+    "pending": "تظهر درجات الخادم بعد الحفظ.",
+    "right": "أيمن",
+    "left": "أيسر",
+    "notRecorded": "غير مسجّل",
+    "other": "درجة",
+    "sideItem": "{item} · {side}",
+    "pair": "{right} / {left}",
+    "items": {
+      "polyps": "سلائل",
+      "edema": "وذمة",
+      "discharge": "مفرزات",
+      "scarring": "تندب",
+      "crusting": "تقشّر"
+    },
+    "scales": {
+      "meltzer": "ميلتزر",
+      "lildholdt": "ليلدهولت",
+      "unknown": "المقياس"
+    }
+  },
+  "comparison": {
+    "title": "المقارنة",
+    "empty": "لا يوجد تنظير سابق للمقارنة.",
+    "structure": "البنية",
+    "previous": "السابق",
+    "current": "الحالي",
+    "changed": "تغيّر",
+    "unchanged": "بدون تغيير",
+    "notRecorded": "غير مسجّل",
+    "trend": "مسار الدرجات"
+  },
+  "images": {
+    "title": "الصور",
+    "pickStructure": "اختر بنية لإرفاق صورة.",
+    "upload": "رفع صورة",
+    "capture": "الكاميرا",
+    "snap": "التقاط صورة",
+    "stop": "إيقاف الكاميرا",
+    "empty": "لا توجد صورة مرفقة بهذه البنية.",
+    "annotate": "تعليق",
+    "close": "إغلاق التعليق",
+    "overlayNote": "تبقى العلامات على طبقة منفصلة. الصورة الأصلية لا تتغير.",
+    "current": "هذه البنية",
+    "previous": "صورة أقدم",
+    "cameraError": "تعذر فتح الكاميرا.",
+    "labelText": "تسمية",
+    "tools": {
+      "arrow": "سهم",
+      "circle": "دائرة",
+      "label": "تسمية",
+      "clear": "مسح العلامات"
+    }
+  },
+  "actions": {
+    "save": "حفظ التنظير",
+    "saved": "حُفظ التنظير.",
+    "signed": "وُقّع التنظير.",
+    "sign": "توقيع التنظير",
+    "confirmSign": "توقيع هذا التنظير وقفله",
+    "cancelSign": "إلغاء",
+    "reload": "إعادة التحميل"
+  },
+  "recordStatus": {
+    "draft": "مسودة",
+    "signed": "موقّع",
+    "amended": "ملحق",
+    "other": "تنظير"
+  },
+  "validation": {
+    "lk": "أدخل كل بند من لوند-كندي للجانبين.",
+    "polyp": "أدخل درجة السليلة للجانبين، أو اتركهما فارغين.",
+    "adenoid": "انسداد الناميات عدد صحيح من 0 إلى 100.",
+    "finding": "اختر موجودة لكل بنية غير طبيعية.",
+    "performedAt": "أدخل وقت إجراء التنظير."
+  }
+}

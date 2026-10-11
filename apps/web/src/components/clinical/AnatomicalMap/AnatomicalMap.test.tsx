@@ -9,7 +9,7 @@ import {
   type AnatomicalMapProps,
 } from "@/components/clinical/AnatomicalMap/AnatomicalMap";
 import { markNormal, regionStorageKey } from "@/lib/anatomy/examination-state";
-import { anatomicalMaps } from "@/lib/anatomy";
+import { anatomicalMaps, nasalEndoscopyMap } from "@/lib/anatomy";
 import { tympanicMembraneMap } from "@/lib/anatomy/tympanic-membrane.map";
 import {
   examinationMapTitle,
@@ -233,7 +233,7 @@ describe("examination labels", () => {
     const t = ((key: string) => key) as ReturnType<
       typeof import("next-intl").useTranslations<"examination">
     >;
-    for (const map of anatomicalMaps) {
+    for (const map of [...anatomicalMaps, nasalEndoscopyMap]) {
       expect(examinationMapTitle(t, map.titleKey)).toBe(map.titleKey);
       for (const region of map.regions) {
         expect(examinationRegionLabel(t, region.labelKey)).toBe(

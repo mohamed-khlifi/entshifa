@@ -114,6 +114,13 @@ export const queryKeys = {
     problems: (patientId: string) =>
       [...queryKeys.examination.all, "problems", patientId] as const,
   },
+  endoscopy: {
+    all: ["endoscopy"] as const,
+    patient: (patientId: string) =>
+      [...queryKeys.endoscopy.all, "patient", patientId] as const,
+    detail: (examId: string) =>
+      [...queryKeys.endoscopy.all, "detail", examId] as const,
+  },
   diagnoses: {
     all: ["diagnoses"] as const,
     favorites: (locale: string) =>

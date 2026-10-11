@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 760">
+  <path id="endo-vestibule" d="M36 8h128v40H36z" />
+  <path id="endo-valve" d="M36 56h128v40H36z" />
+  <path id="endo-septum" d="M20 104h160v40H20z" />
+  <path id="endo-inferior-turbinate" d="M36 152h128v40H36z" />
+  <path id="endo-inferior-meatus" d="M36 200h128v40H36z" />
+  <path id="endo-middle-turbinate" d="M36 248h128v40H36z" />
+  <path id="endo-middle-meatus" d="M36 296h128v40H36z" />
+  <path id="endo-uncinate" d="M36 344h128v40H36z" />
+  <path id="endo-bulla" d="M36 392h128v40H36z" />
+  <path id="endo-superior-turbinate" d="M36 440h128v40H36z" />
+  <path id="endo-superior-meatus" d="M36 488h128v40H36z" />
+  <path id="endo-sphenoethmoidal-recess" d="M36 536h128v40H36z" />
+  <path id="endo-olfactory-cleft" d="M36 584h128v40H36z" />
+  <path id="endo-nasopharynx" d="M20 632h160v40H20z" />
+  <path id="endo-post-fess" d="M20 680h160v40H20z" />
+</svg>

@@ -1,0 +1,155 @@
+{
+  "title": "Nasal endoscopy",
+  "loading": "Loading endoscopies…",
+  "loadError": "Endoscopies could not be loaded.",
+  "empty": "No endoscopy is recorded for this patient.",
+  "newExam": "New endoscopy",
+  "listTitle": "Studies",
+  "dirty": "This endoscopy has unsaved changes.",
+  "conflict": "This endoscopy was updated elsewhere. Reload it before saving.",
+  "templates": {
+    "group": "Templates",
+    "normal": "Normal endoscopy",
+    "postFess": "Post-FESS cavity check",
+    "epistaxis": "Epistaxis localization",
+    "postFessHint": "Record the post-FESS cavity: antrostomy patency, frontal recess, sphenoid ostium, crusting, synechiae, and recurrent polyps.",
+    "epistaxisHint": "Localize the bleeding site, starting at the vestibule and the septum."
+  },
+  "fields": {
+    "performedAt": "Performed",
+    "scope": "Scope",
+    "anesthesia": "Anesthesia",
+    "setting": "Setting",
+    "decongestant": "Decongestant used",
+    "instrument": "Instrument",
+    "indication": "Indication",
+    "tolerance": "Tolerance",
+    "conclusion": "Conclusion",
+    "laterality": "Laterality"
+  },
+  "scope": {
+    "flexible": "Flexible",
+    "rigid0": "Rigid 0°",
+    "rigid30": "Rigid 30°",
+    "rigid70": "Rigid 70°"
+  },
+  "anesthesia": {
+    "none": "None",
+    "topicalSpray": "Topical spray",
+    "localInfiltration": "Local infiltration",
+    "general": "General"
+  },
+  "setting": {
+    "office": "Office",
+    "ot": "Operating room"
+  },
+  "tolerance": {
+    "unset": "Not recorded",
+    "wellTolerated": "Well tolerated",
+    "mildDiscomfort": "Mild discomfort",
+    "moderateDiscomfort": "Moderate discomfort",
+    "poorlyTolerated": "Poorly tolerated",
+    "aborted": "Aborted"
+  },
+  "laterality": {
+    "bilateral": "Bilateral",
+    "right": "Right",
+    "left": "Left",
+    "midline": "Midline",
+    "na": "Not applicable"
+  },
+  "structures": {
+    "title": "Structures",
+    "finding": "Finding",
+    "findingEmpty": "Choose a finding",
+    "status": "Status"
+  },
+  "status": {
+    "unset": "Not recorded",
+    "normal": "Normal",
+    "abnormal": "Abnormal",
+    "notExamined": "Not visualized",
+    "unknown": "Unknown"
+  },
+  "scores": {
+    "title": "Scores",
+    "lundKennedy": "Lund-Kennedy",
+    "modified": "Modified Lund-Kennedy",
+    "polypGrade": "Polyp grade",
+    "adenoid": "Adenoid obstruction",
+    "pending": "Saved exams show the server scores.",
+    "right": "Right",
+    "left": "Left",
+    "notRecorded": "Not recorded",
+    "other": "Score",
+    "sideItem": "{item} · {side}",
+    "pair": "{right} / {left}",
+    "items": {
+      "polyps": "Polyps",
+      "edema": "Edema",
+      "discharge": "Discharge",
+      "scarring": "Scarring",
+      "crusting": "Crusting"
+    },
+    "scales": {
+      "meltzer": "Meltzer",
+      "lildholdt": "Lildholdt",
+      "unknown": "Scale"
+    }
+  },
+  "comparison": {
+    "title": "Comparison",
+    "empty": "No earlier endoscopy to compare.",
+    "structure": "Structure",
+    "previous": "Previous",
+    "current": "Current",
+    "changed": "Changed",
+    "unchanged": "Unchanged",
+    "notRecorded": "Not recorded",
+    "trend": "Score trend"
+  },
+  "images": {
+    "title": "Images",
+    "pickStructure": "Choose a structure to attach an image.",
+    "upload": "Upload image",
+    "capture": "Camera",
+    "snap": "Take photo",
+    "stop": "Stop camera",
+    "empty": "No image is attached to this structure.",
+    "annotate": "Annotate",
+    "close": "Close annotation",
+    "overlayNote": "Marks stay on a separate layer. The original image is not changed.",
+    "current": "This structure",
+    "previous": "Earlier image",
+    "cameraError": "The camera could not be opened.",
+    "labelText": "Label",
+    "tools": {
+      "arrow": "Arrow",
+      "circle": "Circle",
+      "label": "Label",
+      "clear": "Clear marks"
+    }
+  },
+  "actions": {
+    "save": "Save endoscopy",
+    "saved": "Endoscopy saved.",
+    "signed": "Endoscopy signed.",
+    "sign": "Sign endoscopy",
+    "confirmSign": "Sign and lock this endoscopy",
+    "cancelSign": "Cancel",
+    "reload": "Reload"
+  },
+  "recordStatus": {
+    "draft": "Draft",
+    "signed": "Signed",
+    "amended": "Addendum",
+    "other": "Endoscopy"
+  },
+  "validation": {
+    "lk": "Enter each Lund-Kennedy item for both sides.",
+    "polyp": "Enter the polyp grade for both sides, or leave both empty.",
+    "adenoid": "Adenoid obstruction is a whole number from 0 to 100.",
+    "finding": "Choose a finding for each abnormal structure.",
+    "performedAt": "Enter when the endoscopy was performed."
+  }
+}

@@ -1,0 +1,155 @@
+{
+  "title": "Endoscopie nasale",
+  "loading": "Chargement des endoscopies…",
+  "loadError": "Les endoscopies n’ont pas pu être chargées.",
+  "empty": "Aucune endoscopie n’est enregistrée pour ce patient.",
+  "newExam": "Nouvelle endoscopie",
+  "listTitle": "Examens",
+  "dirty": "Cette endoscopie a des modifications non enregistrées.",
+  "conflict": "Cette endoscopie a été modifiée ailleurs. Rechargez-la avant d’enregistrer.",
+  "templates": {
+    "group": "Modèles",
+    "normal": "Endoscopie normale",
+    "postFess": "Contrôle de cavité après FESS",
+    "epistaxis": "Localisation d’épistaxis",
+    "postFessHint": "Décrire la cavité après FESS : perméabilité de l’antrostomie, du récessus frontal et de l’ostium sphénoïdal, croûtes, synéchies et polypes récidivants.",
+    "epistaxisHint": "Localiser le site du saignement, en commençant par le vestibule et le septum."
+  },
+  "fields": {
+    "performedAt": "Réalisée",
+    "scope": "Optique",
+    "anesthesia": "Anesthésie",
+    "setting": "Lieu",
+    "decongestant": "Décongestionnant utilisé",
+    "instrument": "Instrument",
+    "indication": "Indication",
+    "tolerance": "Tolérance",
+    "conclusion": "Conclusion",
+    "laterality": "Latéralité"
+  },
+  "scope": {
+    "flexible": "Souple",
+    "rigid0": "Rigide 0°",
+    "rigid30": "Rigide 30°",
+    "rigid70": "Rigide 70°"
+  },
+  "anesthesia": {
+    "none": "Aucune",
+    "topicalSpray": "Spray topique",
+    "localInfiltration": "Infiltration locale",
+    "general": "Générale"
+  },
+  "setting": {
+    "office": "Cabinet",
+    "ot": "Bloc opératoire"
+  },
+  "tolerance": {
+    "unset": "Non renseignée",
+    "wellTolerated": "Bien tolérée",
+    "mildDiscomfort": "Gêne légère",
+    "moderateDiscomfort": "Gêne modérée",
+    "poorlyTolerated": "Mal tolérée",
+    "aborted": "Interrompue"
+  },
+  "laterality": {
+    "bilateral": "Bilatérale",
+    "right": "Droite",
+    "left": "Gauche",
+    "midline": "Ligne médiane",
+    "na": "Sans objet"
+  },
+  "structures": {
+    "title": "Structures",
+    "finding": "Constatation",
+    "findingEmpty": "Choisir une constatation",
+    "status": "État"
+  },
+  "status": {
+    "unset": "Non renseigné",
+    "normal": "Normal",
+    "abnormal": "Anormal",
+    "notExamined": "Non visualisé",
+    "unknown": "Inconnu"
+  },
+  "scores": {
+    "title": "Scores",
+    "lundKennedy": "Lund-Kennedy",
+    "modified": "Lund-Kennedy modifié",
+    "polypGrade": "Grade polypoïde",
+    "adenoid": "Obstruction adénoïdienne",
+    "pending": "Les scores du serveur s’affichent après l’enregistrement.",
+    "right": "Droite",
+    "left": "Gauche",
+    "notRecorded": "Non renseigné",
+    "other": "Score",
+    "sideItem": "{item} · {side}",
+    "pair": "{right} / {left}",
+    "items": {
+      "polyps": "Polypes",
+      "edema": "Œdème",
+      "discharge": "Sécrétions",
+      "scarring": "Cicatrices",
+      "crusting": "Croûtes"
+    },
+    "scales": {
+      "meltzer": "Meltzer",
+      "lildholdt": "Lildholdt",
+      "unknown": "Échelle"
+    }
+  },
+  "comparison": {
+    "title": "Comparaison",
+    "empty": "Aucune endoscopie antérieure à comparer.",
+    "structure": "Structure",
+    "previous": "Précédente",
+    "current": "Actuelle",
+    "changed": "Modifié",
+    "unchanged": "Inchangé",
+    "notRecorded": "Non renseigné",
+    "trend": "Évolution des scores"
+  },
+  "images": {
+    "title": "Images",
+    "pickStructure": "Choisissez une structure pour joindre une image.",
+    "upload": "Importer une image",
+    "capture": "Caméra",
+    "snap": "Prendre une photo",
+    "stop": "Arrêter la caméra",
+    "empty": "Aucune image n’est jointe à cette structure.",
+    "annotate": "Annoter",
+    "close": "Fermer l’annotation",
+    "overlayNote": "Les marques restent sur un calque séparé. L’image d’origine n’est pas modifiée.",
+    "current": "Cette structure",
+    "previous": "Image antérieure",
+    "cameraError": "La caméra n’a pas pu être ouverte.",
+    "labelText": "Libellé",
+    "tools": {
+      "arrow": "Flèche",
+      "circle": "Cercle",
+      "label": "Libellé",
+      "clear": "Effacer les marques"
+    }
+  },
+  "actions": {
+    "save": "Enregistrer l’endoscopie",
+    "saved": "Endoscopie enregistrée.",
+    "signed": "Endoscopie signée.",
+    "sign": "Signer l’endoscopie",
+    "confirmSign": "Signer et verrouiller cette endoscopie",
+    "cancelSign": "Annuler",
+    "reload": "Recharger"
+  },
+  "recordStatus": {
+    "draft": "Brouillon",
+    "signed": "Signé",
+    "amended": "Addendum",
+    "other": "Endoscopie"
+  },
+  "validation": {
+    "lk": "Saisissez chaque item de Lund-Kennedy des deux côtés.",
+    "polyp": "Saisissez le grade polypoïde des deux côtés, ou laissez les deux vides.",
+    "adenoid": "L’obstruction adénoïdienne est un nombre entier de 0 à 100.",
+    "finding": "Choisissez une constatation pour chaque structure anormale.",
+    "performedAt": "Indiquez quand l’endoscopie a été réalisée."
+  }
+}

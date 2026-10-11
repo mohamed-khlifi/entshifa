@@ -4,6 +4,7 @@
   "maps": {
     "tympanicMembrane": "Tympanic membrane",
     "nasalCavity": "Nasal cavity",
+    "nasalEndoscopy": "Nasal endoscopy",
     "oralCavity": "Oral cavity and oropharynx",
     "neckLevels": "Neck"
   },
@@ -90,6 +91,25 @@
       "inferiorTurbinate": "Inferior turbinate",
       "middleTurbinate": "Middle turbinate",
       "mucosa": "Nasal mucosa"
+    }
+  },
+  "endo": {
+    "regions": {
+      "vestibule": "Nasal vestibule",
+      "valve": "Nasal valve",
+      "septum": "Nasal septum",
+      "inferiorTurbinate": "Inferior turbinate",
+      "inferiorMeatus": "Inferior meatus",
+      "middleTurbinate": "Middle turbinate",
+      "middleMeatus": "Middle meatus",
+      "uncinate": "Uncinate process",
+      "bulla": "Ethmoid bulla",
+      "superiorTurbinate": "Superior turbinate",
+      "superiorMeatus": "Superior meatus",
+      "sphenoethmoidalRecess": "Sphenoethmoidal recess",
+      "olfactoryCleft": "Olfactory cleft",
+      "nasopharynx": "Nasopharynx",
+      "postFess": "Post-FESS cavity"
     }
   },
   "oral": {

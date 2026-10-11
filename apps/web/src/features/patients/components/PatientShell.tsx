@@ -29,6 +29,7 @@ export function PatientShell({
   const attachmentsHref = `/patients/${patientId}/attachments`;
   const documentsHref = `/patients/${patientId}/documents`;
   const examinationHref = `/patients/${patientId}/examination`;
+  const endoscopyHref = `/patients/${patientId}/endoscopy`;
   const prescriptionsHref = `/patients/${patientId}/prescriptions`;
 
   if (patient.isLoading) {
@@ -111,6 +112,18 @@ export function PatientShell({
           {...testIdProps(testIds.patients.navExamination)}
         >
           {t("nav.examination")}
+        </Link>
+        <Link
+          href={endoscopyHref}
+          className={cn(
+            "rounded-full px-3 py-1.5 text-sm font-medium",
+            pathname === endoscopyHref
+              ? "bg-primary/10 text-primary"
+              : "text-muted-foreground hover:bg-muted",
+          )}
+          {...testIdProps(testIds.patients.navEndoscopy)}
+        >
+          {t("nav.endoscopy")}
         </Link>
         {canPrescribe ? (
           <Link

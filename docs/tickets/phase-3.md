@@ -45,7 +45,7 @@ Reference: feature spec section 7. Architecture section 25.7.
 
 ---
 
-## - [ ] P3-03 Nasal endoscopy builder (frontend)
+## - [x] P3-03 Nasal endoscopy builder (frontend)
 
 **Scope**
 - Nasal endoscopy map extending P2-04 with the full endoscopic structure list.

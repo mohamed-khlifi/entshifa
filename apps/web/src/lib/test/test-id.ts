@@ -160,6 +160,7 @@ export const testIds = {
     chartNav: testId("patients", "chart-nav"),
     navOverview: testId("patients", "nav-overview"),
     navExamination: testId("patients", "nav-examination"),
+    navEndoscopy: testId("patients", "nav-endoscopy"),
     navPrescriptions: testId("patients", "nav-prescriptions"),
     navConsultation: testId("patients", "nav-consultation"),
     navAttachments: testId("patients", "nav-attachments"),
@@ -436,6 +437,57 @@ export const testIds = {
     open: testId("prescriptions", "open"),
     blocked: testId("prescriptions", "blocked"),
   },
+  endoscopy: {
+    root: testId("endoscopy", "root"),
+    loading: testId("endoscopy", "loading"),
+    error: testId("endoscopy", "error"),
+    empty: testId("endoscopy", "empty"),
+    list: testId("endoscopy", "list"),
+    newExam: testId("endoscopy", "new"),
+    save: testId("endoscopy", "save"),
+    sign: testId("endoscopy", "sign"),
+    confirmSign: testId("endoscopy", "confirm-sign"),
+    cancelSign: testId("endoscopy", "cancel-sign"),
+    reload: testId("endoscopy", "reload"),
+    conflict: testId("endoscopy", "conflict"),
+    validation: testId("endoscopy", "validation"),
+    templateNormal: testId("endoscopy", "template", "normal"),
+    templatePostFess: testId("endoscopy", "template", "post-fess"),
+    templateEpistaxis: testId("endoscopy", "template", "epistaxis"),
+    templateHint: testId("endoscopy", "template", "hint"),
+    scores: testId("endoscopy", "scores"),
+    scorePending: testId("endoscopy", "scores", "pending"),
+    comparison: testId("endoscopy", "comparison"),
+    comparisonEmpty: testId("endoscopy", "comparison", "empty"),
+    trend: testId("endoscopy", "trend"),
+    images: testId("endoscopy", "images"),
+    imagesEmpty: testId("endoscopy", "images", "empty"),
+    imagesUpload: testId("endoscopy", "images", "upload"),
+    imagesCapture: testId("endoscopy", "images", "capture"),
+    imagesSnap: testId("endoscopy", "images", "snap"),
+    imagesStop: testId("endoscopy", "images", "stop"),
+    annotate: testId("endoscopy", "annotate"),
+    annotateClose: testId("endoscopy", "annotate", "close"),
+    annotateSurface: testId("endoscopy", "annotate", "surface"),
+    annotateImage: testId("endoscopy", "annotate", "image"),
+    toolArrow: testId("endoscopy", "annotate", "arrow"),
+    toolCircle: testId("endoscopy", "annotate", "circle"),
+    toolLabel: testId("endoscopy", "annotate", "label"),
+    toolClear: testId("endoscopy", "annotate", "clear"),
+    labelInput: testId("endoscopy", "annotate", "label-input"),
+    performedAt: testId("endoscopy", "performed-at"),
+    scope: testId("endoscopy", "scope"),
+    decongestant: testId("endoscopy", "decongestant"),
+    anesthesia: testId("endoscopy", "anesthesia"),
+    setting: testId("endoscopy", "setting"),
+    laterality: testId("endoscopy", "laterality"),
+    tolerance: testId("endoscopy", "tolerance"),
+    instrument: testId("endoscopy", "instrument"),
+    indication: testId("endoscopy", "indication"),
+    conclusion: testId("endoscopy", "conclusion"),
+    adenoid: testId("endoscopy", "adenoid"),
+    imagesAnnotate: testId("endoscopy", "images", "annotate"),
+  },
 } as const;
 
 export function examinationMapTestId(mapId: string): string {
@@ -458,6 +510,53 @@ function examinationToken(value: string): string {
   const segment = value.toLowerCase().replaceAll("_", "-").replaceAll(".", "-");
   assertSegment(segment);
   return segment;
+}
+
+export function endoscopyExamTestId(publicId: string): string {
+  return publicIdTestId("endoscopy.exam", publicId);
+}
+
+export function endoscopyStructureTestId(
+  code: string,
+  laterality: string,
+): string {
+  return testId("endoscopy", "structure", examinationToken(code), laterality);
+}
+
+export function endoscopyStructureControlTestId(
+  code: string,
+  laterality: string,
+  control: "focus" | "status" | "finding",
+): string {
+  return testId(
+    "endoscopy",
+    "structure",
+    examinationToken(code),
+    laterality,
+    control,
+  );
+}
+
+export function endoscopyLkTestId(
+  side: "right" | "left",
+  item: string,
+): string {
+  return testId("endoscopy", "lk", side, examinationToken(item));
+}
+
+export function endoscopyPolypTestId(side: "right" | "left"): string {
+  return testId("endoscopy", "polyp", side);
+}
+
+export function endoscopyComparisonTestId(
+  code: string,
+  laterality: string,
+): string {
+  return testId("endoscopy", "comparison", examinationToken(code), laterality);
+}
+
+export function endoscopyTrendTestId(publicId: string): string {
+  return publicIdTestId("endoscopy.trend", publicId);
 }
 
 export function encounterComplaintTestId(code: string): string {

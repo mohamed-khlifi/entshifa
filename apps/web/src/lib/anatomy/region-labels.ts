@@ -29,6 +29,36 @@ export function examinationRegionLabel(
       return t("nose.regions.middleTurbinate");
     case "nose.regions.mucosa":
       return t("nose.regions.mucosa");
+    case "endo.regions.vestibule":
+      return t("endo.regions.vestibule");
+    case "endo.regions.valve":
+      return t("endo.regions.valve");
+    case "endo.regions.septum":
+      return t("endo.regions.septum");
+    case "endo.regions.inferiorTurbinate":
+      return t("endo.regions.inferiorTurbinate");
+    case "endo.regions.inferiorMeatus":
+      return t("endo.regions.inferiorMeatus");
+    case "endo.regions.middleTurbinate":
+      return t("endo.regions.middleTurbinate");
+    case "endo.regions.middleMeatus":
+      return t("endo.regions.middleMeatus");
+    case "endo.regions.uncinate":
+      return t("endo.regions.uncinate");
+    case "endo.regions.bulla":
+      return t("endo.regions.bulla");
+    case "endo.regions.superiorTurbinate":
+      return t("endo.regions.superiorTurbinate");
+    case "endo.regions.superiorMeatus":
+      return t("endo.regions.superiorMeatus");
+    case "endo.regions.sphenoethmoidalRecess":
+      return t("endo.regions.sphenoethmoidalRecess");
+    case "endo.regions.olfactoryCleft":
+      return t("endo.regions.olfactoryCleft");
+    case "endo.regions.nasopharynx":
+      return t("endo.regions.nasopharynx");
+    case "endo.regions.postFess":
+      return t("endo.regions.postFess");
     case "oral.regions.lips":
       return t("oral.regions.lips");
     case "oral.regions.tongue":
@@ -81,6 +111,8 @@ export function examinationMapTitle(
       return t("maps.tympanicMembrane");
     case "maps.nasalCavity":
       return t("maps.nasalCavity");
+    case "maps.nasalEndoscopy":
+      return t("maps.nasalEndoscopy");
     case "maps.oralCavity":
       return t("maps.oralCavity");
     case "maps.neckLevels":
