@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 
 from alembic import command
 from alembic.config import Config
+from ent.core.db.migration_guard import assert_downgrade_allowed
 from ent.core.utils.ids import new_ulid
 from ent.settings import get_settings
 
@@ -50,6 +51,7 @@ def test_migration_upgrade_and_downgrade() -> None:
     except Exception as exc:  # noqa: BLE001 — skip if Docker MySQL is down
         pytest.skip(f"MySQL not reachable: {exc}")
 
+    assert_downgrade_allowed(engine)
     command.downgrade(cfg, "base")
     command.upgrade(cfg, "head")
 

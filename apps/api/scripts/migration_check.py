@@ -5,10 +5,12 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+from sqlalchemy import create_engine, text
+
 from alembic import command
 from alembic.config import Config
 from alembic.script import ScriptDirectory
-from sqlalchemy import create_engine, text
+from ent.core.db.migration_guard import assert_downgrade_allowed
 
 API_ROOT = Path(__file__).resolve().parents[1]
 
@@ -57,6 +59,7 @@ def main() -> int:
         return 1
 
     try:
+        assert_downgrade_allowed(engine)
         _upgrade_from_empty(cfg)
         _upgrade_from_previous_revision(cfg)
     except Exception as exc:  # noqa: BLE001
