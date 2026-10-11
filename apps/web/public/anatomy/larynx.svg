@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 840">
+  <path id="larynx-nasal-cavity" d="M36 8h128v40H36z" />
+  <path id="larynx-nasopharynx" d="M20 56h160v40H20z" />
+  <path id="larynx-velum" d="M20 104h160v40H20z" />
+  <path id="larynx-tongue-base" d="M20 152h160v40H20z" />
+  <path id="larynx-vallecula" d="M36 200h128v40H36z" />
+  <path id="larynx-epiglottis" d="M20 248h160v40H20z" />
+  <path id="larynx-aryepiglottic-fold" d="M36 296h128v40H36z" />
+  <path id="larynx-arytenoid" d="M36 344h128v40H36z" />
+  <path id="larynx-pyriform" d="M36 392h128v40H36z" />
+  <path id="larynx-post-cricoid" d="M20 440h160v40H20z" />
+  <path id="larynx-false-cord" d="M36 488h128v40H36z" />
+  <path id="larynx-ventricle" d="M36 536h128v40H36z" />
+  <path id="larynx-vocal-fold" d="M36 584h128v40H36z" />
+  <path id="larynx-anterior-commissure" d="M20 632h160v40H20z" />
+  <path id="larynx-posterior-commissure" d="M20 680h160v40H20z" />
+  <path id="larynx-subglottis" d="M20 728h160v40H20z" />
+  <path id="larynx-trachea" d="M20 776h160v40H20z" />
+</svg>

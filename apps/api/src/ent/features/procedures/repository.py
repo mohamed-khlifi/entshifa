@@ -66,6 +66,15 @@ class ProcedureRecordRepository(BaseRepository[ProcedureRecord]):
         row.updated_by_id = updated_by_id
         row.version = int(row.version) + 1
 
+    async def public_ids_by_id(self, procedure_ids: set[int]) -> dict[int, str]:
+        if not procedure_ids:
+            return {}
+        base = (
+            self._base_query().where(ProcedureRecord.id.in_(procedure_ids)).subquery()
+        )
+        rows = (await self.session.execute(select(base.c.id, base.c.public_id))).all()
+        return {int(row.id): str(row.public_id) for row in rows}
+
     async def get_detail(self, public_id: str) -> ProcedureRecord | None:
         result = await self.session.execute(
             self._base_query()

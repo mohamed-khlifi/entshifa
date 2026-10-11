@@ -1,0 +1,240 @@
+{
+  "title": "Laryngoscopie",
+  "loading": "Chargement des laryngoscopies…",
+  "loadError": "Les laryngoscopies n’ont pas pu être chargées.",
+  "empty": "Aucune laryngoscopie n’est enregistrée pour ce patient.",
+  "newExam": "Nouvelle laryngoscopie",
+  "listTitle": "Examens",
+  "dirty": "Cette laryngoscopie a des modifications non enregistrées.",
+  "conflict": "Cette laryngoscopie a été mise à jour ailleurs. Rechargez-la avant d’enregistrer.",
+  "templates": {
+    "group": "Modèles",
+    "preThyroid": "Contrôle pré-thyroïdectomie",
+    "postThyroid": "Contrôle post-thyroïdectomie",
+    "paralysis": "Bilan de paralysie",
+    "fees": "FEES",
+    "pediatric": "Voies aériennes pédiatriques",
+    "tracheostomy": "Contrôle de trachéotomie",
+    "preThyroidHint": "Documentez la mobilité des cordes vocales avant la chirurgie thyroïdienne.",
+    "postThyroidHint": "Comparez la mobilité avec l’examen précédent.",
+    "paralysisHint": "Enregistrez la mobilité, la position et le mouvement aryténoïdien.",
+    "feesHint": "Enregistrez les consistances testées, les sites de résidu et le score PAS.",
+    "pediatricHint": "Concentrez-vous sur l’épiglotte, la vallécule, la sous-glotte et la trachée.",
+    "tracheostomyHint": "Concentrez-vous sur la trachée et la sous-glotte."
+  },
+  "fields": {
+    "performedAt": "Réalisé",
+    "scope": "Optique",
+    "anesthesia": "Anesthésie",
+    "setting": "Lieu",
+    "instrument": "Instrument",
+    "indication": "Indication",
+    "tolerance": "Tolérance",
+    "conclusion": "Conclusion",
+    "laterality": "Latéralité",
+    "mobility": "Mobilité",
+    "position": "Position",
+    "glottic": "Fermeture glottique",
+    "supraglottic": "Activité sus-glottique",
+    "rightFold": "Corde vocale droite",
+    "leftFold": "Corde vocale gauche"
+  },
+  "scope": {
+    "flexibleFiberoptic": "Flexible fibres optiques",
+    "flexibleDistalChip": "Flexible capteur distal",
+    "rigid70": "Rigide 70°",
+    "rigid90": "Rigide 90°"
+  },
+  "anesthesia": {
+    "none": "Aucune",
+    "topicalSpray": "Spray topique",
+    "localInfiltration": "Infiltration locale",
+    "general": "Générale"
+  },
+  "setting": {
+    "office": "Cabinet",
+    "ot": "Bloc opératoire"
+  },
+  "tolerance": {
+    "unset": "Non consigné",
+    "wellTolerated": "Bien toléré",
+    "mildDiscomfort": "Gêne légère",
+    "moderateDiscomfort": "Gêne modérée",
+    "poorlyTolerated": "Mal toléré",
+    "aborted": "Interrompu"
+  },
+  "laterality": {
+    "bilateral": "Bilatéral",
+    "right": "Droit",
+    "left": "Gauche",
+    "midline": "Médian",
+    "na": "Non applicable"
+  },
+  "mobility": {
+    "normal": "Normale",
+    "hypomobile": "Hypomobile",
+    "immobile": "Immobile",
+    "paradoxical": "Paradoxale"
+  },
+  "position": {
+    "unset": "Non consigné",
+    "median": "Médiane",
+    "paramedian": "Paramédiane",
+    "intermediate": "Intermédiaire",
+    "lateral": "Latérale"
+  },
+  "glottic": {
+    "complete": "Complète",
+    "anteriorGap": "Brèche antérieure",
+    "posteriorGap": "Brèche postérieure",
+    "spindle": "Fusiforme",
+    "hourglass": "Sablier",
+    "irregular": "Irrégulière",
+    "incomplete": "Incomplète"
+  },
+  "supraglottic": {
+    "unset": "Non consigné",
+    "none": "Aucune",
+    "anteroposterior": "Antéropostérieure",
+    "mediolateral": "Médiolatérale",
+    "sphincteric": "Sphinctérienne"
+  },
+  "strobe": {
+    "title": "Stroboscopie",
+    "include": "Enregistrer la stroboscopie",
+    "symmetry": "Symétrie",
+    "periodicity": "Périodicité",
+    "amplitudeRight": "Amplitude droite",
+    "amplitudeLeft": "Amplitude gauche",
+    "waveRight": "Onde muqueuse droite",
+    "waveLeft": "Onde muqueuse gauche",
+    "phaseClosure": "Fermeture de phase",
+    "phaseSymmetry": "Symétrie de phase",
+    "vertical": "Niveau vertical",
+    "nonVibrating": "Segment non vibrant",
+    "symmetric": "Symétrique",
+    "asymmetric": "Asymétrique",
+    "regular": "Régulière",
+    "irregular": "Irrégulière",
+    "normal": "Normale",
+    "reduced": "Réduite",
+    "absent": "Absente",
+    "phaseNormal": "Normale",
+    "predominantlyOpen": "Surtout ouverte",
+    "predominantlyClosed": "Surtout fermée",
+    "alwaysOpen": "Toujours ouverte",
+    "onPlane": "Au plan",
+    "offPlaneRight": "Droite plus basse",
+    "offPlaneLeft": "Gauche plus basse",
+    "none": "Aucun",
+    "right": "Droit",
+    "left": "Gauche",
+    "bilateral": "Bilatéral",
+    "optionalUnset": "Non consigné"
+  },
+  "structures": {
+    "title": "Structures",
+    "finding": "Constatation",
+    "findingEmpty": "Choisir une constatation",
+    "status": "Statut"
+  },
+  "status": {
+    "unset": "Non consigné",
+    "normal": "Normal",
+    "abnormal": "Anormal",
+    "notExamined": "Non visualisé",
+    "unknown": "Inconnu"
+  },
+  "lesions": {
+    "title": "Lésions des cordes vocales",
+    "finding": "Lésion",
+    "size": "Taille (mm)",
+    "reinke": "Grade de Reinke",
+    "add": "Placer la lésion",
+    "remove": "Retirer",
+    "empty": "Aucune lésion n’est placée sur le schéma."
+  },
+  "scores": {
+    "title": "Scores",
+    "rfs": "Reflux Finding Score",
+    "grbas": "GRBAS",
+    "pas": "Échelle de pénétration-aspiration",
+    "includeRfs": "Enregistrer les items RFS",
+    "includeGrbas": "Enregistrer le GRBAS",
+    "includeFees": "Enregistrer le FEES",
+    "pending": "Les totaux calculés apparaissent après enregistrement.",
+    "total": "Total",
+    "other": "Score",
+    "items": {
+      "subglotticEdema": "Œdème sous-glottique",
+      "ventricularObliteration": "Oblitération ventriculaire",
+      "erythema": "Érythème",
+      "vocalFoldEdema": "Œdème des cordes vocales",
+      "diffuseLaryngealEdema": "Œdème laryngé diffus",
+      "posteriorCommissureHypertrophy": "Hypertrophie de la commissure postérieure",
+      "granuloma": "Granulome",
+      "thickEndolaryngealMucus": "Mucus endolaryngé épais",
+      "grade": "Grade",
+      "roughness": "Raueité",
+      "breathiness": "Souffle",
+      "asthenia": "Asthénie",
+      "strain": "Forçage"
+    }
+  },
+  "fees": {
+    "title": "FEES",
+    "consistencies": "Consistances testées",
+    "residue": "Sites de résidu"
+  },
+  "comparison": {
+    "title": "Comparaison",
+    "empty": "Aucune laryngoscopie antérieure à comparer.",
+    "structure": "Structure",
+    "previous": "Précédent",
+    "current": "Actuel",
+    "changed": "Modifié",
+    "unchanged": "Inchangé",
+    "notRecorded": "Non consigné",
+    "trend": "Évolution des scores",
+    "mobility": "Mobilité"
+  },
+  "video": {
+    "title": "Vidéo",
+    "pickStructure": "Choisissez une structure pour attacher un clip.",
+    "needsStudy": "Enregistrez la laryngoscopie avant d’attacher un clip.",
+    "upload": "Importer un clip",
+    "capture": "Caméra",
+    "record": "Enregistrer un clip",
+    "stop": "Arrêter",
+    "empty": "Aucun clip n’est attaché à cet examen.",
+    "current": "Cet examen",
+    "previous": "Examen précédent",
+    "cameraError": "La caméra n’a pas pu être ouverte.",
+    "tooLong": "Les clips sont limités à 15 secondes."
+  },
+  "actions": {
+    "save": "Enregistrer la laryngoscopie",
+    "saved": "Laryngoscopie enregistrée.",
+    "signed": "Laryngoscopie signée.",
+    "sign": "Signer la laryngoscopie",
+    "confirmSign": "Signer et verrouiller cette laryngoscopie",
+    "cancelSign": "Annuler",
+    "reload": "Recharger"
+  },
+  "recordStatus": {
+    "draft": "Brouillon",
+    "signed": "Signé",
+    "amended": "Addendum",
+    "other": "Laryngoscopie"
+  },
+  "validation": {
+    "finding": "Choisissez une constatation pour chaque structure anormale.",
+    "performedAt": "Indiquez la date de la laryngoscopie.",
+    "position": "Indiquez la position de la corde lorsque la mobilité est immobile.",
+    "reinke": "Indiquez un grade de Reinke de 1 à 3.",
+    "rfs": "Renseignez chaque item RFS, ou désactivez le score.",
+    "grbas": "Renseignez chaque item GRBAS, ou désactivez le score.",
+    "fees": "Indiquez le PAS et au moins une consistance.",
+    "strobe": "Complétez les champs de stroboscopie requis, ou désactivez-la."
+  }
+}

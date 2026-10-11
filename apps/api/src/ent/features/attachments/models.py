@@ -71,6 +71,11 @@ class Attachment(ClinicalRecordMixin, Base):
             "captured_at",
         ),
         Index(
+            "ix_attachment__clinic_id__procedure_record_id",
+            "clinic_id",
+            "procedure_record_id",
+        ),
+        Index(
             "ix_attachment__clinic_id__storage_key",
             "clinic_id",
             "storage_key",
@@ -94,7 +99,14 @@ class Attachment(ClinicalRecordMixin, Base):
         nullable=True,
     )
     procedure_record_id: Mapped[int | None] = mapped_column(
-        unsigned_bigint(), nullable=True
+        unsigned_bigint(),
+        ForeignKey(
+            "procedure_record.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+            name="fk_attachment__procedure_record",
+        ),
+        nullable=True,
     )
 
     category: Mapped[str] = mapped_column(String(40), nullable=False)

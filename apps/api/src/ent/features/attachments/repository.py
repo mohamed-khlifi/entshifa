@@ -48,6 +48,7 @@ class AttachmentRepository(BaseRepository[Attachment]):
         laterality: str | None,
         captured_from: datetime | None,
         captured_to: datetime | None,
+        procedure_record_id: int | None = None,
         page: PaginationParams | None,
     ) -> Page[Attachment]:
         """Tenant-scoped chart media, newest capture (or upload) first."""
@@ -59,6 +60,8 @@ class AttachmentRepository(BaseRepository[Attachment]):
             stmt = stmt.where(Attachment.category == category)
         if laterality is not None:
             stmt = stmt.where(Attachment.laterality == laterality)
+        if procedure_record_id is not None:
+            stmt = stmt.where(Attachment.procedure_record_id == procedure_record_id)
         if captured_from is not None:
             stmt = stmt.where(stamp >= captured_from)
         if captured_to is not None:

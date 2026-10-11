@@ -9,6 +9,8 @@ from ent.features.laryngoscopy.constants import (
     CONSISTENCY_CODES,
     FINDING_CODES,
     LESION_FINDINGS,
+    RFS_ITEM_BY_CODE,
+    RFS_ITEMS,
     STRUCTURE_CODES,
 )
 from ent.features.laryngoscopy.models import LaryngoscopyExam
@@ -16,6 +18,7 @@ from ent.features.laryngoscopy.schemas.responses import (
     GrbasRead,
     LaryngoscopyExamRead,
     LaryngoscopyStructureRead,
+    RefluxFindingScoreRead,
     ScoreStampRead,
     VocalFoldLesionRead,
     VocalFoldRead,
@@ -83,6 +86,7 @@ def to_exam_read(
         non_vibrating_segment=exam.non_vibrating_segment,
         fees_performed=bool(exam.fees_performed),
         rfs_score=exam.rfs_score,
+        reflux_finding_score=_rfs(observations, concepts),
         grbas=_grbas(exam),
         pas_score=exam.pas_score,
         consistencies=_coded_observations(
@@ -108,6 +112,33 @@ def to_page(
     return PageSchema(
         items=items,
         page=PageMeta(total=total, limit=limit, offset=offset, next_cursor=None),
+    )
+
+
+def _rfs(
+    observations: list[Observation],
+    concepts: dict[int, Concept],
+) -> RefluxFindingScoreRead | None:
+    grades: dict[str, int] = {}
+    for observation in observations:
+        concept = concepts.get(int(observation.concept_id))
+        if concept is None or observation.ordinal_value is None:
+            continue
+        item = RFS_ITEM_BY_CODE.get(concept.code)
+        if item is None:
+            continue
+        grades[item] = int(observation.ordinal_value)
+    if any(item not in grades for item in RFS_ITEMS):
+        return None
+    return RefluxFindingScoreRead(
+        subglottic_edema=grades["subglottic_edema"],
+        ventricular_obliteration=grades["ventricular_obliteration"],
+        erythema=grades["erythema"],
+        vocal_fold_edema=grades["vocal_fold_edema"],
+        diffuse_laryngeal_edema=grades["diffuse_laryngeal_edema"],
+        posterior_commissure_hypertrophy=grades["posterior_commissure_hypertrophy"],
+        granuloma=grades["granuloma"],
+        thick_endolaryngeal_mucus=grades["thick_endolaryngeal_mucus"],
     )
 
 

@@ -161,6 +161,7 @@ export const testIds = {
     navOverview: testId("patients", "nav-overview"),
     navExamination: testId("patients", "nav-examination"),
     navEndoscopy: testId("patients", "nav-endoscopy"),
+    navLaryngoscopy: testId("patients", "nav-laryngoscopy"),
     navPrescriptions: testId("patients", "nav-prescriptions"),
     navConsultation: testId("patients", "nav-consultation"),
     navAttachments: testId("patients", "nav-attachments"),
@@ -488,6 +489,62 @@ export const testIds = {
     adenoid: testId("endoscopy", "adenoid"),
     imagesAnnotate: testId("endoscopy", "images", "annotate"),
   },
+  laryngoscopy: {
+    root: testId("laryngoscopy", "root"),
+    loading: testId("laryngoscopy", "loading"),
+    error: testId("laryngoscopy", "error"),
+    empty: testId("laryngoscopy", "empty"),
+    list: testId("laryngoscopy", "list"),
+    newExam: testId("laryngoscopy", "new"),
+    save: testId("laryngoscopy", "save"),
+    sign: testId("laryngoscopy", "sign"),
+    confirmSign: testId("laryngoscopy", "confirm-sign"),
+    cancelSign: testId("laryngoscopy", "cancel-sign"),
+    reload: testId("laryngoscopy", "reload"),
+    conflict: testId("laryngoscopy", "conflict"),
+    validation: testId("laryngoscopy", "validation"),
+    templatePreThyroid: testId("laryngoscopy", "template", "pre-thyroid"),
+    templatePostThyroid: testId("laryngoscopy", "template", "post-thyroid"),
+    templateParalysis: testId("laryngoscopy", "template", "paralysis"),
+    templateFees: testId("laryngoscopy", "template", "fees"),
+    templatePediatric: testId("laryngoscopy", "template", "pediatric"),
+    templateTracheostomy: testId("laryngoscopy", "template", "tracheostomy"),
+    templateHint: testId("laryngoscopy", "template", "hint"),
+    scores: testId("laryngoscopy", "scores"),
+    scorePending: testId("laryngoscopy", "scores", "pending"),
+    comparison: testId("laryngoscopy", "comparison"),
+    comparisonEmpty: testId("laryngoscopy", "comparison", "empty"),
+    trend: testId("laryngoscopy", "trend"),
+    video: testId("laryngoscopy", "video"),
+    videoEmpty: testId("laryngoscopy", "video", "empty"),
+    videoUpload: testId("laryngoscopy", "video", "upload"),
+    videoCapture: testId("laryngoscopy", "video", "capture"),
+    videoRecord: testId("laryngoscopy", "video", "record"),
+    videoStop: testId("laryngoscopy", "video", "stop"),
+    videoCurrent: testId("laryngoscopy", "video", "current"),
+    videoPrevious: testId("laryngoscopy", "video", "previous"),
+    performedAt: testId("laryngoscopy", "performed-at"),
+    scope: testId("laryngoscopy", "scope"),
+    anesthesia: testId("laryngoscopy", "anesthesia"),
+    setting: testId("laryngoscopy", "setting"),
+    laterality: testId("laryngoscopy", "laterality"),
+    tolerance: testId("laryngoscopy", "tolerance"),
+    instrument: testId("laryngoscopy", "instrument"),
+    indication: testId("laryngoscopy", "indication"),
+    conclusion: testId("laryngoscopy", "conclusion"),
+    mobilityRight: testId("laryngoscopy", "mobility", "right"),
+    mobilityLeft: testId("laryngoscopy", "mobility", "left"),
+    positionRight: testId("laryngoscopy", "position", "right"),
+    positionLeft: testId("laryngoscopy", "position", "left"),
+    glottic: testId("laryngoscopy", "glottic"),
+    supraglottic: testId("laryngoscopy", "supraglottic"),
+    stroboscopyToggle: testId("laryngoscopy", "strobe", "toggle"),
+    rfsToggle: testId("laryngoscopy", "rfs", "toggle"),
+    grbasToggle: testId("laryngoscopy", "grbas", "toggle"),
+    feesToggle: testId("laryngoscopy", "fees", "toggle"),
+    pas: testId("laryngoscopy", "fees", "pas"),
+    folds: testId("laryngoscopy", "folds"),
+  },
 } as const;
 
 export function examinationMapTestId(mapId: string): string {
@@ -557,6 +614,74 @@ export function endoscopyComparisonTestId(
 
 export function endoscopyTrendTestId(publicId: string): string {
   return publicIdTestId("endoscopy.trend", publicId);
+}
+
+export function laryngoscopyExamTestId(publicId: string): string {
+  return publicIdTestId("laryngoscopy.exam", publicId);
+}
+
+export function laryngoscopyStructureTestId(
+  code: string,
+  laterality: string,
+): string {
+  return testId(
+    "laryngoscopy",
+    "structure",
+    examinationToken(code),
+    laterality,
+  );
+}
+
+export function laryngoscopyStructureControlTestId(
+  code: string,
+  laterality: string,
+  control: "focus" | "status" | "finding",
+): string {
+  return testId(
+    "laryngoscopy",
+    "structure",
+    examinationToken(code),
+    laterality,
+    control,
+  );
+}
+
+export function laryngoscopyComparisonTestId(
+  code: string,
+  laterality: string,
+): string {
+  return testId(
+    "laryngoscopy",
+    "comparison",
+    examinationToken(code),
+    laterality,
+  );
+}
+
+export function laryngoscopyTrendTestId(publicId: string): string {
+  return publicIdTestId("laryngoscopy.trend", publicId);
+}
+
+export function laryngoscopyLesionCellTestId(
+  laterality: string,
+  third: string,
+  surface: string,
+): string {
+  return testId(
+    "laryngoscopy",
+    "lesion",
+    laterality,
+    examinationToken(third),
+    examinationToken(surface),
+  );
+}
+
+export function laryngoscopyRfsTestId(item: string): string {
+  return testId("laryngoscopy", "rfs", examinationToken(item));
+}
+
+export function laryngoscopyGrbasTestId(item: string): string {
+  return testId("laryngoscopy", "grbas", examinationToken(item));
 }
 
 export function encounterComplaintTestId(code: string): string {

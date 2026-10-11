@@ -21,6 +21,7 @@ class AttachmentUploadUrlRequest(CamelModel):
     content_type: str = Field(min_length=3, max_length=100)
     size_bytes: int = Field(ge=1, le=2_147_483_648)  # 2 GiB hard cap
     patient_public_id: str | None = Field(default=None, min_length=26, max_length=26)
+    procedure_public_id: str | None = Field(default=None, min_length=26, max_length=26)
     caption: str | None = Field(default=None, max_length=255)
     laterality: Laterality | None = None
     body_site_concept_id: str | None = Field(default=None, min_length=26, max_length=26)
@@ -44,7 +45,9 @@ class AttachmentUploadUrlRequest(CamelModel):
             raise ValueError(msg)
         return name
 
-    @field_validator("body_site_concept_id", "caption", mode="before")
+    @field_validator(
+        "body_site_concept_id", "caption", "procedure_public_id", mode="before"
+    )
     @classmethod
     def blank_to_none(cls, value: object) -> object:
         if isinstance(value, str) and not value.strip():

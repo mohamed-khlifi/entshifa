@@ -2536,6 +2536,8 @@ export interface components {
             laterality?: string | null;
             /** Patientpublicid */
             patientPublicId: string | null;
+            /** Procedurepublicid */
+            procedurePublicId?: string | null;
             /** Processingstatus */
             processingStatus: string;
             /** Publicid */
@@ -2574,6 +2576,8 @@ export interface components {
             laterality?: components["schemas"]["Laterality"] | null;
             /** Patientpublicid */
             patientPublicId?: string | null;
+            /** Procedurepublicid */
+            procedurePublicId?: string | null;
             /** Sizebytes */
             sizeBytes: number;
         };
@@ -4032,6 +4036,7 @@ export interface components {
             procedureStatus: string;
             /** Publicid */
             publicId: string;
+            refluxFindingScore: components["schemas"]["RefluxFindingScoreRead"] | null;
             /** Residuesites */
             residueSites: components["schemas"]["CodeableConcept"][];
             /** Rfsscore */
@@ -6003,6 +6008,25 @@ export interface components {
             /** Recommendations */
             recommendations?: string | null;
         };
+        /** RefluxFindingScoreRead */
+        RefluxFindingScoreRead: {
+            /** Diffuselaryngealedema */
+            diffuseLaryngealEdema: number;
+            /** Erythema */
+            erythema: number;
+            /** Granuloma */
+            granuloma: number;
+            /** Posteriorcommissurehypertrophy */
+            posteriorCommissureHypertrophy: number;
+            /** Subglotticedema */
+            subglotticEdema: number;
+            /** Thickendolaryngealmucus */
+            thickEndolaryngealMucus: number;
+            /** Ventricularobliteration */
+            ventricularObliteration: number;
+            /** Vocalfoldedema */
+            vocalFoldEdema: number;
+        };
         /** RefluxFindingScoreWrite */
         RefluxFindingScoreWrite: {
             /** Diffuselaryngealedema */
@@ -6990,6 +7014,7 @@ export interface operations {
                 laterality?: string | null;
                 capturedFrom?: string | null;
                 capturedTo?: string | null;
+                procedurePublicId?: string | null;
                 limit?: number;
                 offset?: number;
             };

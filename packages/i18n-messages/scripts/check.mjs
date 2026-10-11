@@ -33,6 +33,7 @@ const NAMESPACES = [
   'documents',
   'examination',
   'endoscopy',
+  'laryngoscopy',
   'encounters',
   'prescriptions',
   'recalls',

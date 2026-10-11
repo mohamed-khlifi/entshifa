@@ -80,6 +80,7 @@ export const queryKeys = {
       laterality?: string;
       capturedFrom?: string;
       capturedTo?: string;
+      procedurePublicId?: string;
       limit?: number;
       offset?: number;
     }) => [...queryKeys.attachments.all, "list", filters] as const,
@@ -120,6 +121,13 @@ export const queryKeys = {
       [...queryKeys.endoscopy.all, "patient", patientId] as const,
     detail: (examId: string) =>
       [...queryKeys.endoscopy.all, "detail", examId] as const,
+  },
+  laryngoscopy: {
+    all: ["laryngoscopy"] as const,
+    patient: (patientId: string) =>
+      [...queryKeys.laryngoscopy.all, "patient", patientId] as const,
+    detail: (examId: string) =>
+      [...queryKeys.laryngoscopy.all, "detail", examId] as const,
   },
   diagnoses: {
     all: ["diagnoses"] as const,

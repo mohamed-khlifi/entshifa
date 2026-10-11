@@ -1,0 +1,146 @@
+import type { AnatomicalMapDefinition } from "@/lib/anatomy/types";
+
+const findings = {
+  valueSetCode: "laryngoscopy.findings",
+  defaultNormalCode: "FIND.LARYNX.NORMAL",
+} as const;
+
+const midline = { fixedLaterality: "midline" as const };
+
+/** Passage order from feature spec section 7.2. */
+export const larynxMap: AnatomicalMapDefinition = {
+  id: "larynx",
+  paired: true,
+  svg: "/anatomy/larynx.svg",
+  titleKey: "maps.larynx",
+  regions: [
+    {
+      id: "larynx.nasal-cavity",
+      pathId: "larynx-nasal-cavity",
+      labelKey: "larynx.regions.nasalCavity",
+      bodySiteCode: "ANAT.NASAL_CAVITY",
+      ...findings,
+    },
+    {
+      id: "larynx.nasopharynx",
+      pathId: "larynx-nasopharynx",
+      labelKey: "larynx.regions.nasopharynx",
+      bodySiteCode: "ANAT.NASAL.NASOPHARYNX",
+      ...findings,
+      ...midline,
+    },
+    {
+      id: "larynx.velum",
+      pathId: "larynx-velum",
+      labelKey: "larynx.regions.velum",
+      bodySiteCode: "ANAT.LARYNX.VELUM",
+      ...findings,
+      ...midline,
+    },
+    {
+      id: "larynx.tongue-base",
+      pathId: "larynx-tongue-base",
+      labelKey: "larynx.regions.tongueBase",
+      bodySiteCode: "ANAT.LARYNX.TONGUE_BASE",
+      ...findings,
+      ...midline,
+    },
+    {
+      id: "larynx.vallecula",
+      pathId: "larynx-vallecula",
+      labelKey: "larynx.regions.vallecula",
+      bodySiteCode: "ANAT.LARYNX.VALLECULA",
+      ...findings,
+    },
+    {
+      id: "larynx.epiglottis",
+      pathId: "larynx-epiglottis",
+      labelKey: "larynx.regions.epiglottis",
+      bodySiteCode: "ANAT.LARYNX.EPIGLOTTIS",
+      ...findings,
+      ...midline,
+    },
+    {
+      id: "larynx.aryepiglottic-fold",
+      pathId: "larynx-aryepiglottic-fold",
+      labelKey: "larynx.regions.aryepiglotticFold",
+      bodySiteCode: "ANAT.LARYNX.ARYEPIGLOTTIC_FOLD",
+      ...findings,
+    },
+    {
+      id: "larynx.arytenoid",
+      pathId: "larynx-arytenoid",
+      labelKey: "larynx.regions.arytenoid",
+      bodySiteCode: "ANAT.LARYNX.ARYTENOID",
+      ...findings,
+    },
+    {
+      id: "larynx.pyriform",
+      pathId: "larynx-pyriform",
+      labelKey: "larynx.regions.pyriform",
+      bodySiteCode: "ANAT.LARYNX.PYRIFORM",
+      ...findings,
+    },
+    {
+      id: "larynx.post-cricoid",
+      pathId: "larynx-post-cricoid",
+      labelKey: "larynx.regions.postCricoid",
+      bodySiteCode: "ANAT.LARYNX.POST_CRICOID",
+      ...findings,
+      ...midline,
+    },
+    {
+      id: "larynx.false-cord",
+      pathId: "larynx-false-cord",
+      labelKey: "larynx.regions.falseCord",
+      bodySiteCode: "ANAT.LARYNX.FALSE_CORD",
+      ...findings,
+    },
+    {
+      id: "larynx.ventricle",
+      pathId: "larynx-ventricle",
+      labelKey: "larynx.regions.ventricle",
+      bodySiteCode: "ANAT.LARYNX.VENTRICLE",
+      ...findings,
+    },
+    {
+      id: "larynx.vocal-fold",
+      pathId: "larynx-vocal-fold",
+      labelKey: "larynx.regions.vocalFold",
+      bodySiteCode: "ANAT.LARYNX.VOCAL_FOLD",
+      ...findings,
+    },
+    {
+      id: "larynx.anterior-commissure",
+      pathId: "larynx-anterior-commissure",
+      labelKey: "larynx.regions.anteriorCommissure",
+      bodySiteCode: "ANAT.LARYNX.ANTERIOR_COMMISSURE",
+      ...findings,
+      ...midline,
+    },
+    {
+      id: "larynx.posterior-commissure",
+      pathId: "larynx-posterior-commissure",
+      labelKey: "larynx.regions.posteriorCommissure",
+      bodySiteCode: "ANAT.LARYNX.POSTERIOR_COMMISSURE",
+      ...findings,
+      ...midline,
+    },
+    {
+      id: "larynx.subglottis",
+      pathId: "larynx-subglottis",
+      labelKey: "larynx.regions.subglottis",
+      bodySiteCode: "ANAT.LARYNX.SUBGLOTTIS",
+      ...findings,
+      ...midline,
+    },
+    {
+      id: "larynx.trachea",
+      pathId: "larynx-trachea",
+      labelKey: "larynx.regions.trachea",
+      bodySiteCode: "ANAT.LARYNX.TRACHEA",
+      ...findings,
+      ...midline,
+    },
+  ],
+};

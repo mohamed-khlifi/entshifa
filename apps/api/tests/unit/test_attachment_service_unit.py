@@ -71,6 +71,132 @@ async def test_request_upload_url_persists_pending(
 
 
 @pytest.mark.asyncio
+async def test_request_upload_url_unknown_procedure_is_404(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    session = AsyncMock()
+    clinic = MagicMock(public_id="01ARZ3NDEKTSV4RRFFQ69G5FB1")
+    execute_result = MagicMock()
+    execute_result.scalar_one_or_none.return_value = clinic
+    session.execute.return_value = execute_result
+    monkeypatch.setattr(
+        "ent.features.attachments.service.PatientRepository",
+        lambda *_args, **_kwargs: MagicMock(
+            get_visible=AsyncMock(return_value=MagicMock(id=3)),
+        ),
+    )
+    monkeypatch.setattr(
+        "ent.features.attachments.service.ProcedureRecordRepository",
+        lambda *_args, **_kwargs: MagicMock(
+            get_by_public_id=AsyncMock(return_value=None),
+        ),
+    )
+    monkeypatch.setattr(
+        "ent.features.attachments.service.get_redis",
+        AsyncMock(),
+    )
+    service = AttachmentService(session, settings=get_settings(), storage=AsyncMock())
+    body = AttachmentUploadUrlRequest(
+        category="endoscopy_video",
+        filename="clip.webm",
+        content_type="video/webm",
+        size_bytes=512,
+        patient_public_id="01ARZ3NDEKTSV4RRFFQ69G5FB8",
+        procedure_public_id="01ARZ3NDEKTSV4RRFFQ69G5FB9",
+    )
+    with pytest.raises(NotFoundError) as raised:
+        await service.request_upload_url(user=_clinician(), body=body)
+    assert raised.value.code == "procedure.not_found"
+
+
+@pytest.mark.asyncio
+async def test_request_upload_url_tags_procedure(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    session = AsyncMock()
+    clinic = MagicMock(public_id="01ARZ3NDEKTSV4RRFFQ69G5FB1")
+    execute_result = MagicMock()
+    execute_result.scalar_one_or_none.return_value = clinic
+    session.execute.return_value = execute_result
+    redis = AsyncMock()
+    monkeypatch.setattr(
+        "ent.features.attachments.service.get_redis",
+        AsyncMock(return_value=redis),
+    )
+    monkeypatch.setattr(
+        "ent.features.attachments.service.PatientRepository",
+        lambda *_args, **_kwargs: MagicMock(
+            get_visible=AsyncMock(return_value=MagicMock(id=9)),
+        ),
+    )
+    monkeypatch.setattr(
+        "ent.features.attachments.service.ProcedureRecordRepository",
+        lambda *_args, **_kwargs: MagicMock(
+            get_by_public_id=AsyncMock(return_value=MagicMock(id=44, patient_id=9)),
+        ),
+    )
+    storage = AsyncMock()
+    storage.create_presigned_upload.return_value = PresignedUrl(
+        url="https://storage.example/upload",
+        method="PUT",
+        expires_in_seconds=900,
+        headers={"Content-Type": "video/webm"},
+    )
+    service = AttachmentService(session, settings=get_settings(), storage=storage)
+    await service.request_upload_url(
+        user=_clinician(),
+        body=AttachmentUploadUrlRequest(
+            category="endoscopy_video",
+            filename="clip.webm",
+            content_type="video/webm",
+            size_bytes=512,
+            patient_public_id="01ARZ3NDEKTSV4RRFFQ69G5FB8",
+            procedure_public_id="01ARZ3NDEKTSV4RRFFQ69G5FB9",
+        ),
+    )
+    pending = json.loads(redis.setex.await_args.args[2])
+    assert pending["procedure_record_id"] == 44
+    assert pending["patient_id"] == 9
+
+
+@pytest.mark.asyncio
+async def test_request_upload_url_procedure_wrong_patient_is_404(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    session = AsyncMock()
+    clinic = MagicMock(public_id="01ARZ3NDEKTSV4RRFFQ69G5FB1")
+    execute_result = MagicMock()
+    execute_result.scalar_one_or_none.return_value = clinic
+    session.execute.return_value = execute_result
+    monkeypatch.setattr(
+        "ent.features.attachments.service.PatientRepository",
+        lambda *_args, **_kwargs: MagicMock(
+            get_visible=AsyncMock(return_value=MagicMock(id=9)),
+        ),
+    )
+    monkeypatch.setattr(
+        "ent.features.attachments.service.ProcedureRecordRepository",
+        lambda *_args, **_kwargs: MagicMock(
+            get_by_public_id=AsyncMock(return_value=MagicMock(id=44, patient_id=99)),
+        ),
+    )
+    service = AttachmentService(session, settings=get_settings(), storage=AsyncMock())
+    with pytest.raises(NotFoundError) as raised:
+        await service.request_upload_url(
+            user=_clinician(),
+            body=AttachmentUploadUrlRequest(
+                category="endoscopy_video",
+                filename="clip.webm",
+                content_type="video/webm",
+                size_bytes=512,
+                patient_public_id="01ARZ3NDEKTSV4RRFFQ69G5FB8",
+                procedure_public_id="01ARZ3NDEKTSV4RRFFQ69G5FB9",
+            ),
+        )
+    assert raised.value.code == "procedure.not_found"
+
+
+@pytest.mark.asyncio
 async def test_confirm_upload_missing_pending_token() -> None:
     session = AsyncMock()
     redis = AsyncMock()

@@ -59,6 +59,40 @@ export function examinationRegionLabel(
       return t("endo.regions.nasopharynx");
     case "endo.regions.postFess":
       return t("endo.regions.postFess");
+    case "larynx.regions.nasalCavity":
+      return t("larynx.regions.nasalCavity");
+    case "larynx.regions.nasopharynx":
+      return t("larynx.regions.nasopharynx");
+    case "larynx.regions.velum":
+      return t("larynx.regions.velum");
+    case "larynx.regions.tongueBase":
+      return t("larynx.regions.tongueBase");
+    case "larynx.regions.vallecula":
+      return t("larynx.regions.vallecula");
+    case "larynx.regions.epiglottis":
+      return t("larynx.regions.epiglottis");
+    case "larynx.regions.aryepiglotticFold":
+      return t("larynx.regions.aryepiglotticFold");
+    case "larynx.regions.arytenoid":
+      return t("larynx.regions.arytenoid");
+    case "larynx.regions.pyriform":
+      return t("larynx.regions.pyriform");
+    case "larynx.regions.postCricoid":
+      return t("larynx.regions.postCricoid");
+    case "larynx.regions.falseCord":
+      return t("larynx.regions.falseCord");
+    case "larynx.regions.ventricle":
+      return t("larynx.regions.ventricle");
+    case "larynx.regions.vocalFold":
+      return t("larynx.regions.vocalFold");
+    case "larynx.regions.anteriorCommissure":
+      return t("larynx.regions.anteriorCommissure");
+    case "larynx.regions.posteriorCommissure":
+      return t("larynx.regions.posteriorCommissure");
+    case "larynx.regions.subglottis":
+      return t("larynx.regions.subglottis");
+    case "larynx.regions.trachea":
+      return t("larynx.regions.trachea");
     case "oral.regions.lips":
       return t("oral.regions.lips");
     case "oral.regions.tongue":
@@ -117,6 +151,8 @@ export function examinationMapTitle(
       return t("maps.oralCavity");
     case "maps.neckLevels":
       return t("maps.neckLevels");
+    case "maps.larynx":
+      return t("maps.larynx");
     default:
       return t("regions.unknown");
   }

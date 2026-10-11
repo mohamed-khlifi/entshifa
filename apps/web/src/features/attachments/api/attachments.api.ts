@@ -17,6 +17,7 @@ export type AttachmentListParams = {
   laterality?: string;
   capturedFrom?: string;
   capturedTo?: string;
+  procedurePublicId?: string;
   limit?: number;
   offset?: number;
 };
@@ -44,6 +45,7 @@ export function fetchAttachments(
       laterality: params.laterality,
       capturedFrom: params.capturedFrom,
       capturedTo: params.capturedTo,
+      procedurePublicId: params.procedurePublicId,
       limit: params.limit,
       offset: params.offset,
     })}`,

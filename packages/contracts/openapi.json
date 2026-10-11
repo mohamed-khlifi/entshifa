@@ -719,6 +719,17 @@
             ],
             "title": "Patientpublicid"
           },
+          "procedurePublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Procedurepublicid"
+          },
           "processingStatus": {
             "title": "Processingstatus",
             "type": "string"
@@ -867,6 +878,19 @@
               }
             ],
             "title": "Patientpublicid"
+          },
+          "procedurePublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Procedurepublicid"
           },
           "sizeBytes": {
             "maximum": 2147483648.0,
@@ -5853,6 +5877,16 @@
             "title": "Publicid",
             "type": "string"
           },
+          "refluxFindingScore": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RefluxFindingScoreRead"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "residueSites": {
             "items": {
               "$ref": "#/components/schemas/CodeableConcept"
@@ -5989,6 +6023,7 @@
           "nonVibratingSegment",
           "feesPerformed",
           "rfsScore",
+          "refluxFindingScore",
           "grbas",
           "pasScore",
           "consistencies",
@@ -13152,6 +13187,54 @@
         "title": "ReferralInput",
         "type": "object"
       },
+      "RefluxFindingScoreRead": {
+        "properties": {
+          "diffuseLaryngealEdema": {
+            "title": "Diffuselaryngealedema",
+            "type": "integer"
+          },
+          "erythema": {
+            "title": "Erythema",
+            "type": "integer"
+          },
+          "granuloma": {
+            "title": "Granuloma",
+            "type": "integer"
+          },
+          "posteriorCommissureHypertrophy": {
+            "title": "Posteriorcommissurehypertrophy",
+            "type": "integer"
+          },
+          "subglotticEdema": {
+            "title": "Subglotticedema",
+            "type": "integer"
+          },
+          "thickEndolaryngealMucus": {
+            "title": "Thickendolaryngealmucus",
+            "type": "integer"
+          },
+          "ventricularObliteration": {
+            "title": "Ventricularobliteration",
+            "type": "integer"
+          },
+          "vocalFoldEdema": {
+            "title": "Vocalfoldedema",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "subglotticEdema",
+          "ventricularObliteration",
+          "erythema",
+          "vocalFoldEdema",
+          "diffuseLaryngealEdema",
+          "posteriorCommissureHypertrophy",
+          "granuloma",
+          "thickEndolaryngealMucus"
+        ],
+        "title": "RefluxFindingScoreRead",
+        "type": "object"
+      },
       "RefluxFindingScoreWrite": {
         "properties": {
           "diffuseLaryngealEdema": {
@@ -15859,6 +15942,24 @@
                 }
               ],
               "title": "Capturedto"
+            }
+          },
+          {
+            "in": "query",
+            "name": "procedurePublicId",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "minLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Procedurepublicid"
             }
           },
           {

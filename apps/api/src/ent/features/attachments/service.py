@@ -32,6 +32,9 @@ from ent.features.clinics.repository import ClinicRepository
 from ent.features.patients.models import Patient
 from ent.features.patients.policies import created_by_scope
 from ent.features.patients.repository import PatientRepository
+from ent.features.procedures.exceptions import ProcedureRecordNotFoundError
+from ent.features.procedures.models import ProcedureRecord
+from ent.features.procedures.repository import ProcedureRecordRepository
 from ent.features.terminology.repository import TerminologyRepository
 from ent.integrations.redis import get_redis
 from ent.integrations.storage import get_object_storage
@@ -80,6 +83,7 @@ def _to_read(
     attachment: Attachment,
     *,
     body_site: CodeableConcept | None = None,
+    procedure_public_id: str | None = None,
 ) -> AttachmentRead:
     variants = [
         MediaVariantRead(
@@ -106,6 +110,7 @@ def _to_read(
         caption=attachment.caption,
         processing_status=attachment.processing_status,
         patient_public_id=attachment.patient_public_id,
+        procedure_public_id=procedure_public_id,
         laterality=(
             attachment.laterality if isinstance(attachment.laterality, str) else None
         ),
@@ -149,6 +154,9 @@ class AttachmentService:
         if body.patient_public_id is not None:
             patient = await self._visible_patient(user, body.patient_public_id)
             patient_id = int(patient.id)
+        procedure = await self._procedure(
+            user, body.procedure_public_id, patient_id=patient_id
+        )
         body_site_id = await self._body_site_id(user, body.body_site_concept_id)
         object_ulid = new_ulid()
         upload_token = new_ulid()
@@ -177,6 +185,9 @@ class AttachmentService:
             "size_bytes": body.size_bytes,
             "patient_public_id": body.patient_public_id,
             "patient_id": patient_id,
+            "procedure_record_id": (
+                int(procedure.id) if procedure is not None else None
+            ),
             "caption": body.caption,
             "laterality": (
                 body.laterality.value if body.laterality is not None else None
@@ -258,6 +269,11 @@ class AttachmentService:
                 patient_public_id if isinstance(patient_public_id, str) else None
             ),
             patient_id=patient_id,
+            procedure_record_id=(
+                int(pending["procedure_record_id"])
+                if isinstance(pending.get("procedure_record_id"), int)
+                else None
+            ),
             laterality=(
                 str(pending["laterality"])
                 if isinstance(pending.get("laterality"), str)
@@ -300,7 +316,8 @@ class AttachmentService:
         laterality: str | None,
         captured_from: datetime | None,
         captured_to: datetime | None,
-        page: PaginationParams | None,
+        procedure_public_id: str | None = None,
+        page: PaginationParams | None = None,
         content_locale: str = "fr",
     ) -> PageSchema[AttachmentRead]:
         if category is not None and category not in _ALLOWED_CATEGORIES:
@@ -313,6 +330,9 @@ class AttachmentService:
             raise ValidationError(reason="captured_range")
 
         patient = await self._visible_patient(user, patient_public_id)
+        procedure = await self._procedure(
+            user, procedure_public_id, patient_id=int(patient.id)
+        )
         repo = AttachmentRepository(self._session, clinic_id=user.clinic_id)
         result = await repo.list_for_chart(
             patient_id=int(patient.id),
@@ -320,9 +340,11 @@ class AttachmentService:
             laterality=laterality,
             captured_from=start,
             captured_to=end,
+            procedure_record_id=(int(procedure.id) if procedure is not None else None),
             page=page,
         )
         sites = await self._body_sites(user, result.items, content_locale)
+        procedure_ids = await self._procedure_public_ids(user, result.items)
         AuditRecorder(self._session).record_access(
             action="list",
             entity_type="attachment",
@@ -338,6 +360,11 @@ class AttachmentService:
                     body_site=(
                         sites.get(int(row.body_site_concept_id))
                         if isinstance(row.body_site_concept_id, int)
+                        else None
+                    ),
+                    procedure_public_id=(
+                        procedure_ids.get(int(row.procedure_record_id))
+                        if isinstance(row.procedure_record_id, int)
                         else None
                     ),
                 )
@@ -447,7 +474,15 @@ class AttachmentService:
         site = None
         if isinstance(attachment.body_site_concept_id, int):
             site = sites.get(attachment.body_site_concept_id)
-        return _to_read(attachment, body_site=site)
+        procedure_ids = await self._procedure_public_ids(user, [attachment])
+        procedure_public_id = None
+        if isinstance(attachment.procedure_record_id, int):
+            procedure_public_id = procedure_ids.get(int(attachment.procedure_record_id))
+        return _to_read(
+            attachment,
+            body_site=site,
+            procedure_public_id=procedure_public_id,
+        )
 
     async def _body_sites(
         self,
@@ -479,6 +514,36 @@ class AttachmentService:
             )
             for concept_id, (public_id, code, display) in labels.items()
         }
+
+    async def _procedure(
+        self,
+        user: CurrentUser,
+        public_id: str | None,
+        *,
+        patient_id: int | None,
+    ) -> ProcedureRecord | None:
+        if public_id is None:
+            return None
+        row = await ProcedureRecordRepository(
+            self._session, clinic_id=user.clinic_id
+        ).get_by_public_id(public_id)
+        if row is None:
+            raise ProcedureRecordNotFoundError(public_id=public_id)
+        if patient_id is not None and int(row.patient_id) != patient_id:
+            raise ProcedureRecordNotFoundError(public_id=public_id)
+        return row
+
+    async def _procedure_public_ids(
+        self, user: CurrentUser, rows: list[Attachment]
+    ) -> dict[int, str]:
+        ids = {
+            int(row.procedure_record_id)
+            for row in rows
+            if isinstance(row.procedure_record_id, int)
+        }
+        return await ProcedureRecordRepository(
+            self._session, clinic_id=user.clinic_id
+        ).public_ids_by_id(ids)
 
     async def _visible_patient(self, user: CurrentUser, public_id: str) -> Patient:
         patient = await PatientRepository(

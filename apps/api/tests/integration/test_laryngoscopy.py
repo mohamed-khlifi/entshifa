@@ -101,6 +101,8 @@ async def test_laryngoscopy_scores_recompute_and_freeze_on_sign() -> None:
         assert created.status_code == 201, created.text
         body = created.json()
         assert body["rfsScore"] == 0
+        assert body["refluxFindingScore"]["subglotticEdema"] == 0
+        assert body["refluxFindingScore"]["granuloma"] == 0
         assert body["grbas"]["total"] == 5
         assert body["pasScore"] == 2
         assert body["feesPerformed"] is True
@@ -118,6 +120,17 @@ async def test_laryngoscopy_scores_recompute_and_freeze_on_sign() -> None:
         }
         exam_id = body["publicId"]
         procedure_id = body["procedureId"]
+
+        unknown_procedure = await client.get(
+            "/api/v1/attachments",
+            headers=headers,
+            params={
+                "patientPublicId": patient_id,
+                "procedurePublicId": new_ulid(),
+            },
+        )
+        assert unknown_procedure.status_code == 404
+        assert unknown_procedure.json()["code"] == "procedure.not_found"
 
         listed = await client.get(
             f"/api/v1/patients/{patient_id}/laryngoscopies",

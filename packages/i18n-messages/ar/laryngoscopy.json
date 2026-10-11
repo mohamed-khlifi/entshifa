@@ -1,0 +1,240 @@
+{
+  "title": "تنظير الحنجرة",
+  "loading": "جارٍ تحميل تنظير الحنجرة…",
+  "loadError": "تعذر تحميل تنظير الحنجرة.",
+  "empty": "لا يوجد تنظير حنجرة مسجّل لهذا المريض.",
+  "newExam": "تنظير حنجرة جديد",
+  "listTitle": "الفحوصات",
+  "dirty": "هذا التنظير فيه تغييرات غير محفوظة.",
+  "conflict": "حُدّث هذا التنظير في مكان آخر. أعد تحميله قبل الحفظ.",
+  "templates": {
+    "group": "قوالب",
+    "preThyroid": "فحص ما قبل استئصال الدرق",
+    "postThyroid": "فحص ما بعد استئصال الدرق",
+    "paralysis": "تقييم الشلل",
+    "fees": "دراسة البلع بالمنظار",
+    "pediatric": "مجرى الهواء عند الأطفال",
+    "tracheostomy": "فحص فغر الرغامى",
+    "preThyroidHint": "وثّق حركة الحبلين الصوتيين قبل جراحة الدرق.",
+    "postThyroidHint": "قارن حركة الحبلين مع الفحص السابق.",
+    "paralysisHint": "سجّل الحركة والوضعية وحركة الطرجهالي.",
+    "feesHint": "سجّل القوام المختبر ومواقع البقايا ودرجة PAS.",
+    "pediatricHint": "ركّز على لسان المزمار والقلنسوة وتحت المزمار والقصبة.",
+    "tracheostomyHint": "ركّز على القصبة وتحت المزمار."
+  },
+  "fields": {
+    "performedAt": "أُجري",
+    "scope": "المنظار",
+    "anesthesia": "التخدير",
+    "setting": "المكان",
+    "instrument": "الأداة",
+    "indication": "الاستطباب",
+    "tolerance": "التحمل",
+    "conclusion": "الاستنتاج",
+    "laterality": "الجانب",
+    "mobility": "الحركة",
+    "position": "الوضعية",
+    "glottic": "إغلاق المزمار",
+    "supraglottic": "النشاط فوق المزمار",
+    "rightFold": "الحبل الصوتي الأيمن",
+    "leftFold": "الحبل الصوتي الأيسر"
+  },
+  "scope": {
+    "flexibleFiberoptic": "مرن ليفي",
+    "flexibleDistalChip": "مرن برقاقة طرفية",
+    "rigid70": "صلب 70°",
+    "rigid90": "صلب 90°"
+  },
+  "anesthesia": {
+    "none": "بدون",
+    "topicalSpray": "بخاخ موضعي",
+    "localInfiltration": "حقن موضعي",
+    "general": "عام"
+  },
+  "setting": {
+    "office": "العيادة",
+    "ot": "غرفة العمليات"
+  },
+  "tolerance": {
+    "unset": "غير مسجّل",
+    "wellTolerated": "تحمل جيد",
+    "mildDiscomfort": "انزعاج خفيف",
+    "moderateDiscomfort": "انزعاج متوسط",
+    "poorlyTolerated": "تحمل ضعيف",
+    "aborted": "أُوقف"
+  },
+  "laterality": {
+    "bilateral": "ثنائي",
+    "right": "أيمن",
+    "left": "أيسر",
+    "midline": "ناصف",
+    "na": "غير منطبق"
+  },
+  "mobility": {
+    "normal": "طبيعي",
+    "hypomobile": "نقص حركة",
+    "immobile": "ثابت",
+    "paradoxical": "متناقض"
+  },
+  "position": {
+    "unset": "غير مسجّل",
+    "median": "ناصف",
+    "paramedian": "جانب ناصف",
+    "intermediate": "متوسط",
+    "lateral": "وحشي"
+  },
+  "glottic": {
+    "complete": "كامل",
+    "anteriorGap": "فجوة أمامية",
+    "posteriorGap": "فجوة خلفية",
+    "spindle": "مغزلي",
+    "hourglass": "ساعة رملية",
+    "irregular": "غير منتظم",
+    "incomplete": "ناقص"
+  },
+  "supraglottic": {
+    "unset": "غير مسجّل",
+    "none": "لا يوجد",
+    "anteroposterior": "أمامي خلفي",
+    "mediolateral": "إنسي وحشي",
+    "sphincteric": "مصري"
+  },
+  "strobe": {
+    "title": "التنظير الومضي",
+    "include": "تسجيل التنظير الومضي",
+    "symmetry": "التناظر",
+    "periodicity": "الدورية",
+    "amplitudeRight": "السعة يمين",
+    "amplitudeLeft": "السعة يسار",
+    "waveRight": "الموجة المخاطية يمين",
+    "waveLeft": "الموجة المخاطية يسار",
+    "phaseClosure": "إغلاق الطور",
+    "phaseSymmetry": "تناظر الطور",
+    "vertical": "المستوى العمودي",
+    "nonVibrating": "الجزء غير المهتز",
+    "symmetric": "متناظر",
+    "asymmetric": "غير متناظر",
+    "regular": "منتظم",
+    "irregular": "غير منتظم",
+    "normal": "طبيعي",
+    "reduced": "منخفض",
+    "absent": "غائب",
+    "phaseNormal": "طبيعي",
+    "predominantlyOpen": "مفتوح غالباً",
+    "predominantlyClosed": "مغلق غالباً",
+    "alwaysOpen": "مفتوح دائماً",
+    "onPlane": "على المستوى",
+    "offPlaneRight": "الأيمن أخفض",
+    "offPlaneLeft": "الأيسر أخفض",
+    "none": "لا يوجد",
+    "right": "أيمن",
+    "left": "أيسر",
+    "bilateral": "ثنائي",
+    "optionalUnset": "غير مسجّل"
+  },
+  "structures": {
+    "title": "البُنى",
+    "finding": "الموجودة",
+    "findingEmpty": "اختر موجودة",
+    "status": "الحالة"
+  },
+  "status": {
+    "unset": "غير مسجّل",
+    "normal": "طبيعي",
+    "abnormal": "غير طبيعي",
+    "notExamined": "غير مرئي",
+    "unknown": "غير معروف"
+  },
+  "lesions": {
+    "title": "آفات الحبل الصوتي",
+    "finding": "الآفة",
+    "size": "الحجم (مم)",
+    "reinke": "درجة راينكه",
+    "add": "وضع الآفة",
+    "remove": "إزالة",
+    "empty": "لا توجد آفة على مخطط الحبل."
+  },
+  "scores": {
+    "title": "الدرجات",
+    "rfs": "درجة موجودات الجزر",
+    "grbas": "GRBAS",
+    "pas": "مقياس الاختراق والشفط",
+    "includeRfs": "تسجيل بنود RFS",
+    "includeGrbas": "تسجيل GRBAS",
+    "includeFees": "تسجيل FEES",
+    "pending": "تظهر المجاميع المحسوبة بعد الحفظ.",
+    "total": "المجموع",
+    "other": "درجة",
+    "items": {
+      "subglotticEdema": "وذمة تحت المزمار",
+      "ventricularObliteration": "انمحاء البطين",
+      "erythema": "احمرار",
+      "vocalFoldEdema": "وذمة الحبل الصوتي",
+      "diffuseLaryngealEdema": "وذمة حنجرية منتشرة",
+      "posteriorCommissureHypertrophy": "ضخامة الصوار الخلفي",
+      "granuloma": "ورم حبيبي",
+      "thickEndolaryngealMucus": "مخاط كثيف داخل الحنجرة",
+      "grade": "الدرجة",
+      "roughness": "الخشونة",
+      "breathiness": "النفَس",
+      "asthenia": "الوهن",
+      "strain": "الإجهاد"
+    }
+  },
+  "fees": {
+    "title": "FEES",
+    "consistencies": "القوام المختبر",
+    "residue": "مواقع البقايا"
+  },
+  "comparison": {
+    "title": "المقارنة",
+    "empty": "لا يوجد تنظير سابق للمقارنة.",
+    "structure": "البنية",
+    "previous": "السابق",
+    "current": "الحالي",
+    "changed": "تغير",
+    "unchanged": "بدون تغير",
+    "notRecorded": "غير مسجّل",
+    "trend": "اتجاه الدرجات",
+    "mobility": "الحركة"
+  },
+  "video": {
+    "title": "الفيديو",
+    "pickStructure": "اختر بنية لإرفاق مقطع.",
+    "needsStudy": "احفظ التنظير قبل إرفاق مقطع.",
+    "upload": "رفع مقطع",
+    "capture": "الكاميرا",
+    "record": "تسجيل مقطع",
+    "stop": "إيقاف",
+    "empty": "لا يوجد مقطع مرفق بهذا الفحص.",
+    "current": "هذا الفحص",
+    "previous": "الفحص السابق",
+    "cameraError": "تعذر فتح الكاميرا.",
+    "tooLong": "المقاطع محدودة بـ 15 ثانية."
+  },
+  "actions": {
+    "save": "حفظ تنظير الحنجرة",
+    "saved": "حُفظ تنظير الحنجرة.",
+    "signed": "وُقّع تنظير الحنجرة.",
+    "sign": "توقيع تنظير الحنجرة",
+    "confirmSign": "وقّع واقفل هذا التنظير",
+    "cancelSign": "إلغاء",
+    "reload": "إعادة التحميل"
+  },
+  "recordStatus": {
+    "draft": "مسودة",
+    "signed": "موقّع",
+    "amended": "ملحق",
+    "other": "تنظير الحنجرة"
+  },
+  "validation": {
+    "finding": "اختر موجودة لكل بنية غير طبيعية.",
+    "performedAt": "أدخل وقت إجراء التنظير.",
+    "position": "سجّل وضعية الحبل عندما تكون الحركة ثابتة.",
+    "reinke": "سجّل درجة راينكه من 1 إلى 3.",
+    "rfs": "أدخل كل بنود RFS أو أوقف الدرجة.",
+    "grbas": "أدخل كل بنود GRBAS أو أوقف الدرجة.",
+    "fees": "أدخل درجة PAS وقواماً واحداً على الأقل.",
+    "strobe": "أكمل حقول التنظير الومضي المطلوبة أو أوقفه."
+  }
+}

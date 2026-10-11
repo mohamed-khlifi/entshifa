@@ -22,6 +22,17 @@ class GrbasRead(CamelModel):
     total: int
 
 
+class RefluxFindingScoreRead(CamelModel):
+    subglottic_edema: int
+    ventricular_obliteration: int
+    erythema: int
+    vocal_fold_edema: int
+    diffuse_laryngeal_edema: int
+    posterior_commissure_hypertrophy: int
+    granuloma: int
+    thick_endolaryngeal_mucus: int
+
+
 class LaryngoscopyStructureRead(CamelModel):
     body_site: CodeableConcept
     laterality: str
@@ -79,6 +90,7 @@ class LaryngoscopyExamRead(CamelModel):
     non_vibrating_segment: str | None
     fees_performed: bool
     rfs_score: int | None
+    reflux_finding_score: RefluxFindingScoreRead | None
     grbas: GrbasRead | None
     pas_score: int | None
     consistencies: list[CodeableConcept]

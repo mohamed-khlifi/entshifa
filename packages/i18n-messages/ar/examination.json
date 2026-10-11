@@ -5,6 +5,7 @@
     "tympanicMembrane": "غشاء الطبلة",
     "nasalCavity": "جوف الأنف",
     "nasalEndoscopy": "تنظير الأنف",
+    "larynx": "الحنجرة",
     "oralCavity": "جوف الفم والبلعوم الفموي",
     "neckLevels": "العنق"
   },
@@ -110,6 +111,27 @@
       "olfactoryCleft": "الشق الشمي",
       "nasopharynx": "البلعوم الأنفي",
       "postFess": "جوف ما بعد جراحة الجيوب"
+    }
+  },
+  "larynx": {
+    "regions": {
+      "nasalCavity": "جوف الأنف",
+      "nasopharynx": "البلعوم الأنفي",
+      "velum": "الحنك الرخو",
+      "tongueBase": "قاعدة اللسان",
+      "vallecula": "القلنسوة",
+      "epiglottis": "لسان المزمار",
+      "aryepiglotticFold": "الطية الطرجهالية اللسانمزمارية",
+      "arytenoid": "الطرجهالي",
+      "pyriform": "الجيب الكمثري",
+      "postCricoid": "المنطقة خلف الحلقي",
+      "falseCord": "الحبل الكاذب",
+      "ventricle": "البطين",
+      "vocalFold": "الحبل الصوتي",
+      "anteriorCommissure": "الصوار الأمامي",
+      "posteriorCommissure": "الصوار الخلفي",
+      "subglottis": "تحت المزمار",
+      "trachea": "القصبة العلوية"
     }
   },
   "oral": {

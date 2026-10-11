@@ -37,6 +37,9 @@ async def list_attachments(
     laterality: str | None = Query(default=None, max_length=20),
     captured_from: datetime | None = Query(default=None, alias="capturedFrom"),
     captured_to: datetime | None = Query(default=None, alias="capturedTo"),
+    procedure_public_id: str | None = Query(
+        default=None, alias="procedurePublicId", min_length=26, max_length=26
+    ),
     limit: int = Query(default=24, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
     user: CurrentUser = Depends(require(Permission.ATTACHMENT_READ)),
@@ -50,6 +53,7 @@ async def list_attachments(
         laterality=laterality,
         captured_from=captured_from,
         captured_to=captured_to,
+        procedure_public_id=procedure_public_id,
         page=PaginationParams(limit=limit, offset=offset),
         content_locale=content_locale,
     )

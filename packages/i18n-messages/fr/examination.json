@@ -5,6 +5,7 @@
     "tympanicMembrane": "Membrane tympanique",
     "nasalCavity": "Fosse nasale",
     "nasalEndoscopy": "Endoscopie nasale",
+    "larynx": "Larynx",
     "oralCavity": "Cavité orale et oropharynx",
     "neckLevels": "Cou"
   },
@@ -110,6 +111,27 @@
       "olfactoryCleft": "Fente olfactive",
       "nasopharynx": "Nasopharynx",
       "postFess": "Cavité après chirurgie endoscopique"
+    }
+  },
+  "larynx": {
+    "regions": {
+      "nasalCavity": "Fosse nasale",
+      "nasopharynx": "Nasopharynx",
+      "velum": "Voile du palais",
+      "tongueBase": "Base de langue",
+      "vallecula": "Vallécule",
+      "epiglottis": "Épiglotte",
+      "aryepiglotticFold": "Repli aryépiglottique",
+      "arytenoid": "Aryténoïde",
+      "pyriform": "Sinus piriforme",
+      "postCricoid": "Région post-cricoïdienne",
+      "falseCord": "Bande ventriculaire",
+      "ventricle": "Ventricule",
+      "vocalFold": "Corde vocale",
+      "anteriorCommissure": "Commissure antérieure",
+      "posteriorCommissure": "Commissure postérieure",
+      "subglottis": "Sous-glotte",
+      "trachea": "Trachée supérieure"
     }
   },
   "oral": {

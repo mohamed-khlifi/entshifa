@@ -5,6 +5,7 @@
     "tympanicMembrane": "Tympanic membrane",
     "nasalCavity": "Nasal cavity",
     "nasalEndoscopy": "Nasal endoscopy",
+    "larynx": "Larynx",
     "oralCavity": "Oral cavity and oropharynx",
     "neckLevels": "Neck"
   },
@@ -110,6 +111,27 @@
       "olfactoryCleft": "Olfactory cleft",
       "nasopharynx": "Nasopharynx",
       "postFess": "Post-FESS cavity"
+    }
+  },
+  "larynx": {
+    "regions": {
+      "nasalCavity": "Nasal cavity",
+      "nasopharynx": "Nasopharynx",
+      "velum": "Velum",
+      "tongueBase": "Base of tongue",
+      "vallecula": "Vallecula",
+      "epiglottis": "Epiglottis",
+      "aryepiglotticFold": "Aryepiglottic fold",
+      "arytenoid": "Arytenoid",
+      "pyriform": "Pyriform sinus",
+      "postCricoid": "Post-cricoid area",
+      "falseCord": "False cord",
+      "ventricle": "Ventricle",
+      "vocalFold": "True vocal fold",
+      "anteriorCommissure": "Anterior commissure",
+      "posteriorCommissure": "Posterior commissure",
+      "subglottis": "Subglottis",
+      "trachea": "Upper trachea"
     }
   },
   "oral": {

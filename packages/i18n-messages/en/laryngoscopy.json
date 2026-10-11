@@ -1,0 +1,240 @@
+{
+  "title": "Laryngoscopy",
+  "loading": "Loading laryngoscopies…",
+  "loadError": "Laryngoscopies could not be loaded.",
+  "empty": "No laryngoscopy is recorded for this patient.",
+  "newExam": "New laryngoscopy",
+  "listTitle": "Studies",
+  "dirty": "This laryngoscopy has unsaved changes.",
+  "conflict": "This laryngoscopy was updated elsewhere. Reload it before saving.",
+  "templates": {
+    "group": "Templates",
+    "preThyroid": "Pre-thyroidectomy check",
+    "postThyroid": "Post-thyroidectomy check",
+    "paralysis": "Paralysis workup",
+    "fees": "FEES swallowing study",
+    "pediatric": "Pediatric airway",
+    "tracheostomy": "Tracheostomy check",
+    "preThyroidHint": "Document vocal fold mobility before thyroid surgery.",
+    "postThyroidHint": "Compare vocal fold mobility with the previous study.",
+    "paralysisHint": "Record mobility, position, and arytenoid movement.",
+    "feesHint": "Record consistencies tested, residue sites, and the PAS grade.",
+    "pediatricHint": "Focus on the epiglottis, vallecula, subglottis, and trachea.",
+    "tracheostomyHint": "Focus on the trachea and subglottis."
+  },
+  "fields": {
+    "performedAt": "Performed",
+    "scope": "Scope",
+    "anesthesia": "Anesthesia",
+    "setting": "Setting",
+    "instrument": "Instrument",
+    "indication": "Indication",
+    "tolerance": "Tolerance",
+    "conclusion": "Conclusion",
+    "laterality": "Laterality",
+    "mobility": "Mobility",
+    "position": "Position",
+    "glottic": "Glottic closure",
+    "supraglottic": "Supraglottic pattern",
+    "rightFold": "Right vocal fold",
+    "leftFold": "Left vocal fold"
+  },
+  "scope": {
+    "flexibleFiberoptic": "Flexible fiberoptic",
+    "flexibleDistalChip": "Flexible distal chip",
+    "rigid70": "Rigid 70°",
+    "rigid90": "Rigid 90°"
+  },
+  "anesthesia": {
+    "none": "None",
+    "topicalSpray": "Topical spray",
+    "localInfiltration": "Local infiltration",
+    "general": "General"
+  },
+  "setting": {
+    "office": "Office",
+    "ot": "Operating room"
+  },
+  "tolerance": {
+    "unset": "Not recorded",
+    "wellTolerated": "Well tolerated",
+    "mildDiscomfort": "Mild discomfort",
+    "moderateDiscomfort": "Moderate discomfort",
+    "poorlyTolerated": "Poorly tolerated",
+    "aborted": "Aborted"
+  },
+  "laterality": {
+    "bilateral": "Bilateral",
+    "right": "Right",
+    "left": "Left",
+    "midline": "Midline",
+    "na": "Not applicable"
+  },
+  "mobility": {
+    "normal": "Normal",
+    "hypomobile": "Hypomobile",
+    "immobile": "Immobile",
+    "paradoxical": "Paradoxical"
+  },
+  "position": {
+    "unset": "Not recorded",
+    "median": "Median",
+    "paramedian": "Paramedian",
+    "intermediate": "Intermediate",
+    "lateral": "Lateral"
+  },
+  "glottic": {
+    "complete": "Complete",
+    "anteriorGap": "Anterior gap",
+    "posteriorGap": "Posterior gap",
+    "spindle": "Spindle",
+    "hourglass": "Hourglass",
+    "irregular": "Irregular",
+    "incomplete": "Incomplete"
+  },
+  "supraglottic": {
+    "unset": "Not recorded",
+    "none": "None",
+    "anteroposterior": "Anteroposterior",
+    "mediolateral": "Mediolateral",
+    "sphincteric": "Sphincteric"
+  },
+  "strobe": {
+    "title": "Stroboscopy",
+    "include": "Record stroboscopy",
+    "symmetry": "Symmetry",
+    "periodicity": "Periodicity",
+    "amplitudeRight": "Amplitude right",
+    "amplitudeLeft": "Amplitude left",
+    "waveRight": "Mucosal wave right",
+    "waveLeft": "Mucosal wave left",
+    "phaseClosure": "Phase closure",
+    "phaseSymmetry": "Phase symmetry",
+    "vertical": "Vertical level",
+    "nonVibrating": "Non-vibrating segment",
+    "symmetric": "Symmetric",
+    "asymmetric": "Asymmetric",
+    "regular": "Regular",
+    "irregular": "Irregular",
+    "normal": "Normal",
+    "reduced": "Reduced",
+    "absent": "Absent",
+    "phaseNormal": "Normal",
+    "predominantlyOpen": "Predominantly open",
+    "predominantlyClosed": "Predominantly closed",
+    "alwaysOpen": "Always open",
+    "onPlane": "On plane",
+    "offPlaneRight": "Right lower",
+    "offPlaneLeft": "Left lower",
+    "none": "None",
+    "right": "Right",
+    "left": "Left",
+    "bilateral": "Bilateral",
+    "optionalUnset": "Not recorded"
+  },
+  "structures": {
+    "title": "Structures",
+    "finding": "Finding",
+    "findingEmpty": "Choose a finding",
+    "status": "Status"
+  },
+  "status": {
+    "unset": "Not recorded",
+    "normal": "Normal",
+    "abnormal": "Abnormal",
+    "notExamined": "Not visualized",
+    "unknown": "Unknown"
+  },
+  "lesions": {
+    "title": "Vocal fold lesions",
+    "finding": "Lesion",
+    "size": "Size (mm)",
+    "reinke": "Reinke grade",
+    "add": "Place lesion",
+    "remove": "Remove",
+    "empty": "No lesion is placed on the fold diagram."
+  },
+  "scores": {
+    "title": "Scores",
+    "rfs": "Reflux Finding Score",
+    "grbas": "GRBAS",
+    "pas": "Penetration-Aspiration Scale",
+    "includeRfs": "Record RFS items",
+    "includeGrbas": "Record GRBAS",
+    "includeFees": "Record FEES",
+    "pending": "Saved exams show the server totals.",
+    "total": "Total",
+    "other": "Score",
+    "items": {
+      "subglotticEdema": "Subglottic edema",
+      "ventricularObliteration": "Ventricular obliteration",
+      "erythema": "Erythema",
+      "vocalFoldEdema": "Vocal fold edema",
+      "diffuseLaryngealEdema": "Diffuse laryngeal edema",
+      "posteriorCommissureHypertrophy": "Posterior commissure hypertrophy",
+      "granuloma": "Granuloma",
+      "thickEndolaryngealMucus": "Thick endolaryngeal mucus",
+      "grade": "Grade",
+      "roughness": "Roughness",
+      "breathiness": "Breathiness",
+      "asthenia": "Asthenia",
+      "strain": "Strain"
+    }
+  },
+  "fees": {
+    "title": "FEES",
+    "consistencies": "Consistencies tested",
+    "residue": "Residue sites"
+  },
+  "comparison": {
+    "title": "Comparison",
+    "empty": "No earlier laryngoscopy to compare.",
+    "structure": "Structure",
+    "previous": "Previous",
+    "current": "Current",
+    "changed": "Changed",
+    "unchanged": "Unchanged",
+    "notRecorded": "Not recorded",
+    "trend": "Score trend",
+    "mobility": "Mobility"
+  },
+  "video": {
+    "title": "Video",
+    "pickStructure": "Choose a structure to attach a clip.",
+    "needsStudy": "Save the laryngoscopy before attaching a clip.",
+    "upload": "Upload clip",
+    "capture": "Camera",
+    "record": "Record clip",
+    "stop": "Stop",
+    "empty": "No clip is attached to this study.",
+    "current": "This study",
+    "previous": "Previous study",
+    "cameraError": "The camera could not be opened.",
+    "tooLong": "Clips are limited to 15 seconds."
+  },
+  "actions": {
+    "save": "Save laryngoscopy",
+    "saved": "Laryngoscopy saved.",
+    "signed": "Laryngoscopy signed.",
+    "sign": "Sign laryngoscopy",
+    "confirmSign": "Sign and lock this laryngoscopy",
+    "cancelSign": "Cancel",
+    "reload": "Reload"
+  },
+  "recordStatus": {
+    "draft": "Draft",
+    "signed": "Signed",
+    "amended": "Addendum",
+    "other": "Laryngoscopy"
+  },
+  "validation": {
+    "finding": "Choose a finding for each abnormal structure.",
+    "performedAt": "Enter when the laryngoscopy was performed.",
+    "position": "Record fold position when mobility is immobile.",
+    "reinke": "Record a Reinke grade from 1 to 3.",
+    "rfs": "Enter every Reflux Finding Score item, or turn the score off.",
+    "grbas": "Enter every GRBAS item, or turn the score off.",
+    "fees": "Enter the PAS grade and at least one consistency.",
+    "strobe": "Complete the required stroboscopy fields, or turn stroboscopy off."
+  }
+}

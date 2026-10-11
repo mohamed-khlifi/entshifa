@@ -43,6 +43,7 @@ class AttachmentRead(CamelModel):
     caption: str | None
     processing_status: str
     patient_public_id: str | None
+    procedure_public_id: str | None = None
     laterality: str | None = None
     body_site: CodeableConcept | None = None
     is_consented_for_teaching: bool = False

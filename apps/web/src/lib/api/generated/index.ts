@@ -216,5 +216,22 @@ export type ScoreStampRead = Schemas["ScoreStampRead"];
 export type PageSchemaEndoscopyExamRead =
   Schemas["PageSchema_EndoscopyExamRead_"];
 export type ProcedureSign = Schemas["ProcedureSign"];
+export type LaryngoscopyCreate = Schemas["LaryngoscopyCreate"];
+export type LaryngoscopyUpdate = Schemas["LaryngoscopyUpdate"];
+export type LaryngoscopyExamRead = Schemas["LaryngoscopyExamRead"];
+export type LaryngoscopyStructureRead = Schemas["LaryngoscopyStructureRead"];
+export type LaryngoscopyStructureWrite = Schemas["LaryngoscopyStructureWrite"];
+export type VocalFoldWrite = Schemas["VocalFoldWrite"];
+export type VocalFoldRead = Schemas["VocalFoldRead"];
+export type VocalFoldLesionWrite = Schemas["VocalFoldLesionWrite"];
+export type VocalFoldLesionRead = Schemas["VocalFoldLesionRead"];
+export type StroboscopyWrite = Schemas["StroboscopyWrite"];
+export type RefluxFindingScoreWrite = Schemas["RefluxFindingScoreWrite"];
+export type RefluxFindingScoreRead = Schemas["RefluxFindingScoreRead"];
+export type GrbasWrite = Schemas["GrbasWrite"];
+export type GrbasRead = Schemas["GrbasRead"];
+export type FeesWrite = Schemas["FeesWrite"];
+export type PageSchemaLaryngoscopyExamRead =
+  Schemas["PageSchema_LaryngoscopyExamRead_"];
 export type CalculationRead = Schemas["CalculationRead"];
 export type FlagRead = Schemas["FlagRead"];
