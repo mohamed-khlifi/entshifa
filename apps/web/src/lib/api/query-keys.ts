@@ -58,6 +58,8 @@ export const queryKeys = {
       [...queryKeys.documents.all, "template", publicId] as const,
     patient: (patientPublicId: string) =>
       [...queryKeys.documents.all, "patient", patientPublicId] as const,
+    encounter: (encounterPublicId: string) =>
+      [...queryKeys.documents.all, "encounter", encounterPublicId] as const,
     preview: (publicId: string) =>
       [...queryKeys.documents.all, "preview", publicId] as const,
   },

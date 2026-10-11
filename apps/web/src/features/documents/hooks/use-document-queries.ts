@@ -12,6 +12,7 @@ import {
   fetchDocumentTemplates,
   fetchPatientDocuments,
   finalizeDocument,
+  previewDocumentBatch,
   previewDocument,
   previewTemplate,
   publishTemplateVersion,
@@ -19,6 +20,7 @@ import {
 import { documentErrorText } from "../lib/errors";
 import { queryKeys } from "@/lib/api/query-keys";
 import type {
+  DocumentBatchPreviewRequest,
   DocumentCreate,
   DocumentTemplateCreate,
   DocumentTemplatePreview,
@@ -66,6 +68,21 @@ export function usePatientDocumentsQuery(patientPublicId: string) {
   });
 }
 
+export function useEncounterDocumentsQuery(
+  patientPublicId: string,
+  encounterPublicId: string,
+  enabled: boolean,
+) {
+  const scope = useScope();
+  return useQuery({
+    queryKey: queryKeys.documents.encounter(encounterPublicId),
+    queryFn: () =>
+      fetchPatientDocuments(scope, patientPublicId, encounterPublicId),
+    enabled: scope.enabled && enabled && encounterPublicId.length > 0,
+    staleTime: 0,
+  });
+}
+
 export function useDocumentPreviewQuery(documentId: string, enabled: boolean) {
   const scope = useScope();
   return useQuery({
@@ -86,7 +103,22 @@ export function useCreateDocumentMutation(patientPublicId: string) {
       await client.invalidateQueries({
         queryKey: queryKeys.documents.patient(patientPublicId),
       });
+      await client.invalidateQueries({
+        queryKey: queryKeys.documents.all,
+      });
     },
+    onError: (error) => {
+      toast.error(documentErrorText(tErrors, error));
+    },
+  });
+}
+
+export function useBatchPreviewMutation(encounterPublicId: string) {
+  const scope = useScope();
+  const tErrors = useTranslations("errors");
+  return useMutation({
+    mutationFn: (body: DocumentBatchPreviewRequest) =>
+      previewDocumentBatch(scope, encounterPublicId, body),
     onError: (error) => {
       toast.error(documentErrorText(tErrors, error));
     },

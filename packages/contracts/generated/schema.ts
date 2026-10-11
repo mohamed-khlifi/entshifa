@@ -903,6 +903,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/encounters/{encounter_id}/documents/batch-preview": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Batch Preview Documents */
+        post: operations["batch_preview_documents_api_v1_encounters__encounter_id__documents_batch_preview_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/encounters/{encounter_id}/sign": {
         parameters: {
             query?: never;
@@ -2243,6 +2260,16 @@ export interface components {
             /** Version */
             version: string;
         };
+        /** CertificateInput */
+        CertificateInput: {
+            /** Bodytext */
+            bodyText: string;
+            /**
+             * Purpose
+             * @enum {string}
+             */
+            purpose: "fitness" | "swimming_tubes" | "air_travel" | "diving" | "voice" | "attendance" | "other";
+        };
         /** ClinicMembershipList */
         ClinicMembershipList: {
             /** Items */
@@ -2483,6 +2510,11 @@ export interface components {
             /** Sortorder */
             sortOrder?: number | null;
         };
+        /** ConsultationReportInput */
+        ConsultationReportInput: {
+            /** Conclusion */
+            conclusion?: string | null;
+        };
         /** CustomRoleCreate */
         CustomRoleCreate: {
             /** Code */
@@ -2565,12 +2597,25 @@ export interface components {
              */
             status: "suspected" | "confirmed" | "ruled_out";
         };
+        /** DocumentBatchPreviewRequest */
+        DocumentBatchPreviewRequest: {
+            /** Documentpublicids */
+            documentPublicIds: string[];
+        };
         /** DocumentCreate */
         DocumentCreate: {
+            certificate?: components["schemas"]["CertificateInput"] | null;
+            consultation?: components["schemas"]["ConsultationReportInput"] | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            imaging?: components["schemas"]["ImagingRequestInput"] | null;
+            laboratory?: components["schemas"]["LabRequestInput"] | null;
             /** Locale */
             locale?: ("en" | "fr" | "ar") | null;
             /** Patientpublicid */
             patientPublicId: string;
+            referral?: components["schemas"]["ReferralInput"] | null;
+            sickLeave?: components["schemas"]["SickLeaveInput"] | null;
             /** Templatecode */
             templateCode: string;
         };
@@ -2597,6 +2642,8 @@ export interface components {
             category: string;
             /** Contenthash */
             contentHash: string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
             /** Finalizedat */
             finalizedAt: string | null;
             /** Locale */
@@ -2653,7 +2700,7 @@ export interface components {
              * Category
              * @enum {string}
              */
-            category: "consultation_report" | "endoscopy_report" | "audiology_report" | "prescription" | "certificate" | "imaging_request" | "referral_letter" | "handout" | "consent" | "quote" | "operative_note" | "tumor_board" | "patient_summary";
+            category: "consultation_report" | "endoscopy_report" | "audiology_report" | "prescription" | "certificate" | "imaging_request" | "lab_request" | "referral_letter" | "handout" | "consent" | "quote" | "operative_note" | "tumor_board" | "patient_summary";
             /** Code */
             code: string;
             /** Placeholders */
@@ -3218,6 +3265,28 @@ export interface components {
              */
             required: boolean;
         };
+        /** ImagingRequestInput */
+        ImagingRequestInput: {
+            /** Clinicalquestion */
+            clinicalQuestion?: string | null;
+            /**
+             * Contrastallergy
+             * @default false
+             */
+            contrastAllergy: boolean;
+            /**
+             * Modality
+             * @enum {string}
+             */
+            modality: "ct_sinuses_noncontrast" | "ct_temporal_bone_hr" | "ct_neck_contrast" | "mri_iac_gadolinium" | "mri_neck" | "pet_ct" | "us_neck_fna" | "panoramic_dental" | "lateral_neck_adenoids";
+            /** Overridereason */
+            overrideReason?: string | null;
+            /**
+             * Renalimpairment
+             * @default false
+             */
+            renalImpairment: boolean;
+        };
         /** IndicationWrite */
         IndicationWrite: {
             /** Defaultdurationdays */
@@ -3257,6 +3326,13 @@ export interface components {
             publicId: string;
             /** Rolepublicid */
             rolePublicId: string;
+        };
+        /** LabRequestInput */
+        LabRequestInput: {
+            /** Indication */
+            indication?: string | null;
+            /** Panels */
+            panels: ("preoperative" | "thyroid_calcitonin" | "allergy_ige" | "autoimmune_inner_ear" | "sudden_hearing_loss_screen" | "ear_discharge_culture" | "hpv_status" | "epistaxis_coagulation")[];
         };
         /**
          * Laterality
@@ -4698,6 +4774,11 @@ export interface components {
             /** Status */
             status: string;
         };
+        /** ReferralInput */
+        ReferralInput: {
+            /** Recommendations */
+            recommendations?: string | null;
+        };
         /**
          * ResolvedConcept
          * @description Concept with locale-resolved display fields.
@@ -4820,6 +4901,31 @@ export interface components {
             sessionPublicId: string;
             /** Userpublicid */
             userPublicId: string;
+        };
+        /** SickLeaveInput */
+        SickLeaveInput: {
+            /**
+             * Absencetype
+             * @enum {string}
+             */
+            absenceType: "work" | "school";
+            /**
+             * Enddate
+             * Format: date
+             */
+            endDate: string;
+            /**
+             * Reasonmode
+             * @enum {string}
+             */
+            reasonMode: "medical_reasons" | "diagnosis";
+            /** Reasontext */
+            reasonText?: string | null;
+            /**
+             * Startdate
+             * Format: date
+             */
+            startDate: string;
         };
         /** SiteCreate */
         SiteCreate: {
@@ -6501,6 +6607,7 @@ export interface operations {
         parameters: {
             query: {
                 patientPublicId: string;
+                encounterPublicId?: string | null;
                 limit?: number;
                 offset?: number;
             };
@@ -7157,6 +7264,43 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["DiagnosisRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    batch_preview_documents_api_v1_encounters__encounter_id__documents_batch_preview_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                encounter_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DocumentBatchPreviewRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DocumentPreviewRead"];
                 };
             };
             /** @description Validation Error */

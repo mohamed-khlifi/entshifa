@@ -183,7 +183,11 @@ class _Documents:
         return self.row
 
     async def list_for_patient(
-        self, *, patient_id: int, page: PaginationParams | None
+        self,
+        *,
+        patient_id: int,
+        page: PaginationParams | None,
+        encounter_id: int | None = None,
     ) -> Page[Document]:
         return self.listed
 

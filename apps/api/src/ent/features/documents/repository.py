@@ -157,9 +157,12 @@ class DocumentRepository(BaseRepository[Document]):
         *,
         patient_id: int,
         page: PaginationParams | None,
+        encounter_id: int | None = None,
     ) -> Page[Document]:
         resolved = normalize_pagination(page)
         stmt = self._base_query().where(self.model.patient_id == patient_id)
+        if encounter_id is not None:
+            stmt = stmt.where(self.model.encounter_id == encounter_id)
         total = (
             await self.session.execute(
                 select(func.count()).select_from(stmt.subquery())
@@ -176,6 +179,18 @@ class DocumentRepository(BaseRepository[Document]):
             offset=resolved.offset,
             next_cursor=None,
         )
+
+    async def list_active_for_encounter(self, encounter_id: int) -> list[Document]:
+        result = await self.session.scalars(
+            self._base_query()
+            .where(
+                self.model.encounter_id == encounter_id,
+                self.model.status.in_(("draft", "final")),
+            )
+            .order_by(self.model.created_at, self.model.id)
+            .limit(30)
+        )
+        return list(result.all())
 
 
 class DocumentRecipientRepository(BaseRepository[DocumentRecipient]):

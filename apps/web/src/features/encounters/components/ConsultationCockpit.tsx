@@ -12,6 +12,13 @@ import { Form } from "@/components/forms/Form";
 import { TextAreaField } from "@/components/forms/TextAreaField";
 import { Button } from "@/components/ui/button";
 import { NormalsToolbar, selectCopySource } from "@/features/examination";
+import {
+  VisitDocuments,
+  activeFlagCodes,
+  documentKindForPlan,
+  suggestedClinicalQuestion,
+  type VisitDocumentKind,
+} from "@/features/documents";
 import { PrescriptionBuilder } from "@/features/prescriptions";
 import {
   anatomicalMaps,
@@ -162,6 +169,7 @@ export function ConsultationCockpit({
   const [version, setVersion] = useState(1);
   const [signOpen, setSignOpen] = useState(false);
   const [prescriptionOpen, setPrescriptionOpen] = useState(false);
+  const [visitKind, setVisitKind] = useState<VisitDocumentKind | null>(null);
   const hydratedKey = useRef<string | null>(null);
   const form = useForm<CockpitFormValues>({
     resolver: zodResolver(cockpitFormSchema),
@@ -759,6 +767,10 @@ export function ConsultationCockpit({
                 if (kind === "medication") {
                   setPrescriptionOpen(true);
                 }
+                const documentKind = documentKindForPlan(kind);
+                if (documentKind) {
+                  setVisitKind(documentKind);
+                }
               }}
               onPrescribe={() => setPrescriptionOpen(true)}
               onRemove={(id) =>
@@ -769,6 +781,18 @@ export function ConsultationCockpit({
               }
             />
           </Form>
+          <VisitDocuments
+            patientId={patientId}
+            encounterId={encounter.publicId}
+            flagCodes={activeFlagCodes(session.patient.data.flags)}
+            suggestedQuestion={suggestedClinicalQuestion({
+              complaints: editor.complaints.map((item) => item.display),
+              diagnoses: editor.diagnoses.map((item) => item.display),
+              assessment: assessmentText,
+            })}
+            kind={visitKind}
+            onKind={setVisitKind}
+          />
           {prescriptionOpen && encounter ? (
             <PrescriptionBuilder
               patientId={patientId}

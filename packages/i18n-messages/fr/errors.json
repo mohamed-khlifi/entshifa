@@ -26,7 +26,11 @@
     "immutable": "Un document finalisé ne peut pas être modifié.",
     "not_rendered": "Le PDF n'est pas encore prêt.",
     "template_syntax": "Ce modèle contient une erreur de syntaxe.",
-    "undeclared_placeholder": "Ce modèle utilise un champ non déclaré."
+    "undeclared_placeholder": "Ce modèle utilise un champ non déclaré.",
+    "encounter_required": "Choisissez la visite de ce document.",
+    "payload_invalid": "Il manque un champ obligatoire à ce document.",
+    "absence_range": "La date de fin doit être le jour du début ou après.",
+    "mri_implant_blocked": "L'IRM est bloquée en cas de pacemaker ou d'implant cochléaire, sauf motif de dérogation."
   },
   "diagnosis": {
     "invalid_concept": "Choisissez un diagnostic dans la terminologie de la clinique.",

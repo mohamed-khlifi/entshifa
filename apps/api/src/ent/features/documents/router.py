@@ -13,6 +13,7 @@ from ent.features.documents.dependencies import (
     get_document_template_service,
 )
 from ent.features.documents.schemas.requests import (
+    DocumentBatchPreviewRequest,
     DocumentCreate,
     DocumentFinalize,
     DocumentRecipientCreate,
@@ -110,6 +111,9 @@ async def list_documents(
     patient_public_id: str = Query(
         min_length=26, max_length=26, alias="patientPublicId"
     ),
+    encounter_public_id: str | None = Query(
+        default=None, min_length=26, max_length=26, alias="encounterPublicId"
+    ),
     limit: int = Query(default=25, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
     user: CurrentUser = Depends(require(Permission.DOCUMENT_FINALIZE)),
@@ -119,6 +123,24 @@ async def list_documents(
         user=user,
         patient_public_id=patient_public_id,
         page_params=_page(limit, offset),
+        encounter_public_id=encounter_public_id,
+    )
+
+
+@router.post(
+    "/api/v1/encounters/{encounter_id}/documents/batch-preview",
+    response_model=DocumentPreviewRead,
+)
+async def batch_preview_documents(
+    encounter_id: str,
+    body: DocumentBatchPreviewRequest,
+    user: CurrentUser = Depends(require(Permission.DOCUMENT_FINALIZE)),
+    service: DocumentService = Depends(get_document_service),
+) -> DocumentPreviewRead:
+    return await service.batch_preview(
+        user=user,
+        encounter_public_id=encounter_id,
+        body=body,
     )
 
 

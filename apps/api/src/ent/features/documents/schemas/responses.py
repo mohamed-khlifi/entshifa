@@ -39,6 +39,7 @@ class DocumentPreviewRead(CamelModel):
 class DocumentRead(CamelModel):
     public_id: str
     patient_public_id: str
+    encounter_public_id: str | None = None
     template_code: str
     category: str
     locale: str

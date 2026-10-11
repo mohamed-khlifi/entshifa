@@ -46,6 +46,8 @@ export function documentCategoryLabel(t: DocumentsT, category: string): string {
       return t("category.certificate");
     case "imaging_request":
       return t("category.imaging_request");
+    case "lab_request":
+      return t("category.lab_request");
     case "referral_letter":
       return t("category.referral_letter");
     case "consent":

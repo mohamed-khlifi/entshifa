@@ -120,11 +120,15 @@ def template_read(row: DocumentTemplate) -> DocumentTemplateRead:
 
 
 def document_read(
-    row: Document, patient_public_id: str, template_code: str
+    row: Document,
+    patient_public_id: str,
+    template_code: str,
+    encounter_public_id: str | None = None,
 ) -> DocumentRead:
     return DocumentRead(
         public_id=row.public_id,
         patient_public_id=patient_public_id,
+        encounter_public_id=encounter_public_id,
         template_code=template_code,
         category=row.category,
         locale=row.locale,

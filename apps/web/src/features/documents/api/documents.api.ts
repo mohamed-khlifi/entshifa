@@ -1,5 +1,6 @@
 import { apiFetch } from "@/lib/api/client";
 import type {
+  DocumentBatchPreviewRequest,
   DocumentCreate,
   DocumentDownloadRead,
   DocumentFinalize,
@@ -71,12 +72,27 @@ export function previewTemplate(
 export function fetchPatientDocuments(
   scope: Scope,
   patientPublicId: string,
+  encounterPublicId?: string,
 ): Promise<PageSchemaDocumentRead> {
   const search = new URLSearchParams({
     patientPublicId,
     limit: "50",
   });
+  if (encounterPublicId) {
+    search.set("encounterPublicId", encounterPublicId);
+  }
   return apiFetch<PageSchemaDocumentRead>(`/api/v1/documents?${search}`, scope);
+}
+
+export function previewDocumentBatch(
+  scope: Scope,
+  encounterPublicId: string,
+  body: DocumentBatchPreviewRequest,
+): Promise<DocumentPreviewRead> {
+  return apiFetch<DocumentPreviewRead>(
+    `/api/v1/encounters/${encounterPublicId}/documents/batch-preview`,
+    { ...scope, method: "POST", body: JSON.stringify(body) },
+  );
 }
 
 export function createDocument(

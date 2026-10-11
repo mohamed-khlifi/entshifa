@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import date
 from typing import Any, Literal
 
 from pydantic import Field
@@ -17,6 +18,7 @@ CategoryCode = Literal[
     "prescription",
     "certificate",
     "imaging_request",
+    "lab_request",
     "referral_letter",
     "handout",
     "consent",
@@ -79,10 +81,89 @@ class DocumentTemplateVersionCreate(CamelModel):
     page_setup: PageSetup
 
 
+ImagingModality = Literal[
+    "ct_sinuses_noncontrast",
+    "ct_temporal_bone_hr",
+    "ct_neck_contrast",
+    "mri_iac_gadolinium",
+    "mri_neck",
+    "pet_ct",
+    "us_neck_fna",
+    "panoramic_dental",
+    "lateral_neck_adenoids",
+]
+LabPanel = Literal[
+    "preoperative",
+    "thyroid_calcitonin",
+    "allergy_ige",
+    "autoimmune_inner_ear",
+    "sudden_hearing_loss_screen",
+    "ear_discharge_culture",
+    "hpv_status",
+    "epistaxis_coagulation",
+]
+CertificatePurpose = Literal[
+    "fitness",
+    "swimming_tubes",
+    "air_travel",
+    "diving",
+    "voice",
+    "attendance",
+    "other",
+]
+AbsenceType = Literal["work", "school"]
+AbsenceReasonMode = Literal["medical_reasons", "diagnosis"]
+
+
+class ImagingRequestInput(CamelModel):
+    modality: ImagingModality
+    clinical_question: str | None = Field(default=None, max_length=4000)
+    renal_impairment: bool = False
+    contrast_allergy: bool = False
+    override_reason: str | None = Field(default=None, max_length=500)
+
+
+class LabRequestInput(CamelModel):
+    panels: list[LabPanel] = Field(min_length=1, max_length=12)
+    indication: str | None = Field(default=None, max_length=4000)
+
+
+class SickLeaveInput(CamelModel):
+    start_date: date
+    end_date: date
+    absence_type: AbsenceType
+    reason_mode: AbsenceReasonMode
+    reason_text: str | None = Field(default=None, max_length=500)
+
+
+class CertificateInput(CamelModel):
+    purpose: CertificatePurpose
+    body_text: str = Field(min_length=1, max_length=4000)
+
+
+class ReferralInput(CamelModel):
+    recommendations: str | None = Field(default=None, max_length=4000)
+
+
+class ConsultationReportInput(CamelModel):
+    conclusion: str | None = Field(default=None, max_length=4000)
+
+
 class DocumentCreate(CamelModel):
     patient_public_id: str = Field(min_length=26, max_length=26)
     template_code: str = Field(min_length=1, max_length=60)
     locale: LocaleCode | None = None
+    encounter_public_id: str | None = Field(default=None, min_length=26, max_length=26)
+    imaging: ImagingRequestInput | None = None
+    laboratory: LabRequestInput | None = None
+    sick_leave: SickLeaveInput | None = None
+    certificate: CertificateInput | None = None
+    referral: ReferralInput | None = None
+    consultation: ConsultationReportInput | None = None
+
+
+class DocumentBatchPreviewRequest(CamelModel):
+    document_public_ids: list[str] = Field(min_length=1, max_length=30)
 
 
 class DocumentFinalize(CamelModel):

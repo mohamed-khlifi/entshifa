@@ -36,6 +36,10 @@ class ErrorCode(StrEnum):
     DOCUMENTS_TEMPLATE_SYNTAX = "documents.template_syntax"
     DOCUMENTS_IMMUTABLE = "documents.immutable"
     DOCUMENTS_NOT_RENDERED = "documents.not_rendered"
+    DOCUMENTS_ENCOUNTER_REQUIRED = "documents.encounter_required"
+    DOCUMENTS_PAYLOAD_INVALID = "documents.payload_invalid"
+    DOCUMENTS_ABSENCE_RANGE = "documents.absence_range"
+    DOCUMENTS_MRI_IMPLANT_BLOCKED = "documents.mri_implant_blocked"
 
     OBSERVATION_NOT_FOUND = "observation.not_found"
     OBSERVATION_INVALID_VALUE = "observation.invalid_value_type"

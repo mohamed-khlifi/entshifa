@@ -18,6 +18,18 @@ export function documentErrorText(t: ErrorsT, error: unknown): string {
     if (error.code === "documents.not_rendered") {
       return t("documents.not_rendered");
     }
+    if (error.code === "documents.encounter_required") {
+      return t("documents.encounter_required");
+    }
+    if (error.code === "documents.payload_invalid") {
+      return t("documents.payload_invalid");
+    }
+    if (error.code === "documents.absence_range") {
+      return t("documents.absence_range");
+    }
+    if (error.code === "documents.mri_implant_blocked") {
+      return t("documents.mri_implant_blocked");
+    }
   }
   return t("generic");
 }

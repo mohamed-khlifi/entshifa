@@ -26,7 +26,11 @@
     "immutable": "A finalized document cannot be changed.",
     "not_rendered": "The PDF is not ready yet.",
     "template_syntax": "This template has a syntax error.",
-    "undeclared_placeholder": "This template uses a field that was not declared."
+    "undeclared_placeholder": "This template uses a field that was not declared.",
+    "encounter_required": "Choose the visit this document belongs to.",
+    "payload_invalid": "This document is missing a required field.",
+    "absence_range": "The end date must be on or after the start date.",
+    "mri_implant_blocked": "MRI is blocked for a pacemaker or cochlear implant unless you record an override reason."
   },
   "diagnosis": {
     "invalid_concept": "Choose a diagnosis from the clinic terminology.",

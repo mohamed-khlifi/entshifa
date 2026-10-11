@@ -180,7 +180,7 @@ fr.
 
 ---
 
-## - [ ] P2-10 Clinical documents (backend and frontend)
+## - [x] P2-10 Clinical documents (backend and frontend)
 
 **Scope**
 Templates for: consultation report, referral reply letter, sick leave, medical

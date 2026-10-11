@@ -116,6 +116,14 @@ export type PageSchemaSchedulableDoctorRead =
   Schemas["PageSchema_SchedulableDoctorRead_"];
 
 export type DocumentCreate = Schemas["DocumentCreate"];
+export type DocumentBatchPreviewRequest =
+  Schemas["DocumentBatchPreviewRequest"];
+export type ImagingRequestInput = Schemas["ImagingRequestInput"];
+export type LabRequestInput = Schemas["LabRequestInput"];
+export type SickLeaveInput = Schemas["SickLeaveInput"];
+export type CertificateInput = Schemas["CertificateInput"];
+export type ReferralInput = Schemas["ReferralInput"];
+export type ConsultationReportInput = Schemas["ConsultationReportInput"];
 export type DocumentFinalize = Schemas["DocumentFinalize"];
 export type DocumentRead = Schemas["DocumentRead"];
 export type DocumentDownloadRead = Schemas["DocumentDownloadRead"];

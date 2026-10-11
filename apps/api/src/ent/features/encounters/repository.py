@@ -92,6 +92,14 @@ class EncounterRepository(BaseRepository[Encounter]):
         encounter.updated_by_id = updated_by_id
         encounter.version = int(encounter.version) + 1
 
+    async def public_ids_by_id(self, ids: set[int]) -> dict[int, str]:
+        if not ids:
+            return {}
+        rows = (
+            await self.session.scalars(self._base_query().where(Encounter.id.in_(ids)))
+        ).all()
+        return {int(row.id): row.public_id for row in rows}
+
     async def get_detail(self, public_id: str) -> Encounter | None:
         result = await self.session.execute(
             self._base_query().where(Encounter.public_id == public_id).options(*_DETAIL)

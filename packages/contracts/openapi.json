@@ -967,6 +967,35 @@
         "title": "CalculationRead",
         "type": "object"
       },
+      "CertificateInput": {
+        "properties": {
+          "bodyText": {
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Bodytext",
+            "type": "string"
+          },
+          "purpose": {
+            "enum": [
+              "fitness",
+              "swimming_tubes",
+              "air_travel",
+              "diving",
+              "voice",
+              "attendance",
+              "other"
+            ],
+            "title": "Purpose",
+            "type": "string"
+          }
+        },
+        "required": [
+          "purpose",
+          "bodyText"
+        ],
+        "title": "CertificateInput",
+        "type": "object"
+      },
       "ClinicMembershipList": {
         "properties": {
           "items": {
@@ -1882,6 +1911,24 @@
         "title": "ConceptUpdate",
         "type": "object"
       },
+      "ConsultationReportInput": {
+        "properties": {
+          "conclusion": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conclusion"
+          }
+        },
+        "title": "ConsultationReportInput",
+        "type": "object"
+      },
       "CustomRoleCreate": {
         "properties": {
           "code": {
@@ -2139,8 +2186,79 @@
         "title": "DiagnosisWrite",
         "type": "object"
       },
+      "DocumentBatchPreviewRequest": {
+        "properties": {
+          "documentPublicIds": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 30,
+            "minItems": 1,
+            "title": "Documentpublicids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "documentPublicIds"
+        ],
+        "title": "DocumentBatchPreviewRequest",
+        "type": "object"
+      },
       "DocumentCreate": {
         "properties": {
+          "certificate": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CertificateInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "consultation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConsultationReportInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "imaging": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ImagingRequestInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "laboratory": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LabRequestInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "locale": {
             "anyOf": [
               {
@@ -2162,6 +2280,26 @@
             "minLength": 26,
             "title": "Patientpublicid",
             "type": "string"
+          },
+          "referral": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReferralInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sickLeave": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SickLeaveInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "templateCode": {
             "maxLength": 60,
@@ -2241,6 +2379,17 @@
               }
             ],
             "title": "Contenthash"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
           },
           "finalizedAt": {
             "anyOf": [
@@ -2411,6 +2560,7 @@
               "prescription",
               "certificate",
               "imaging_request",
+              "lab_request",
               "referral_letter",
               "handout",
               "consent",
@@ -4287,6 +4437,64 @@
         "title": "HistoryFieldConfig",
         "type": "object"
       },
+      "ImagingRequestInput": {
+        "properties": {
+          "clinicalQuestion": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Clinicalquestion"
+          },
+          "contrastAllergy": {
+            "default": false,
+            "title": "Contrastallergy",
+            "type": "boolean"
+          },
+          "modality": {
+            "enum": [
+              "ct_sinuses_noncontrast",
+              "ct_temporal_bone_hr",
+              "ct_neck_contrast",
+              "mri_iac_gadolinium",
+              "mri_neck",
+              "pet_ct",
+              "us_neck_fna",
+              "panoramic_dental",
+              "lateral_neck_adenoids"
+            ],
+            "title": "Modality",
+            "type": "string"
+          },
+          "overrideReason": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overridereason"
+          },
+          "renalImpairment": {
+            "default": false,
+            "title": "Renalimpairment",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "modality"
+        ],
+        "title": "ImagingRequestInput",
+        "type": "object"
+      },
       "IndicationWrite": {
         "properties": {
           "defaultDurationDays": {
@@ -4441,6 +4649,46 @@
           "rolePublicId"
         ],
         "title": "InvitationRead",
+        "type": "object"
+      },
+      "LabRequestInput": {
+        "properties": {
+          "indication": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indication"
+          },
+          "panels": {
+            "items": {
+              "enum": [
+                "preoperative",
+                "thyroid_calcitonin",
+                "allergy_ige",
+                "autoimmune_inner_ear",
+                "sudden_hearing_loss_screen",
+                "ear_discharge_culture",
+                "hpv_status",
+                "epistaxis_coagulation"
+              ],
+              "type": "string"
+            },
+            "maxItems": 12,
+            "minItems": 1,
+            "title": "Panels",
+            "type": "array"
+          }
+        },
+        "required": [
+          "panels"
+        ],
+        "title": "LabRequestInput",
         "type": "object"
       },
       "Laterality": {
@@ -9814,6 +10062,24 @@
         "title": "ReadyHealthResponse",
         "type": "object"
       },
+      "ReferralInput": {
+        "properties": {
+          "recommendations": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommendations"
+          }
+        },
+        "title": "ReferralInput",
+        "type": "object"
+      },
       "ResolvedConcept": {
         "description": "Concept with locale-resolved display fields.",
         "properties": {
@@ -10163,6 +10429,56 @@
           "sessionPublicId"
         ],
         "title": "SessionResponse",
+        "type": "object"
+      },
+      "SickLeaveInput": {
+        "properties": {
+          "absenceType": {
+            "enum": [
+              "work",
+              "school"
+            ],
+            "title": "Absencetype",
+            "type": "string"
+          },
+          "endDate": {
+            "format": "date",
+            "title": "Enddate",
+            "type": "string"
+          },
+          "reasonMode": {
+            "enum": [
+              "medical_reasons",
+              "diagnosis"
+            ],
+            "title": "Reasonmode",
+            "type": "string"
+          },
+          "reasonText": {
+            "anyOf": [
+              {
+                "maxLength": 500,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reasontext"
+          },
+          "startDate": {
+            "format": "date",
+            "title": "Startdate",
+            "type": "string"
+          }
+        },
+        "required": [
+          "startDate",
+          "endDate",
+          "absenceType",
+          "reasonMode"
+        ],
+        "title": "SickLeaveInput",
         "type": "object"
       },
       "SiteCreate": {
@@ -13820,6 +14136,24 @@
           },
           {
             "in": "query",
+            "name": "encounterPublicId",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "minLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Encounterpublicid"
+            }
+          },
+          {
+            "in": "query",
             "name": "limit",
             "required": false,
             "schema": {
@@ -15311,6 +15645,79 @@
         "summary": "Promote Diagnosis",
         "tags": [
           "diagnoses"
+        ]
+      }
+    },
+    "/api/v1/encounters/{encounter_id}/documents/batch-preview": {
+      "post": {
+        "operationId": "batch_preview_documents_api_v1_encounters__encounter_id__documents_batch_preview_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "encounter_id",
+            "required": true,
+            "schema": {
+              "title": "Encounter Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentBatchPreviewRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentPreviewRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Batch Preview Documents",
+        "tags": [
+          "documents"
         ]
       }
     },

@@ -19,6 +19,7 @@ import {
   testIds,
 } from "@/lib/test/test-id";
 import { PermissionProvider } from "@/providers/permission-provider";
+import documents from "../../../../../../packages/i18n-messages/en/documents.json";
 import encounters from "../../../../../../packages/i18n-messages/en/encounters.json";
 import examination from "../../../../../../packages/i18n-messages/en/examination.json";
 import patients from "../../../../../../packages/i18n-messages/en/patients.json";
@@ -167,7 +168,7 @@ function renderCockpit() {
     <QueryClientProvider client={client}>
       <NextIntlClientProvider
         locale="en"
-        messages={{ encounters, examination, patients }}
+        messages={{ documents, encounters, examination, patients }}
       >
         <PermissionProvider permissions={[Permission.ENCOUNTER_SIGN]}>
           <ConsultationCockpit

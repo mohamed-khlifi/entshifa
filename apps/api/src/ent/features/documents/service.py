@@ -19,8 +19,15 @@ from ent.engines.documents.content_hash import content_hash
 from ent.engines.documents.placeholders import validate_placeholders
 from ent.features.attachments.repository import AttachmentRepository
 from ent.features.clinics.repository import ClinicRepository
+from ent.features.documents.assemble import is_clinical_template, recheck_imaging
 from ent.features.documents.chart import load_summary_data
-from ent.features.documents.constants import DOCUMENT_LOCALES
+from ent.features.documents.clinical import (
+    create_clinical_document,
+    imaging_needs_recheck,
+    preview_visit_batch,
+)
+from ent.features.documents.constants import DOCUMENT_LOCALES, PATIENT_SUMMARY_CODE
+from ent.features.documents.context import current_flag_codes
 from ent.features.documents.html_render import (
     render_document_html,
     render_from_snapshot,
@@ -39,6 +46,7 @@ from ent.features.documents.repository import (
     DocumentTemplateVersionRepository,
 )
 from ent.features.documents.schemas.requests import (
+    DocumentBatchPreviewRequest,
     DocumentCreate,
     DocumentFinalize,
     DocumentRecipientCreate,
@@ -58,6 +66,7 @@ from ent.features.documents.support import (
     require_data,
     utcnow,
 )
+from ent.features.encounters.repository import EncounterRepository
 from ent.features.patients.policies import created_by_scope
 from ent.features.patients.repository import PatientRepository
 from ent.integrations.storage import get_object_storage
@@ -81,6 +90,8 @@ class DocumentService:
         user: CurrentUser,
         body: DocumentCreate,
     ) -> DocumentRead:
+        if is_clinical_template(body.template_code):
+            return await create_clinical_document(self._session, user=user, body=body)
         patient = await self._patient(user, body.patient_public_id)
         clinic = await self._clinic(user)
         template, version = await self._template_version(
@@ -119,13 +130,31 @@ class DocumentService:
         user: CurrentUser,
         patient_public_id: str,
         page_params: PaginationParams | None,
+        encounter_public_id: str | None = None,
     ) -> PageSchema[DocumentRead]:
         patient = await self._patient(user, patient_public_id)
+        encounter_id = await self._encounter_id(
+            user,
+            encounter_public_id,
+            patient_id=int(patient.id),
+        )
         result = await DocumentRepository(
             self._session, clinic_id=user.clinic_id
-        ).list_for_patient(patient_id=int(patient.id), page=page_params)
+        ).list_for_patient(
+            patient_id=int(patient.id),
+            page=page_params,
+            encounter_id=encounter_id,
+        )
         codes = await self._template_codes(
             user, {int(row.template_id) for row in result.items}
+        )
+        encounter_ids = await self._encounter_public_ids(
+            user,
+            {
+                int(row.encounter_id)
+                for row in result.items
+                if row.encounter_id is not None
+            },
         )
         self._access(
             user,
@@ -137,7 +166,14 @@ class DocumentService:
         return page(
             [
                 document_read(
-                    row, patient.public_id, codes.get(int(row.template_id), "")
+                    row,
+                    patient.public_id,
+                    codes.get(int(row.template_id), ""),
+                    (
+                        encounter_ids.get(int(row.encounter_id))
+                        if row.encounter_id is not None
+                        else None
+                    ),
                 )
                 for row in result.items
             ],
@@ -155,6 +191,10 @@ class DocumentService:
         row = await self._document(user, public_id)
         patient = await self._patient_by_id(user, int(row.patient_id))
         code = await self._template_code(user, int(row.template_id))
+        encounter_public_id = None
+        if row.encounter_id is not None:
+            found = await self._encounter_public_ids(user, {int(row.encounter_id)})
+            encounter_public_id = found.get(int(row.encounter_id))
         self._access(
             user,
             action="read",
@@ -164,7 +204,22 @@ class DocumentService:
             patient_id=int(row.patient_id),
         )
         await self._session.commit()
-        return document_read(row, patient.public_id, code)
+        return document_read(row, patient.public_id, code, encounter_public_id)
+
+    async def batch_preview(
+        self,
+        *,
+        user: CurrentUser,
+        encounter_public_id: str,
+        body: DocumentBatchPreviewRequest,
+    ) -> DocumentPreviewRead:
+        return await preview_visit_batch(
+            self._session,
+            user=user,
+            encounter_public_id=encounter_public_id,
+            body=body,
+            settings=self._settings,
+        )
 
     async def finalize_document(
         self,
@@ -203,13 +258,25 @@ class DocumentService:
         )
         if issue is not None:
             raise_placeholder(issue)
-        data = await load_summary_data(
-            self._session,
-            user,
-            patient=patient,
-            clinic=clinic,
-            locale=version.locale,
+        raw_snapshot = (
+            row.content_snapshot if isinstance(row.content_snapshot, dict) else {}
         )
+        stored = raw_snapshot.get("data")
+        if template.code != PATIENT_SUMMARY_CODE and isinstance(stored, dict):
+            if imaging_needs_recheck(template.code):
+                recheck_imaging(
+                    stored,
+                    await current_flag_codes(self._session, user, int(patient.id)),
+                )
+            data = stored
+        else:
+            data = await load_summary_data(
+                self._session,
+                user,
+                patient=patient,
+                clinic=clinic,
+                locale=version.locale,
+            )
         require_data(placeholders, data)
         snapshot: dict[str, Any] = {
             "data": data,
@@ -238,7 +305,11 @@ class DocumentService:
             idempotency_key=f"render-document:{row.public_id}",
             payload={"document_public_id": row.public_id},
         )
-        return document_read(row, patient.public_id, template.code)
+        encounter_public_id = None
+        if row.encounter_id is not None:
+            found = await self._encounter_public_ids(user, {int(row.encounter_id)})
+            encounter_public_id = found.get(int(row.encounter_id))
+        return document_read(row, patient.public_id, template.code, encounter_public_id)
 
     async def preview_html(
         self,
@@ -379,6 +450,31 @@ class DocumentService:
             locale=recipient.locale,
             delivery_status=recipient.delivery_status,
         )
+
+    async def _encounter_id(
+        self,
+        user: CurrentUser,
+        public_id: str | None,
+        *,
+        patient_id: int,
+    ) -> int | None:
+        if public_id is None:
+            return None
+        encounter = await EncounterRepository(
+            self._session, clinic_id=user.clinic_id
+        ).get_detail(public_id)
+        if encounter is None or int(encounter.patient_id) != patient_id:
+            raise NotFoundError()
+        return int(encounter.id)
+
+    async def _encounter_public_ids(
+        self,
+        user: CurrentUser,
+        ids: set[int],
+    ) -> dict[int, str]:
+        return await EncounterRepository(
+            self._session, clinic_id=user.clinic_id
+        ).public_ids_by_id(ids)
 
     async def _template_version(
         self,
