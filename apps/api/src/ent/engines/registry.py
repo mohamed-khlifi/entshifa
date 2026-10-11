@@ -4,6 +4,24 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from ent.engines.endoscopy.adenoid import CODE as ADENOID_CODE
+from ent.engines.endoscopy.adenoid import FORMULA as ADENOID_FORMULA
+from ent.engines.endoscopy.adenoid import REFERENCE as ADENOID_REFERENCE
+from ent.engines.endoscopy.adenoid import VERSION as ADENOID_VERSION
+from ent.engines.endoscopy.lund_kennedy import CODE as LK_CODE
+from ent.engines.endoscopy.lund_kennedy import FORMULA as LK_FORMULA
+from ent.engines.endoscopy.lund_kennedy import REFERENCE as LK_REFERENCE
+from ent.engines.endoscopy.lund_kennedy import VERSION as LK_VERSION
+from ent.engines.endoscopy.modified_lund_kennedy import CODE as MODIFIED_LK_CODE
+from ent.engines.endoscopy.modified_lund_kennedy import FORMULA as MODIFIED_LK_FORMULA
+from ent.engines.endoscopy.modified_lund_kennedy import (
+    REFERENCE as MODIFIED_LK_REFERENCE,
+)
+from ent.engines.endoscopy.modified_lund_kennedy import VERSION as MODIFIED_LK_VERSION
+from ent.engines.endoscopy.polyp_grade import CODE as POLYP_CODE
+from ent.engines.endoscopy.polyp_grade import FORMULA as POLYP_FORMULA
+from ent.engines.endoscopy.polyp_grade import REFERENCE as POLYP_REFERENCE
+from ent.engines.endoscopy.polyp_grade import VERSION as POLYP_VERSION
 from ent.engines.prescriptions.pediatric_dosing import (
     CODE as PEDIATRIC_CODE,
 )
@@ -48,5 +66,33 @@ def registered_calculators() -> tuple[CalculatorSpec, ...]:
             reference=TAPER_REFERENCE,
             unit="day",
             formula=TAPER_FORMULA,
+        ),
+        CalculatorSpec(
+            code=LK_CODE,
+            version=LK_VERSION,
+            reference=LK_REFERENCE,
+            unit="points",
+            formula=LK_FORMULA,
+        ),
+        CalculatorSpec(
+            code=MODIFIED_LK_CODE,
+            version=MODIFIED_LK_VERSION,
+            reference=MODIFIED_LK_REFERENCE,
+            unit="points",
+            formula=MODIFIED_LK_FORMULA,
+        ),
+        CalculatorSpec(
+            code=POLYP_CODE,
+            version=POLYP_VERSION,
+            reference=POLYP_REFERENCE,
+            unit="grade",
+            formula=POLYP_FORMULA,
+        ),
+        CalculatorSpec(
+            code=ADENOID_CODE,
+            version=ADENOID_VERSION,
+            reference=ADENOID_REFERENCE,
+            unit="%",
+            formula=ADENOID_FORMULA,
         ),
     )

@@ -89,6 +89,11 @@ class Observation(ClinicalRecordMixin, Base):
             "ordinal_value",
             "effective_at",
         ),
+        Index(
+            "ix_observation__clinic_procedure",
+            "clinic_id",
+            "procedure_record_id",
+        ),
     )
 
     patient_id: Mapped[int] = mapped_column(
@@ -109,6 +114,16 @@ class Observation(ClinicalRecordMixin, Base):
     )
     encounter_public_id: Mapped[str | None] = mapped_column(
         String(26, collation="utf8mb4_0900_as_cs"),
+        nullable=True,
+    )
+    procedure_record_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(
+            "procedure_record.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+            name="fk_observation__procedure_record",
+        ),
         nullable=True,
     )
     concept_id: Mapped[int] = mapped_column(

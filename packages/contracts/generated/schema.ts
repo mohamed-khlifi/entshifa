@@ -937,6 +937,41 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/endoscopies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Endoscopy */
+        post: operations["create_endoscopy_api_v1_endoscopies_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/endoscopies/{endoscopy_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Endoscopy */
+        get: operations["get_endoscopy_api_v1_endoscopies__endoscopy_id__get"];
+        /** Update Endoscopy */
+        put: operations["update_endoscopy_api_v1_endoscopies__endoscopy_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/formulary": {
         parameters: {
             query?: never;
@@ -1207,6 +1242,23 @@ export interface paths {
         };
         /** List Patient Encounters */
         get: operations["list_patient_encounters_api_v1_patients__patient_id__encounters_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/endoscopies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Patient Endoscopies */
+        get: operations["list_patient_endoscopies_api_v1_patients__patient_id__endoscopies_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -1644,6 +1696,23 @@ export interface paths {
         put?: never;
         /** Add Procedure Addendum */
         post: operations["add_procedure_addendum_api_v1_procedures__procedure_id__addenda_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/procedures/{procedure_id}/endoscopy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Procedure Endoscopy */
+        get: operations["get_procedure_endoscopy_api_v1_procedures__procedure_id__endoscopy_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -3346,6 +3415,206 @@ export interface components {
             /** Primarycomplaintcode */
             primaryComplaintCode?: string | null;
         };
+        /** EndoscopyCreate */
+        EndoscopyCreate: {
+            /** Adenoidobstructionpct */
+            adenoidObstructionPct?: number | null;
+            /**
+             * Anesthesia
+             * @default topical_spray
+             * @enum {string}
+             */
+            anesthesia: "none" | "topical_spray" | "local_infiltration" | "general";
+            /** Conclusiontext */
+            conclusionText?: string | null;
+            /**
+             * Decongestantused
+             * @default false
+             */
+            decongestantUsed: boolean;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Indicationtext */
+            indicationText?: string | null;
+            /** Instrument */
+            instrument?: string | null;
+            /** @default bilateral */
+            laterality: components["schemas"]["Laterality"];
+            lundKennedyLeft: components["schemas"]["LundKennedySideWrite"];
+            lundKennedyRight: components["schemas"]["LundKennedySideWrite"];
+            /** Patientpublicid */
+            patientPublicId: string;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Polypgradeleft */
+            polypGradeLeft?: number | null;
+            /** Polypgraderight */
+            polypGradeRight?: number | null;
+            /**
+             * Scopetype
+             * @enum {string}
+             */
+            scopeType: "flexible" | "rigid_0" | "rigid_30" | "rigid_70";
+            /**
+             * Setting
+             * @default office
+             * @enum {string}
+             */
+            setting: "office" | "ot";
+            /** Structures */
+            structures?: components["schemas"]["EndoscopyStructureWrite"][];
+            /** Tolerance */
+            tolerance?: ("well_tolerated" | "mild_discomfort" | "moderate_discomfort" | "poorly_tolerated" | "aborted") | null;
+        };
+        /** EndoscopyExamRead */
+        EndoscopyExamRead: {
+            /** Adenoidobstructionpct */
+            adenoidObstructionPct: number | null;
+            /** Anesthesia */
+            anesthesia: string;
+            /** Conclusiontext */
+            conclusionText: string | null;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /** Decongestantused */
+            decongestantUsed: boolean;
+            /** Encounterid */
+            encounterId: string | null;
+            /** Indicationtext */
+            indicationText: string | null;
+            /** Instrument */
+            instrument: string | null;
+            /** Laterality */
+            laterality: string;
+            lundKennedyLeft: components["schemas"]["LundKennedySideRead"];
+            lundKennedyRight: components["schemas"]["LundKennedySideRead"];
+            /** Lundkennedytotal */
+            lundKennedyTotal: number;
+            /** Modifiedlkleft */
+            modifiedLkLeft: number;
+            /** Modifiedlkright */
+            modifiedLkRight: number;
+            /** Modifiedlktotal */
+            modifiedLkTotal: number;
+            /** Patientid */
+            patientId: string;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Polypgradeleft */
+            polypGradeLeft: number | null;
+            /** Polypgraderight */
+            polypGradeRight: number | null;
+            /** Polypscale */
+            polypScale: string;
+            /** Procedureid */
+            procedureId: string;
+            /** Procedurestatus */
+            procedureStatus: string;
+            /** Publicid */
+            publicId: string;
+            /** Scopetype */
+            scopeType: string;
+            /** Scores */
+            scores: components["schemas"]["ScoreStampRead"][];
+            /** Setting */
+            setting: string;
+            /** Structures */
+            structures: components["schemas"]["EndoscopyStructureRead"][];
+            /** Tolerance */
+            tolerance: string | null;
+            /**
+             * Updatedat
+             * Format: date-time
+             */
+            updatedAt: string;
+            /** Version */
+            version: number;
+        };
+        /** EndoscopyStructureRead */
+        EndoscopyStructureRead: {
+            bodySite: components["schemas"]["CodeableConcept"];
+            finding: components["schemas"]["CodeableConcept"];
+            /** Laterality */
+            laterality: string;
+            /** Status */
+            status: string;
+        };
+        /** EndoscopyStructureWrite */
+        EndoscopyStructureWrite: {
+            /** Bodysitecode */
+            bodySiteCode: string;
+            /** Findingcode */
+            findingCode: string;
+            laterality: components["schemas"]["Laterality"];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "normal" | "abnormal" | "not_examined" | "unknown";
+        };
+        /** EndoscopyUpdate */
+        EndoscopyUpdate: {
+            /** Adenoidobstructionpct */
+            adenoidObstructionPct?: number | null;
+            /**
+             * Anesthesia
+             * @default topical_spray
+             * @enum {string}
+             */
+            anesthesia: "none" | "topical_spray" | "local_infiltration" | "general";
+            /** Conclusiontext */
+            conclusionText?: string | null;
+            /**
+             * Decongestantused
+             * @default false
+             */
+            decongestantUsed: boolean;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Indicationtext */
+            indicationText?: string | null;
+            /** Instrument */
+            instrument?: string | null;
+            /** @default bilateral */
+            laterality: components["schemas"]["Laterality"];
+            lundKennedyLeft: components["schemas"]["LundKennedySideWrite"];
+            lundKennedyRight: components["schemas"]["LundKennedySideWrite"];
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Polypgradeleft */
+            polypGradeLeft?: number | null;
+            /** Polypgraderight */
+            polypGradeRight?: number | null;
+            /**
+             * Scopetype
+             * @enum {string}
+             */
+            scopeType: "flexible" | "rigid_0" | "rigid_30" | "rigid_70";
+            /**
+             * Setting
+             * @default office
+             * @enum {string}
+             */
+            setting: "office" | "ot";
+            /** Structures */
+            structures?: components["schemas"]["EndoscopyStructureWrite"][];
+            /** Tolerance */
+            tolerance?: ("well_tolerated" | "mild_discomfort" | "moderate_discomfort" | "poorly_tolerated" | "aborted") | null;
+            /** Version */
+            version: number;
+        };
         /** ExaminationSnapshotCreate */
         ExaminationSnapshotCreate: {
             /** Encounterpublicid */
@@ -3581,6 +3850,34 @@ export interface components {
              * @default bearer
              */
             tokenType: string;
+        };
+        /** LundKennedySideRead */
+        LundKennedySideRead: {
+            /** Crusting */
+            crusting: number;
+            /** Discharge */
+            discharge: number;
+            /** Edema */
+            edema: number;
+            /** Polyps */
+            polyps: number;
+            /** Scarring */
+            scarring: number;
+            /** Total */
+            total: number;
+        };
+        /** LundKennedySideWrite */
+        LundKennedySideWrite: {
+            /** Crusting */
+            crusting: number;
+            /** Discharge */
+            discharge: number;
+            /** Edema */
+            edema: number;
+            /** Polyps */
+            polyps: number;
+            /** Scarring */
+            scarring: number;
         };
         /** MeResponse */
         MeResponse: {
@@ -3965,6 +4262,12 @@ export interface components {
         PageSchema_EncounterRead_: {
             /** Items */
             items: components["schemas"]["EncounterRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[EndoscopyExamRead] */
+        PageSchema_EndoscopyExamRead_: {
+            /** Items */
+            items: components["schemas"]["EndoscopyExamRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[ExaminationSnapshotRead] */
@@ -5476,6 +5779,21 @@ export interface components {
             lastName: string;
             /** Publicid */
             publicId: string;
+        };
+        /** ScoreStampRead */
+        ScoreStampRead: {
+            /** Code */
+            code: string;
+            /** Formula */
+            formula: string;
+            /** Reference */
+            reference: string;
+            /** Unit */
+            unit: string | null;
+            /** Value */
+            value: string;
+            /** Version */
+            version: string;
         };
         /** SessionResponse */
         SessionResponse: {
@@ -7936,6 +8254,114 @@ export interface operations {
             };
         };
     };
+    create_endoscopy_api_v1_endoscopies_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EndoscopyCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EndoscopyExamRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_endoscopy_api_v1_endoscopies__endoscopy_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                endoscopy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EndoscopyExamRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_endoscopy_api_v1_endoscopies__endoscopy_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                endoscopy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EndoscopyUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EndoscopyExamRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_formulary_api_v1_formulary_get: {
         parameters: {
             query?: {
@@ -8727,6 +9153,43 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PageSchema_EncounterRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_patient_endoscopies_api_v1_patients__patient_id__endoscopies_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_EndoscopyExamRead_"];
                 };
             };
             /** @description Validation Error */
@@ -9989,6 +10452,40 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ProcedureRecordRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_procedure_endoscopy_api_v1_procedures__procedure_id__endoscopy_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                procedure_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EndoscopyExamRead"];
                 };
             };
             /** @description Validation Error */

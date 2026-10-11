@@ -344,6 +344,11 @@ class CalculationResultRow(ClinicalRecordMixin, Base):
             "clinic_id",
             "calculator_code",
         ),
+        Index(
+            "ix_calc_result__clinic_procedure",
+            "clinic_id",
+            "procedure_record_id",
+        ),
     )
 
     patient_id: Mapped[int | None] = mapped_column(
@@ -354,6 +359,16 @@ class CalculationResultRow(ClinicalRecordMixin, Base):
     encounter_id: Mapped[int | None] = mapped_column(
         unsigned_bigint(),
         ForeignKey("encounter.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=True,
+    )
+    procedure_record_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(
+            "procedure_record.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+            name="fk_calculation_result__procedure",
+        ),
         nullable=True,
     )
     calculator_code: Mapped[str] = mapped_column(String(60), nullable=False)

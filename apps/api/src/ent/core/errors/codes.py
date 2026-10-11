@@ -77,3 +77,10 @@ class ErrorCode(StrEnum):
     PROCEDURE_VERSION_CONFLICT = "procedure.version_conflict"
     PROCEDURE_INVALID_TRANSITION = "procedure.invalid_transition"
     PROCEDURE_INVALID_CONCEPT = "procedure.invalid_concept"
+
+    ENDOSCOPY_NOT_FOUND = "endoscopy.not_found"
+    ENDOSCOPY_INCOMPLETE_SCORE = "endoscopy.incomplete_score"
+    ENDOSCOPY_INVALID_SCORE = "endoscopy.invalid_score"
+    ENDOSCOPY_VERSION_CONFLICT = "endoscopy.version_conflict"
+    ENDOSCOPY_INVALID_STRUCTURE = "endoscopy.invalid_structure"
+    ENDOSCOPY_INVALID_FINDING = "endoscopy.invalid_finding"

@@ -21,6 +21,7 @@ from ent.features.documents.models import (
     DocumentTemplateVersion,
 )
 from ent.features.encounters.models import Encounter
+from ent.features.endoscopy.models import EndoscopyExam
 from ent.features.observations.models import Observation
 from ent.features.patients.models import (
     Patient,
@@ -318,19 +319,37 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             )
         )
         procedure_public_id = new_ulid()
+        procedure = ProcedureRecord(
+            public_id=procedure_public_id,
+            clinic_id=other.id,
+            patient_id=patient.id,
+            procedure_concept_id=finding.id,
+            performed_at=datetime(2026, 6, 15, 10, 30, 0),
+            performed_by_id=other_user.id,
+            laterality="na",
+            anesthesia="none",
+            setting="office",
+            indication_text="secret procedure",
+            status="draft",
+            created_by_id=other_user.id,
+            updated_by_id=other_user.id,
+        )
+        session.add(procedure)
+        await session.flush()
+        endoscopy_public_id = new_ulid()
         session.add(
-            ProcedureRecord(
-                public_id=procedure_public_id,
+            EndoscopyExam(
+                public_id=endoscopy_public_id,
                 clinic_id=other.id,
-                patient_id=patient.id,
-                procedure_concept_id=finding.id,
-                performed_at=datetime(2026, 6, 15, 10, 30, 0),
-                performed_by_id=other_user.id,
-                laterality="na",
-                anesthesia="none",
-                setting="office",
-                indication_text="secret procedure",
-                status="draft",
+                procedure_record_id=int(procedure.id),
+                scope_type="flexible",
+                decongestant_used=False,
+                polyp_scale="meltzer",
+                lund_kennedy_right=0,
+                lund_kennedy_left=0,
+                modified_lk_right=0,
+                modified_lk_left=0,
+                conclusion_text="secret endoscopy",
                 created_by_id=other_user.id,
                 updated_by_id=other_user.id,
             )
@@ -362,6 +381,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "formulary_id": new_ulid(),
             "recall_id": recall_public_id,
             "procedure_id": procedure_public_id,
+            "endoscopy_id": endoscopy_public_id,
         }
         forbidden = [
             patient.public_id,
@@ -381,8 +401,10 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             encounter_public_id,
             recall_public_id,
             procedure_public_id,
+            endoscopy_public_id,
             "secret recall",
             "secret procedure",
+            "secret endoscopy",
         ]
         await session.commit()
 

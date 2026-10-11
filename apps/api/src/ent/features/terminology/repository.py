@@ -67,6 +67,14 @@ class TerminologyRepository:
         )
         return result.scalar_one_or_none()
 
+    async def list_concepts_by_ids(self, concept_ids: set[int]) -> list[Concept]:
+        if not concept_ids:
+            return []
+        result = await self.session.execute(
+            self._visible_concepts().where(Concept.id.in_(concept_ids)),
+        )
+        return list(result.scalars().all())
+
     async def list_concepts_by_codes(self, codes: list[str]) -> list[Concept]:
         if not codes:
             return []

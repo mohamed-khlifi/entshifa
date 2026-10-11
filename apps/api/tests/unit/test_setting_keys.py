@@ -35,3 +35,14 @@ def test_validate_unknown_key() -> None:
     with pytest.raises(ValidationError) as exc:
         validate_setting_value("not_a_real_key", "x")
     assert exc.value.context["reason"] == "unknown_setting_key"
+
+
+def test_validate_polyp_scale_accepts_lildholdt() -> None:
+    assert validate_setting_value("polyp_scale", "lildholdt") == "lildholdt"
+    assert validate_setting_value("polyp_scale", "meltzer") == "meltzer"
+
+
+def test_validate_polyp_scale_rejects_item_scale_name() -> None:
+    with pytest.raises(ValidationError) as exc:
+        validate_setting_value("polyp_scale", "lund_kennedy")
+    assert exc.value.context["reason"] == "invalid_polyp_scale"

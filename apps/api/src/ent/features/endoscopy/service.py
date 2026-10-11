@@ -1,0 +1,366 @@
+"""Nasal endoscopy use cases. Scores are recomputed from observations."""
+
+from __future__ import annotations
+
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from ent.core.audit.recorder import AuditRecorder
+from ent.core.context import set_clinic_id, set_user_id
+from ent.core.errors.exceptions import ValidationError
+from ent.core.schemas.base import PageSchema, PaginationParams
+from ent.core.security.principal import CurrentUser
+from ent.features.clinics.resolver import SettingResolver
+from ent.features.clinics.setting_keys import ClinicalSettingKey
+from ent.features.endoscopy.assembly import present_exams, store_scores
+from ent.features.endoscopy.constants import (
+    ADENOID_CODE,
+    LK_CONCEPT_CODES,
+    POLYP_GRADE_CODE,
+    POLYP_SCALES,
+    PROCEDURE_CODE,
+)
+from ent.features.endoscopy.exceptions import (
+    EndoscopyInvalidScoreError,
+    EndoscopyNotFoundError,
+    EndoscopyVersionConflictError,
+)
+from ent.features.endoscopy.findings import build_observations
+from ent.features.endoscopy.mapping import to_page
+from ent.features.endoscopy.models import EndoscopyExam
+from ent.features.endoscopy.repository import EndoscopyRepository
+from ent.features.endoscopy.schemas.requests import EndoscopyCreate, EndoscopyUpdate
+from ent.features.endoscopy.schemas.responses import EndoscopyExamRead
+from ent.features.endoscopy.scoring import EndoscopyScores, ScoreRow, compute
+from ent.features.endoscopy.structures import validate_structures
+from ent.features.observations.models import Observation
+from ent.features.observations.repository import ObservationRepository
+from ent.features.procedures.exceptions import ProcedureRecordNotFoundError
+from ent.features.procedures.mapping import blank_to_none, to_utc_naive
+from ent.features.procedures.models import ProcedureRecord
+from ent.features.procedures.references import ProcedureReferences
+from ent.features.procedures.repository import ProcedureRecordRepository
+from ent.features.terminology.models import Concept
+from ent.features.terminology.repository import TerminologyRepository
+
+EndoscopyWrite = EndoscopyCreate | EndoscopyUpdate
+
+
+class EndoscopyService:
+    def __init__(self, session: AsyncSession) -> None:
+        self._session = session
+        self._audit = AuditRecorder(session)
+        self._refs = ProcedureReferences(session)
+
+    async def create_exam(
+        self,
+        *,
+        user: CurrentUser,
+        body: EndoscopyCreate,
+        content_locale: str,
+    ) -> EndoscopyExamRead:
+        self._bind(user)
+        patient = await self._refs.patient(user, body.patient_public_id)
+        concepts = await self._concepts(user, body)
+        scale = await self._polyp_scale(user)
+        validate_structures(body.structures)
+        encounter_id = await self._refs.encounter_id(
+            user,
+            body.encounter_public_id,
+            patient_id=int(patient.id),
+        )
+        procedure = ProcedureRecord(
+            clinic_id=user.clinic_id,
+            patient_id=int(patient.id),
+            encounter_id=encounter_id,
+            procedure_concept_id=int(concepts[PROCEDURE_CODE].id),
+            performed_at=to_utc_naive(body.performed_at),
+            performed_by_id=user.user_id,
+            laterality=body.laterality.value,
+            anesthesia=body.anesthesia,
+            setting=body.setting,
+            instrument=blank_to_none(body.instrument),
+            indication_text=blank_to_none(body.indication_text),
+            tolerance=body.tolerance,
+            status="draft",
+            created_by_id=user.user_id,
+            updated_by_id=user.user_id,
+        )
+        await self._procedures(user).add(procedure)
+        exam = EndoscopyExam(
+            clinic_id=user.clinic_id,
+            procedure_record_id=int(procedure.id),
+            scope_type=body.scope_type,
+            decongestant_used=body.decongestant_used,
+            polyp_scale=scale,
+            lund_kennedy_right=0,
+            lund_kennedy_left=0,
+            modified_lk_right=0,
+            modified_lk_left=0,
+            conclusion_text=blank_to_none(body.conclusion_text),
+            created_by_id=user.user_id,
+            updated_by_id=user.user_id,
+        )
+        await self._exams(user).add(exam)
+        await self._rewrite(user, procedure, exam, body, concepts, scale)
+        return await self._present_one(user, exam.public_id, content_locale)
+
+    async def update_exam(
+        self,
+        *,
+        user: CurrentUser,
+        public_id: str,
+        body: EndoscopyUpdate,
+        content_locale: str,
+    ) -> EndoscopyExamRead:
+        self._bind(user)
+        exam = await self._require(user, public_id)
+        procedure = exam.procedure_record
+        self._procedures(user).assert_draft(procedure)
+        self._check_version(exam, body.version)
+        concepts = await self._concepts(user, body)
+        scale = await self._polyp_scale(user)
+        validate_structures(body.structures)
+        procedure.encounter_id = await self._refs.encounter_id(
+            user,
+            body.encounter_public_id,
+            patient_id=int(procedure.patient_id),
+        )
+        procedure.performed_at = to_utc_naive(body.performed_at)
+        procedure.laterality = body.laterality.value
+        procedure.anesthesia = body.anesthesia
+        procedure.setting = body.setting
+        procedure.instrument = blank_to_none(body.instrument)
+        procedure.indication_text = blank_to_none(body.indication_text)
+        procedure.tolerance = body.tolerance
+        procedure.updated_by_id = user.user_id
+        exam.scope_type = body.scope_type
+        exam.decongestant_used = body.decongestant_used
+        exam.conclusion_text = blank_to_none(body.conclusion_text)
+        exam.polyp_scale = scale
+        exam.updated_by_id = user.user_id
+        exam.version = int(exam.version) + 1
+        await self._rewrite(user, procedure, exam, body, concepts, scale)
+        return await self._present_one(user, exam.public_id, content_locale)
+
+    async def get_exam(
+        self,
+        *,
+        user: CurrentUser,
+        public_id: str,
+        content_locale: str,
+    ) -> EndoscopyExamRead:
+        self._bind(user)
+        exam = await self._require(user, public_id)
+        payload = await present_exams(
+            self._session, self._refs, user, [exam], content_locale
+        )
+        self._audit.record_access(
+            action="get",
+            entity_type="endoscopy_exam",
+            clinic_id=user.clinic_id,
+            entity_id=int(exam.id),
+            entity_public_id=exam.public_id,
+            patient_id=int(exam.procedure_record.patient_id),
+        )
+        await self._session.commit()
+        return payload[0]
+
+    async def get_for_procedure(
+        self,
+        *,
+        user: CurrentUser,
+        procedure_public_id: str,
+        content_locale: str,
+    ) -> EndoscopyExamRead:
+        self._bind(user)
+        procedure = await self._procedures(user).get_detail(procedure_public_id)
+        if procedure is None:
+            raise ProcedureRecordNotFoundError(public_id=procedure_public_id)
+        await self._refs.assert_patient_visible(user, int(procedure.patient_id))
+        exam = await self._exams(user).get_for_procedure(procedure_public_id)
+        if exam is None:
+            raise EndoscopyNotFoundError()
+        payload = await present_exams(
+            self._session, self._refs, user, [exam], content_locale
+        )
+        self._audit.record_access(
+            action="get",
+            entity_type="endoscopy_exam",
+            clinic_id=user.clinic_id,
+            entity_id=int(exam.id),
+            entity_public_id=exam.public_id,
+            patient_id=int(procedure.patient_id),
+        )
+        await self._session.commit()
+        return payload[0]
+
+    async def list_for_patient(
+        self,
+        *,
+        user: CurrentUser,
+        patient_public_id: str,
+        page: PaginationParams,
+        content_locale: str,
+    ) -> PageSchema[EndoscopyExamRead]:
+        self._bind(user)
+        patient = await self._refs.patient(user, patient_public_id)
+        listed = await self._exams(user).list_for_patient(int(patient.id), page)
+        items = await present_exams(
+            self._session, self._refs, user, list(listed.items), content_locale
+        )
+        self._audit.record_access(
+            action="list",
+            entity_type="endoscopy_exam",
+            clinic_id=user.clinic_id,
+            patient_id=int(patient.id),
+        )
+        await self._session.commit()
+        return to_page(
+            items,
+            total=listed.total,
+            limit=listed.limit,
+            offset=listed.offset,
+        )
+
+    async def _rewrite(
+        self,
+        user: CurrentUser,
+        procedure: ProcedureRecord,
+        exam: EndoscopyExam,
+        body: EndoscopyWrite,
+        concepts: dict[str, Concept],
+        polyp_scale: str,
+    ) -> None:
+        observations = self._observations(user)
+        existing = await observations.list_for_procedure(int(procedure.id))
+        for row in existing:
+            await observations.mark_deleted(row, user.user_id)
+        built = build_observations(
+            clinic_id=user.clinic_id,
+            patient_id=int(procedure.patient_id),
+            procedure_record_id=int(procedure.id),
+            encounter_id=procedure.encounter_id,
+            encounter_public_id=body.encounter_public_id,
+            user_id=user.user_id,
+            effective_at=procedure.performed_at,
+            body=body,
+            concepts=concepts,
+            polyp_scale=polyp_scale,
+        )
+        for row in built:
+            await observations.add(row)
+        stored = await observations.list_for_procedure(int(procedure.id))
+        concept_ids = {int(row.concept_id) for row in stored}
+        by_id = {
+            int(concept.id): concept
+            for concept in concepts.values()
+            if int(concept.id) in concept_ids
+        }
+        scores = compute(
+            [_score_row(row, by_id) for row in stored],
+            polyp_scale=polyp_scale,
+        )
+        _apply_scores(exam, scores)
+        await store_scores(self._session, user, procedure, scores)
+
+    async def _present_one(
+        self,
+        user: CurrentUser,
+        public_id: str,
+        content_locale: str,
+    ) -> EndoscopyExamRead:
+        await self._session.flush()
+        self._session.expire_all()
+        exam = await self._require(user, public_id)
+        presented = await present_exams(
+            self._session, self._refs, user, [exam], content_locale
+        )
+        return presented[0]
+
+    async def _concepts(
+        self,
+        user: CurrentUser,
+        body: EndoscopyWrite,
+    ) -> dict[str, Concept]:
+        codes = set(LK_CONCEPT_CODES.values())
+        codes.add(PROCEDURE_CODE)
+        if body.polyp_grade_right is not None or body.polyp_grade_left is not None:
+            codes.add(POLYP_GRADE_CODE)
+        if body.adenoid_obstruction_pct is not None:
+            codes.add(ADENOID_CODE)
+        for item in body.structures:
+            codes.add(item.body_site_code)
+            codes.add(item.finding_code)
+        found = await self._terms(user).list_concepts_by_codes(sorted(codes))
+        by_code = {row.code: row for row in found}
+        missing = codes - set(by_code)
+        if missing:
+            raise ValidationError(reason="concept_missing", code=sorted(missing)[0])
+        procedure = by_code[PROCEDURE_CODE]
+        if procedure.kind != "procedure":
+            raise ValidationError(reason="procedure_concept_kind", code=PROCEDURE_CODE)
+        return by_code
+
+    async def _polyp_scale(self, user: CurrentUser) -> str:
+        resolved = await SettingResolver(self._session).resolve(
+            key=ClinicalSettingKey.POLYP_SCALE.value,
+            clinic_id=user.clinic_id,
+            user_id=user.user_id,
+        )
+        scale = resolved.value
+        if not isinstance(scale, str) or scale not in POLYP_SCALES:
+            raise EndoscopyInvalidScoreError(item="scale", side="na")
+        return scale
+
+    async def _require(self, user: CurrentUser, public_id: str) -> EndoscopyExam:
+        exam = await self._exams(user).get_detail(public_id)
+        if exam is None:
+            raise EndoscopyNotFoundError(public_id=public_id)
+        await self._refs.assert_patient_visible(
+            user,
+            int(exam.procedure_record.patient_id),
+        )
+        return exam
+
+    def _check_version(self, exam: EndoscopyExam, version: int) -> None:
+        if int(exam.version) != version:
+            raise EndoscopyVersionConflictError(
+                server_version=int(exam.version),
+                client_version=version,
+            )
+
+    def _bind(self, user: CurrentUser) -> None:
+        set_clinic_id(user.clinic_id)
+        set_user_id(user.user_id)
+
+    def _exams(self, user: CurrentUser) -> EndoscopyRepository:
+        return EndoscopyRepository(self._session, clinic_id=user.clinic_id)
+
+    def _procedures(self, user: CurrentUser) -> ProcedureRecordRepository:
+        return ProcedureRecordRepository(self._session, clinic_id=user.clinic_id)
+
+    def _observations(self, user: CurrentUser) -> ObservationRepository:
+        return ObservationRepository(self._session, clinic_id=user.clinic_id)
+
+    def _terms(self, user: CurrentUser) -> TerminologyRepository:
+        return TerminologyRepository(self._session, clinic_id=user.clinic_id)
+
+
+def _apply_scores(exam: EndoscopyExam, scores: EndoscopyScores) -> None:
+    exam.lund_kennedy_right = scores.lund_kennedy_right
+    exam.lund_kennedy_left = scores.lund_kennedy_left
+    exam.modified_lk_right = scores.modified_lk_right
+    exam.modified_lk_left = scores.modified_lk_left
+    exam.polyp_grade_right = scores.polyp_grade_right
+    exam.polyp_grade_left = scores.polyp_grade_left
+    exam.adenoid_obstruction_pct = scores.adenoid_obstruction_pct
+
+
+def _score_row(row: Observation, concepts: dict[int, Concept]) -> ScoreRow:
+    concept = concepts[int(row.concept_id)]
+    return ScoreRow(
+        concept_code=concept.code,
+        laterality=str(row.laterality),
+        ordinal_value=row.ordinal_value,
+        value_numeric=row.value_numeric,
+    )

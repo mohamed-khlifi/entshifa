@@ -38,6 +38,7 @@ TENANT_PATH_PARAMS = frozenset(
         "formulary_id",
         "recall_id",
         "procedure_id",
+        "endoscopy_id",
     }
 )
 

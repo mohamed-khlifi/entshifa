@@ -74,5 +74,13 @@
     "invalid_transition": "Cet acte ne peut pas changer à partir de son statut actuel.",
     "not_found": "Cet acte est introuvable.",
     "version_conflict": "Cet acte a été modifié. Rechargez puis réessayez."
+  },
+  "endoscopy": {
+    "incomplete_score": "Un score est incomplet. Saisissez chaque grade explicitement.",
+    "invalid_finding": "Ce constat ne correspond pas au statut de la structure.",
+    "invalid_score": "Un score est hors de l'intervalle permis pour son échelle.",
+    "invalid_structure": "Cette structure ne fait pas partie de l'endoscopie nasale.",
+    "not_found": "Cette endoscopie est introuvable.",
+    "version_conflict": "Cette endoscopie a été modifiée. Rechargez puis réessayez."
   }
 }

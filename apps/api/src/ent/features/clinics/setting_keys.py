@@ -25,8 +25,9 @@ class ClinicalSettingKey(StrEnum):
 
 # VERIFY: labels match feature-spec §8.5 PTA formula options.
 _PTA_FORMULAS = frozenset({"3freq", "4freq_who", "high_freq", "fletcher"})
-# VERIFY: Meltzer overall grade vs Lund-Kennedy item scale (feature-spec §7).
-_POLYP_SCALES = frozenset({"meltzer", "lund_kennedy"})
+# Overall polyp grade. Lund-Kennedy polyp item stays 0-2 and is not this setting.
+# VERIFY: Meltzer 0-4 and Lildholdt 0-3 grade prose (feature-spec appendix A).
+_POLYP_SCALES = frozenset({"meltzer", "lildholdt"})
 
 
 class AsymmetryRuleValue(BaseModel):

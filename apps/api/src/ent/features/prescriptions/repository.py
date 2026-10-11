@@ -226,6 +226,22 @@ class PrescriptionTemplateRepository(BaseRepository[PrescriptionTemplate]):
 class CalculationResultRepository(BaseRepository[CalculationResultRow]):
     model = CalculationResultRow
 
+    async def list_for_procedures(
+        self,
+        procedure_record_ids: list[int],
+    ) -> list[CalculationResultRow]:
+        if not procedure_record_ids:
+            return []
+        result = await self.session.scalars(
+            self._base_query()
+            .where(CalculationResultRow.procedure_record_id.in_(procedure_record_ids))
+            .order_by(
+                CalculationResultRow.computed_at.desc(),
+                CalculationResultRow.id.desc(),
+            )
+        )
+        return list(result.all())
+
 
 class PrescriptionIdempotencyRepository(BaseRepository[PrescriptionRequestIdempotency]):
     model = PrescriptionRequestIdempotency

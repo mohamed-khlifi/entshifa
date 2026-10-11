@@ -74,5 +74,13 @@
     "invalid_transition": "This procedure cannot change from its current status.",
     "not_found": "That procedure was not found.",
     "version_conflict": "This procedure was updated by someone else. Reload and try again."
+  },
+  "endoscopy": {
+    "incomplete_score": "A score is missing an item. Enter every grade explicitly.",
+    "invalid_finding": "That finding does not match the structure status.",
+    "invalid_score": "A score is outside the allowed range for its scale.",
+    "invalid_structure": "That structure is not part of the nasal endoscopy exam.",
+    "not_found": "That endoscopy was not found.",
+    "version_conflict": "This endoscopy was updated by someone else. Reload and try again."
   }
 }

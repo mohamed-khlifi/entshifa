@@ -24,7 +24,7 @@ Reference: feature spec section 7. Architecture section 25.7.
 
 ---
 
-## - [ ] P3-02 Nasal endoscopy (backend)
+## - [x] P3-02 Nasal endoscopy (backend)
 
 **Scope**
 - `endoscopy_exam` plus structure-level findings written as observations.

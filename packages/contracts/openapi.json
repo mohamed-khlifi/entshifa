@@ -3936,6 +3936,641 @@
         "title": "EncounterTemplateRouteRequest",
         "type": "object"
       },
+      "EndoscopyCreate": {
+        "properties": {
+          "adenoidObstructionPct": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Adenoidobstructionpct"
+          },
+          "anesthesia": {
+            "default": "topical_spray",
+            "enum": [
+              "none",
+              "topical_spray",
+              "local_infiltration",
+              "general"
+            ],
+            "title": "Anesthesia",
+            "type": "string"
+          },
+          "conclusionText": {
+            "anyOf": [
+              {
+                "maxLength": 10000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conclusiontext"
+          },
+          "decongestantUsed": {
+            "default": false,
+            "title": "Decongestantused",
+            "type": "boolean"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "indicationText": {
+            "anyOf": [
+              {
+                "maxLength": 400,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicationtext"
+          },
+          "instrument": {
+            "anyOf": [
+              {
+                "maxLength": 100,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instrument"
+          },
+          "laterality": {
+            "$ref": "#/components/schemas/Laterality",
+            "default": "bilateral"
+          },
+          "lundKennedyLeft": {
+            "$ref": "#/components/schemas/LundKennedySideWrite"
+          },
+          "lundKennedyRight": {
+            "$ref": "#/components/schemas/LundKennedySideWrite"
+          },
+          "patientPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "performedAt": {
+            "format": "date-time",
+            "title": "Performedat",
+            "type": "string"
+          },
+          "polypGradeLeft": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Polypgradeleft"
+          },
+          "polypGradeRight": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Polypgraderight"
+          },
+          "scopeType": {
+            "enum": [
+              "flexible",
+              "rigid_0",
+              "rigid_30",
+              "rigid_70"
+            ],
+            "title": "Scopetype",
+            "type": "string"
+          },
+          "setting": {
+            "default": "office",
+            "enum": [
+              "office",
+              "ot"
+            ],
+            "title": "Setting",
+            "type": "string"
+          },
+          "structures": {
+            "items": {
+              "$ref": "#/components/schemas/EndoscopyStructureWrite"
+            },
+            "title": "Structures",
+            "type": "array"
+          },
+          "tolerance": {
+            "anyOf": [
+              {
+                "enum": [
+                  "well_tolerated",
+                  "mild_discomfort",
+                  "moderate_discomfort",
+                  "poorly_tolerated",
+                  "aborted"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tolerance"
+          }
+        },
+        "required": [
+          "performedAt",
+          "scopeType",
+          "lundKennedyRight",
+          "lundKennedyLeft",
+          "patientPublicId"
+        ],
+        "title": "EndoscopyCreate",
+        "type": "object"
+      },
+      "EndoscopyExamRead": {
+        "properties": {
+          "adenoidObstructionPct": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Adenoidobstructionpct"
+          },
+          "anesthesia": {
+            "title": "Anesthesia",
+            "type": "string"
+          },
+          "conclusionText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conclusiontext"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "title": "Createdat",
+            "type": "string"
+          },
+          "decongestantUsed": {
+            "title": "Decongestantused",
+            "type": "boolean"
+          },
+          "encounterId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterid"
+          },
+          "indicationText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicationtext"
+          },
+          "instrument": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instrument"
+          },
+          "laterality": {
+            "title": "Laterality",
+            "type": "string"
+          },
+          "lundKennedyLeft": {
+            "$ref": "#/components/schemas/LundKennedySideRead"
+          },
+          "lundKennedyRight": {
+            "$ref": "#/components/schemas/LundKennedySideRead"
+          },
+          "lundKennedyTotal": {
+            "title": "Lundkennedytotal",
+            "type": "integer"
+          },
+          "modifiedLkLeft": {
+            "title": "Modifiedlkleft",
+            "type": "integer"
+          },
+          "modifiedLkRight": {
+            "title": "Modifiedlkright",
+            "type": "integer"
+          },
+          "modifiedLkTotal": {
+            "title": "Modifiedlktotal",
+            "type": "integer"
+          },
+          "patientId": {
+            "title": "Patientid",
+            "type": "string"
+          },
+          "performedAt": {
+            "format": "date-time",
+            "title": "Performedat",
+            "type": "string"
+          },
+          "polypGradeLeft": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Polypgradeleft"
+          },
+          "polypGradeRight": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Polypgraderight"
+          },
+          "polypScale": {
+            "title": "Polypscale",
+            "type": "string"
+          },
+          "procedureId": {
+            "title": "Procedureid",
+            "type": "string"
+          },
+          "procedureStatus": {
+            "title": "Procedurestatus",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "scopeType": {
+            "title": "Scopetype",
+            "type": "string"
+          },
+          "scores": {
+            "items": {
+              "$ref": "#/components/schemas/ScoreStampRead"
+            },
+            "title": "Scores",
+            "type": "array"
+          },
+          "setting": {
+            "title": "Setting",
+            "type": "string"
+          },
+          "structures": {
+            "items": {
+              "$ref": "#/components/schemas/EndoscopyStructureRead"
+            },
+            "title": "Structures",
+            "type": "array"
+          },
+          "tolerance": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tolerance"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "title": "Updatedat",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "publicId",
+          "version",
+          "procedureId",
+          "procedureStatus",
+          "patientId",
+          "encounterId",
+          "performedAt",
+          "laterality",
+          "anesthesia",
+          "setting",
+          "instrument",
+          "indicationText",
+          "tolerance",
+          "scopeType",
+          "decongestantUsed",
+          "lundKennedyRight",
+          "lundKennedyLeft",
+          "lundKennedyTotal",
+          "modifiedLkRight",
+          "modifiedLkLeft",
+          "modifiedLkTotal",
+          "polypGradeRight",
+          "polypGradeLeft",
+          "polypScale",
+          "adenoidObstructionPct",
+          "conclusionText",
+          "structures",
+          "scores",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "EndoscopyExamRead",
+        "type": "object"
+      },
+      "EndoscopyStructureRead": {
+        "properties": {
+          "bodySite": {
+            "$ref": "#/components/schemas/CodeableConcept"
+          },
+          "finding": {
+            "$ref": "#/components/schemas/CodeableConcept"
+          },
+          "laterality": {
+            "title": "Laterality",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bodySite",
+          "laterality",
+          "status",
+          "finding"
+        ],
+        "title": "EndoscopyStructureRead",
+        "type": "object"
+      },
+      "EndoscopyStructureWrite": {
+        "properties": {
+          "bodySiteCode": {
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Bodysitecode",
+            "type": "string"
+          },
+          "findingCode": {
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Findingcode",
+            "type": "string"
+          },
+          "laterality": {
+            "$ref": "#/components/schemas/Laterality"
+          },
+          "status": {
+            "enum": [
+              "normal",
+              "abnormal",
+              "not_examined",
+              "unknown"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bodySiteCode",
+          "laterality",
+          "status",
+          "findingCode"
+        ],
+        "title": "EndoscopyStructureWrite",
+        "type": "object"
+      },
+      "EndoscopyUpdate": {
+        "properties": {
+          "adenoidObstructionPct": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Adenoidobstructionpct"
+          },
+          "anesthesia": {
+            "default": "topical_spray",
+            "enum": [
+              "none",
+              "topical_spray",
+              "local_infiltration",
+              "general"
+            ],
+            "title": "Anesthesia",
+            "type": "string"
+          },
+          "conclusionText": {
+            "anyOf": [
+              {
+                "maxLength": 10000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conclusiontext"
+          },
+          "decongestantUsed": {
+            "default": false,
+            "title": "Decongestantused",
+            "type": "boolean"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "indicationText": {
+            "anyOf": [
+              {
+                "maxLength": 400,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicationtext"
+          },
+          "instrument": {
+            "anyOf": [
+              {
+                "maxLength": 100,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instrument"
+          },
+          "laterality": {
+            "$ref": "#/components/schemas/Laterality",
+            "default": "bilateral"
+          },
+          "lundKennedyLeft": {
+            "$ref": "#/components/schemas/LundKennedySideWrite"
+          },
+          "lundKennedyRight": {
+            "$ref": "#/components/schemas/LundKennedySideWrite"
+          },
+          "performedAt": {
+            "format": "date-time",
+            "title": "Performedat",
+            "type": "string"
+          },
+          "polypGradeLeft": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Polypgradeleft"
+          },
+          "polypGradeRight": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Polypgraderight"
+          },
+          "scopeType": {
+            "enum": [
+              "flexible",
+              "rigid_0",
+              "rigid_30",
+              "rigid_70"
+            ],
+            "title": "Scopetype",
+            "type": "string"
+          },
+          "setting": {
+            "default": "office",
+            "enum": [
+              "office",
+              "ot"
+            ],
+            "title": "Setting",
+            "type": "string"
+          },
+          "structures": {
+            "items": {
+              "$ref": "#/components/schemas/EndoscopyStructureWrite"
+            },
+            "title": "Structures",
+            "type": "array"
+          },
+          "tolerance": {
+            "anyOf": [
+              {
+                "enum": [
+                  "well_tolerated",
+                  "mild_discomfort",
+                  "moderate_discomfort",
+                  "poorly_tolerated",
+                  "aborted"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tolerance"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "performedAt",
+          "scopeType",
+          "lundKennedyRight",
+          "lundKennedyLeft",
+          "version"
+        ],
+        "title": "EndoscopyUpdate",
+        "type": "object"
+      },
       "ExaminationSnapshotCreate": {
         "properties": {
           "encounterPublicId": {
@@ -4788,6 +5423,77 @@
           }
         },
         "title": "LoginResponse",
+        "type": "object"
+      },
+      "LundKennedySideRead": {
+        "properties": {
+          "crusting": {
+            "title": "Crusting",
+            "type": "integer"
+          },
+          "discharge": {
+            "title": "Discharge",
+            "type": "integer"
+          },
+          "edema": {
+            "title": "Edema",
+            "type": "integer"
+          },
+          "polyps": {
+            "title": "Polyps",
+            "type": "integer"
+          },
+          "scarring": {
+            "title": "Scarring",
+            "type": "integer"
+          },
+          "total": {
+            "title": "Total",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "polyps",
+          "edema",
+          "discharge",
+          "scarring",
+          "crusting",
+          "total"
+        ],
+        "title": "LundKennedySideRead",
+        "type": "object"
+      },
+      "LundKennedySideWrite": {
+        "properties": {
+          "crusting": {
+            "title": "Crusting",
+            "type": "integer"
+          },
+          "discharge": {
+            "title": "Discharge",
+            "type": "integer"
+          },
+          "edema": {
+            "title": "Edema",
+            "type": "integer"
+          },
+          "polyps": {
+            "title": "Polyps",
+            "type": "integer"
+          },
+          "scarring": {
+            "title": "Scarring",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "polyps",
+          "edema",
+          "discharge",
+          "scarring",
+          "crusting"
+        ],
+        "title": "LundKennedySideWrite",
         "type": "object"
       },
       "MeResponse": {
@@ -6279,6 +6985,26 @@
           "page"
         ],
         "title": "PageSchema[EncounterRead]",
+        "type": "object"
+      },
+      "PageSchema_EndoscopyExamRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/EndoscopyExamRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[EndoscopyExamRead]",
         "type": "object"
       },
       "PageSchema_ExaminationSnapshotRead_": {
@@ -11779,6 +12505,51 @@
         "title": "SchedulableDoctorRead",
         "type": "object"
       },
+      "ScoreStampRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "formula": {
+            "title": "Formula",
+            "type": "string"
+          },
+          "reference": {
+            "title": "Reference",
+            "type": "string"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "version",
+          "value",
+          "unit",
+          "reference",
+          "formula"
+        ],
+        "title": "ScoreStampRead",
+        "type": "object"
+      },
       "SessionResponse": {
         "properties": {
           "clinicPublicId": {
@@ -17181,6 +17952,252 @@
         ]
       }
     },
+    "/api/v1/endoscopies": {
+      "post": {
+        "operationId": "create_endoscopy_api_v1_endoscopies_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EndoscopyCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndoscopyExamRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Endoscopy",
+        "tags": [
+          "endoscopy"
+        ]
+      }
+    },
+    "/api/v1/endoscopies/{endoscopy_id}": {
+      "get": {
+        "operationId": "get_endoscopy_api_v1_endoscopies__endoscopy_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "endoscopy_id",
+            "required": true,
+            "schema": {
+              "title": "Endoscopy Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndoscopyExamRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Endoscopy",
+        "tags": [
+          "endoscopy"
+        ]
+      },
+      "put": {
+        "operationId": "update_endoscopy_api_v1_endoscopies__endoscopy_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "endoscopy_id",
+            "required": true,
+            "schema": {
+              "title": "Endoscopy Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EndoscopyUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndoscopyExamRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Endoscopy",
+        "tags": [
+          "endoscopy"
+        ]
+      }
+    },
     "/api/v1/formulary": {
       "get": {
         "operationId": "list_formulary_api_v1_formulary_get",
@@ -19238,6 +20255,108 @@
         "summary": "List Patient Encounters",
         "tags": [
           "encounters"
+        ]
+      }
+    },
+    "/api/v1/patients/{patient_id}/endoscopies": {
+      "get": {
+        "operationId": "list_patient_endoscopies_api_v1_patients__patient_id__endoscopies_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_EndoscopyExamRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Patient Endoscopies",
+        "tags": [
+          "endoscopy"
         ]
       }
     },
@@ -22210,6 +23329,85 @@
         "summary": "Add Procedure Addendum",
         "tags": [
           "procedures"
+        ]
+      }
+    },
+    "/api/v1/procedures/{procedure_id}/endoscopy": {
+      "get": {
+        "operationId": "get_procedure_endoscopy_api_v1_procedures__procedure_id__endoscopy_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "procedure_id",
+            "required": true,
+            "schema": {
+              "title": "Procedure Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EndoscopyExamRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Procedure Endoscopy",
+        "tags": [
+          "endoscopy"
         ]
       }
     },

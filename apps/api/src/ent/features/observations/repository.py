@@ -211,6 +211,27 @@ class ObservationRepository(BaseRepository[Observation]):
         result = await self.session.execute(stmt)
         return [_diff_row(dict(row)) for row in result.mappings().all()]
 
+    async def list_for_procedure(self, procedure_record_id: int) -> list[Observation]:
+        result = await self.session.scalars(
+            self._base_query().where(
+                Observation.procedure_record_id == procedure_record_id
+            )
+        )
+        return list(result.all())
+
+    async def list_for_procedures(
+        self,
+        procedure_record_ids: list[int],
+    ) -> list[Observation]:
+        if not procedure_record_ids:
+            return []
+        result = await self.session.scalars(
+            self._base_query().where(
+                Observation.procedure_record_id.in_(procedure_record_ids)
+            )
+        )
+        return list(result.all())
+
     async def mark_deleted(self, row: Observation, by_user_id: int) -> None:
         now = datetime.now(UTC).replace(tzinfo=None)
         row.deleted_at = now

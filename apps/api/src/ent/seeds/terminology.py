@@ -39,6 +39,7 @@ class _ConceptSeed:
     parent_code: str | None = None
     relationship: str | None = None
     narrative: dict[str, str] | None = None
+    properties: dict[str, object] | None = None
 
 
 ANATOMY: tuple[_ConceptSeed, ...] = (
@@ -422,6 +423,14 @@ async def seed_terminology(session: AsyncSession) -> TerminologySeedReport:
     value_sets_count += map_report.value_sets
     members_created += map_report.members
 
+    from ent.seeds.endoscopy import seed_endoscopy
+
+    endoscopy_report = await seed_endoscopy(session, system, by_code)
+    concepts_created += endoscopy_report.concepts
+    translations_created += endoscopy_report.translations
+    value_sets_count += endoscopy_report.value_sets
+    members_created += endoscopy_report.members
+
     from ent.seeds.icd10_ent import seed_icd10_ent
 
     icd_report = await seed_icd10_ent(session)
@@ -462,6 +471,15 @@ async def _ensure_code_system(session: AsyncSession) -> CodeSystem:
     return row
 
 
+def _seed_properties(seed: _ConceptSeed) -> dict[str, object] | None:
+    merged: dict[str, object] = {}
+    if seed.narrative:
+        merged["narrative"] = dict(seed.narrative)
+    if seed.properties:
+        merged.update(seed.properties)
+    return merged or None
+
+
 async def _ensure_concept(
     session: AsyncSession,
     *,
@@ -479,14 +497,14 @@ async def _ensure_concept(
             ),
         )
     ).scalar_one_or_none()
-    narrative = {"narrative": dict(seed.narrative)} if seed.narrative else None
+    desired = _seed_properties(seed)
     if existing is not None:
-        if (
-            narrative is not None
-            and (existing.properties or {}).get("narrative") != seed.narrative
-        ):
-            existing.properties = narrative
-            flag_modified(existing, "properties")
+        if desired is not None:
+            current = dict(existing.properties or {})
+            if any(current.get(key) != value for key, value in desired.items()):
+                current.update(desired)
+                existing.properties = current
+                flag_modified(existing, "properties")
         if parent_id is not None and existing.parent_id is None:
             existing.parent_id = parent_id
         return existing, False
@@ -497,7 +515,7 @@ async def _ensure_concept(
         kind=seed.kind,
         parent_id=parent_id,
         sort_order=sort_order,
-        properties=narrative,
+        properties=desired,
         is_active=True,
         clinic_id=None,
     )
