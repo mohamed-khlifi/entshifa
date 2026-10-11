@@ -748,6 +748,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ear-devices/{device_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Ear Device Status */
+        patch: operations["update_ear_device_status_api_v1_ear_devices__device_id__patch"];
+        trace?: never;
+    };
     "/api/v1/encounter-templates": {
         parameters: {
             query?: never;
@@ -1197,6 +1214,41 @@ export interface paths {
         patch: operations["update_observation_api_v1_observations__public_id__patch"];
         trace?: never;
     };
+    "/api/v1/otology-exams": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Otology Exam */
+        post: operations["create_otology_exam_api_v1_otology_exams_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/otology-exams/{exam_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Otology Exam */
+        get: operations["get_otology_exam_api_v1_otology_exams__exam_id__get"];
+        /** Update Otology Exam */
+        put: operations["update_otology_exam_api_v1_otology_exams__exam_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/patients": {
         parameters: {
             query?: never;
@@ -1263,6 +1315,23 @@ export interface paths {
         post?: never;
         /** Delete Allergy */
         delete: operations["delete_allergy_api_v1_patients__patient_id__allergies__allergy_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/ear-devices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Patient Ear Devices */
+        get: operations["list_patient_ear_devices_api_v1_patients__patient_id__ear_devices_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -1470,6 +1539,23 @@ export interface paths {
         put?: never;
         /** Merge Patient */
         post: operations["merge_patient_api_v1_patients__patient_id__merge_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/otology-exams": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Patient Otology Exams */
+        get: operations["list_patient_otology_exams_api_v1_patients__patient_id__otology_exams_get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1780,6 +1866,23 @@ export interface paths {
         };
         /** Get Procedure Laryngoscopy */
         get: operations["get_procedure_laryngoscopy_api_v1_procedures__procedure_id__laryngoscopy_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/procedures/{procedure_id}/otology-exam": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Procedure Otology Exam */
+        get: operations["get_procedure_otology_exam_api_v1_procedures__procedure_id__otology_exam_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2610,6 +2713,19 @@ export interface components {
             /** Version */
             version: string;
         };
+        /** CavityCleaningWrite */
+        CavityCleaningWrite: {
+            /**
+             * Condition
+             * @enum {string}
+             */
+            condition: "dry" | "moist" | "granulation" | "debris" | "exposed_structures";
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "cavity_cleaning";
+        };
         /** CertificateInput */
         CertificateInput: {
             /** Bodytext */
@@ -3232,6 +3348,47 @@ export interface components {
             /** Publicid */
             publicId: string;
         };
+        /** EarDeviceRead */
+        EarDeviceRead: {
+            /** Complication */
+            complication: string | null;
+            /** Devicetype */
+            deviceType: string;
+            /**
+             * Insertedat
+             * Format: date
+             */
+            insertedAt: string;
+            /** Insertedprocedureid */
+            insertedProcedureId: string | null;
+            /** Laterality */
+            laterality: string;
+            /**
+             * Nextcheckdue
+             * Format: date
+             */
+            nextCheckDue: string;
+            /** Publicid */
+            publicId: string;
+            /** Removedat */
+            removedAt: string | null;
+            /** Status */
+            status: string;
+            /** Tubemodel */
+            tubeModel: string | null;
+            /** Version */
+            version: number;
+        };
+        /** EarDeviceStatusUpdate */
+        EarDeviceStatusUpdate: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "in_place" | "blocked" | "extruded" | "removed" | "retained";
+            /** Version */
+            version: number;
+        };
         /** EncounterAddendumCreate */
         EncounterAddendumCreate: {
             /** Body */
@@ -3737,6 +3894,31 @@ export interface components {
                 [key: string]: string;
             };
         };
+        /** ForeignBodyWrite */
+        ForeignBodyWrite: {
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "microsuction" | "forceps" | "irrigation" | "hook";
+            /**
+             * Objectlocale
+             * @enum {string}
+             */
+            objectLocale: "en" | "fr" | "ar";
+            /** Objecttext */
+            objectText: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "foreign_body";
+            /**
+             * Trauma
+             * @enum {string}
+             */
+            trauma: "none" | "canal" | "tympanic";
+        };
         /** FormularyEntryCreate */
         FormularyEntryCreate: {
             /** Brandname */
@@ -3884,6 +4066,30 @@ export interface components {
             maxMgPerDay?: number | string | null;
             /** Mgperkgperday */
             mgPerKgPerDay?: number | string | null;
+        };
+        /** IntratympanicInjectionWrite */
+        IntratympanicInjectionWrite: {
+            /** Doseamount */
+            doseAmount: number | string;
+            /**
+             * Doseunit
+             * @enum {string}
+             */
+            doseUnit: "mg" | "mL";
+            /**
+             * Drugcode
+             * @enum {string}
+             */
+            drugCode: "DRUG.IT.DEXAMETHASONE" | "DRUG.IT.METHYLPREDNISOLONE" | "DRUG.IT.GENTAMICIN";
+            /** Indicationlocale */
+            indicationLocale?: ("en" | "fr" | "ar") | null;
+            /** Indicationtext */
+            indicationText?: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "intratympanic_injection";
         };
         /** InvitationAccept */
         InvitationAccept: {
@@ -4532,6 +4738,218 @@ export interface components {
             /** Version */
             version: number;
         };
+        /** OfficeProcedureRead */
+        OfficeProcedureRead: {
+            /** Payload */
+            payload: {
+                [key: string]: string | null;
+            };
+            /** Removalduedate */
+            removalDueDate: string | null;
+            /** Subtype */
+            subtype: string;
+        };
+        /** OtologyCreate */
+        OtologyCreate: {
+            /**
+             * Anesthesia
+             * @default none
+             * @enum {string}
+             */
+            anesthesia: "none" | "topical_spray" | "local_infiltration" | "general";
+            /** Conclusiontext */
+            conclusionText?: string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Forkfrequencyhz */
+            forkFrequencyHz?: (256 | 512) | null;
+            /** Indicationtext */
+            indicationText?: string | null;
+            /** Instrument */
+            instrument?: string | null;
+            /** @default bilateral */
+            laterality: components["schemas"]["Laterality"];
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "otoscopy" | "microscopy";
+            /** Mobilityleft */
+            mobilityLeft?: ("normal" | "reduced" | "absent" | "hypermobile") | null;
+            /** Mobilityright */
+            mobilityRight?: ("normal" | "reduced" | "absent" | "hypermobile") | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Procedure */
+            procedure?: (components["schemas"]["WaxRemovalWrite"] | components["schemas"]["ForeignBodyWrite"] | components["schemas"]["WickWrite"] | components["schemas"]["TubeInsertionWrite"] | components["schemas"]["TubeRemovalWrite"] | components["schemas"]["IntratympanicInjectionWrite"] | components["schemas"]["CavityCleaningWrite"]) | null;
+            /** Rinneleft */
+            rinneLeft?: ("positive" | "negative") | null;
+            /** Rinneright */
+            rinneRight?: ("positive" | "negative") | null;
+            /**
+             * Setting
+             * @default office
+             * @enum {string}
+             */
+            setting: "office" | "ot";
+            /** Structures */
+            structures?: components["schemas"]["OtologyStructureWrite"][];
+            /** Tolerance */
+            tolerance?: ("well_tolerated" | "mild_discomfort" | "moderate_discomfort" | "poorly_tolerated" | "aborted") | null;
+            /** Weber */
+            weber?: ("midline" | "lateralizes_right" | "lateralizes_left") | null;
+        };
+        /** OtologyExamRead */
+        OtologyExamRead: {
+            /** Anesthesia */
+            anesthesia: string;
+            /** Conclusiontext */
+            conclusionText: string | null;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /** Devices */
+            devices: components["schemas"]["EarDeviceRead"][];
+            /** Encounterid */
+            encounterId: string | null;
+            /** Forkfrequencyhz */
+            forkFrequencyHz: number | null;
+            /** Indicationtext */
+            indicationText: string | null;
+            /** Instrument */
+            instrument: string | null;
+            /** Laterality */
+            laterality: string;
+            /** Method */
+            method: string;
+            /** Mobilityleft */
+            mobilityLeft: string | null;
+            /** Mobilityright */
+            mobilityRight: string | null;
+            /** Patientid */
+            patientId: string;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            procedure: components["schemas"]["OfficeProcedureRead"] | null;
+            /** Procedurecode */
+            procedureCode: string;
+            /** Procedureid */
+            procedureId: string;
+            /** Procedurestatus */
+            procedureStatus: string;
+            /** Publicid */
+            publicId: string;
+            /** Rinneleft */
+            rinneLeft: string | null;
+            /** Rinneright */
+            rinneRight: string | null;
+            /** Setting */
+            setting: string;
+            /** Structures */
+            structures: components["schemas"]["OtologyStructureRead"][];
+            /** Tolerance */
+            tolerance: string | null;
+            /**
+             * Updatedat
+             * Format: date-time
+             */
+            updatedAt: string;
+            /** Version */
+            version: number;
+            /** Weber */
+            weber: string | null;
+        };
+        /** OtologyStructureRead */
+        OtologyStructureRead: {
+            bodySite: components["schemas"]["CodeableConcept"];
+            finding: components["schemas"]["CodeableConcept"];
+            /** Laterality */
+            laterality: string;
+            /** Mapregioncode */
+            mapRegionCode: string | null;
+            /** Status */
+            status: string;
+        };
+        /** OtologyStructureWrite */
+        OtologyStructureWrite: {
+            /** Bodysitecode */
+            bodySiteCode: string;
+            /** Findingcode */
+            findingCode: string;
+            laterality: components["schemas"]["Laterality"];
+            /** Mapregioncode */
+            mapRegionCode: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "normal" | "abnormal" | "not_examined" | "unknown";
+        };
+        /** OtologyUpdate */
+        OtologyUpdate: {
+            /**
+             * Anesthesia
+             * @default none
+             * @enum {string}
+             */
+            anesthesia: "none" | "topical_spray" | "local_infiltration" | "general";
+            /** Conclusiontext */
+            conclusionText?: string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Forkfrequencyhz */
+            forkFrequencyHz?: (256 | 512) | null;
+            /** Indicationtext */
+            indicationText?: string | null;
+            /** Instrument */
+            instrument?: string | null;
+            /** @default bilateral */
+            laterality: components["schemas"]["Laterality"];
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "otoscopy" | "microscopy";
+            /** Mobilityleft */
+            mobilityLeft?: ("normal" | "reduced" | "absent" | "hypermobile") | null;
+            /** Mobilityright */
+            mobilityRight?: ("normal" | "reduced" | "absent" | "hypermobile") | null;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Procedure */
+            procedure?: (components["schemas"]["WaxRemovalWrite"] | components["schemas"]["ForeignBodyWrite"] | components["schemas"]["WickWrite"] | components["schemas"]["TubeInsertionWrite"] | components["schemas"]["TubeRemovalWrite"] | components["schemas"]["IntratympanicInjectionWrite"] | components["schemas"]["CavityCleaningWrite"]) | null;
+            /** Rinneleft */
+            rinneLeft?: ("positive" | "negative") | null;
+            /** Rinneright */
+            rinneRight?: ("positive" | "negative") | null;
+            /**
+             * Setting
+             * @default office
+             * @enum {string}
+             */
+            setting: "office" | "ot";
+            /** Structures */
+            structures?: components["schemas"]["OtologyStructureWrite"][];
+            /** Tolerance */
+            tolerance?: ("well_tolerated" | "mild_discomfort" | "moderate_discomfort" | "poorly_tolerated" | "aborted") | null;
+            /** Version */
+            version: number;
+            /** Weber */
+            weber?: ("midline" | "lateralizes_right" | "lateralizes_left") | null;
+        };
         /**
          * PageMeta
          * @description Pagination envelope metadata.
@@ -4594,6 +5012,12 @@ export interface components {
             items: components["schemas"]["DrugRead"][];
             page: components["schemas"]["PageMeta"];
         };
+        /** PageSchema[EarDeviceRead] */
+        PageSchema_EarDeviceRead_: {
+            /** Items */
+            items: components["schemas"]["EarDeviceRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
         /** PageSchema[EncounterRead] */
         PageSchema_EncounterRead_: {
             /** Items */
@@ -4628,6 +5052,12 @@ export interface components {
         PageSchema_ObservationRead_: {
             /** Items */
             items: components["schemas"]["ObservationRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[OtologyExamRead] */
+        PageSchema_OtologyExamRead_: {
+            /** Items */
+            items: components["schemas"]["OtologyExamRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[PatientAllergyRead] */
@@ -4944,7 +5374,7 @@ export interface components {
              * Flagcode
              * @enum {string}
              */
-            flagCode: "only_hearing_ear" | "anticoagulant" | "ototoxic_therapy" | "difficult_airway" | "tracheostomy" | "laryngeal_stenosis" | "cochlear_implant" | "pacemaker" | "immunosuppressed" | "diabetes" | "pregnancy" | "breastfeeding" | "pediatric_weight_missing";
+            flagCode: "only_hearing_ear" | "anticoagulant" | "ototoxic_therapy" | "difficult_airway" | "tracheostomy" | "laryngeal_stenosis" | "cochlear_implant" | "pacemaker" | "immunosuppressed" | "diabetes" | "pregnancy" | "breastfeeding" | "pediatric_weight_missing" | "ventilation_tube" | "mastoid_cavity" | "cholesteatoma";
             /**
              * Isauto
              * @default false
@@ -6357,6 +6787,36 @@ export interface components {
             /** Usagecount */
             usageCount: number;
         };
+        /** TubeInsertionWrite */
+        TubeInsertionWrite: {
+            /** Complication */
+            complication?: ("bleeding" | "otorrhea" | "vertigo" | "perforation") | null;
+            /**
+             * Effusion
+             * @enum {string}
+             */
+            effusion: "none" | "serous" | "mucoid" | "purulent" | "bloody";
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "tube_insertion";
+            /**
+             * Tubemodel
+             * @enum {string}
+             */
+            tubeModel: "shepard" | "armstrong" | "t_tube" | "bobbin" | "paparella";
+        };
+        /** TubeRemovalWrite */
+        TubeRemovalWrite: {
+            /** Devicepublicid */
+            devicePublicId: string;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "tube_removal";
+        };
         /** UserRead */
         UserRead: {
             /** Email */
@@ -6510,6 +6970,42 @@ export interface components {
             doctorDisplayName: string;
             /** Patientdisplayname */
             patientDisplayName: string;
+        };
+        /** WaxRemovalWrite */
+        WaxRemovalWrite: {
+            /**
+             * Canalcondition
+             * @enum {string}
+             */
+            canalCondition: "clear" | "residual_wax" | "inflamed" | "traumatized";
+            /**
+             * Completeness
+             * @enum {string}
+             */
+            completeness: "complete" | "partial";
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "microsuction" | "curette" | "irrigation";
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "wax_removal";
+        };
+        /** WickWrite */
+        WickWrite: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            subtype: "wick";
+            /**
+             * Wicktype
+             * @enum {string}
+             */
+            wickType: "pope" | "ribbon" | "merocel";
         };
     };
     responses: never;
@@ -8254,6 +8750,43 @@ export interface operations {
             };
         };
     };
+    update_ear_device_status_api_v1_ear_devices__device_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                device_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["EarDeviceStatusUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EarDeviceRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_encounter_templates_api_v1_encounter_templates_get: {
         parameters: {
             query?: never;
@@ -9452,6 +9985,114 @@ export interface operations {
             };
         };
     };
+    create_otology_exam_api_v1_otology_exams_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OtologyCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OtologyExamRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_otology_exam_api_v1_otology_exams__exam_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                exam_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OtologyExamRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_otology_exam_api_v1_otology_exams__exam_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                exam_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OtologyUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OtologyExamRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_patients_api_v1_patients_get: {
         parameters: {
             query?: {
@@ -9694,6 +10335,42 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_patient_ear_devices_api_v1_patients__patient_id__ear_devices_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_EarDeviceRead_"];
+                };
             };
             /** @description Validation Error */
             422: {
@@ -10273,6 +10950,43 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PatientMergeRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_patient_otology_exams_api_v1_patients__patient_id__otology_exams_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_OtologyExamRead_"];
                 };
             };
             /** @description Validation Error */
@@ -11134,6 +11848,40 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LaryngoscopyExamRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_procedure_otology_exam_api_v1_procedures__procedure_id__otology_exam_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                procedure_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OtologyExamRead"];
                 };
             };
             /** @description Validation Error */

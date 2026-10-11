@@ -1,0 +1,166 @@
+{
+  "title": "Otologie",
+  "actions": {
+    "new": "Nouvel examen",
+    "save": "Enregistrer",
+    "saving": "Enregistrement…",
+    "saved": "Examen otologique enregistré.",
+    "sign": "Signer",
+    "signing": "Signature…",
+    "signed": "Examen otologique signé.",
+    "confirmSign": "Signer cet examen",
+    "cancelSign": "Continuer la saisie"
+  },
+  "state": {
+    "loading": "Chargement des examens otologiques…",
+    "error": "Les examens otologiques n’ont pas pu être chargés.",
+    "empty": "Aucun examen otologique."
+  },
+  "fields": {
+    "performedAt": "Réalisé le",
+    "method": "Méthode",
+    "laterality": "Oreille",
+    "weber": "Weber",
+    "rinneRight": "Rinne, droite",
+    "rinneLeft": "Rinne, gauche",
+    "fork": "Diapason",
+    "mobilityRight": "Mobilité, droite",
+    "mobilityLeft": "Mobilité, gauche",
+    "procedure": "Geste au cabinet",
+    "conclusion": "Conclusion",
+    "devices": "Dispositifs auriculaires",
+    "dose": "Dose",
+    "unit": "Unité",
+    "indication": "Indication",
+    "object": "Objet",
+    "device": "Aérateur à retirer"
+  },
+  "method": {
+    "otoscopy": "Otoscopie",
+    "microscopy": "Microscopie"
+  },
+  "laterality": {
+    "right": "Droite",
+    "left": "Gauche",
+    "bilateral": "Les deux oreilles"
+  },
+  "weber": {
+    "none": "Non renseigné",
+    "midline": "Médian",
+    "lateralizes_right": "Latéralisé à droite",
+    "lateralizes_left": "Latéralisé à gauche"
+  },
+  "rinne": {
+    "none": "Non renseigné",
+    "positive": "Positif",
+    "negative": "Négatif"
+  },
+  "fork": {
+    "none": "Non renseigné",
+    "256": "256 Hz",
+    "512": "512 Hz"
+  },
+  "mobility": {
+    "none": "Non renseignée",
+    "normal": "Normale",
+    "reduced": "Diminuée",
+    "absent": "Absente",
+    "hypermobile": "Hypermobile"
+  },
+  "subtype": {
+    "none": "Examen seul",
+    "wax_removal": "Ablation de cérumen",
+    "foreign_body": "Corps étranger",
+    "wick": "Mèche d’otite externe",
+    "tube_insertion": "Aérateur transtympanique",
+    "tube_removal": "Ablation d’aérateur",
+    "intratympanic_injection": "Injection intratympanique",
+    "cavity_cleaning": "Nettoyage de cavité"
+  },
+  "waxMethod": {
+    "microsuction": "Micro-aspiration",
+    "curette": "Curette",
+    "irrigation": "Irrigation"
+  },
+  "completeness": {
+    "complete": "Complète",
+    "partial": "Partielle"
+  },
+  "canal": {
+    "clear": "Libre",
+    "residual_wax": "Cérumen résiduel",
+    "inflamed": "Inflammé",
+    "traumatized": "Traumatisé"
+  },
+  "fbMethod": {
+    "microsuction": "Micro-aspiration",
+    "forceps": "Pince",
+    "irrigation": "Irrigation",
+    "hook": "Crochet"
+  },
+  "trauma": {
+    "none": "Aucun",
+    "canal": "Conduit",
+    "tympanic": "Membrane tympanique"
+  },
+  "wickType": {
+    "pope": "Pope",
+    "ribbon": "Ruban",
+    "merocel": "Merocel"
+  },
+  "tubeModel": {
+    "shepard": "Shepard",
+    "armstrong": "Armstrong",
+    "t_tube": "Tube en T",
+    "bobbin": "Bobine",
+    "paparella": "Paparella"
+  },
+  "effusion": {
+    "none": "Aucun",
+    "serous": "Séreux",
+    "mucoid": "Muqueux",
+    "purulent": "Purulent",
+    "bloody": "Sanglant"
+  },
+  "complication": {
+    "none": "Aucune",
+    "bleeding": "Saignement",
+    "otorrhea": "Otorrhée",
+    "vertigo": "Vertige",
+    "perforation": "Perforation"
+  },
+  "drug": {
+    "dexamethasone": "Dexaméthasone",
+    "methylprednisolone": "Méthylprednisolone",
+    "gentamicin": "Gentamicine"
+  },
+  "cavity": {
+    "dry": "Sèche",
+    "moist": "Humide",
+    "granulation": "Granulation",
+    "debris": "Débris",
+    "exposed_structures": "Structures exposées"
+  },
+  "deviceStatus": {
+    "in_place": "En place",
+    "blocked": "Obstrué",
+    "extruded": "Extrudé",
+    "removed": "Retiré",
+    "retained": "Retenu"
+  },
+  "deviceType": {
+    "ventilation_tube": "Aérateur",
+    "mastoid_cavity": "Cavité mastoïdienne"
+  },
+  "validation": {
+    "fork": "Choisissez la fréquence du diapason.",
+    "side": "Choisissez l’oreille droite ou gauche pour ce geste.",
+    "object": "Nommez le corps étranger.",
+    "dose": "Saisissez la dose.",
+    "device": "Choisissez l’aérateur à retirer.",
+    "performedAt": "Indiquez quand l’examen a été réalisé."
+  },
+  "devicesEmpty": "Aucun dispositif auriculaire.",
+  "nextCheck": "Prochain contrôle {date}",
+  "removalDue": "Retrait de mèche {date}"
+}

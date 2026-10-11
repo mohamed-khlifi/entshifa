@@ -28,6 +28,7 @@ from ent.features.observations.models import (
     Observation,
     ObservationComponent,
 )
+from ent.features.otology.models import EarDevice, OfficeProcedure, OtologyExam
 from ent.features.patients.models import (
     Patient,
     PatientAllergy,
@@ -92,6 +93,7 @@ __all__ = [
     "EncounterSignature",
     "EncounterTemplate",
     "EndoscopyExam",
+    "EarDevice",
     "LaryngoscopyExam",
     "ExaminationSnapshot",
     "Setting",
@@ -102,6 +104,8 @@ __all__ = [
     "MediaVariant",
     "Observation",
     "ObservationComponent",
+    "OfficeProcedure",
+    "OtologyExam",
     "PasswordResetToken",
     "Patient",
     "PatientAllergy",

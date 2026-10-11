@@ -31,6 +31,7 @@ export function PatientShell({
   const examinationHref = `/patients/${patientId}/examination`;
   const endoscopyHref = `/patients/${patientId}/endoscopy`;
   const laryngoscopyHref = `/patients/${patientId}/laryngoscopy`;
+  const otologyHref = `/patients/${patientId}/otology`;
   const prescriptionsHref = `/patients/${patientId}/prescriptions`;
 
   if (patient.isLoading) {
@@ -137,6 +138,18 @@ export function PatientShell({
           {...testIdProps(testIds.patients.navLaryngoscopy)}
         >
           {t("nav.laryngoscopy")}
+        </Link>
+        <Link
+          href={otologyHref}
+          className={cn(
+            "rounded-full px-3 py-1.5 text-sm font-medium",
+            pathname === otologyHref
+              ? "bg-primary/10 text-primary"
+              : "text-muted-foreground hover:bg-muted",
+          )}
+          {...testIdProps(testIds.patients.navOtology)}
+        >
+          {t("nav.otology")}
         </Link>
         {canPrescribe ? (
           <Link

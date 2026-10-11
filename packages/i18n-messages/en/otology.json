@@ -1,0 +1,166 @@
+{
+  "title": "Otology",
+  "actions": {
+    "new": "New exam",
+    "save": "Save exam",
+    "saving": "Saving…",
+    "saved": "Otology exam saved.",
+    "sign": "Sign",
+    "signing": "Signing…",
+    "signed": "Otology exam signed.",
+    "confirmSign": "Sign this exam",
+    "cancelSign": "Keep editing"
+  },
+  "state": {
+    "loading": "Loading otology exams…",
+    "error": "Otology exams could not be loaded.",
+    "empty": "No otology exam yet."
+  },
+  "fields": {
+    "performedAt": "Performed at",
+    "method": "Method",
+    "laterality": "Ear",
+    "weber": "Weber",
+    "rinneRight": "Rinne, right",
+    "rinneLeft": "Rinne, left",
+    "fork": "Fork",
+    "mobilityRight": "Mobility, right",
+    "mobilityLeft": "Mobility, left",
+    "procedure": "Office procedure",
+    "conclusion": "Conclusion",
+    "devices": "Ear devices",
+    "dose": "Dose",
+    "unit": "Unit",
+    "indication": "Indication",
+    "object": "Object",
+    "device": "Tube to remove"
+  },
+  "method": {
+    "otoscopy": "Otoscopy",
+    "microscopy": "Microscopy"
+  },
+  "laterality": {
+    "right": "Right",
+    "left": "Left",
+    "bilateral": "Both ears"
+  },
+  "weber": {
+    "none": "Not recorded",
+    "midline": "Midline",
+    "lateralizes_right": "Lateralizes to the right",
+    "lateralizes_left": "Lateralizes to the left"
+  },
+  "rinne": {
+    "none": "Not recorded",
+    "positive": "Positive",
+    "negative": "Negative"
+  },
+  "fork": {
+    "none": "Not recorded",
+    "256": "256 Hz",
+    "512": "512 Hz"
+  },
+  "mobility": {
+    "none": "Not recorded",
+    "normal": "Normal",
+    "reduced": "Reduced",
+    "absent": "Absent",
+    "hypermobile": "Hypermobile"
+  },
+  "subtype": {
+    "none": "Examination only",
+    "wax_removal": "Wax removal",
+    "foreign_body": "Foreign body",
+    "wick": "Otitis externa wick",
+    "tube_insertion": "Ventilation tube",
+    "tube_removal": "Tube removal",
+    "intratympanic_injection": "Intratympanic injection",
+    "cavity_cleaning": "Cavity cleaning"
+  },
+  "waxMethod": {
+    "microsuction": "Microsuction",
+    "curette": "Curette",
+    "irrigation": "Irrigation"
+  },
+  "completeness": {
+    "complete": "Complete",
+    "partial": "Partial"
+  },
+  "canal": {
+    "clear": "Clear",
+    "residual_wax": "Residual wax",
+    "inflamed": "Inflamed",
+    "traumatized": "Traumatized"
+  },
+  "fbMethod": {
+    "microsuction": "Microsuction",
+    "forceps": "Forceps",
+    "irrigation": "Irrigation",
+    "hook": "Hook"
+  },
+  "trauma": {
+    "none": "None",
+    "canal": "Canal",
+    "tympanic": "Tympanic membrane"
+  },
+  "wickType": {
+    "pope": "Pope",
+    "ribbon": "Ribbon",
+    "merocel": "Merocel"
+  },
+  "tubeModel": {
+    "shepard": "Shepard",
+    "armstrong": "Armstrong",
+    "t_tube": "T-tube",
+    "bobbin": "Bobbin",
+    "paparella": "Paparella"
+  },
+  "effusion": {
+    "none": "None",
+    "serous": "Serous",
+    "mucoid": "Mucoid",
+    "purulent": "Purulent",
+    "bloody": "Bloody"
+  },
+  "complication": {
+    "none": "None",
+    "bleeding": "Bleeding",
+    "otorrhea": "Otorrhea",
+    "vertigo": "Vertigo",
+    "perforation": "Perforation"
+  },
+  "drug": {
+    "dexamethasone": "Dexamethasone",
+    "methylprednisolone": "Methylprednisolone",
+    "gentamicin": "Gentamicin"
+  },
+  "cavity": {
+    "dry": "Dry",
+    "moist": "Moist",
+    "granulation": "Granulation",
+    "debris": "Debris",
+    "exposed_structures": "Exposed structures"
+  },
+  "deviceStatus": {
+    "in_place": "In place",
+    "blocked": "Blocked",
+    "extruded": "Extruded",
+    "removed": "Removed",
+    "retained": "Retained"
+  },
+  "deviceType": {
+    "ventilation_tube": "Ventilation tube",
+    "mastoid_cavity": "Mastoid cavity"
+  },
+  "validation": {
+    "fork": "Choose the tuning-fork frequency.",
+    "side": "Choose the right or left ear for this procedure.",
+    "object": "Name the foreign body.",
+    "dose": "Enter the dose.",
+    "device": "Choose the tube to remove.",
+    "performedAt": "Enter when the exam was performed."
+  },
+  "devicesEmpty": "No ear device recorded.",
+  "nextCheck": "Next check {date}",
+  "removalDue": "Wick removal {date}"
+}

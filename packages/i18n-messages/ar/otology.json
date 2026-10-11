@@ -1,0 +1,166 @@
+{
+  "title": "فحص الأذن",
+  "actions": {
+    "new": "فحص جديد",
+    "save": "حفظ الفحص",
+    "saving": "جارٍ الحفظ…",
+    "saved": "تم حفظ فحص الأذن.",
+    "sign": "توقيع",
+    "signing": "جارٍ التوقيع…",
+    "signed": "تم توقيع فحص الأذن.",
+    "confirmSign": "توقيع هذا الفحص",
+    "cancelSign": "متابعة التحرير"
+  },
+  "state": {
+    "loading": "جارٍ تحميل فحوص الأذن…",
+    "error": "تعذر تحميل فحوص الأذن.",
+    "empty": "لا يوجد فحص أذن بعد."
+  },
+  "fields": {
+    "performedAt": "وقت الإجراء",
+    "method": "الطريقة",
+    "laterality": "الأذن",
+    "weber": "ويبر",
+    "rinneRight": "رينيه، يمين",
+    "rinneLeft": "رينيه، يسار",
+    "fork": "الشوكة الرنانة",
+    "mobilityRight": "الحركة، يمين",
+    "mobilityLeft": "الحركة، يسار",
+    "procedure": "إجراء العيادة",
+    "conclusion": "الخلاصة",
+    "devices": "أجهزة الأذن",
+    "dose": "الجرعة",
+    "unit": "الوحدة",
+    "indication": "الاستطباب",
+    "object": "الجسم",
+    "device": "الأنبوب المراد نزعه"
+  },
+  "method": {
+    "otoscopy": "تنظير الأذن",
+    "microscopy": "الفحص بالمجهر"
+  },
+  "laterality": {
+    "right": "يمين",
+    "left": "يسار",
+    "bilateral": "الأذنان"
+  },
+  "weber": {
+    "none": "غير مسجّل",
+    "midline": "في الوسط",
+    "lateralizes_right": "ينحرف إلى اليمين",
+    "lateralizes_left": "ينحرف إلى اليسار"
+  },
+  "rinne": {
+    "none": "غير مسجّل",
+    "positive": "إيجابي",
+    "negative": "سلبي"
+  },
+  "fork": {
+    "none": "غير مسجّلة",
+    "256": "256 Hz",
+    "512": "512 Hz"
+  },
+  "mobility": {
+    "none": "غير مسجّلة",
+    "normal": "طبيعية",
+    "reduced": "منخفضة",
+    "absent": "غائبة",
+    "hypermobile": "مفرطة الحركة"
+  },
+  "subtype": {
+    "none": "فحص فقط",
+    "wax_removal": "إزالة الصملاخ",
+    "foreign_body": "جسم أجنبي",
+    "wick": "فتيل التهاب الأذن الظاهرة",
+    "tube_insertion": "أنبوب تهوية",
+    "tube_removal": "نزع الأنبوب",
+    "intratympanic_injection": "حقن داخل الطبلة",
+    "cavity_cleaning": "تنظيف الجوف"
+  },
+  "waxMethod": {
+    "microsuction": "شفط مجهري",
+    "curette": "مجرفة",
+    "irrigation": "غسل"
+  },
+  "completeness": {
+    "complete": "تام",
+    "partial": "جزئي"
+  },
+  "canal": {
+    "clear": "نظيف",
+    "residual_wax": "صملاخ متبق",
+    "inflamed": "ملتهب",
+    "traumatized": "مصاب"
+  },
+  "fbMethod": {
+    "microsuction": "شفط مجهري",
+    "forceps": "ملقط",
+    "irrigation": "غسل",
+    "hook": "خطاف"
+  },
+  "trauma": {
+    "none": "لا شيء",
+    "canal": "المجرى",
+    "tympanic": "غشاء الطبلة"
+  },
+  "wickType": {
+    "pope": "بوب",
+    "ribbon": "شريط",
+    "merocel": "ميروسيل"
+  },
+  "tubeModel": {
+    "shepard": "شيبارد",
+    "armstrong": "أرمسترونغ",
+    "t_tube": "أنبوب T",
+    "bobbin": "بكرة",
+    "paparella": "باباريلا"
+  },
+  "effusion": {
+    "none": "لا شيء",
+    "serous": "مصلي",
+    "mucoid": "مخاطي",
+    "purulent": "قيحي",
+    "bloody": "دموي"
+  },
+  "complication": {
+    "none": "لا شيء",
+    "bleeding": "نزف",
+    "otorrhea": "سيلان أذني",
+    "vertigo": "دوار",
+    "perforation": "انثقاب"
+  },
+  "drug": {
+    "dexamethasone": "ديكساميثازون",
+    "methylprednisolone": "ميثيل بريدنيزولون",
+    "gentamicin": "جنتاميسين"
+  },
+  "cavity": {
+    "dry": "جاف",
+    "moist": "رطب",
+    "granulation": "تحبب",
+    "debris": "بقايا",
+    "exposed_structures": "بنى مكشوفة"
+  },
+  "deviceStatus": {
+    "in_place": "في مكانه",
+    "blocked": "مسدود",
+    "extruded": "مندفع",
+    "removed": "منزوع",
+    "retained": "محتبس"
+  },
+  "deviceType": {
+    "ventilation_tube": "أنبوب تهوية",
+    "mastoid_cavity": "جوف خشائي"
+  },
+  "validation": {
+    "fork": "اختر تردد الشوكة الرنانة.",
+    "side": "اختر الأذن اليمنى أو اليسرى لهذا الإجراء.",
+    "object": "سمِّ الجسم الأجنبي.",
+    "dose": "أدخل الجرعة.",
+    "device": "اختر الأنبوب المراد نزعه.",
+    "performedAt": "أدخل وقت إجراء الفحص."
+  },
+  "devicesEmpty": "لا يوجد جهاز أذني مسجّل.",
+  "nextCheck": "الفحص التالي {date}",
+  "removalDue": "نزع الفتيل {date}"
+}

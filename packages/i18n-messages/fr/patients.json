@@ -10,6 +10,7 @@
     "examination": "Examen",
     "endoscopy": "Endoscopie",
     "laryngoscopy": "Laryngoscopie",
+    "otology": "Otologie",
     "prescriptions": "Ordonnances",
     "timeline": "Historique"
   },
@@ -121,7 +122,9 @@
     "lastVisitsEmpty": "Aucune visite pour le moment.",
     "none": "Aucun élément",
     "mrn": "IPP {mrn}",
-    "deceased": "Décédé"
+    "deceased": "Décédé",
+    "earTracking": "Suivi de l'oreille",
+    "earTrackingEmpty": "Aucun aérateur, cavité ou cholestéatome enregistré."
   },
   "alerts": {
     "onlyHearingEar": "Oreille unique",
@@ -141,6 +144,9 @@
     "pregnancy": "Grossesse",
     "breastfeeding": "Allaitement",
     "pediatricWeightMissing": "Poids pédiatrique manquant",
+    "ventilationTube": "Aérateur transtympanique",
+    "mastoidCavity": "Cavité mastoïdienne",
+    "cholesteatoma": "Cholestéatome",
     "unknown": "Alerte {code}"
   },
   "chart": {

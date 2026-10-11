@@ -91,5 +91,13 @@
     "invalid_structure": "This laryngeal structure cannot be recorded that way.",
     "not_found": "This laryngoscopy exam does not exist.",
     "version_conflict": "This laryngoscopy exam was updated by someone else."
+  },
+  "otology": {
+    "device_not_found": "That ear device was not found.",
+    "invalid_exam": "This otology exam cannot be stored.",
+    "invalid_finding": "That finding does not match the ear structure.",
+    "invalid_structure": "That site is not part of the otology exam.",
+    "not_found": "That otology exam was not found.",
+    "version_conflict": "This otology exam was updated by someone else. Reload and try again."
   }
 }

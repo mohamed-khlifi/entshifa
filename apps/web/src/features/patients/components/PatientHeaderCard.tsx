@@ -2,6 +2,7 @@
 
 import { useLocale, useTranslations } from "next-intl";
 
+import { EarTracking } from "./EarTracking";
 import { conceptDisplayText } from "../lib/concept-display";
 import type { PatientRead } from "@/lib/api/generated";
 import { formatPersonName, patientAgeDisplay } from "@/lib/i18n/format";
@@ -120,6 +121,7 @@ export function PatientHeaderCard({ patient }: PatientHeaderCardProps) {
           </dd>
         </div>
       </dl>
+      <EarTracking flags={patient.flags} />
     </section>
   );
 }

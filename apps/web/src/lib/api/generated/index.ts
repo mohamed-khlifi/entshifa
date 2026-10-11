@@ -233,5 +233,13 @@ export type GrbasRead = Schemas["GrbasRead"];
 export type FeesWrite = Schemas["FeesWrite"];
 export type PageSchemaLaryngoscopyExamRead =
   Schemas["PageSchema_LaryngoscopyExamRead_"];
+export type OtologyCreate = Schemas["OtologyCreate"];
+export type OtologyUpdate = Schemas["OtologyUpdate"];
+export type OtologyExamRead = Schemas["OtologyExamRead"];
+export type OtologyStructureWrite = Schemas["OtologyStructureWrite"];
+export type EarDeviceRead = Schemas["EarDeviceRead"];
+export type EarDeviceStatusUpdate = Schemas["EarDeviceStatusUpdate"];
+export type PageSchemaOtologyExamRead = Schemas["PageSchema_OtologyExamRead_"];
+export type PageSchemaEarDeviceRead = Schemas["PageSchema_EarDeviceRead_"];
 export type CalculationRead = Schemas["CalculationRead"];
 export type FlagRead = Schemas["FlagRead"];

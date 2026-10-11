@@ -77,7 +77,7 @@ Reference: feature spec section 7. Architecture section 25.7.
 
 ---
 
-## - [ ] P3-05 Laryngoscopy builder and video (frontend)
+## - [x] P3-05 Laryngoscopy builder and video (frontend)
 
 **Scope**
 - Larynx map with the vocal fold diagram.
@@ -91,7 +91,7 @@ Reference: feature spec section 7. Architecture section 25.7.
 
 ---
 
-## - [ ] P3-06 Otology procedures and device tracking (backend and frontend)
+## - [x] P3-06 Otology procedures and device tracking (backend and frontend)
 
 **Scope**
 - `otology_exam` at microscopy detail, plus tuning fork results.

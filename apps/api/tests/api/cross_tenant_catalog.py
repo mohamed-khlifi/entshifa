@@ -40,6 +40,8 @@ TENANT_PATH_PARAMS = frozenset(
         "procedure_id",
         "endoscopy_id",
         "laryngoscopy_id",
+        "exam_id",
+        "device_id",
     }
 )
 

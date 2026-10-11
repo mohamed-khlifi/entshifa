@@ -28,6 +28,9 @@ PATIENT_FLAG_CODES = (
     "pregnancy",
     "breastfeeding",
     "pediatric_weight_missing",
+    "ventilation_tube",
+    "mastoid_cavity",
+    "cholesteatoma",
 )
 
 PROBLEM_STATUSES = ("active", "resolved", "suspected", "ruled_out")

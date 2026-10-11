@@ -439,6 +439,14 @@ async def seed_terminology(session: AsyncSession) -> TerminologySeedReport:
     value_sets_count += laryngoscopy_report.value_sets
     members_created += laryngoscopy_report.members
 
+    from ent.seeds.otology import seed_otology
+
+    otology_report = await seed_otology(session, system, by_code)
+    concepts_created += otology_report.concepts
+    translations_created += otology_report.translations
+    value_sets_count += otology_report.value_sets
+    members_created += otology_report.members
+
     from ent.seeds.icd10_ent import seed_icd10_ent
 
     icd_report = await seed_icd10_ent(session)
@@ -515,6 +523,9 @@ async def _ensure_concept(
                 flag_modified(existing, "properties")
         if parent_id is not None and existing.parent_id is None:
             existing.parent_id = parent_id
+        if existing.clinic_id is not None:
+            # System seeds own these codes. A clinic-scoped row would hide them.
+            existing.clinic_id = None
         return existing, False
     row = Concept(
         public_id=new_ulid(),

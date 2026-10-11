@@ -43,6 +43,12 @@ export function flagLabel(t: PatientTranslator, code: string): string {
       return t("flags.breastfeeding");
     case "pediatric_weight_missing":
       return t("flags.pediatricWeightMissing");
+    case "ventilation_tube":
+      return t("flags.ventilationTube");
+    case "mastoid_cavity":
+      return t("flags.mastoidCavity");
+    case "cholesteatoma":
+      return t("flags.cholesteatoma");
     default:
       return t("flags.unknown", { code });
   }

@@ -14,6 +14,9 @@ export const PATIENT_FLAG_CODES = [
   "pregnancy",
   "breastfeeding",
   "pediatric_weight_missing",
+  "ventilation_tube",
+  "mastoid_cavity",
+  "cholesteatoma",
 ] as const;
 
 export type PatientFlagCode = (typeof PATIENT_FLAG_CODES)[number];

@@ -59,6 +59,9 @@ _FLAGS = {
         "pregnancy": "Pregnancy",
         "breastfeeding": "Breastfeeding",
         "pediatric_weight_missing": "Pediatric weight missing",
+        "ventilation_tube": "Ventilation tube",
+        "mastoid_cavity": "Mastoid cavity",
+        "cholesteatoma": "Cholesteatoma",
     },
     "fr": {
         "only_hearing_ear": "Oreille unique",
@@ -74,6 +77,9 @@ _FLAGS = {
         "pregnancy": "Grossesse",
         "breastfeeding": "Allaitement",
         "pediatric_weight_missing": "Poids pédiatrique manquant",
+        "ventilation_tube": "Aérateur transtympanique",
+        "mastoid_cavity": "Cavité mastoïdienne",
+        "cholesteatoma": "Cholestéatome",
     },
     "ar": {
         "only_hearing_ear": "أذن سمع وحيدة",
@@ -89,6 +95,9 @@ _FLAGS = {
         "pregnancy": "حمل",
         "breastfeeding": "إرضاع",
         "pediatric_weight_missing": "وزن الطفل غير مسجل",
+        "ventilation_tube": "أنبوب تهوية",
+        "mastoid_cavity": "جوف خشائي",
+        "cholesteatoma": "ورم كوليسترولي",
     },
 }
 

@@ -24,6 +24,7 @@ from ent.features.encounters.models import Encounter
 from ent.features.endoscopy.models import EndoscopyExam
 from ent.features.laryngoscopy.models import LaryngoscopyExam
 from ent.features.observations.models import Observation
+from ent.features.otology.models import EarDevice, OtologyExam
 from ent.features.patients.models import (
     Patient,
     PatientAllergy,
@@ -372,6 +373,36 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             )
         )
         await session.flush()
+        exam_public_id = new_ulid()
+        session.add(
+            OtologyExam(
+                public_id=exam_public_id,
+                clinic_id=other.id,
+                procedure_record_id=int(procedure.id),
+                method="otoscopy",
+                conclusion_text="secret otology",
+                created_by_id=other_user.id,
+                updated_by_id=other_user.id,
+            )
+        )
+        device_public_id = new_ulid()
+        session.add(
+            EarDevice(
+                public_id=device_public_id,
+                clinic_id=other.id,
+                patient_id=int(patient.id),
+                laterality="right",
+                device_type="ventilation_tube",
+                inserted_at=date(2026, 6, 1),
+                inserted_procedure_id=int(procedure.id),
+                tube_model="shepard",
+                status="in_place",
+                next_check_due=date(2026, 6, 22),
+                created_by_id=other_user.id,
+                updated_by_id=other_user.id,
+            )
+        )
+        await session.flush()
 
         ids = {
             "patient_id": patient.public_id,
@@ -400,6 +431,8 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "procedure_id": procedure_public_id,
             "endoscopy_id": endoscopy_public_id,
             "laryngoscopy_id": laryngoscopy_public_id,
+            "exam_id": exam_public_id,
+            "device_id": device_public_id,
         }
         forbidden = [
             patient.public_id,
@@ -421,10 +454,13 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             procedure_public_id,
             endoscopy_public_id,
             laryngoscopy_public_id,
+            exam_public_id,
+            device_public_id,
             "secret recall",
             "secret procedure",
             "secret endoscopy",
             "secret laryngoscopy",
+            "secret otology",
         ]
         await session.commit()
 

@@ -162,6 +162,7 @@ export const testIds = {
     navExamination: testId("patients", "nav-examination"),
     navEndoscopy: testId("patients", "nav-endoscopy"),
     navLaryngoscopy: testId("patients", "nav-laryngoscopy"),
+    navOtology: testId("patients", "nav-otology"),
     navPrescriptions: testId("patients", "nav-prescriptions"),
     navConsultation: testId("patients", "nav-consultation"),
     navAttachments: testId("patients", "nav-attachments"),
@@ -171,6 +172,7 @@ export const testIds = {
     headerProblems: testId("patients", "header-problems"),
     headerMedications: testId("patients", "header-medications"),
     headerVisits: testId("patients", "header-visits"),
+    headerEars: testId("patients", "header-ears"),
     alertOnlyHearingEar: testId("patients", "alert-only-hearing-ear"),
     alertOther: testId("patients", "alert-other"),
     chart: testId("patients", "chart"),
@@ -545,7 +547,50 @@ export const testIds = {
     pas: testId("laryngoscopy", "fees", "pas"),
     folds: testId("laryngoscopy", "folds"),
   },
+  otology: {
+    root: testId("otology", "root"),
+    loading: testId("otology", "loading"),
+    error: testId("otology", "error"),
+    empty: testId("otology", "empty"),
+    list: testId("otology", "list"),
+    newExam: testId("otology", "new"),
+    save: testId("otology", "save"),
+    sign: testId("otology", "sign"),
+    confirmSign: testId("otology", "confirm-sign"),
+    cancelSign: testId("otology", "cancel-sign"),
+    validation: testId("otology", "validation"),
+    performedAt: testId("otology", "performed-at"),
+    method: testId("otology", "method"),
+    laterality: testId("otology", "laterality"),
+    weber: testId("otology", "weber"),
+    rinneRight: testId("otology", "rinne-right"),
+    rinneLeft: testId("otology", "rinne-left"),
+    fork: testId("otology", "fork"),
+    mobilityRight: testId("otology", "mobility-right"),
+    mobilityLeft: testId("otology", "mobility-left"),
+    subtype: testId("otology", "subtype"),
+    conclusion: testId("otology", "conclusion"),
+    devices: testId("otology", "devices"),
+    map: testId("otology", "map"),
+  },
 } as const;
+
+export function patientEarFlagTestId(code: string, laterality: string): string {
+  return testId(
+    "patients",
+    "ear",
+    examinationToken(code),
+    examinationToken(laterality || "unspecified"),
+  );
+}
+
+export function otologyExamTestId(publicId: string): string {
+  return publicIdTestId("otology.exam", publicId);
+}
+
+export function otologyDeviceStatusTestId(publicId: string): string {
+  return publicIdTestId("otology.device", publicId);
+}
 
 export function examinationMapTestId(mapId: string): string {
   return testId("examination", "map-select", examinationToken(mapId));

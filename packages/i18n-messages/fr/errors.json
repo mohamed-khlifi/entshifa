@@ -91,5 +91,13 @@
     "invalid_structure": "Cette structure laryngée ne peut pas être enregistrée ainsi.",
     "not_found": "Cet examen de laryngoscopie n'existe pas.",
     "version_conflict": "Cet examen de laryngoscopie a été modifié par quelqu'un d'autre."
+  },
+  "otology": {
+    "device_not_found": "Ce dispositif auriculaire est introuvable.",
+    "invalid_exam": "Cet examen otologique ne peut pas être enregistré.",
+    "invalid_finding": "Cette constatation ne correspond pas à la structure de l'oreille.",
+    "invalid_structure": "Ce site ne fait pas partie de l'examen otologique.",
+    "not_found": "Cet examen otologique est introuvable.",
+    "version_conflict": "Cet examen otologique a été modifié. Rechargez puis réessayez."
   }
 }

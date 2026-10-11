@@ -10,6 +10,7 @@
     "examination": "الفحص",
     "endoscopy": "التنظير",
     "laryngoscopy": "تنظير الحنجرة",
+    "otology": "فحص الأذن",
     "prescriptions": "الوصفات",
     "timeline": "السجل"
   },
@@ -121,7 +122,9 @@
     "lastVisitsEmpty": "لا توجد زيارات بعد.",
     "none": "لا يوجد تسجيل",
     "mrn": "رقم الملف {mrn}",
-    "deceased": "متوفى"
+    "deceased": "متوفى",
+    "earTracking": "متابعة الأذن",
+    "earTrackingEmpty": "لا يوجد أنبوب أو جوف أو ورم كوليسترولي مسجّل."
   },
   "alerts": {
     "onlyHearingEar": "أذن سمع وحيدة",
@@ -141,6 +144,9 @@
     "pregnancy": "حمل",
     "breastfeeding": "إرضاع",
     "pediatricWeightMissing": "وزن الطفل غير مسجل",
+    "ventilationTube": "أنبوب تهوية",
+    "mastoidCavity": "جوف خشائي",
+    "cholesteatoma": "ورم كوليسترولي",
     "unknown": "تنبيه {code}"
   },
   "chart": {

@@ -64,7 +64,8 @@ async def test_terminology_endpoints_for_authenticated_user(app) -> None:
         assert value_set.status_code == 200
         vs = value_set.json()
         assert vs["code"] == "tm.findings"
-        assert len(vs["members"]) == 4
+        assert len(vs["members"]) == 9
+        assert any(item["code"] == "FIND.TM.CHOLESTEATOMA" for item in vs["members"])
 
         dictionary = await client.get(
             "/api/v1/terminology/dictionary",

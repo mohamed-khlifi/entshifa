@@ -122,6 +122,7 @@ source_modules = [
     "ent.features.procedures.repository",
     "ent.features.endoscopy.repository",
     "ent.features.laryngoscopy.repository",
+    "ent.features.otology.repository",
 ]
 forbidden_modules = [
     "ent.features.auth.service",
@@ -142,6 +143,7 @@ forbidden_modules = [
     "ent.features.procedures.service",
     "ent.features.endoscopy.service",
     "ent.features.laryngoscopy.service",
+    "ent.features.otology.service",
 ]
 
 [[tool.importlinter.contracts]]

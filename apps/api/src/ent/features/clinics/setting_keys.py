@@ -20,6 +20,7 @@ class ClinicalSettingKey(StrEnum):
     ASYMMETRY_RULE = "asymmetry_rule"
     POLYP_SCALE = "polyp_scale"
     TUBE_RECALL_INTERVAL_MONTHS = "tube_recall_interval_months"
+    OTOLOGY_FOLLOW_UP = "otology_follow_up"
     FOLLOW_UP_DEFAULTS = "follow_up_defaults"
 
 
@@ -40,6 +41,19 @@ class AsymmetryRuleValue(BaseModel):
 class FollowUpDefaultsValue(BaseModel):
     routine_months: int = Field(ge=1, le=120)
     post_op_days: int = Field(ge=1, le=365)
+
+
+class OtologyFollowUpValue(BaseModel):
+    """Editable office-ear intervals. Appendix C is the source of the seed row."""
+
+    tube_first_check_days: int = Field(ge=1, le=90)
+    tube_first_window_days: int = Field(ge=0, le=30)
+    tube_interval_window_days: int = Field(ge=0, le=90)
+    wick_removal_days: int = Field(ge=1, le=14)
+    wick_window_days: int = Field(ge=0, le=7)
+    cavity_cleaning_months: int = Field(ge=1, le=24)
+    cavity_window_days: int = Field(ge=0, le=90)
+    canal_injury_window_days: int = Field(ge=0, le=30)
 
 
 def validate_setting_value(key: str, value: Any) -> Any:
@@ -80,6 +94,12 @@ def validate_setting_value(key: str, value: Any) -> Any:
             return FollowUpDefaultsValue.model_validate(value).model_dump()
         except PydanticValidationError as exc:
             raise ValidationError(reason="invalid_follow_up_defaults", key=key) from exc
+
+    if clinical_key is ClinicalSettingKey.OTOLOGY_FOLLOW_UP:
+        try:
+            return OtologyFollowUpValue.model_validate(value).model_dump()
+        except PydanticValidationError as exc:
+            raise ValidationError(reason="invalid_otology_follow_up", key=key) from exc
 
     raise ValidationError(reason="unknown_setting_key", key=key)
 

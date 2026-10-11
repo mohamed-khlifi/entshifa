@@ -991,6 +991,32 @@
         "title": "CalculationRead",
         "type": "object"
       },
+      "CavityCleaningWrite": {
+        "properties": {
+          "condition": {
+            "enum": [
+              "dry",
+              "moist",
+              "granulation",
+              "debris",
+              "exposed_structures"
+            ],
+            "title": "Condition",
+            "type": "string"
+          },
+          "subtype": {
+            "const": "cavity_cleaning",
+            "title": "Subtype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "condition"
+        ],
+        "title": "CavityCleaningWrite",
+        "type": "object"
+      },
       "CertificateInput": {
         "properties": {
           "bodyText": {
@@ -3101,6 +3127,126 @@
         "title": "DrugRead",
         "type": "object"
       },
+      "EarDeviceRead": {
+        "properties": {
+          "complication": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Complication"
+          },
+          "deviceType": {
+            "title": "Devicetype",
+            "type": "string"
+          },
+          "insertedAt": {
+            "format": "date",
+            "title": "Insertedat",
+            "type": "string"
+          },
+          "insertedProcedureId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Insertedprocedureid"
+          },
+          "laterality": {
+            "title": "Laterality",
+            "type": "string"
+          },
+          "nextCheckDue": {
+            "format": "date",
+            "title": "Nextcheckdue",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "removedAt": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Removedat"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "tubeModel": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tubemodel"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "publicId",
+          "version",
+          "laterality",
+          "deviceType",
+          "tubeModel",
+          "status",
+          "insertedAt",
+          "removedAt",
+          "nextCheckDue",
+          "complication",
+          "insertedProcedureId"
+        ],
+        "title": "EarDeviceRead",
+        "type": "object"
+      },
+      "EarDeviceStatusUpdate": {
+        "properties": {
+          "status": {
+            "enum": [
+              "in_place",
+              "blocked",
+              "extruded",
+              "removed",
+              "retained"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version",
+          "status"
+        ],
+        "title": "EarDeviceStatusUpdate",
+        "type": "object"
+      },
       "EncounterAddendumCreate": {
         "properties": {
           "body": {
@@ -4769,6 +4915,58 @@
         "title": "FlagRead",
         "type": "object"
       },
+      "ForeignBodyWrite": {
+        "properties": {
+          "method": {
+            "enum": [
+              "microsuction",
+              "forceps",
+              "irrigation",
+              "hook"
+            ],
+            "title": "Method",
+            "type": "string"
+          },
+          "objectLocale": {
+            "enum": [
+              "en",
+              "fr",
+              "ar"
+            ],
+            "title": "Objectlocale",
+            "type": "string"
+          },
+          "objectText": {
+            "maxLength": 80,
+            "minLength": 1,
+            "title": "Objecttext",
+            "type": "string"
+          },
+          "subtype": {
+            "const": "foreign_body",
+            "title": "Subtype",
+            "type": "string"
+          },
+          "trauma": {
+            "enum": [
+              "none",
+              "canal",
+              "tympanic"
+            ],
+            "title": "Trauma",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "objectText",
+          "objectLocale",
+          "method",
+          "trauma"
+        ],
+        "title": "ForeignBodyWrite",
+        "type": "object"
+      },
       "FormularyEntryCreate": {
         "properties": {
           "brandName": {
@@ -5314,6 +5512,81 @@
           }
         },
         "title": "IndicationWrite",
+        "type": "object"
+      },
+      "IntratympanicInjectionWrite": {
+        "properties": {
+          "doseAmount": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 100.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Doseamount"
+          },
+          "doseUnit": {
+            "enum": [
+              "mg",
+              "mL"
+            ],
+            "title": "Doseunit",
+            "type": "string"
+          },
+          "drugCode": {
+            "enum": [
+              "DRUG.IT.DEXAMETHASONE",
+              "DRUG.IT.METHYLPREDNISOLONE",
+              "DRUG.IT.GENTAMICIN"
+            ],
+            "title": "Drugcode",
+            "type": "string"
+          },
+          "indicationLocale": {
+            "anyOf": [
+              {
+                "enum": [
+                  "en",
+                  "fr",
+                  "ar"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicationlocale"
+          },
+          "indicationText": {
+            "anyOf": [
+              {
+                "maxLength": 400,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicationtext"
+          },
+          "subtype": {
+            "const": "intratympanic_injection",
+            "title": "Subtype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "drugCode",
+          "doseAmount",
+          "doseUnit"
+        ],
+        "title": "IntratympanicInjectionWrite",
         "type": "object"
       },
       "InvitationAccept": {
@@ -7750,6 +8023,899 @@
         "title": "ObservationUpdate",
         "type": "object"
       },
+      "OfficeProcedureRead": {
+        "properties": {
+          "payload": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Payload",
+            "type": "object"
+          },
+          "removalDueDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Removalduedate"
+          },
+          "subtype": {
+            "title": "Subtype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "payload",
+          "removalDueDate"
+        ],
+        "title": "OfficeProcedureRead",
+        "type": "object"
+      },
+      "OtologyCreate": {
+        "properties": {
+          "anesthesia": {
+            "default": "none",
+            "enum": [
+              "none",
+              "topical_spray",
+              "local_infiltration",
+              "general"
+            ],
+            "title": "Anesthesia",
+            "type": "string"
+          },
+          "conclusionText": {
+            "anyOf": [
+              {
+                "maxLength": 10000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conclusiontext"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "forkFrequencyHz": {
+            "anyOf": [
+              {
+                "enum": [
+                  256,
+                  512
+                ],
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Forkfrequencyhz"
+          },
+          "indicationText": {
+            "anyOf": [
+              {
+                "maxLength": 400,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicationtext"
+          },
+          "instrument": {
+            "anyOf": [
+              {
+                "maxLength": 100,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instrument"
+          },
+          "laterality": {
+            "$ref": "#/components/schemas/Laterality",
+            "default": "bilateral"
+          },
+          "method": {
+            "enum": [
+              "otoscopy",
+              "microscopy"
+            ],
+            "title": "Method",
+            "type": "string"
+          },
+          "mobilityLeft": {
+            "anyOf": [
+              {
+                "enum": [
+                  "normal",
+                  "reduced",
+                  "absent",
+                  "hypermobile"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mobilityleft"
+          },
+          "mobilityRight": {
+            "anyOf": [
+              {
+                "enum": [
+                  "normal",
+                  "reduced",
+                  "absent",
+                  "hypermobile"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mobilityright"
+          },
+          "patientPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "performedAt": {
+            "format": "date-time",
+            "title": "Performedat",
+            "type": "string"
+          },
+          "procedure": {
+            "anyOf": [
+              {
+                "discriminator": {
+                  "mapping": {
+                    "cavity_cleaning": "#/components/schemas/CavityCleaningWrite",
+                    "foreign_body": "#/components/schemas/ForeignBodyWrite",
+                    "intratympanic_injection": "#/components/schemas/IntratympanicInjectionWrite",
+                    "tube_insertion": "#/components/schemas/TubeInsertionWrite",
+                    "tube_removal": "#/components/schemas/TubeRemovalWrite",
+                    "wax_removal": "#/components/schemas/WaxRemovalWrite",
+                    "wick": "#/components/schemas/WickWrite"
+                  },
+                  "propertyName": "subtype"
+                },
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/WaxRemovalWrite"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ForeignBodyWrite"
+                  },
+                  {
+                    "$ref": "#/components/schemas/WickWrite"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TubeInsertionWrite"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TubeRemovalWrite"
+                  },
+                  {
+                    "$ref": "#/components/schemas/IntratympanicInjectionWrite"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CavityCleaningWrite"
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Procedure"
+          },
+          "rinneLeft": {
+            "anyOf": [
+              {
+                "enum": [
+                  "positive",
+                  "negative"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rinneleft"
+          },
+          "rinneRight": {
+            "anyOf": [
+              {
+                "enum": [
+                  "positive",
+                  "negative"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rinneright"
+          },
+          "setting": {
+            "default": "office",
+            "enum": [
+              "office",
+              "ot"
+            ],
+            "title": "Setting",
+            "type": "string"
+          },
+          "structures": {
+            "items": {
+              "$ref": "#/components/schemas/OtologyStructureWrite"
+            },
+            "title": "Structures",
+            "type": "array"
+          },
+          "tolerance": {
+            "anyOf": [
+              {
+                "enum": [
+                  "well_tolerated",
+                  "mild_discomfort",
+                  "moderate_discomfort",
+                  "poorly_tolerated",
+                  "aborted"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tolerance"
+          },
+          "weber": {
+            "anyOf": [
+              {
+                "enum": [
+                  "midline",
+                  "lateralizes_right",
+                  "lateralizes_left"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weber"
+          }
+        },
+        "required": [
+          "performedAt",
+          "method",
+          "patientPublicId"
+        ],
+        "title": "OtologyCreate",
+        "type": "object"
+      },
+      "OtologyExamRead": {
+        "properties": {
+          "anesthesia": {
+            "title": "Anesthesia",
+            "type": "string"
+          },
+          "conclusionText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conclusiontext"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "title": "Createdat",
+            "type": "string"
+          },
+          "devices": {
+            "items": {
+              "$ref": "#/components/schemas/EarDeviceRead"
+            },
+            "title": "Devices",
+            "type": "array"
+          },
+          "encounterId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterid"
+          },
+          "forkFrequencyHz": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Forkfrequencyhz"
+          },
+          "indicationText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicationtext"
+          },
+          "instrument": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instrument"
+          },
+          "laterality": {
+            "title": "Laterality",
+            "type": "string"
+          },
+          "method": {
+            "title": "Method",
+            "type": "string"
+          },
+          "mobilityLeft": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mobilityleft"
+          },
+          "mobilityRight": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mobilityright"
+          },
+          "patientId": {
+            "title": "Patientid",
+            "type": "string"
+          },
+          "performedAt": {
+            "format": "date-time",
+            "title": "Performedat",
+            "type": "string"
+          },
+          "procedure": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OfficeProcedureRead"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "procedureCode": {
+            "title": "Procedurecode",
+            "type": "string"
+          },
+          "procedureId": {
+            "title": "Procedureid",
+            "type": "string"
+          },
+          "procedureStatus": {
+            "title": "Procedurestatus",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "rinneLeft": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rinneleft"
+          },
+          "rinneRight": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rinneright"
+          },
+          "setting": {
+            "title": "Setting",
+            "type": "string"
+          },
+          "structures": {
+            "items": {
+              "$ref": "#/components/schemas/OtologyStructureRead"
+            },
+            "title": "Structures",
+            "type": "array"
+          },
+          "tolerance": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tolerance"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "title": "Updatedat",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "weber": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weber"
+          }
+        },
+        "required": [
+          "publicId",
+          "version",
+          "procedureId",
+          "procedureStatus",
+          "procedureCode",
+          "patientId",
+          "encounterId",
+          "performedAt",
+          "laterality",
+          "anesthesia",
+          "setting",
+          "instrument",
+          "indicationText",
+          "tolerance",
+          "method",
+          "weber",
+          "rinneRight",
+          "rinneLeft",
+          "forkFrequencyHz",
+          "mobilityRight",
+          "mobilityLeft",
+          "structures",
+          "procedure",
+          "devices",
+          "conclusionText",
+          "createdAt",
+          "updatedAt"
+        ],
+        "title": "OtologyExamRead",
+        "type": "object"
+      },
+      "OtologyStructureRead": {
+        "properties": {
+          "bodySite": {
+            "$ref": "#/components/schemas/CodeableConcept"
+          },
+          "finding": {
+            "$ref": "#/components/schemas/CodeableConcept"
+          },
+          "laterality": {
+            "title": "Laterality",
+            "type": "string"
+          },
+          "mapRegionCode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mapregioncode"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bodySite",
+          "laterality",
+          "status",
+          "finding",
+          "mapRegionCode"
+        ],
+        "title": "OtologyStructureRead",
+        "type": "object"
+      },
+      "OtologyStructureWrite": {
+        "properties": {
+          "bodySiteCode": {
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Bodysitecode",
+            "type": "string"
+          },
+          "findingCode": {
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Findingcode",
+            "type": "string"
+          },
+          "laterality": {
+            "$ref": "#/components/schemas/Laterality"
+          },
+          "mapRegionCode": {
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Mapregioncode",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "normal",
+              "abnormal",
+              "not_examined",
+              "unknown"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "bodySiteCode",
+          "laterality",
+          "status",
+          "findingCode",
+          "mapRegionCode"
+        ],
+        "title": "OtologyStructureWrite",
+        "type": "object"
+      },
+      "OtologyUpdate": {
+        "properties": {
+          "anesthesia": {
+            "default": "none",
+            "enum": [
+              "none",
+              "topical_spray",
+              "local_infiltration",
+              "general"
+            ],
+            "title": "Anesthesia",
+            "type": "string"
+          },
+          "conclusionText": {
+            "anyOf": [
+              {
+                "maxLength": 10000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conclusiontext"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "forkFrequencyHz": {
+            "anyOf": [
+              {
+                "enum": [
+                  256,
+                  512
+                ],
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Forkfrequencyhz"
+          },
+          "indicationText": {
+            "anyOf": [
+              {
+                "maxLength": 400,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Indicationtext"
+          },
+          "instrument": {
+            "anyOf": [
+              {
+                "maxLength": 100,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instrument"
+          },
+          "laterality": {
+            "$ref": "#/components/schemas/Laterality",
+            "default": "bilateral"
+          },
+          "method": {
+            "enum": [
+              "otoscopy",
+              "microscopy"
+            ],
+            "title": "Method",
+            "type": "string"
+          },
+          "mobilityLeft": {
+            "anyOf": [
+              {
+                "enum": [
+                  "normal",
+                  "reduced",
+                  "absent",
+                  "hypermobile"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mobilityleft"
+          },
+          "mobilityRight": {
+            "anyOf": [
+              {
+                "enum": [
+                  "normal",
+                  "reduced",
+                  "absent",
+                  "hypermobile"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mobilityright"
+          },
+          "performedAt": {
+            "format": "date-time",
+            "title": "Performedat",
+            "type": "string"
+          },
+          "procedure": {
+            "anyOf": [
+              {
+                "discriminator": {
+                  "mapping": {
+                    "cavity_cleaning": "#/components/schemas/CavityCleaningWrite",
+                    "foreign_body": "#/components/schemas/ForeignBodyWrite",
+                    "intratympanic_injection": "#/components/schemas/IntratympanicInjectionWrite",
+                    "tube_insertion": "#/components/schemas/TubeInsertionWrite",
+                    "tube_removal": "#/components/schemas/TubeRemovalWrite",
+                    "wax_removal": "#/components/schemas/WaxRemovalWrite",
+                    "wick": "#/components/schemas/WickWrite"
+                  },
+                  "propertyName": "subtype"
+                },
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/WaxRemovalWrite"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ForeignBodyWrite"
+                  },
+                  {
+                    "$ref": "#/components/schemas/WickWrite"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TubeInsertionWrite"
+                  },
+                  {
+                    "$ref": "#/components/schemas/TubeRemovalWrite"
+                  },
+                  {
+                    "$ref": "#/components/schemas/IntratympanicInjectionWrite"
+                  },
+                  {
+                    "$ref": "#/components/schemas/CavityCleaningWrite"
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Procedure"
+          },
+          "rinneLeft": {
+            "anyOf": [
+              {
+                "enum": [
+                  "positive",
+                  "negative"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rinneleft"
+          },
+          "rinneRight": {
+            "anyOf": [
+              {
+                "enum": [
+                  "positive",
+                  "negative"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rinneright"
+          },
+          "setting": {
+            "default": "office",
+            "enum": [
+              "office",
+              "ot"
+            ],
+            "title": "Setting",
+            "type": "string"
+          },
+          "structures": {
+            "items": {
+              "$ref": "#/components/schemas/OtologyStructureWrite"
+            },
+            "title": "Structures",
+            "type": "array"
+          },
+          "tolerance": {
+            "anyOf": [
+              {
+                "enum": [
+                  "well_tolerated",
+                  "mild_discomfort",
+                  "moderate_discomfort",
+                  "poorly_tolerated",
+                  "aborted"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tolerance"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          },
+          "weber": {
+            "anyOf": [
+              {
+                "enum": [
+                  "midline",
+                  "lateralizes_right",
+                  "lateralizes_left"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Weber"
+          }
+        },
+        "required": [
+          "performedAt",
+          "method",
+          "version"
+        ],
+        "title": "OtologyUpdate",
+        "type": "object"
+      },
       "PageMeta": {
         "description": "Pagination envelope metadata.",
         "properties": {
@@ -7957,6 +9123,26 @@
         "title": "PageSchema[DrugRead]",
         "type": "object"
       },
+      "PageSchema_EarDeviceRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/EarDeviceRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[EarDeviceRead]",
+        "type": "object"
+      },
       "PageSchema_EncounterRead_": {
         "properties": {
           "items": {
@@ -8075,6 +9261,26 @@
           "page"
         ],
         "title": "PageSchema[ObservationRead]",
+        "type": "object"
+      },
+      "PageSchema_OtologyExamRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/OtologyExamRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[OtologyExamRead]",
         "type": "object"
       },
       "PageSchema_PatientAllergyRead_": {
@@ -9133,7 +10339,10 @@
               "diabetes",
               "pregnancy",
               "breastfeeding",
-              "pediatric_weight_missing"
+              "pediatric_weight_missing",
+              "ventilation_tube",
+              "mastoid_cavity",
+              "cholesteatoma"
             ],
             "title": "Flagcode",
             "type": "string"
@@ -14261,6 +15470,82 @@
         "title": "TranslationCoverageItem",
         "type": "object"
       },
+      "TubeInsertionWrite": {
+        "properties": {
+          "complication": {
+            "anyOf": [
+              {
+                "enum": [
+                  "bleeding",
+                  "otorrhea",
+                  "vertigo",
+                  "perforation"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Complication"
+          },
+          "effusion": {
+            "enum": [
+              "none",
+              "serous",
+              "mucoid",
+              "purulent",
+              "bloody"
+            ],
+            "title": "Effusion",
+            "type": "string"
+          },
+          "subtype": {
+            "const": "tube_insertion",
+            "title": "Subtype",
+            "type": "string"
+          },
+          "tubeModel": {
+            "enum": [
+              "shepard",
+              "armstrong",
+              "t_tube",
+              "bobbin",
+              "paparella"
+            ],
+            "title": "Tubemodel",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "tubeModel",
+          "effusion"
+        ],
+        "title": "TubeInsertionWrite",
+        "type": "object"
+      },
+      "TubeRemovalWrite": {
+        "properties": {
+          "devicePublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Devicepublicid",
+            "type": "string"
+          },
+          "subtype": {
+            "const": "tube_removal",
+            "title": "Subtype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "devicePublicId"
+        ],
+        "title": "TubeRemovalWrite",
+        "type": "object"
+      },
       "UserRead": {
         "properties": {
           "email": {
@@ -14809,6 +16094,74 @@
           "doctorDisplayName"
         ],
         "title": "WaitingRoomEntryRead",
+        "type": "object"
+      },
+      "WaxRemovalWrite": {
+        "properties": {
+          "canalCondition": {
+            "enum": [
+              "clear",
+              "residual_wax",
+              "inflamed",
+              "traumatized"
+            ],
+            "title": "Canalcondition",
+            "type": "string"
+          },
+          "completeness": {
+            "enum": [
+              "complete",
+              "partial"
+            ],
+            "title": "Completeness",
+            "type": "string"
+          },
+          "method": {
+            "enum": [
+              "microsuction",
+              "curette",
+              "irrigation"
+            ],
+            "title": "Method",
+            "type": "string"
+          },
+          "subtype": {
+            "const": "wax_removal",
+            "title": "Subtype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "method",
+          "completeness",
+          "canalCondition"
+        ],
+        "title": "WaxRemovalWrite",
+        "type": "object"
+      },
+      "WickWrite": {
+        "properties": {
+          "subtype": {
+            "const": "wick",
+            "title": "Subtype",
+            "type": "string"
+          },
+          "wickType": {
+            "enum": [
+              "pope",
+              "ribbon",
+              "merocel"
+            ],
+            "title": "Wicktype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subtype",
+          "wickType"
+        ],
+        "title": "WickWrite",
         "type": "object"
       }
     },
@@ -18303,6 +19656,79 @@
         ]
       }
     },
+    "/api/v1/ear-devices/{device_id}": {
+      "patch": {
+        "operationId": "update_ear_device_status_api_v1_ear_devices__device_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "device_id",
+            "required": true,
+            "schema": {
+              "title": "Device Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EarDeviceStatusUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EarDeviceRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Ear Device Status",
+        "tags": [
+          "otology"
+        ]
+      }
+    },
     "/api/v1/encounter-templates": {
       "get": {
         "operationId": "list_encounter_templates_api_v1_encounter_templates_get",
@@ -21171,6 +22597,252 @@
         ]
       }
     },
+    "/api/v1/otology-exams": {
+      "post": {
+        "operationId": "create_otology_exam_api_v1_otology_exams_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtologyCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtologyExamRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Otology Exam",
+        "tags": [
+          "otology"
+        ]
+      }
+    },
+    "/api/v1/otology-exams/{exam_id}": {
+      "get": {
+        "operationId": "get_otology_exam_api_v1_otology_exams__exam_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "exam_id",
+            "required": true,
+            "schema": {
+              "title": "Exam Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtologyExamRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Otology Exam",
+        "tags": [
+          "otology"
+        ]
+      },
+      "put": {
+        "operationId": "update_otology_exam_api_v1_otology_exams__exam_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "exam_id",
+            "required": true,
+            "schema": {
+              "title": "Exam Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtologyUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtologyExamRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Otology Exam",
+        "tags": [
+          "otology"
+        ]
+      }
+    },
     "/api/v1/patients": {
       "get": {
         "operationId": "list_patients_api_v1_patients_get",
@@ -21828,6 +23500,92 @@
         "summary": "Delete Allergy",
         "tags": [
           "patients"
+        ]
+      }
+    },
+    "/api/v1/patients/{patient_id}/ear-devices": {
+      "get": {
+        "operationId": "list_patient_ear_devices_api_v1_patients__patient_id__ear_devices_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_EarDeviceRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Patient Ear Devices",
+        "tags": [
+          "otology"
         ]
       }
     },
@@ -23203,6 +24961,108 @@
         "summary": "Merge Patient",
         "tags": [
           "patients"
+        ]
+      }
+    },
+    "/api/v1/patients/{patient_id}/otology-exams": {
+      "get": {
+        "operationId": "list_patient_otology_exams_api_v1_patients__patient_id__otology_exams_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_OtologyExamRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Patient Otology Exams",
+        "tags": [
+          "otology"
         ]
       }
     },
@@ -25264,6 +27124,85 @@
         "summary": "Get Procedure Laryngoscopy",
         "tags": [
           "laryngoscopy"
+        ]
+      }
+    },
+    "/api/v1/procedures/{procedure_id}/otology-exam": {
+      "get": {
+        "operationId": "get_procedure_otology_exam_api_v1_procedures__procedure_id__otology_exam_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "procedure_id",
+            "required": true,
+            "schema": {
+              "title": "Procedure Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Accept-Language",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Accept-Language"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtologyExamRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Procedure Otology Exam",
+        "tags": [
+          "otology"
         ]
       }
     },

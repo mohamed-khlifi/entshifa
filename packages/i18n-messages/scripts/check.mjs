@@ -34,6 +34,7 @@ const NAMESPACES = [
   'examination',
   'endoscopy',
   'laryngoscopy',
+  'otology',
   'encounters',
   'prescriptions',
   'recalls',
@@ -78,7 +79,7 @@ const ALLOWLISTED_KEYS = new Set([
 ]);
 
 /** Entire namespace looked up from API `code` via apiErrorCodeToMessageKey. */
-const DYNAMIC_NAMESPACES = new Set(['errors']);
+const DYNAMIC_NAMESPACES = new Set(['errors', 'otology']);
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));

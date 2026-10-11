@@ -10,6 +10,7 @@
     "examination": "Examination",
     "endoscopy": "Endoscopy",
     "laryngoscopy": "Laryngoscopy",
+    "otology": "Otology",
     "prescriptions": "Prescriptions",
     "timeline": "History"
   },
@@ -121,7 +122,9 @@
     "lastVisitsEmpty": "No visits yet.",
     "none": "None recorded",
     "mrn": "MRN {mrn}",
-    "deceased": "Deceased"
+    "deceased": "Deceased",
+    "earTracking": "Ear tracking",
+    "earTrackingEmpty": "No tube, cavity, or cholesteatoma recorded."
   },
   "alerts": {
     "onlyHearingEar": "Only hearing ear",
@@ -141,6 +144,9 @@
     "pregnancy": "Pregnancy",
     "breastfeeding": "Breastfeeding",
     "pediatricWeightMissing": "Pediatric weight missing",
+    "ventilationTube": "Ventilation tube",
+    "mastoidCavity": "Mastoid cavity",
+    "cholesteatoma": "Cholesteatoma",
     "unknown": "Safety flag {code}"
   },
   "chart": {

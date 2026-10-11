@@ -29,6 +29,9 @@ FlagCode = Literal[
     "pregnancy",
     "breastfeeding",
     "pediatric_weight_missing",
+    "ventilation_tube",
+    "mastoid_cavity",
+    "cholesteatoma",
 ]
 ProblemStatus = Literal["active", "resolved", "suspected", "ruled_out"]
 HistoryCategory = Literal[

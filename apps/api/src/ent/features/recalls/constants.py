@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-RECALL_SOURCE_TYPES = ("manual",)
+RECALL_SOURCE_TYPES = ("manual", "procedure")
 
 RECALL_ACTION_TYPES = ("visit", "test", "call", "questionnaire", "document")
 

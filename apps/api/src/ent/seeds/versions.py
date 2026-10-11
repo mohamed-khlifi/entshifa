@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-TERMINOLOGY_VERSION = "phase3.2026.10.11.laryngoscopy"
+TERMINOLOGY_VERSION = "phase3.2026.10.11.otology"
 PERMISSIONS_VERSION = "phase1.2026.09"
 TEMPLATES_VERSION = "phase2.2026.10.11"
 ENCOUNTER_TEMPLATES_VERSION = "phase2.2026.10"

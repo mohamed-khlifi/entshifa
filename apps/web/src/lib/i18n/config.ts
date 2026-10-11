@@ -51,6 +51,7 @@ export const MESSAGE_NAMESPACES = [
   "examination",
   "endoscopy",
   "laryngoscopy",
+  "otology",
   "encounters",
   "prescriptions",
   "recalls",
