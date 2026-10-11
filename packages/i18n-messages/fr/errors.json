@@ -82,5 +82,14 @@
     "invalid_structure": "Cette structure ne fait pas partie de l'endoscopie nasale.",
     "not_found": "Cette endoscopie est introuvable.",
     "version_conflict": "Cette endoscopie a été modifiée. Rechargez puis réessayez."
+  },
+  "laryngoscopy": {
+    "incomplete_score": "Un score de laryngoscopie n'a pas toutes ses composantes.",
+    "invalid_exam": "Cet examen de laryngoscopie ne peut pas être enregistré.",
+    "invalid_finding": "Cette constatation laryngée ne peut pas être enregistrée ainsi.",
+    "invalid_score": "Une valeur de score de laryngoscopie n'est pas autorisée.",
+    "invalid_structure": "Cette structure laryngée ne peut pas être enregistrée ainsi.",
+    "not_found": "Cet examen de laryngoscopie n'existe pas.",
+    "version_conflict": "Cet examen de laryngoscopie a été modifié par quelqu'un d'autre."
   }
 }

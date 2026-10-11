@@ -82,5 +82,14 @@
     "invalid_structure": "That structure is not part of the nasal endoscopy exam.",
     "not_found": "That endoscopy was not found.",
     "version_conflict": "This endoscopy was updated by someone else. Reload and try again."
+  },
+  "laryngoscopy": {
+    "incomplete_score": "A laryngoscopy score is missing a required item.",
+    "invalid_exam": "This laryngoscopy exam cannot be stored.",
+    "invalid_finding": "This laryngeal finding cannot be recorded that way.",
+    "invalid_score": "A laryngoscopy score value is not allowed.",
+    "invalid_structure": "This laryngeal structure cannot be recorded that way.",
+    "not_found": "This laryngoscopy exam does not exist.",
+    "version_conflict": "This laryngoscopy exam was updated by someone else."
   }
 }

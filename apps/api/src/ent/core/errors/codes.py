@@ -84,3 +84,11 @@ class ErrorCode(StrEnum):
     ENDOSCOPY_VERSION_CONFLICT = "endoscopy.version_conflict"
     ENDOSCOPY_INVALID_STRUCTURE = "endoscopy.invalid_structure"
     ENDOSCOPY_INVALID_FINDING = "endoscopy.invalid_finding"
+
+    LARYNGOSCOPY_NOT_FOUND = "laryngoscopy.not_found"
+    LARYNGOSCOPY_INCOMPLETE_SCORE = "laryngoscopy.incomplete_score"
+    LARYNGOSCOPY_INVALID_SCORE = "laryngoscopy.invalid_score"
+    LARYNGOSCOPY_VERSION_CONFLICT = "laryngoscopy.version_conflict"
+    LARYNGOSCOPY_INVALID_STRUCTURE = "laryngoscopy.invalid_structure"
+    LARYNGOSCOPY_INVALID_FINDING = "laryngoscopy.invalid_finding"
+    LARYNGOSCOPY_INVALID_EXAM = "laryngoscopy.invalid_exam"

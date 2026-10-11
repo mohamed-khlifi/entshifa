@@ -22,6 +22,20 @@ from ent.engines.endoscopy.polyp_grade import CODE as POLYP_CODE
 from ent.engines.endoscopy.polyp_grade import FORMULA as POLYP_FORMULA
 from ent.engines.endoscopy.polyp_grade import REFERENCE as POLYP_REFERENCE
 from ent.engines.endoscopy.polyp_grade import VERSION as POLYP_VERSION
+from ent.engines.laryngoscopy.grbas import CODE as GRBAS_CODE
+from ent.engines.laryngoscopy.grbas import FORMULA as GRBAS_FORMULA
+from ent.engines.laryngoscopy.grbas import REFERENCE as GRBAS_REFERENCE
+from ent.engines.laryngoscopy.grbas import VERSION as GRBAS_VERSION
+from ent.engines.laryngoscopy.penetration_aspiration import CODE as PAS_CODE
+from ent.engines.laryngoscopy.penetration_aspiration import FORMULA as PAS_FORMULA
+from ent.engines.laryngoscopy.penetration_aspiration import (
+    REFERENCE as PAS_REFERENCE,
+)
+from ent.engines.laryngoscopy.penetration_aspiration import VERSION as PAS_VERSION
+from ent.engines.laryngoscopy.reflux_finding_score import CODE as RFS_CODE
+from ent.engines.laryngoscopy.reflux_finding_score import FORMULA as RFS_FORMULA
+from ent.engines.laryngoscopy.reflux_finding_score import REFERENCE as RFS_REFERENCE
+from ent.engines.laryngoscopy.reflux_finding_score import VERSION as RFS_VERSION
 from ent.engines.prescriptions.pediatric_dosing import (
     CODE as PEDIATRIC_CODE,
 )
@@ -94,5 +108,26 @@ def registered_calculators() -> tuple[CalculatorSpec, ...]:
             reference=ADENOID_REFERENCE,
             unit="%",
             formula=ADENOID_FORMULA,
+        ),
+        CalculatorSpec(
+            code=RFS_CODE,
+            version=RFS_VERSION,
+            reference=RFS_REFERENCE,
+            unit="points",
+            formula=RFS_FORMULA,
+        ),
+        CalculatorSpec(
+            code=GRBAS_CODE,
+            version=GRBAS_VERSION,
+            reference=GRBAS_REFERENCE,
+            unit="points",
+            formula=GRBAS_FORMULA,
+        ),
+        CalculatorSpec(
+            code=PAS_CODE,
+            version=PAS_VERSION,
+            reference=PAS_REFERENCE,
+            unit="grade",
+            formula=PAS_FORMULA,
         ),
     )

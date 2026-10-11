@@ -22,6 +22,7 @@ from ent.features.encounters.models import (
     EncounterTemplate,
 )
 from ent.features.endoscopy.models import EndoscopyExam
+from ent.features.laryngoscopy.models import LaryngoscopyExam
 from ent.features.observations.models import (
     ExaminationSnapshot,
     Observation,
@@ -91,6 +92,7 @@ __all__ = [
     "EncounterSignature",
     "EncounterTemplate",
     "EndoscopyExam",
+    "LaryngoscopyExam",
     "ExaminationSnapshot",
     "Setting",
     "Concept",

@@ -22,6 +22,7 @@ from ent.features.documents.models import (
 )
 from ent.features.encounters.models import Encounter
 from ent.features.endoscopy.models import EndoscopyExam
+from ent.features.laryngoscopy.models import LaryngoscopyExam
 from ent.features.observations.models import Observation
 from ent.features.patients.models import (
     Patient,
@@ -355,6 +356,22 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             )
         )
         await session.flush()
+        laryngoscopy_public_id = new_ulid()
+        session.add(
+            LaryngoscopyExam(
+                public_id=laryngoscopy_public_id,
+                clinic_id=other.id,
+                procedure_record_id=int(procedure.id),
+                scope_type="flexible_fiberoptic",
+                vf_mobility_right="normal",
+                vf_mobility_left="normal",
+                glottic_closure="complete",
+                conclusion_text="secret laryngoscopy",
+                created_by_id=other_user.id,
+                updated_by_id=other_user.id,
+            )
+        )
+        await session.flush()
 
         ids = {
             "patient_id": patient.public_id,
@@ -382,6 +399,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "recall_id": recall_public_id,
             "procedure_id": procedure_public_id,
             "endoscopy_id": endoscopy_public_id,
+            "laryngoscopy_id": laryngoscopy_public_id,
         }
         forbidden = [
             patient.public_id,
@@ -402,9 +420,11 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             recall_public_id,
             procedure_public_id,
             endoscopy_public_id,
+            laryngoscopy_public_id,
             "secret recall",
             "secret procedure",
             "secret endoscopy",
+            "secret laryngoscopy",
         ]
         await session.commit()
 

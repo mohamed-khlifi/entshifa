@@ -431,6 +431,14 @@ async def seed_terminology(session: AsyncSession) -> TerminologySeedReport:
     value_sets_count += endoscopy_report.value_sets
     members_created += endoscopy_report.members
 
+    from ent.seeds.laryngoscopy import seed_laryngoscopy
+
+    laryngoscopy_report = await seed_laryngoscopy(session, system, by_code)
+    concepts_created += laryngoscopy_report.concepts
+    translations_created += laryngoscopy_report.translations
+    value_sets_count += laryngoscopy_report.value_sets
+    members_created += laryngoscopy_report.members
+
     from ent.seeds.icd10_ent import seed_icd10_ent
 
     icd_report = await seed_icd10_ent(session)

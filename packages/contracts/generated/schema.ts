@@ -1024,6 +1024,41 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/laryngoscopies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Laryngoscopy */
+        post: operations["create_laryngoscopy_api_v1_laryngoscopies_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/laryngoscopies/{laryngoscopy_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Laryngoscopy */
+        get: operations["get_laryngoscopy_api_v1_laryngoscopies__laryngoscopy_id__get"];
+        /** Update Laryngoscopy */
+        put: operations["update_laryngoscopy_api_v1_laryngoscopies__laryngoscopy_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/narrative/render": {
         parameters: {
             query?: never;
@@ -1372,6 +1407,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/patients/{patient_id}/laryngoscopies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Patient Laryngoscopies */
+        get: operations["list_patient_laryngoscopies_api_v1_patients__patient_id__laryngoscopies_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/patients/{patient_id}/medications": {
         parameters: {
             query?: never;
@@ -1711,6 +1763,23 @@ export interface paths {
         };
         /** Get Procedure Endoscopy */
         get: operations["get_procedure_endoscopy_api_v1_procedures__procedure_id__endoscopy_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/procedures/{procedure_id}/laryngoscopy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Procedure Laryngoscopy */
+        get: operations["get_procedure_laryngoscopy_api_v1_procedures__procedure_id__laryngoscopy_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -3646,6 +3715,15 @@ export interface components {
             /** Version */
             version: number;
         };
+        /** FeesWrite */
+        FeesWrite: {
+            /** Consistencies */
+            consistencies: string[];
+            /** Passcore */
+            pasScore: number;
+            /** Residuesitecodes */
+            residueSiteCodes?: string[];
+        };
         /** FlagRead */
         FlagRead: {
             /** Code */
@@ -3715,6 +3793,34 @@ export interface components {
             price?: number | string | null;
             /** Version */
             version: number;
+        };
+        /** GrbasRead */
+        GrbasRead: {
+            /** Asthenia */
+            asthenia: number;
+            /** Breathiness */
+            breathiness: number;
+            /** Grade */
+            grade: number;
+            /** Roughness */
+            roughness: number;
+            /** Strain */
+            strain: number;
+            /** Total */
+            total: number;
+        };
+        /** GrbasWrite */
+        GrbasWrite: {
+            /** Asthenia */
+            asthenia: number;
+            /** Breathiness */
+            breathiness: number;
+            /** Grade */
+            grade: number;
+            /** Roughness */
+            roughness: number;
+            /** Strain */
+            strain: number;
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -3810,6 +3916,231 @@ export interface components {
             indication?: string | null;
             /** Panels */
             panels: ("preoperative" | "thyroid_calcitonin" | "allergy_ige" | "autoimmune_inner_ear" | "sudden_hearing_loss_screen" | "ear_discharge_culture" | "hpv_status" | "epistaxis_coagulation")[];
+        };
+        /** LaryngoscopyCreate */
+        LaryngoscopyCreate: {
+            /**
+             * Anesthesia
+             * @default topical_spray
+             * @enum {string}
+             */
+            anesthesia: "none" | "topical_spray" | "local_infiltration" | "general";
+            /** Conclusiontext */
+            conclusionText?: string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            fees?: components["schemas"]["FeesWrite"] | null;
+            /**
+             * Glotticclosure
+             * @enum {string}
+             */
+            glotticClosure: "complete" | "anterior_gap" | "posterior_gap" | "spindle" | "hourglass" | "irregular" | "incomplete";
+            grbas?: components["schemas"]["GrbasWrite"] | null;
+            /** Indicationtext */
+            indicationText?: string | null;
+            /** Instrument */
+            instrument?: string | null;
+            /** @default bilateral */
+            laterality: components["schemas"]["Laterality"];
+            /** Lesions */
+            lesions?: components["schemas"]["VocalFoldLesionWrite"][];
+            /** Patientpublicid */
+            patientPublicId: string;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            refluxFindingScore?: components["schemas"]["RefluxFindingScoreWrite"] | null;
+            /**
+             * Scopetype
+             * @enum {string}
+             */
+            scopeType: "flexible_fiberoptic" | "flexible_distal_chip" | "rigid_70" | "rigid_90";
+            /**
+             * Setting
+             * @default office
+             * @enum {string}
+             */
+            setting: "office" | "ot";
+            stroboscopy?: components["schemas"]["StroboscopyWrite"] | null;
+            /** Structures */
+            structures?: components["schemas"]["LaryngoscopyStructureWrite"][];
+            /** Supraglotticpattern */
+            supraglotticPattern?: ("none" | "anteroposterior" | "mediolateral" | "sphincteric") | null;
+            /** Tolerance */
+            tolerance?: ("well_tolerated" | "mild_discomfort" | "moderate_discomfort" | "poorly_tolerated" | "aborted") | null;
+            vocalFoldLeft: components["schemas"]["VocalFoldWrite"];
+            vocalFoldRight: components["schemas"]["VocalFoldWrite"];
+        };
+        /** LaryngoscopyExamRead */
+        LaryngoscopyExamRead: {
+            /** Amplitudeleft */
+            amplitudeLeft: string | null;
+            /** Amplituderight */
+            amplitudeRight: string | null;
+            /** Anesthesia */
+            anesthesia: string;
+            /** Conclusiontext */
+            conclusionText: string | null;
+            /** Consistencies */
+            consistencies: components["schemas"]["CodeableConcept"][];
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /** Encounterid */
+            encounterId: string | null;
+            /** Feesperformed */
+            feesPerformed: boolean;
+            /** Glotticclosure */
+            glotticClosure: string;
+            grbas: components["schemas"]["GrbasRead"] | null;
+            /** Indicationtext */
+            indicationText: string | null;
+            /** Instrument */
+            instrument: string | null;
+            /** Laterality */
+            laterality: string;
+            /** Lesions */
+            lesions: components["schemas"]["VocalFoldLesionRead"][];
+            /** Mucosalwaveleft */
+            mucosalWaveLeft: string | null;
+            /** Mucosalwaveright */
+            mucosalWaveRight: string | null;
+            /** Nonvibratingsegment */
+            nonVibratingSegment: string | null;
+            /** Passcore */
+            pasScore: number | null;
+            /** Patientid */
+            patientId: string;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Periodicity */
+            periodicity: string | null;
+            /** Phaseclosure */
+            phaseClosure: string | null;
+            /** Phasesymmetry */
+            phaseSymmetry: string | null;
+            /** Procedureid */
+            procedureId: string;
+            /** Procedurestatus */
+            procedureStatus: string;
+            /** Publicid */
+            publicId: string;
+            /** Residuesites */
+            residueSites: components["schemas"]["CodeableConcept"][];
+            /** Rfsscore */
+            rfsScore: number | null;
+            /** Scopetype */
+            scopeType: string;
+            /** Scores */
+            scores: components["schemas"]["ScoreStampRead"][];
+            /** Setting */
+            setting: string;
+            /** Stroboscopyperformed */
+            stroboscopyPerformed: boolean;
+            /** Structures */
+            structures: components["schemas"]["LaryngoscopyStructureRead"][];
+            /** Supraglotticpattern */
+            supraglotticPattern: string | null;
+            /** Symmetry */
+            symmetry: string | null;
+            /** Tolerance */
+            tolerance: string | null;
+            /**
+             * Updatedat
+             * Format: date-time
+             */
+            updatedAt: string;
+            /** Version */
+            version: number;
+            /** Verticallevel */
+            verticalLevel: string | null;
+            vocalFoldLeft: components["schemas"]["VocalFoldRead"];
+            vocalFoldRight: components["schemas"]["VocalFoldRead"];
+        };
+        /** LaryngoscopyStructureRead */
+        LaryngoscopyStructureRead: {
+            bodySite: components["schemas"]["CodeableConcept"];
+            finding: components["schemas"]["CodeableConcept"];
+            /** Laterality */
+            laterality: string;
+            /** Status */
+            status: string;
+        };
+        /** LaryngoscopyStructureWrite */
+        LaryngoscopyStructureWrite: {
+            /** Bodysitecode */
+            bodySiteCode: string;
+            /** Findingcode */
+            findingCode: string;
+            laterality: components["schemas"]["Laterality"];
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "normal" | "abnormal" | "not_examined" | "unknown";
+        };
+        /** LaryngoscopyUpdate */
+        LaryngoscopyUpdate: {
+            /**
+             * Anesthesia
+             * @default topical_spray
+             * @enum {string}
+             */
+            anesthesia: "none" | "topical_spray" | "local_infiltration" | "general";
+            /** Conclusiontext */
+            conclusionText?: string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            fees?: components["schemas"]["FeesWrite"] | null;
+            /**
+             * Glotticclosure
+             * @enum {string}
+             */
+            glotticClosure: "complete" | "anterior_gap" | "posterior_gap" | "spindle" | "hourglass" | "irregular" | "incomplete";
+            grbas?: components["schemas"]["GrbasWrite"] | null;
+            /** Indicationtext */
+            indicationText?: string | null;
+            /** Instrument */
+            instrument?: string | null;
+            /** @default bilateral */
+            laterality: components["schemas"]["Laterality"];
+            /** Lesions */
+            lesions?: components["schemas"]["VocalFoldLesionWrite"][];
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            refluxFindingScore?: components["schemas"]["RefluxFindingScoreWrite"] | null;
+            /**
+             * Scopetype
+             * @enum {string}
+             */
+            scopeType: "flexible_fiberoptic" | "flexible_distal_chip" | "rigid_70" | "rigid_90";
+            /**
+             * Setting
+             * @default office
+             * @enum {string}
+             */
+            setting: "office" | "ot";
+            stroboscopy?: components["schemas"]["StroboscopyWrite"] | null;
+            /** Structures */
+            structures?: components["schemas"]["LaryngoscopyStructureWrite"][];
+            /** Supraglotticpattern */
+            supraglotticPattern?: ("none" | "anteroposterior" | "mediolateral" | "sphincteric") | null;
+            /** Tolerance */
+            tolerance?: ("well_tolerated" | "mild_discomfort" | "moderate_discomfort" | "poorly_tolerated" | "aborted") | null;
+            /** Version */
+            version: number;
+            vocalFoldLeft: components["schemas"]["VocalFoldWrite"];
+            vocalFoldRight: components["schemas"]["VocalFoldWrite"];
         };
         /**
          * Laterality
@@ -4280,6 +4611,12 @@ export interface components {
         PageSchema_FormularyEntryRead_: {
             /** Items */
             items: components["schemas"]["FormularyEntryRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[LaryngoscopyExamRead] */
+        PageSchema_LaryngoscopyExamRead_: {
+            /** Items */
+            items: components["schemas"]["LaryngoscopyExamRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[ObservationRead] */
@@ -5666,6 +6003,25 @@ export interface components {
             /** Recommendations */
             recommendations?: string | null;
         };
+        /** RefluxFindingScoreWrite */
+        RefluxFindingScoreWrite: {
+            /** Diffuselaryngealedema */
+            diffuseLaryngealEdema: number;
+            /** Erythema */
+            erythema: number;
+            /** Granuloma */
+            granuloma: number;
+            /** Posteriorcommissurehypertrophy */
+            posteriorCommissureHypertrophy: number;
+            /** Subglotticedema */
+            subglotticEdema: number;
+            /** Thickendolaryngealmucus */
+            thickEndolaryngealMucus: number;
+            /** Ventricularobliteration */
+            ventricularObliteration: number;
+            /** Vocalfoldedema */
+            vocalFoldEdema: number;
+        };
         /**
          * ResolvedConcept
          * @description Concept with locale-resolved display fields.
@@ -5895,6 +6251,47 @@ export interface components {
             /** Postalcode */
             postalCode?: string | null;
         };
+        /** StroboscopyWrite */
+        StroboscopyWrite: {
+            /**
+             * Amplitudeleft
+             * @enum {string}
+             */
+            amplitudeLeft: "normal" | "reduced" | "absent";
+            /**
+             * Amplituderight
+             * @enum {string}
+             */
+            amplitudeRight: "normal" | "reduced" | "absent";
+            /**
+             * Mucosalwaveleft
+             * @enum {string}
+             */
+            mucosalWaveLeft: "normal" | "reduced" | "absent";
+            /**
+             * Mucosalwaveright
+             * @enum {string}
+             */
+            mucosalWaveRight: "normal" | "reduced" | "absent";
+            /** Nonvibratingsegment */
+            nonVibratingSegment?: ("none" | "right" | "left" | "bilateral") | null;
+            /**
+             * Periodicity
+             * @enum {string}
+             */
+            periodicity: "regular" | "irregular";
+            /** Phaseclosure */
+            phaseClosure?: ("normal" | "predominantly_open" | "predominantly_closed" | "always_open") | null;
+            /** Phasesymmetry */
+            phaseSymmetry?: ("symmetric" | "asymmetric") | null;
+            /**
+             * Symmetry
+             * @enum {string}
+             */
+            symmetry: "symmetric" | "asymmetric";
+            /** Verticallevel */
+            verticalLevel?: ("on_plane" | "off_plane_right_lower" | "off_plane_left_lower") | null;
+        };
         /** TaperRequest */
         TaperRequest: {
             /** Daysperstep */
@@ -6034,6 +6431,53 @@ export interface components {
             descriptionKey?: string | null;
             /** Namekey */
             nameKey: string;
+        };
+        /** VocalFoldLesionRead */
+        VocalFoldLesionRead: {
+            finding: components["schemas"]["CodeableConcept"];
+            /** Laterality */
+            laterality: string;
+            /** Reinkegrade */
+            reinkeGrade: number | null;
+            /** Sizemm */
+            sizeMm: number | null;
+            surface: components["schemas"]["CodeableConcept"];
+            third: components["schemas"]["CodeableConcept"];
+        };
+        /** VocalFoldLesionWrite */
+        VocalFoldLesionWrite: {
+            /** Findingcode */
+            findingCode: string;
+            /**
+             * Laterality
+             * @enum {string}
+             */
+            laterality: "right" | "left";
+            /** Reinkegrade */
+            reinkeGrade?: number | null;
+            /** Sizemm */
+            sizeMm?: number | null;
+            /** Surfacecode */
+            surfaceCode: string;
+            /** Thirdcode */
+            thirdCode: string;
+        };
+        /** VocalFoldRead */
+        VocalFoldRead: {
+            /** Mobility */
+            mobility: string;
+            /** Position */
+            position: string | null;
+        };
+        /** VocalFoldWrite */
+        VocalFoldWrite: {
+            /**
+             * Mobility
+             * @enum {string}
+             */
+            mobility: "normal" | "hypomobile" | "immobile" | "paradoxical";
+            /** Position */
+            position?: ("median" | "paramedian" | "intermediate" | "lateral") | null;
         };
         /** WaitingRoomEntryRead */
         WaitingRoomEntryRead: {
@@ -8507,6 +8951,114 @@ export interface operations {
             };
         };
     };
+    create_laryngoscopy_api_v1_laryngoscopies_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LaryngoscopyCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LaryngoscopyExamRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_laryngoscopy_api_v1_laryngoscopies__laryngoscopy_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                laryngoscopy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LaryngoscopyExamRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_laryngoscopy_api_v1_laryngoscopies__laryngoscopy_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                laryngoscopy_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LaryngoscopyUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LaryngoscopyExamRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     render_narrative_api_v1_narrative_render_post: {
         parameters: {
             query?: never;
@@ -9529,6 +10081,43 @@ export interface operations {
             };
         };
     };
+    list_patient_laryngoscopies_api_v1_patients__patient_id__laryngoscopies_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_LaryngoscopyExamRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_medications_api_v1_patients__patient_id__medications_get: {
         parameters: {
             query?: {
@@ -10486,6 +11075,40 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["EndoscopyExamRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_procedure_laryngoscopy_api_v1_procedures__procedure_id__laryngoscopy_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                procedure_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LaryngoscopyExamRead"];
                 };
             };
             /** @description Validation Error */

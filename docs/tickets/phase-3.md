@@ -61,7 +61,7 @@ Reference: feature spec section 7. Architecture section 25.7.
 
 ---
 
-## - [ ] P3-04 Laryngoscopy and stroboscopy (backend)
+## - [x] P3-04 Laryngoscopy and stroboscopy (backend)
 
 **Scope**
 - `laryngoscopy_exam` with the vocal fold fields: mobility and position per
