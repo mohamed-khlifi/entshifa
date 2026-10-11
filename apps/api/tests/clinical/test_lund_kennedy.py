@@ -90,6 +90,16 @@ def test_out_of_range_item_is_rejected(value: int) -> None:
 
 
 @pytest.mark.clinical
+def test_unknown_side_has_no_total() -> None:
+    result = score(right=_zeros(), left=_zeros())
+    with pytest.raises(ScoreInputError) as exc:
+        side_points(result, "midline")
+    assert exc.value.code == "endoscopy.incomplete_score"
+    assert exc.value.context["item"] == "side_total"
+    assert exc.value.context["side"] == "midline"
+
+
+@pytest.mark.clinical
 def test_registry_lists_the_engine() -> None:
     match = [item for item in registered_calculators() if item.code == CODE]
     assert len(match) == 1
