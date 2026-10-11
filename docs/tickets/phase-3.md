@@ -10,7 +10,7 @@ Reference: feature spec section 7. Architecture section 25.7.
 
 ---
 
-## - [ ] P3-01 Procedure record core (backend)
+## - [x] P3-01 Procedure record core (backend)
 
 **Scope**
 - `procedure_record` as the parent of every procedure, with the shared fields:

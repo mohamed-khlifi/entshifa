@@ -35,6 +35,10 @@ class Permission(StrEnum):
     APPOINTMENT_TYPE_MANAGE = "appointment_type.manage"
     RECALL_READ = "recall.read"
     RECALL_WRITE = "recall.write"
+    PROCEDURE_READ = "procedure.read"
+    PROCEDURE_WRITE = "procedure.write"
+    PROCEDURE_SIGN = "procedure.sign"
+    PROCEDURE_AMEND = "procedure.amend"
 
 
 SYSTEM_ROLE_MATRIX: dict[str, frozenset[Permission]] = {
@@ -61,6 +65,10 @@ SYSTEM_ROLE_MATRIX: dict[str, frozenset[Permission]] = {
             Permission.APPOINTMENT_WRITE,
             Permission.RECALL_READ,
             Permission.RECALL_WRITE,
+            Permission.PROCEDURE_READ,
+            Permission.PROCEDURE_WRITE,
+            Permission.PROCEDURE_SIGN,
+            Permission.PROCEDURE_AMEND,
             Permission.AUTH_SESSION_READ,
         }
     ),
@@ -77,6 +85,8 @@ SYSTEM_ROLE_MATRIX: dict[str, frozenset[Permission]] = {
             Permission.APPOINTMENT_WRITE,
             Permission.RECALL_READ,
             Permission.RECALL_WRITE,
+            Permission.PROCEDURE_READ,
+            Permission.PROCEDURE_WRITE,
             Permission.AUTH_SESSION_READ,
         }
     ),
@@ -96,6 +106,7 @@ SYSTEM_ROLE_MATRIX: dict[str, frozenset[Permission]] = {
             Permission.ATTACHMENT_READ,
             Permission.APPOINTMENT_READ,
             Permission.RECALL_READ,
+            Permission.PROCEDURE_READ,
             Permission.AUTH_SESSION_READ,
         }
     ),

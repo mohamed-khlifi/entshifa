@@ -37,6 +37,7 @@ TENANT_PATH_PARAMS = frozenset(
         "prescription_id",
         "formulary_id",
         "recall_id",
+        "procedure_id",
     }
 )
 
@@ -65,6 +66,7 @@ COLLECTION_ROUTES = frozenset(
         ("GET", "/api/v1/prescription-templates"),
         ("GET", "/api/v1/recalls"),
         ("GET", "/api/v1/recalls/summary"),
+        ("GET", "/api/v1/procedures"),
     }
 )
 

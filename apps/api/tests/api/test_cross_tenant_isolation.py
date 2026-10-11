@@ -31,6 +31,7 @@ from ent.features.patients.models import (
     PatientMedication,
     PatientProblem,
 )
+from ent.features.procedures.models import ProcedureRecord
 from ent.features.recalls.models import Recall
 from ent.features.scheduling.models import Appointment, AppointmentType
 from ent.features.terminology.models import CodeSystem, Concept
@@ -316,6 +317,24 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
                 updated_by_id=other_user.id,
             )
         )
+        procedure_public_id = new_ulid()
+        session.add(
+            ProcedureRecord(
+                public_id=procedure_public_id,
+                clinic_id=other.id,
+                patient_id=patient.id,
+                procedure_concept_id=finding.id,
+                performed_at=datetime(2026, 6, 15, 10, 30, 0),
+                performed_by_id=other_user.id,
+                laterality="na",
+                anesthesia="none",
+                setting="office",
+                indication_text="secret procedure",
+                status="draft",
+                created_by_id=other_user.id,
+                updated_by_id=other_user.id,
+            )
+        )
         await session.flush()
 
         ids = {
@@ -342,6 +361,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "prescription_id": new_ulid(),
             "formulary_id": new_ulid(),
             "recall_id": recall_public_id,
+            "procedure_id": procedure_public_id,
         }
         forbidden = [
             patient.public_id,
@@ -360,7 +380,9 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             observation.public_id,
             encounter_public_id,
             recall_public_id,
+            procedure_public_id,
             "secret recall",
+            "secret procedure",
         ]
         await session.commit()
 
@@ -452,6 +474,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             },
             ("GET", "/api/v1/recalls"): {"limit": "100"},
             ("GET", "/api/v1/recalls/summary"): {},
+            ("GET", "/api/v1/procedures"): {"limit": "100"},
         }
         try:
             ZoneInfo("Europe/Paris")

@@ -47,6 +47,7 @@ from ent.features.prescriptions.models import (
     PrescriptionRequestIdempotency,
     PrescriptionTemplate,
 )
+from ent.features.procedures.models import ProcedureRecord, ProcedureRecordAddendum
 from ent.features.recalls.models import Recall, RecallAction, RecallRequestIdempotency
 from ent.features.scheduling.models import Appointment, AppointmentType
 from ent.features.terminology.models import (
@@ -112,6 +113,8 @@ __all__ = [
     "PrescriptionItem",
     "PrescriptionRequestIdempotency",
     "PrescriptionTemplate",
+    "ProcedureRecord",
+    "ProcedureRecordAddendum",
     "Recall",
     "RecallAction",
     "RecallRequestIdempotency",

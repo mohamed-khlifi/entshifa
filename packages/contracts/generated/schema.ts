@@ -1476,6 +1476,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/patients/{patient_id}/procedures": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Patient Procedures */
+        get: operations["list_patient_procedures_api_v1_patients__patient_id__procedures_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/patients/{patient_id}/timeline": {
         parameters: {
             query?: never;
@@ -1574,6 +1591,76 @@ export interface paths {
         put?: never;
         /** Issue Prescription */
         post: operations["issue_prescription_api_v1_prescriptions__prescription_id__issue_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/procedures": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Procedures */
+        get: operations["list_procedures_api_v1_procedures_get"];
+        put?: never;
+        /** Create Procedure */
+        post: operations["create_procedure_api_v1_procedures_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/procedures/{procedure_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Procedure */
+        get: operations["get_procedure_api_v1_procedures__procedure_id__get"];
+        /** Update Procedure */
+        put: operations["update_procedure_api_v1_procedures__procedure_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/procedures/{procedure_id}/addenda": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Add Procedure Addendum */
+        post: operations["add_procedure_addendum_api_v1_procedures__procedure_id__addenda_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/procedures/{procedure_id}/sign": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Sign Procedure */
+        post: operations["sign_procedure_api_v1_procedures__procedure_id__sign_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3958,6 +4045,12 @@ export interface components {
             items: components["schemas"]["PrescriptionTemplateRead"][];
             page: components["schemas"]["PageMeta"];
         };
+        /** PageSchema[ProcedureRecordRead] */
+        PageSchema_ProcedureRecordRead_: {
+            /** Items */
+            items: components["schemas"]["ProcedureRecordRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
         /** PageSchema[RecallRead] */
         PageSchema_RecallRead_: {
             /** Items */
@@ -4909,6 +5002,163 @@ export interface components {
             method: string;
             /** Url */
             url: string;
+        };
+        /** ProcedureAddendumCreate */
+        ProcedureAddendumCreate: {
+            /** Body */
+            body: string;
+        };
+        /** ProcedureAddendumRead */
+        ProcedureAddendumRead: {
+            /** Authordisplayname */
+            authorDisplayName: string;
+            /** Authorpublicid */
+            authorPublicId: string;
+            /** Body */
+            body: string;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /** Publicid */
+            publicId: string;
+        };
+        /** ProcedureRecordCreate */
+        ProcedureRecordCreate: {
+            /**
+             * Anesthesia
+             * @default none
+             * @enum {string}
+             */
+            anesthesia: "none" | "topical_spray" | "local_infiltration" | "general";
+            /** Complicationconceptpublicid */
+            complicationConceptPublicId?: string | null;
+            /** Complicationnote */
+            complicationNote?: string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Indicationtext */
+            indicationText?: string | null;
+            /** Instrument */
+            instrument?: string | null;
+            /** @default na */
+            laterality: components["schemas"]["Laterality"];
+            /** Patientpublicid */
+            patientPublicId: string;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Performedbypublicid */
+            performedByPublicId?: string | null;
+            /** Procedureconceptpublicid */
+            procedureConceptPublicId: string;
+            /**
+             * Setting
+             * @default office
+             * @enum {string}
+             */
+            setting: "office" | "ot";
+            /** Tolerance */
+            tolerance?: ("well_tolerated" | "mild_discomfort" | "moderate_discomfort" | "poorly_tolerated" | "aborted") | null;
+        };
+        /** ProcedureRecordRead */
+        ProcedureRecordRead: {
+            /** Addenda */
+            addenda: components["schemas"]["ProcedureAddendumRead"][];
+            /** Anesthesia */
+            anesthesia: string;
+            complication: components["schemas"]["CodeableConcept"] | null;
+            /** Complicationnote */
+            complicationNote: string | null;
+            /**
+             * Createdat
+             * Format: date-time
+             */
+            createdAt: string;
+            /** Encounterid */
+            encounterId: string | null;
+            /** Indicationtext */
+            indicationText: string | null;
+            /** Instrument */
+            instrument: string | null;
+            /** Laterality */
+            laterality: string;
+            /** Lockedhash */
+            lockedHash: string | null;
+            /** Patientdisplayname */
+            patientDisplayName: string;
+            /** Patientid */
+            patientId: string;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Performedbydisplayname */
+            performedByDisplayName: string;
+            /** Performedbyid */
+            performedById: string;
+            procedure: components["schemas"]["CodeableConcept"];
+            /** Publicid */
+            publicId: string;
+            /** Setting */
+            setting: string;
+            /** Signedat */
+            signedAt: string | null;
+            /** Signedbyid */
+            signedById: string | null;
+            /** Signedrole */
+            signedRole: string | null;
+            /** Status */
+            status: string;
+            /** Tolerance */
+            tolerance: string | null;
+            /**
+             * Updatedat
+             * Format: date-time
+             */
+            updatedAt: string;
+            /** Version */
+            version: number;
+        };
+        /** ProcedureRecordUpdate */
+        ProcedureRecordUpdate: {
+            /** Anesthesia */
+            anesthesia?: ("none" | "topical_spray" | "local_infiltration" | "general") | null;
+            /** Complicationconceptpublicid */
+            complicationConceptPublicId?: string | null;
+            /** Complicationnote */
+            complicationNote?: string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Indicationtext */
+            indicationText?: string | null;
+            /** Instrument */
+            instrument?: string | null;
+            laterality?: components["schemas"]["Laterality"] | null;
+            /** Performedat */
+            performedAt?: string | null;
+            /** Performedbypublicid */
+            performedByPublicId?: string | null;
+            /** Procedureconceptpublicid */
+            procedureConceptPublicId?: string | null;
+            /** Setting */
+            setting?: ("office" | "ot") | null;
+            /** Tolerance */
+            tolerance?: ("well_tolerated" | "mild_discomfort" | "moderate_discomfort" | "poorly_tolerated" | "aborted") | null;
+            /** Version */
+            version: number;
+        };
+        /** ProcedureSign */
+        ProcedureSign: {
+            /**
+             * Role
+             * @default clinician
+             */
+            role: string;
         };
         /**
          * QuestionnaireStatusRead
@@ -9252,6 +9502,43 @@ export interface operations {
             };
         };
     };
+    list_patient_procedures_api_v1_patients__patient_id__procedures_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_ProcedureRecordRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     patient_timeline_api_v1_patients__patient_id__timeline_get: {
         parameters: {
             query?: {
@@ -9520,6 +9807,226 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PrescriptionRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_procedures_api_v1_procedures_get: {
+        parameters: {
+            query?: {
+                patient_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_ProcedureRecordRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_procedure_api_v1_procedures_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProcedureRecordCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProcedureRecordRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_procedure_api_v1_procedures__procedure_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                procedure_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProcedureRecordRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_procedure_api_v1_procedures__procedure_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                procedure_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProcedureRecordUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProcedureRecordRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    add_procedure_addendum_api_v1_procedures__procedure_id__addenda_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                procedure_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProcedureAddendumCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProcedureRecordRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    sign_procedure_api_v1_procedures__procedure_id__sign_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Accept-Language"?: string | null;
+            };
+            path: {
+                procedure_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProcedureSign"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProcedureRecordRead"];
                 };
             };
             /** @description Validation Error */

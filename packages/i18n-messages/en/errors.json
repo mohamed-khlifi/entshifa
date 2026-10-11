@@ -67,5 +67,12 @@
     "invalid_status": "This recall cannot change from its current status.",
     "not_found": "That recall was not found.",
     "version_conflict": "This recall was updated by someone else. Reload and try again."
+  },
+  "procedure": {
+    "already_signed": "This procedure is signed. Add an addendum instead of editing it.",
+    "invalid_concept": "This concept cannot be used on a procedure record.",
+    "invalid_transition": "This procedure cannot change from its current status.",
+    "not_found": "That procedure was not found.",
+    "version_conflict": "This procedure was updated by someone else. Reload and try again."
   }
 }

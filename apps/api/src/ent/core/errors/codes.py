@@ -71,3 +71,9 @@ class ErrorCode(StrEnum):
     RECALL_INVALID_STATUS = "recall.invalid_status"
     RECALL_IDEMPOTENCY_MISMATCH = "recall.idempotency_mismatch"
     RECALL_DUE_REQUIRED = "recall.due_required"
+
+    PROCEDURE_NOT_FOUND = "procedure.not_found"
+    PROCEDURE_ALREADY_SIGNED = "procedure.already_signed"
+    PROCEDURE_VERSION_CONFLICT = "procedure.version_conflict"
+    PROCEDURE_INVALID_TRANSITION = "procedure.invalid_transition"
+    PROCEDURE_INVALID_CONCEPT = "procedure.invalid_concept"

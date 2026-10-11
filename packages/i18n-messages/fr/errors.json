@@ -67,5 +67,12 @@
     "invalid_status": "Ce rappel ne peut pas changer à partir de son statut actuel.",
     "not_found": "Ce rappel est introuvable.",
     "version_conflict": "Ce rappel a été modifié. Rechargez puis réessayez."
+  },
+  "procedure": {
+    "already_signed": "Cet acte est signé. Ajoutez un addendum au lieu de le modifier.",
+    "invalid_concept": "Ce concept ne peut pas être utilisé sur un acte.",
+    "invalid_transition": "Cet acte ne peut pas changer à partir de son statut actuel.",
+    "not_found": "Cet acte est introuvable.",
+    "version_conflict": "Cet acte a été modifié. Rechargez puis réessayez."
   }
 }

@@ -26,6 +26,7 @@ from ent.features.narrative.router import router as narrative_router
 from ent.features.observations.router import router as observations_router
 from ent.features.patients.router import router as patients_router
 from ent.features.prescriptions.router import router as prescriptions_router
+from ent.features.procedures.router import router as procedures_router
 from ent.features.recalls.router import router as recalls_router
 from ent.features.scheduling.router import router as scheduling_router
 from ent.features.terminology.router import router as terminology_router
@@ -83,4 +84,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(diagnoses_router)
     app.include_router(prescriptions_router)
     app.include_router(recalls_router)
+    app.include_router(procedures_router)
     return app

@@ -14,6 +14,7 @@ from ent.features.documents.templates.service import DocumentTemplateService
 from ent.features.encounters.service import EncounterService
 from ent.features.observations.service import ObservationService
 from ent.features.patients.service import PatientService
+from ent.features.procedures.service import ProcedureRecordService
 from ent.features.recalls.service import RecallService
 from ent.features.scheduling.service import SchedulingService
 
@@ -49,6 +50,7 @@ def test_clinical_read_methods_record_access() -> None:
         (ObservationService, ("list_", "get_")),
         (EncounterService, ("list_", "get_")),
         (RecallService, ("list_", "get_")),
+        (ProcedureRecordService, ("list_", "get_")),
     )
     missing: list[str] = []
     for cls, prefixes in expectations:
