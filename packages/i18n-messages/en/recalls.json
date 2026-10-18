@@ -87,6 +87,12 @@
     "title": "Recalls"
   },
   "reasons": {
+    "otologyCanalInjury": "Ear canal injury follow-up",
+    "otologyCavityCleaning": "Mastoid cavity cleaning",
+    "otologyTubeAudiogram": "Post-tube audiogram",
+    "otologyTubeCheck": "Ventilation tube check",
+    "otologyTubePatency": "Ventilation tube patency check",
+    "otologyWickRemoval": "Ear wick removal",
     "packRemoval": "Pack removal",
     "sialendoscopyReview": "Sialendoscopy follow-up",
     "specimenReview": "Specimen result review",

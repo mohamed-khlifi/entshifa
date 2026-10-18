@@ -47,3 +47,24 @@ class RecallSummaryRead(CamelModel):
     upcoming: int
     unreachable: int
     active: int
+
+
+class ProtocolRuleRead(CamelModel):
+    public_id: str
+    sequence: int
+    offset_days: int
+    window_days: int
+    action_type: str
+    action_config: dict[str, Any] | None
+    condition: dict[str, Any] | None
+    label_key: str
+
+
+class ProtocolRead(CamelModel):
+    public_id: str
+    code: str
+    name_key: str
+    trigger_type: str
+    is_active: bool
+    is_clinic_override: bool
+    rules: list[ProtocolRuleRead]

@@ -65,6 +65,7 @@ class TubeInsertionWrite(CamelModel):
     complication: Literal["bleeding", "otorrhea", "vertigo", "perforation"] | None = (
         None
     )
+    has_preop_hearing_loss: bool | None = None
 
 
 class TubeRemovalWrite(CamelModel):

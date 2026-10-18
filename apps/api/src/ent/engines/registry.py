@@ -52,6 +52,14 @@ from ent.engines.prescriptions.steroid_taper import CODE as TAPER_CODE
 from ent.engines.prescriptions.steroid_taper import FORMULA as TAPER_FORMULA
 from ent.engines.prescriptions.steroid_taper import REFERENCE as TAPER_REFERENCE
 from ent.engines.prescriptions.steroid_taper import VERSION as TAPER_VERSION
+from ent.engines.recalls.protocol_resolver import CODE as PROTOCOL_RESOLVER_CODE
+from ent.engines.recalls.protocol_resolver import (
+    FORMULA as PROTOCOL_RESOLVER_FORMULA,
+)
+from ent.engines.recalls.protocol_resolver import (
+    REFERENCE as PROTOCOL_RESOLVER_REFERENCE,
+)
+from ent.engines.recalls.protocol_resolver import VERSION as PROTOCOL_RESOLVER_VERSION
 
 
 @dataclass(frozen=True, slots=True)
@@ -129,5 +137,12 @@ def registered_calculators() -> tuple[CalculatorSpec, ...]:
             reference=PAS_REFERENCE,
             unit="grade",
             formula=PAS_FORMULA,
+        ),
+        CalculatorSpec(
+            code=PROTOCOL_RESOLVER_CODE,
+            version=PROTOCOL_RESOLVER_VERSION,
+            reference=PROTOCOL_RESOLVER_REFERENCE,
+            unit="recall",
+            formula=PROTOCOL_RESOLVER_FORMULA,
         ),
     )

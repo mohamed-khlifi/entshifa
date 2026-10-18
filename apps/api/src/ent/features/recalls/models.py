@@ -1,26 +1,35 @@
-"""Manual recall ORM models (architecture §25.15 / P2-11).
-
-``protocol_id`` and ``protocol_rule_id`` are reserved for phase 3. No protocol
-table exists yet, so they are nullable columns without a foreign key.
-"""
+"""Recall and protocol ORM models (architecture §25.15 / P2-11, P3-08)."""
 
 from __future__ import annotations
 
 from datetime import date, datetime
 from typing import TYPE_CHECKING, Any
 
-from sqlalchemy import CheckConstraint, Date, ForeignKey, Index, SmallInteger, String
+from sqlalchemy import (
+    Boolean,
+    CheckConstraint,
+    Computed,
+    Date,
+    ForeignKey,
+    Index,
+    Integer,
+    SmallInteger,
+    String,
+    text,
+)
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from ent.core.db.base import Base
 from ent.core.db.mixins import (
     ClinicalRecordMixin,
+    GlobalRecordMixin,
     SurrogatePkMixin,
     TimestampMixin,
 )
 from ent.core.db.mysql_types import datetime6, mysql_json, unsigned_bigint
 from ent.core.db.types import ULIDType
 from ent.features.recalls.constants import (
+    PROTOCOL_TRIGGER_TYPES,
     RECALL_ACTION_TYPES,
     RECALL_CONTACT_ACTIONS,
     RECALL_LATERALITIES,
@@ -41,6 +50,115 @@ _SOURCE_SQL = ",".join(f"'{value}'" for value in RECALL_SOURCE_TYPES)
 _LATERALITY_SQL = ",".join(f"'{value}'" for value in RECALL_LATERALITIES)
 _CONTACT_SQL = ",".join(f"'{value}'" for value in RECALL_CONTACT_ACTIONS)
 _OUTCOME_SQL = ",".join(f"'{value}'" for value in RECALL_OUTCOMES)
+_TRIGGER_SQL = ",".join(f"'{value}'" for value in PROTOCOL_TRIGGER_TYPES)
+
+
+class Protocol(GlobalRecordMixin, Base):
+    """Editable follow-up protocol (system default when clinic_id is NULL)."""
+
+    __tablename__ = "protocol"
+    __table_args__ = (
+        CheckConstraint(
+            f"trigger_type IN ({_TRIGGER_SQL})",
+            name="ck_protocol__trigger_type",
+        ),
+        Index(
+            "uq_protocol__scope_clinic_id__code",
+            "scope_clinic_id",
+            "code",
+            unique=True,
+        ),
+        Index("ix_protocol__code", "code"),
+        Index("ix_protocol__clinic_id__trigger_type", "clinic_id", "trigger_type"),
+    )
+
+    clinic_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(
+            "clinic.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+            name="fk_protocol__clinic",
+        ),
+        nullable=True,
+    )
+    scope_clinic_id: Mapped[int] = mapped_column(
+        unsigned_bigint(),
+        Computed("ifnull(clinic_id, 0)", persisted=True),
+        nullable=False,
+    )
+    code: Mapped[str] = mapped_column(
+        String(60, collation="utf8mb4_0900_as_cs"),
+        nullable=False,
+    )
+    name_key: Mapped[str] = mapped_column(String(80), nullable=False)
+    trigger_type: Mapped[str] = mapped_column(String(30), nullable=False)
+    trigger_concept_ids: Mapped[list[Any]] = mapped_column(mysql_json(), nullable=False)
+    is_active: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=True,
+        server_default=text("1"),
+    )
+
+    rules: Mapped[list[ProtocolRule]] = relationship(
+        "ProtocolRule",
+        back_populates="protocol",
+        order_by="ProtocolRule.sequence",
+        lazy="selectin",
+    )
+
+
+class ProtocolRule(GlobalRecordMixin, Base):
+    """One scheduled follow-up step within a protocol."""
+
+    __tablename__ = "protocol_rule"
+    __table_args__ = (
+        CheckConstraint("sequence >= 1", name="ck_protocol_rule__sequence"),
+        CheckConstraint("offset_days >= 0", name="ck_protocol_rule__offset_days"),
+        CheckConstraint(
+            "window_days >= 0 AND window_days <= 180",
+            name="ck_protocol_rule__window_days",
+        ),
+        CheckConstraint(
+            f"action_type IN ({_ACTION_SQL})",
+            name="ck_protocol_rule__action_type",
+        ),
+        Index(
+            "uq_protocol_rule__protocol_sequence",
+            "protocol_id",
+            "sequence",
+            unique=True,
+        ),
+    )
+
+    protocol_id: Mapped[int] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(
+            "protocol.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+            name="fk_protocol_rule__protocol",
+        ),
+        nullable=False,
+    )
+    sequence: Mapped[int] = mapped_column(SmallInteger, nullable=False)
+    offset_days: Mapped[int] = mapped_column(Integer, nullable=False)
+    window_days: Mapped[int] = mapped_column(SmallInteger, nullable=False)
+    action_type: Mapped[str] = mapped_column(String(30), nullable=False)
+    action_config: Mapped[dict[str, Any] | None] = mapped_column(
+        mysql_json(), nullable=True
+    )
+    condition: Mapped[dict[str, Any] | None] = mapped_column(
+        mysql_json(), nullable=True
+    )
+    label_key: Mapped[str] = mapped_column(String(80), nullable=False)
+
+    protocol: Mapped[Protocol] = relationship(
+        "Protocol",
+        back_populates="rules",
+        lazy="raise",
+    )
 
 
 class Recall(ClinicalRecordMixin, Base):
@@ -83,6 +201,11 @@ class Recall(ClinicalRecordMixin, Base):
             "patient_id",
             "due_on",
         ),
+        Index(
+            "ix_recall__clinic_id__protocol_rule_id",
+            "clinic_id",
+            "protocol_rule_id",
+        ),
     )
 
     patient_id: Mapped[int] = mapped_column(
@@ -95,9 +218,25 @@ class Recall(ClinicalRecordMixin, Base):
         ),
         nullable=False,
     )
-    protocol_id: Mapped[int | None] = mapped_column(unsigned_bigint(), nullable=True)
+    protocol_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(
+            "protocol.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+            name="fk_recall__protocol",
+        ),
+        nullable=True,
+    )
     protocol_rule_id: Mapped[int | None] = mapped_column(
-        unsigned_bigint(), nullable=True
+        unsigned_bigint(),
+        ForeignKey(
+            "protocol_rule.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+            name="fk_recall__protocol_rule",
+        ),
+        nullable=True,
     )
     source_type: Mapped[str] = mapped_column(String(30), nullable=False)
     source_id: Mapped[int | None] = mapped_column(unsigned_bigint(), nullable=True)

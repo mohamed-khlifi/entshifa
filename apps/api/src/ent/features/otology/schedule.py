@@ -26,6 +26,9 @@ from ent.features.otology.constants import (
     FLAG_CAVITY,
     FLAG_CHOLESTEATOMA,
     FLAG_TUBE,
+    PROC_MICROSCOPY,
+    PROC_OTOSCOPY,
+    PROCEDURE_BY_SUBTYPE,
     REASON_CANAL_INJURY,
     REASON_CAVITY,
     REASON_TUBE_CHECK,
@@ -57,7 +60,10 @@ from ent.features.patients.models import PatientFlag
 from ent.features.patients.repository import PatientFlagRepository
 from ent.features.procedures.models import ProcedureRecord
 from ent.features.recalls.dates import clinic_local_date
-from ent.features.recalls.models import Recall
+from ent.features.recalls.handlers import (
+    ensure_protocols_for_clinic,
+    resolve_and_sync_procedure_recalls,
+)
 
 Write = OtologyCreate | OtologyUpdate
 _SUPERSEDED = "otology_superseded"
@@ -85,7 +91,7 @@ async def load_plan(session: AsyncSession, user: CurrentUser) -> FollowUpPlan:
         raise ValidationError(reason="invalid_tube_recall_interval")
     plan = OtologyFollowUpValue.model_validate(follow.value)
     routine = FollowUpDefaultsValue.model_validate(defaults.value)
-    return FollowUpPlan(
+    base_plan = FollowUpPlan(
         tube_first_check_days=plan.tube_first_check_days,
         tube_first_window_days=plan.tube_first_window_days,
         tube_interval_months=months,
@@ -96,6 +102,74 @@ async def load_plan(session: AsyncSession, user: CurrentUser) -> FollowUpPlan:
         cavity_window_days=plan.cavity_window_days,
         canal_injury_days=routine.post_op_days,
         canal_injury_window_days=plan.canal_injury_window_days,
+    )
+    protocols = await ensure_protocols_for_clinic(session, clinic_id=user.clinic_id)
+    rules_by_label = {
+        rule.label_key: rule
+        for proto in protocols
+        for rule in proto.rules
+        if rule.deleted_at is None
+    }
+    patency_rule = rules_by_label.get(REASON_TUBE_PATENCY)
+    tube_check_rule = rules_by_label.get(REASON_TUBE_CHECK)
+    wick_rule = rules_by_label.get(REASON_WICK)
+    cavity_rule = rules_by_label.get(REASON_CAVITY)
+    canal_rule = rules_by_label.get(REASON_CANAL_INJURY)
+    return FollowUpPlan(
+        tube_first_check_days=(
+            int(patency_rule.offset_days)
+            if patency_rule is not None
+            else base_plan.tube_first_check_days
+        ),
+        tube_first_window_days=(
+            int(patency_rule.window_days)
+            if patency_rule is not None
+            else base_plan.tube_first_window_days
+        ),
+        tube_interval_months=(
+            int((tube_check_rule.action_config or {}).get("offsetMonths", months))
+            if tube_check_rule is not None
+            else base_plan.tube_interval_months
+        ),
+        tube_interval_window_days=(
+            int(tube_check_rule.window_days)
+            if tube_check_rule is not None
+            else base_plan.tube_interval_window_days
+        ),
+        wick_removal_days=(
+            int(wick_rule.offset_days)
+            if wick_rule is not None
+            else base_plan.wick_removal_days
+        ),
+        wick_window_days=(
+            int(wick_rule.window_days)
+            if wick_rule is not None
+            else base_plan.wick_window_days
+        ),
+        cavity_cleaning_months=(
+            int(
+                (cavity_rule.action_config or {}).get(
+                    "offsetMonths", base_plan.cavity_cleaning_months
+                )
+            )
+            if cavity_rule is not None
+            else base_plan.cavity_cleaning_months
+        ),
+        cavity_window_days=(
+            int(cavity_rule.window_days)
+            if cavity_rule is not None
+            else base_plan.cavity_window_days
+        ),
+        canal_injury_days=(
+            int(canal_rule.offset_days)
+            if canal_rule is not None
+            else base_plan.canal_injury_days
+        ),
+        canal_injury_window_days=(
+            int(canal_rule.window_days)
+            if canal_rule is not None
+            else base_plan.canal_injury_window_days
+        ),
     )
 
 
@@ -141,7 +215,6 @@ async def reconcile(
     block = body.procedure
     side = body.laterality.value
     keep_devices: list[EarDevice] = []
-    recalls_wanted: list[tuple[str, date, int, str]] = []
     removal_due: date | None = None
 
     if isinstance(block, TubeInsertionWrite):
@@ -168,22 +241,6 @@ async def reconcile(
             device.next_check_due = add_days(on, plan.tube_first_check_days)
             device.updated_by_id = user.user_id
         keep_devices.append(device)
-        recalls_wanted.append(
-            (
-                REASON_TUBE_PATENCY,
-                add_days(on, plan.tube_first_check_days),
-                plan.tube_first_window_days,
-                side,
-            )
-        )
-        recalls_wanted.append(
-            (
-                REASON_TUBE_CHECK,
-                add_months(on, plan.tube_interval_months),
-                plan.tube_interval_window_days,
-                side,
-            )
-        )
     elif isinstance(block, TubeRemovalWrite):
         target = await devices.get_detail(block.device_public_id)
         if (
@@ -221,33 +278,40 @@ async def reconcile(
             device.next_check_due = due
             device.updated_by_id = user.user_id
         keep_devices.append(device)
-        recalls_wanted.append((REASON_CAVITY, due, plan.cavity_window_days, side))
     elif isinstance(block, WickWrite):
         removal_due = add_days(on, plan.wick_removal_days)
-        recalls_wanted.append((REASON_WICK, removal_due, plan.wick_window_days, side))
-    elif isinstance(block, WaxRemovalWrite) and block.canal_condition == "traumatized":
-        recalls_wanted.append(
-            (
-                REASON_CANAL_INJURY,
-                add_days(on, plan.canal_injury_days),
-                plan.canal_injury_window_days,
-                side,
-            )
-        )
-    elif isinstance(block, ForeignBodyWrite) and block.trauma != "none":
-        recalls_wanted.append(
-            (
-                REASON_CANAL_INJURY,
-                add_days(on, plan.canal_injury_days),
-                plan.canal_injury_window_days,
-                side,
-            )
-        )
 
     if office is not None:
         office.removal_due_date = removal_due
     _retire_owned(owned, keep_devices, user.user_id)
-    await _replace_recalls(recalls, user, procedure, recalls_wanted)
+    await session.flush()
+
+    procedure_code = (
+        PROCEDURE_BY_SUBTYPE[block.subtype]
+        if block is not None
+        else (PROC_MICROSCOPY if body.method == "microscopy" else PROC_OTOSCOPY)
+    )
+    extra_attrs: dict[str, object] = {}
+    if isinstance(block, TubeInsertionWrite):
+        extra_attrs["has_preop_hearing_loss"] = bool(block.has_preop_hearing_loss)
+    elif isinstance(block, WaxRemovalWrite):
+        extra_attrs["canal_traumatized"] = block.canal_condition == "traumatized"
+    elif isinstance(block, ForeignBodyWrite):
+        extra_attrs["canal_traumatized"] = block.trauma != "none"
+
+    await resolve_and_sync_procedure_recalls(
+        session,
+        clinic_id=user.clinic_id,
+        user_id=user.user_id,
+        procedure=procedure,
+        procedure_concept_code=procedure_code,
+        performed_on=on,
+        office=office,
+        extra_attributes=extra_attrs,
+        superseded_reason=_SUPERSEDED,
+        replace_existing_for_source=True,
+        apply_completion_transitions=False,
+    )
     await _sync_flags(
         flags,
         user,
@@ -323,39 +387,6 @@ def _retire_owned(
         row.deleted_at = now
         row.deleted_by_id = user_id
         row.updated_by_id = user_id
-
-
-async def _replace_recalls(
-    repo: ProcedureRecallRepository,
-    user: CurrentUser,
-    procedure: ProcedureRecord,
-    wanted: list[tuple[str, date, int, str]],
-) -> None:
-    existing = await repo.list_for_procedure(int(procedure.id))
-    for row in existing:
-        if row.status in {"pending", "unreachable"}:
-            row.status = "cancelled"
-            row.cancelled_reason = _SUPERSEDED
-            row.updated_by_id = user.user_id
-    for reason_key, due_on, window_days, laterality in wanted:
-        await repo.add(
-            Recall(
-                public_id=new_ulid(),
-                clinic_id=user.clinic_id,
-                patient_id=int(procedure.patient_id),
-                source_type="procedure",
-                source_id=int(procedure.id),
-                reason_key=reason_key,
-                due_on=due_on,
-                window_days=window_days,
-                action_type="visit",
-                action_config={"reasonKey": reason_key},
-                laterality=laterality,
-                status="pending",
-                created_by_id=user.user_id,
-                updated_by_id=user.user_id,
-            )
-        )
 
 
 async def cancel_tube_recalls(

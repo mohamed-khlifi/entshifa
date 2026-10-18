@@ -6,8 +6,13 @@ from datetime import date
 from typing import Any
 
 from ent.features.recalls.dates import effective_status
-from ent.features.recalls.models import Recall, RecallAction
-from ent.features.recalls.schemas.responses import RecallActionRead, RecallRead
+from ent.features.recalls.models import Protocol, ProtocolRule, Recall, RecallAction
+from ent.features.recalls.schemas.responses import (
+    ProtocolRead,
+    ProtocolRuleRead,
+    RecallActionRead,
+    RecallRead,
+)
 
 
 def recall_snapshot(row: Recall) -> dict[str, Any]:
@@ -70,4 +75,35 @@ def to_action_read(row: RecallAction, *, performer_public_id: str) -> RecallActi
         note_locale=row.note_locale,
         performed_at=row.performed_at,
         performed_by_id=performer_public_id,
+    )
+
+
+def to_protocol_rule_read(row: ProtocolRule) -> ProtocolRuleRead:
+    return ProtocolRuleRead(
+        public_id=row.public_id,
+        sequence=int(row.sequence),
+        offset_days=int(row.offset_days),
+        window_days=int(row.window_days),
+        action_type=row.action_type,
+        action_config=(
+            dict(row.action_config) if row.action_config is not None else None
+        ),
+        condition=dict(row.condition) if row.condition is not None else None,
+        label_key=row.label_key,
+    )
+
+
+def to_protocol_read(row: Protocol, *, clinic_id: int) -> ProtocolRead:
+    ordered_rules = sorted(
+        (r for r in row.rules if r.deleted_at is None),
+        key=lambda item: int(item.sequence),
+    )
+    return ProtocolRead(
+        public_id=row.public_id,
+        code=row.code,
+        name_key=row.name_key,
+        trigger_type=row.trigger_type,
+        is_active=bool(row.is_active),
+        is_clinic_override=row.clinic_id == clinic_id,
+        rules=[to_protocol_rule_read(r) for r in ordered_rules],
     )

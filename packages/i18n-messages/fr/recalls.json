@@ -87,6 +87,12 @@
     "title": "Rappels"
   },
   "reasons": {
+    "otologyCanalInjury": "Suivi de lésion du conduit auditif",
+    "otologyCavityCleaning": "Nettoyage de cavité mastoïdienne",
+    "otologyTubeAudiogram": "Audiogramme post-aérateur",
+    "otologyTubeCheck": "Contrôle d'aérateur transtympanique",
+    "otologyTubePatency": "Contrôle de perméabilité de l'aérateur",
+    "otologyWickRemoval": "Retrait de mèche auriculaire",
     "packRemoval": "Retrait du méchage",
     "sialendoscopyReview": "Suivi de sialendoscopie",
     "specimenReview": "Revue du résultat",

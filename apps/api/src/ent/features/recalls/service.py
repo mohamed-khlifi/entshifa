@@ -31,14 +31,24 @@ from ent.features.recalls.exceptions import (
     RecallNotFoundError,
     RecallVersionConflictError,
 )
-from ent.features.recalls.mapping import recall_snapshot, to_recall_read
+from ent.features.recalls.handlers import (
+    ensure_protocols_for_clinic,
+    schedule_next_repeating_recall_on_complete,
+)
+from ent.features.recalls.mapping import (
+    recall_snapshot,
+    to_protocol_read,
+    to_recall_read,
+)
 from ent.features.recalls.models import Recall, RecallAction, RecallRequestIdempotency
 from ent.features.recalls.repository import (
+    ProtocolRepository,
     RecallActionRepository,
     RecallIdempotencyRepository,
     RecallRepository,
 )
 from ent.features.recalls.schemas.requests import (
+    ProtocolUpdate,
     RecallActionCreate,
     RecallAppointmentCreate,
     RecallBook,
@@ -48,7 +58,11 @@ from ent.features.recalls.schemas.requests import (
     RecallCreate,
     RecallUpdate,
 )
-from ent.features.recalls.schemas.responses import RecallRead, RecallSummaryRead
+from ent.features.recalls.schemas.responses import (
+    ProtocolRead,
+    RecallRead,
+    RecallSummaryRead,
+)
 from ent.features.scheduling.schemas.requests import AppointmentCreate
 from ent.features.scheduling.service import SchedulingService
 from ent.features.users.repository import UserAdminRepository
@@ -353,6 +367,20 @@ class RecallService:
             before=before,
             after=recall_snapshot(row),
         )
+        next_recall = await schedule_next_repeating_recall_on_complete(
+            self._session,
+            completed_recall=row,
+            completed_on=today,
+            user_id=user.user_id,
+        )
+        if next_recall is not None:
+            self._audit.record_write(
+                action="create",
+                entity=next_recall,
+                clinic_id=user.clinic_id,
+                patient_id=next_recall.patient_id,
+                after=recall_snapshot(next_recall),
+            )
         await self._session.commit()
         return await self._read(user, row.public_id, today)
 
@@ -388,6 +416,76 @@ class RecallService:
         )
         await self._session.commit()
         return await self._read(user, row.public_id, today)
+
+    async def list_protocols(self, *, user: CurrentUser) -> list[ProtocolRead]:
+        self._bind(user)
+        await ensure_protocols_for_clinic(self._session, clinic_id=user.clinic_id)
+        rows = await ProtocolRepository(
+            self._session, clinic_id=user.clinic_id
+        ).list_effective(active_only=False)
+        self._audit.record_access(
+            action="list",
+            entity_type="protocol",
+            clinic_id=user.clinic_id,
+        )
+        await self._session.commit()
+        return [to_protocol_read(row, clinic_id=user.clinic_id) for row in rows]
+
+    async def update_protocol(
+        self,
+        *,
+        user: CurrentUser,
+        code: str,
+        body: ProtocolUpdate,
+    ) -> ProtocolRead:
+        self._bind(user)
+        await ensure_protocols_for_clinic(self._session, clinic_id=user.clinic_id)
+        repo = ProtocolRepository(self._session, clinic_id=user.clinic_id)
+        rule_updates: list[tuple[int, int, int, dict[str, Any] | None]] = []
+        for rule_body in body.rules:
+            patch: dict[str, Any] = {}
+            if rule_body.offset_months is not None:
+                patch["offsetMonths"] = rule_body.offset_months
+            if rule_body.repeat_every_months is not None:
+                patch["repeatEveryMonths"] = rule_body.repeat_every_months
+            if rule_body.repeat_every_days is not None:
+                patch["repeatEveryDays"] = rule_body.repeat_every_days
+            rule_updates.append(
+                (
+                    rule_body.sequence,
+                    rule_body.offset_days,
+                    rule_body.window_days,
+                    patch or None,
+                )
+            )
+        updated = await repo.upsert_clinic_override(
+            code=code,
+            user_id=user.user_id,
+            is_active=body.is_active,
+            rule_updates=rule_updates,
+        )
+        if updated is None:
+            raise NotFoundError(resource="protocol", code=code)
+        self._audit.record_write(
+            action="update",
+            entity=updated,
+            clinic_id=user.clinic_id,
+            after={
+                "code": updated.code,
+                "is_active": updated.is_active,
+                "rules": [
+                    {
+                        "sequence": int(r.sequence),
+                        "offset_days": int(r.offset_days),
+                        "window_days": int(r.window_days),
+                    }
+                    for r in updated.rules
+                    if r.deleted_at is None
+                ],
+            },
+        )
+        await self._session.commit()
+        return to_protocol_read(updated, clinic_id=user.clinic_id)
 
     async def _attach_appointment(
         self,

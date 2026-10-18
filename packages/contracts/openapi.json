@@ -14679,6 +14679,207 @@
         "title": "ProcedureSign",
         "type": "object"
       },
+      "ProtocolRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean"
+          },
+          "isClinicOverride": {
+            "title": "Isclinicoverride",
+            "type": "boolean"
+          },
+          "nameKey": {
+            "title": "Namekey",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "rules": {
+            "items": {
+              "$ref": "#/components/schemas/ProtocolRuleRead"
+            },
+            "title": "Rules",
+            "type": "array"
+          },
+          "triggerType": {
+            "title": "Triggertype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "code",
+          "nameKey",
+          "triggerType",
+          "isActive",
+          "isClinicOverride",
+          "rules"
+        ],
+        "title": "ProtocolRead",
+        "type": "object"
+      },
+      "ProtocolRuleRead": {
+        "properties": {
+          "actionConfig": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actionconfig"
+          },
+          "actionType": {
+            "title": "Actiontype",
+            "type": "string"
+          },
+          "condition": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Condition"
+          },
+          "labelKey": {
+            "title": "Labelkey",
+            "type": "string"
+          },
+          "offsetDays": {
+            "title": "Offsetdays",
+            "type": "integer"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "sequence": {
+            "title": "Sequence",
+            "type": "integer"
+          },
+          "windowDays": {
+            "title": "Windowdays",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "publicId",
+          "sequence",
+          "offsetDays",
+          "windowDays",
+          "actionType",
+          "actionConfig",
+          "condition",
+          "labelKey"
+        ],
+        "title": "ProtocolRuleRead",
+        "type": "object"
+      },
+      "ProtocolRuleUpdate": {
+        "properties": {
+          "offsetDays": {
+            "maximum": 3650.0,
+            "minimum": 0.0,
+            "title": "Offsetdays",
+            "type": "integer"
+          },
+          "offsetMonths": {
+            "anyOf": [
+              {
+                "maximum": 120.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Offsetmonths"
+          },
+          "repeatEveryDays": {
+            "anyOf": [
+              {
+                "maximum": 3650.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Repeateverydays"
+          },
+          "repeatEveryMonths": {
+            "anyOf": [
+              {
+                "maximum": 120.0,
+                "minimum": 1.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Repeateverymonths"
+          },
+          "sequence": {
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Sequence",
+            "type": "integer"
+          },
+          "windowDays": {
+            "maximum": 180.0,
+            "minimum": 0.0,
+            "title": "Windowdays",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "sequence",
+          "offsetDays",
+          "windowDays"
+        ],
+        "title": "ProtocolRuleUpdate",
+        "type": "object"
+      },
+      "ProtocolUpdate": {
+        "properties": {
+          "isActive": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isactive"
+          },
+          "rules": {
+            "items": {
+              "$ref": "#/components/schemas/ProtocolRuleUpdate"
+            },
+            "maxItems": 50,
+            "title": "Rules",
+            "type": "array"
+          }
+        },
+        "title": "ProtocolUpdate",
+        "type": "object"
+      },
       "QuestionnaireStatusRead": {
         "description": "Stub until phase 5 instruments are wired.",
         "properties": {
@@ -16566,6 +16767,17 @@
             ],
             "title": "Effusion",
             "type": "string"
+          },
+          "hasPreopHearingLoss": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Haspreophearingloss"
           },
           "subtype": {
             "const": "tube_insertion",
@@ -28993,6 +29205,137 @@
         "summary": "Sign Procedure",
         "tags": [
           "procedures"
+        ]
+      }
+    },
+    "/api/v1/recall-protocols": {
+      "get": {
+        "operationId": "list_recall_protocols_api_v1_recall_protocols_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ProtocolRead"
+                  },
+                  "title": "Response List Recall Protocols Api V1 Recall Protocols Get",
+                  "type": "array"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Recall Protocols",
+        "tags": [
+          "recalls"
+        ]
+      }
+    },
+    "/api/v1/recall-protocols/{code}": {
+      "put": {
+        "operationId": "update_recall_protocol_api_v1_recall_protocols__code__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "title": "Code",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProtocolUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProtocolRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Recall Protocol",
+        "tags": [
+          "recalls"
         ]
       }
     },

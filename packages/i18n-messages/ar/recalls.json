@@ -87,6 +87,12 @@
     "title": "المتابعات"
   },
   "reasons": {
+    "otologyCanalInjury": "متابعة إصابة مجرى السمع",
+    "otologyCavityCleaning": "تنظيف تجويف الخشاء",
+    "otologyTubeAudiogram": "مخطط سمع بعد أنبوب التهوية",
+    "otologyTubeCheck": "فحص أنبوب التهوية",
+    "otologyTubePatency": "فحص سالكية أنبوب التهوية",
+    "otologyWickRemoval": "نزع فتيلة الأذن",
     "packRemoval": "نزع الحشوة",
     "sialendoscopyReview": "متابعة تنظير الغدة اللعابية",
     "specimenReview": "مراجعة نتيجة العينة",

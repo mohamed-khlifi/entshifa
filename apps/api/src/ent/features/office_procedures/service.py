@@ -11,7 +11,6 @@ from ent.core.errors.exceptions import NotFoundError, ValidationError
 from ent.core.schemas.base import PageMeta, PageSchema, PaginationParams
 from ent.core.schemas.common import CodeableConcept
 from ent.core.security.principal import CurrentUser
-from ent.core.utils.ids import new_ulid
 from ent.features.clinics.repository import ClinicRepository
 from ent.features.office_procedures.constants import PROCEDURE_BY_SUBTYPE
 from ent.features.office_procedures.exceptions import (
@@ -19,13 +18,9 @@ from ent.features.office_procedures.exceptions import (
     OfficeProcedureNotFoundError,
     OfficeProcedureVersionConflictError,
 )
-from ent.features.office_procedures.repository import (
-    ProcedureRecallRepository,
-    ShortOfficeProcedureRepository,
-)
+from ent.features.office_procedures.repository import ShortOfficeProcedureRepository
 from ent.features.office_procedures.schedule import (
     dates_before_procedure,
-    planned_recalls,
     removal_due_date,
     result_due_date,
 )
@@ -42,7 +37,7 @@ from ent.features.procedures.models import ProcedureRecord
 from ent.features.procedures.references import ProcedureReferences
 from ent.features.procedures.repository import ProcedureRecordRepository
 from ent.features.recalls.dates import clinic_local_date
-from ent.features.recalls.models import Recall
+from ent.features.recalls.handlers import resolve_and_sync_procedure_recalls
 from ent.features.terminology.models import Concept
 from ent.features.terminology.repository import TerminologyRepository
 
@@ -100,7 +95,7 @@ class OfficeProcedureService:
             updated_by_id=user.user_id,
         )
         await self._rows(user).add(row)
-        await self._replace_recalls(user, procedure, body)
+        await self._replace_recalls(user, procedure, row, body, concept.code)
         return await self._present(user, row.public_id, content_locale)
 
     async def update_procedure(
@@ -136,7 +131,7 @@ class OfficeProcedureService:
         row.result_due_date = result_due_date(body.detail)
         row.updated_by_id = user.user_id
         row.version = int(row.version) + 1
-        await self._replace_recalls(user, procedure, body)
+        await self._replace_recalls(user, procedure, row, body, concept.code)
         return await self._present(user, row.public_id, content_locale)
 
     async def get_procedure(
@@ -225,34 +220,27 @@ class OfficeProcedureService:
         self,
         user: CurrentUser,
         procedure: ProcedureRecord,
+        office: OfficeProcedure,
         body: Write,
+        concept_code: str,
     ) -> None:
-        repo = ProcedureRecallRepository(self._session, clinic_id=user.clinic_id)
-        existing = await repo.list_for_procedure(int(procedure.id))
-        for row in existing:
-            if row.status in {"pending", "unreachable"}:
-                row.status = "cancelled"
-                row.cancelled_reason = _SUPERSEDED
-                row.updated_by_id = user.user_id
-        for planned in planned_recalls(body.detail, body.laterality.value):
-            await repo.add(
-                Recall(
-                    public_id=new_ulid(),
-                    clinic_id=user.clinic_id,
-                    patient_id=int(procedure.patient_id),
-                    source_type="procedure",
-                    source_id=int(procedure.id),
-                    reason_key=planned.reason_key,
-                    due_on=planned.due_on,
-                    window_days=planned.window_days,
-                    action_type="visit",
-                    action_config={"reasonKey": planned.reason_key},
-                    laterality=planned.laterality,
-                    status="pending",
-                    created_by_id=user.user_id,
-                    updated_by_id=user.user_id,
-                )
-            )
+        del body
+        clinic = await ClinicRepository(self._session).get(user.clinic_id)
+        if clinic is None:
+            raise NotFoundError(resource="clinic")
+        performed_on = clinic_local_date(procedure.performed_at, clinic.timezone)
+        await resolve_and_sync_procedure_recalls(
+            self._session,
+            clinic_id=user.clinic_id,
+            user_id=user.user_id,
+            procedure=procedure,
+            procedure_concept_code=concept_code,
+            performed_on=performed_on,
+            office=office,
+            superseded_reason=_SUPERSEDED,
+            replace_existing_for_source=True,
+            apply_completion_transitions=False,
+        )
 
     async def _present(
         self,

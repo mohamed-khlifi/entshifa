@@ -4,6 +4,8 @@ from __future__ import annotations
 
 RECALL_SOURCE_TYPES = ("manual", "procedure")
 
+PROTOCOL_TRIGGER_TYPES = ("procedure", "diagnosis", "finding", "surgery", "manual")
+
 RECALL_ACTION_TYPES = ("visit", "test", "call", "questionnaire", "document")
 
 RECALL_STATUSES = (

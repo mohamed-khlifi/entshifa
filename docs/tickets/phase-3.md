@@ -120,7 +120,7 @@ relevant, a removal or result-review date.
 
 ---
 
-## - [ ] P3-08 Recall protocols from procedures (backend)
+## - [x] P3-08 Recall protocols from procedures (backend)
 
 **Scope**
 - `protocol` and `protocol_rule` models, and the protocol resolver listening to

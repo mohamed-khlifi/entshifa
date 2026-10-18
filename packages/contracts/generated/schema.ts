@@ -1977,6 +1977,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/recall-protocols": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Recall Protocols */
+        get: operations["list_recall_protocols_api_v1_recall_protocols_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/recall-protocols/{code}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update Recall Protocol */
+        put: operations["update_recall_protocol_api_v1_recall_protocols__code__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/recalls": {
         parameters: {
             query?: never;
@@ -6592,6 +6626,64 @@ export interface components {
              */
             role: string;
         };
+        /** ProtocolRead */
+        ProtocolRead: {
+            /** Code */
+            code: string;
+            /** Isactive */
+            isActive: boolean;
+            /** Isclinicoverride */
+            isClinicOverride: boolean;
+            /** Namekey */
+            nameKey: string;
+            /** Publicid */
+            publicId: string;
+            /** Rules */
+            rules: components["schemas"]["ProtocolRuleRead"][];
+            /** Triggertype */
+            triggerType: string;
+        };
+        /** ProtocolRuleRead */
+        ProtocolRuleRead: {
+            /** Actionconfig */
+            actionConfig: Record<string, never> | null;
+            /** Actiontype */
+            actionType: string;
+            /** Condition */
+            condition: Record<string, never> | null;
+            /** Labelkey */
+            labelKey: string;
+            /** Offsetdays */
+            offsetDays: number;
+            /** Publicid */
+            publicId: string;
+            /** Sequence */
+            sequence: number;
+            /** Windowdays */
+            windowDays: number;
+        };
+        /** ProtocolRuleUpdate */
+        ProtocolRuleUpdate: {
+            /** Offsetdays */
+            offsetDays: number;
+            /** Offsetmonths */
+            offsetMonths?: number | null;
+            /** Repeateverydays */
+            repeatEveryDays?: number | null;
+            /** Repeateverymonths */
+            repeatEveryMonths?: number | null;
+            /** Sequence */
+            sequence: number;
+            /** Windowdays */
+            windowDays: number;
+        };
+        /** ProtocolUpdate */
+        ProtocolUpdate: {
+            /** Isactive */
+            isActive?: boolean | null;
+            /** Rules */
+            rules?: components["schemas"]["ProtocolRuleUpdate"][];
+        };
         /**
          * QuestionnaireStatusRead
          * @description Stub until phase 5 instruments are wired.
@@ -7181,6 +7273,8 @@ export interface components {
              * @enum {string}
              */
             effusion: "none" | "serous" | "mucoid" | "purulent" | "bloody";
+            /** Haspreophearingloss */
+            hasPreopHearingLoss?: boolean | null;
             /**
              * @description discriminator enum property added by openapi-typescript
              * @enum {string}
@@ -12540,6 +12634,74 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ProcedureRecordRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_recall_protocols_api_v1_recall_protocols_get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProtocolRead"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_recall_protocol_api_v1_recall_protocols__code__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ProtocolUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ProtocolRead"];
                 };
             };
             /** @description Validation Error */

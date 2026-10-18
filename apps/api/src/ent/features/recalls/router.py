@@ -10,6 +10,7 @@ from ent.core.security.principal import CurrentUser
 from ent.features.auth.dependencies import require
 from ent.features.recalls.dependencies import get_recall_service
 from ent.features.recalls.schemas.requests import (
+    ProtocolUpdate,
     RecallActionCreate,
     RecallBook,
     RecallBucket,
@@ -18,7 +19,11 @@ from ent.features.recalls.schemas.requests import (
     RecallCreate,
     RecallUpdate,
 )
-from ent.features.recalls.schemas.responses import RecallRead, RecallSummaryRead
+from ent.features.recalls.schemas.responses import (
+    ProtocolRead,
+    RecallRead,
+    RecallSummaryRead,
+)
 from ent.features.recalls.service import RecallService
 
 router = APIRouter(tags=["recalls"])
@@ -134,3 +139,21 @@ async def complete_recall(
     service: RecallService = Depends(get_recall_service),
 ) -> RecallRead:
     return await service.complete_recall(user=user, public_id=recall_id, body=body)
+
+
+@router.get("/api/v1/recall-protocols", response_model=list[ProtocolRead])
+async def list_recall_protocols(
+    user: CurrentUser = Depends(require(Permission.RECALL_READ)),
+    service: RecallService = Depends(get_recall_service),
+) -> list[ProtocolRead]:
+    return await service.list_protocols(user=user)
+
+
+@router.put("/api/v1/recall-protocols/{code}", response_model=ProtocolRead)
+async def update_recall_protocol(
+    code: str,
+    body: ProtocolUpdate,
+    user: CurrentUser = Depends(require(Permission.ADMIN_CLINIC)),
+    service: RecallService = Depends(get_recall_service),
+) -> ProtocolRead:
+    return await service.update_protocol(user=user, code=code, body=body)

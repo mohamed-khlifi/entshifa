@@ -83,3 +83,17 @@ class RecallUpdate(CamelModel):
     reason_locale: str | None = Field(default=None, min_length=2, max_length=10)
     assigned_to_id: str | None = None
     version: int = Field(ge=1)
+
+
+class ProtocolRuleUpdate(CamelModel):
+    sequence: int = Field(ge=1, le=50)
+    offset_days: int = Field(ge=0, le=3650)
+    window_days: int = Field(ge=0, le=180)
+    offset_months: int | None = Field(default=None, ge=1, le=120)
+    repeat_every_months: int | None = Field(default=None, ge=1, le=120)
+    repeat_every_days: int | None = Field(default=None, ge=1, le=3650)
+
+
+class ProtocolUpdate(CamelModel):
+    is_active: bool | None = None
+    rules: list[ProtocolRuleUpdate] = Field(default_factory=list, max_length=50)
