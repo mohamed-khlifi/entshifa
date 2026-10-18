@@ -13,7 +13,7 @@ you start.
 
 ---
 
-## - [ ] P4-01 Audiogram data model and entry API (backend)
+## - [x] P4-01 Audiogram data model and entry API (backend)
 
 `audiogram` plus the narrow `audiogram_threshold` table. Air and bone
 conduction, masked flags, no-response flags, extended high frequencies

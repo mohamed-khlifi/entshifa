@@ -169,3 +169,25 @@ def test_encounter_narrative_and_dates_are_scrubbed() -> None:
     assert row["signed_at"] == signed + shift
     assert row["created_at"] == datetime(2026, 1, 1, 0, 0, 0)
     assert addendum["body"] == "redacted"
+
+
+def test_audiogram_interpretation_and_performed_at_are_scrubbed() -> None:
+    patients = [{"id": 7, "public_id": "01PATIENTPUBLICID0000000001"}]
+    offsets = build_offsets(patients)
+    performed = datetime(2026, 4, 2, 10, 0, 0)
+    row = anonymize_row(
+        "audiogram",
+        {
+            "id": 8,
+            "public_id": "01AUDIOGRAMPUBLICID0000001",
+            "patient_id": 7,
+            "performed_at": performed,
+            "interpretation_text": "secret interpretation",
+            "created_at": datetime(2026, 1, 1, 0, 0, 0),
+        },
+        offsets=offsets,
+        password_hash="hash",
+    )
+    shift = timedelta(days=offsets[7])
+    assert row["interpretation_text"] == "redacted"
+    assert row["performed_at"] == performed + shift

@@ -104,5 +104,14 @@
     "invalid_structure": "Ce site ne fait pas partie de l'examen otologique.",
     "not_found": "Cet examen otologique est introuvable.",
     "version_conflict": "Cet examen otologique a été modifié. Rechargez puis réessayez."
+  },
+  "audiology": {
+    "already_finalized": "Cet audiogramme est finalisé et ne peut plus être modifié.",
+    "duplicate_threshold": "La même oreille, conduction, fréquence et masquage apparaissent deux fois.",
+    "idempotency_mismatch": "Cette clé d'idempotence a déjà servi pour un autre audiogramme.",
+    "incomplete_thresholds": "Ajoutez au moins un seuil avant de finaliser.",
+    "invalid_threshold": "Un seuil est hors plage ou sur une fréquence non autorisée.",
+    "not_found": "Cet audiogramme est introuvable.",
+    "version_conflict": "Cet audiogramme a été modifié. Rechargez puis réessayez."
   }
 }

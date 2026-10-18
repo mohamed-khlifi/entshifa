@@ -3,8 +3,12 @@
 from __future__ import annotations
 
 from ent.core.events.bus import EventBus, get_event_bus
+from ent.features.audiology.events import AUDIOGRAM_CREATED
 from ent.features.procedures.events import PROCEDURE_PERFORMED
-from ent.features.recalls.handlers import handle_procedure_performed
+from ent.features.recalls.handlers import (
+    handle_audiogram_created,
+    handle_procedure_performed,
+)
 from ent.jobs.tasks import JOB_HANDLE_DOMAIN_EVENT
 
 
@@ -18,4 +22,7 @@ def wire_event_handlers(bus: EventBus | None = None) -> EventBus:
     proc_existing = target._handlers.get(PROCEDURE_PERFORMED, [])
     if not any(sub.handler == handle_procedure_performed for sub in proc_existing):
         target.subscribe(PROCEDURE_PERFORMED, handler=handle_procedure_performed)
+    audio_existing = target._handlers.get(AUDIOGRAM_CREATED, [])
+    if not any(sub.handler == handle_audiogram_created for sub in audio_existing):
+        target.subscribe(AUDIOGRAM_CREATED, handler=handle_audiogram_created)
     return target

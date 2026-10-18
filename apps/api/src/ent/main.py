@@ -13,6 +13,7 @@ from ent.core.audit.middleware import RequestContextMiddleware
 from ent.core.db.session import dispose_engine
 from ent.core.errors.handlers import register_exception_handlers
 from ent.features.attachments.router import router as attachments_router
+from ent.features.audiology.router import router as audiology_router
 from ent.features.auth.router import router as auth_router
 from ent.features.clinics.router import router as clinics_router
 from ent.features.diagnoses.router import router as diagnoses_router
@@ -88,6 +89,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(diagnoses_router)
     app.include_router(prescriptions_router)
     app.include_router(recalls_router)
+    app.include_router(audiology_router)
     app.include_router(procedures_router)
     app.include_router(endoscopy_router)
     app.include_router(laryngoscopy_router)

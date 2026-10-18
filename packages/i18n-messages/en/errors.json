@@ -104,5 +104,14 @@
     "invalid_structure": "That site is not part of the otology exam.",
     "not_found": "That otology exam was not found.",
     "version_conflict": "This otology exam was updated by someone else. Reload and try again."
+  },
+  "audiology": {
+    "already_finalized": "This audiogram is finalized and cannot be changed.",
+    "duplicate_threshold": "The same ear, conduction, frequency and masking appear twice.",
+    "idempotency_mismatch": "This idempotency key was already used for a different audiogram.",
+    "incomplete_thresholds": "Add at least one threshold before finalizing.",
+    "invalid_threshold": "A threshold value is outside the allowed range or frequency.",
+    "not_found": "That audiogram was not found.",
+    "version_conflict": "This audiogram was updated by someone else. Reload and try again."
   }
 }

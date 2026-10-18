@@ -930,6 +930,702 @@
         "title": "AttachmentUploadUrlResponse",
         "type": "object"
       },
+      "AudiogramBaselineUpdate": {
+        "properties": {
+          "isBaseline": {
+            "default": true,
+            "title": "Isbaseline",
+            "type": "boolean"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "AudiogramBaselineUpdate",
+        "type": "object"
+      },
+      "AudiogramCreate": {
+        "properties": {
+          "baselineAudiogramPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Baselineaudiogrampublicid"
+          },
+          "calibrationDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calibrationdate"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "equipment": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Equipment"
+          },
+          "interpretationText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interpretationtext"
+          },
+          "isBaseline": {
+            "default": false,
+            "title": "Isbaseline",
+            "type": "boolean"
+          },
+          "method": {
+            "default": "standard",
+            "enum": [
+              "standard",
+              "play",
+              "vra",
+              "boa",
+              "soundfield"
+            ],
+            "title": "Method",
+            "type": "string"
+          },
+          "patientPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "performedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedat"
+          },
+          "performedByPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedbypublicid"
+          },
+          "reliability": {
+            "default": "good",
+            "enum": [
+              "good",
+              "fair",
+              "poor"
+            ],
+            "title": "Reliability",
+            "type": "string"
+          },
+          "thresholds": {
+            "items": {
+              "$ref": "#/components/schemas/ThresholdInput"
+            },
+            "title": "Thresholds",
+            "type": "array"
+          },
+          "transducer": {
+            "default": "headphones",
+            "enum": [
+              "headphones",
+              "inserts",
+              "free_field",
+              "bone_oscillator"
+            ],
+            "title": "Transducer",
+            "type": "string"
+          }
+        },
+        "required": [
+          "patientPublicId"
+        ],
+        "title": "AudiogramCreate",
+        "type": "object"
+      },
+      "AudiogramFinalize": {
+        "properties": {
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "AudiogramFinalize",
+        "type": "object"
+      },
+      "AudiogramInterpret": {
+        "properties": {
+          "interpretationText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interpretationtext"
+          },
+          "isBaseline": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isbaseline"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "AudiogramInterpret",
+        "type": "object"
+      },
+      "AudiogramRead": {
+        "properties": {
+          "abgLeft": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Abgleft"
+          },
+          "abgRight": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Abgright"
+          },
+          "asymmetryFlag": {
+            "title": "Asymmetryflag",
+            "type": "boolean"
+          },
+          "baselineAudiogramPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Baselineaudiogrampublicid"
+          },
+          "calibrationDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calibrationdate"
+          },
+          "configurationLeft": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Configurationleft"
+          },
+          "configurationRight": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Configurationright"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "engineVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engineversion"
+          },
+          "equipment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Equipment"
+          },
+          "gradeLeft": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gradeleft"
+          },
+          "gradeRight": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Graderight"
+          },
+          "hasExtendedHighFrequencies": {
+            "title": "Hasextendedhighfrequencies",
+            "type": "boolean"
+          },
+          "interpretationText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interpretationtext"
+          },
+          "isBaseline": {
+            "title": "Isbaseline",
+            "type": "boolean"
+          },
+          "lossTypeLeft": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Losstypeleft"
+          },
+          "lossTypeRight": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Losstyperight"
+          },
+          "method": {
+            "enum": [
+              "standard",
+              "play",
+              "vra",
+              "boa",
+              "soundfield"
+            ],
+            "title": "Method",
+            "type": "string"
+          },
+          "patientPublicId": {
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "performedAt": {
+            "format": "date-time",
+            "title": "Performedat",
+            "type": "string"
+          },
+          "performedByPublicId": {
+            "title": "Performedbypublicid",
+            "type": "string"
+          },
+          "ptaFormula": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ptaformula"
+          },
+          "ptaLeft": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ptaleft"
+          },
+          "ptaRight": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ptaright"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "reliability": {
+            "enum": [
+              "good",
+              "fair",
+              "poor"
+            ],
+            "title": "Reliability",
+            "type": "string"
+          },
+          "shiftFlag": {
+            "title": "Shiftflag",
+            "type": "boolean"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "thresholds": {
+            "items": {
+              "$ref": "#/components/schemas/ThresholdRead"
+            },
+            "title": "Thresholds",
+            "type": "array"
+          },
+          "transducer": {
+            "enum": [
+              "headphones",
+              "inserts",
+              "free_field",
+              "bone_oscillator"
+            ],
+            "title": "Transducer",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "publicId",
+          "patientPublicId",
+          "encounterPublicId",
+          "performedAt",
+          "performedByPublicId",
+          "equipment",
+          "calibrationDate",
+          "transducer",
+          "method",
+          "reliability",
+          "isBaseline",
+          "baselineAudiogramPublicId",
+          "ptaFormula",
+          "ptaRight",
+          "ptaLeft",
+          "abgRight",
+          "abgLeft",
+          "gradeRight",
+          "gradeLeft",
+          "lossTypeRight",
+          "lossTypeLeft",
+          "configurationRight",
+          "configurationLeft",
+          "asymmetryFlag",
+          "shiftFlag",
+          "engineVersion",
+          "interpretationText",
+          "status",
+          "version",
+          "hasExtendedHighFrequencies",
+          "thresholds"
+        ],
+        "title": "AudiogramRead",
+        "type": "object"
+      },
+      "AudiogramUpdate": {
+        "properties": {
+          "baselineAudiogramPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Baselineaudiogrampublicid"
+          },
+          "calibrationDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Calibrationdate"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "equipment": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Equipment"
+          },
+          "interpretationText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interpretationtext"
+          },
+          "isBaseline": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isbaseline"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "enum": [
+                  "standard",
+                  "play",
+                  "vra",
+                  "boa",
+                  "soundfield"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method"
+          },
+          "performedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedat"
+          },
+          "performedByPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedbypublicid"
+          },
+          "reliability": {
+            "anyOf": [
+              {
+                "enum": [
+                  "good",
+                  "fair",
+                  "poor"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reliability"
+          },
+          "thresholds": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/ThresholdInput"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thresholds"
+          },
+          "transducer": {
+            "anyOf": [
+              {
+                "enum": [
+                  "headphones",
+                  "inserts",
+                  "free_field",
+                  "bone_oscillator"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Transducer"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "AudiogramUpdate",
+        "type": "object"
+      },
       "BiopsyWrite": {
         "properties": {
           "laboratoryLocale": {
@@ -9850,6 +10546,26 @@
         "title": "PageSchema[AttachmentRead]",
         "type": "object"
       },
+      "PageSchema_AudiogramRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AudiogramRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[AudiogramRead]",
+        "type": "object"
+      },
       "PageSchema_ConceptAdminRead_": {
         "properties": {
           "items": {
@@ -16705,6 +17421,115 @@
         "title": "TaperWrite",
         "type": "object"
       },
+      "ThresholdInput": {
+        "properties": {
+          "conduction": {
+            "enum": [
+              "air",
+              "bone"
+            ],
+            "title": "Conduction",
+            "type": "string"
+          },
+          "ear": {
+            "enum": [
+              "right",
+              "left"
+            ],
+            "title": "Ear",
+            "type": "string"
+          },
+          "frequencyHz": {
+            "maximum": 16000.0,
+            "minimum": 125.0,
+            "title": "Frequencyhz",
+            "type": "integer"
+          },
+          "isMasked": {
+            "default": false,
+            "title": "Ismasked",
+            "type": "boolean"
+          },
+          "isNoResponse": {
+            "default": false,
+            "title": "Isnoresponse",
+            "type": "boolean"
+          },
+          "levelDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Leveldb"
+          }
+        },
+        "required": [
+          "ear",
+          "conduction",
+          "frequencyHz"
+        ],
+        "title": "ThresholdInput",
+        "type": "object"
+      },
+      "ThresholdRead": {
+        "properties": {
+          "conduction": {
+            "enum": [
+              "air",
+              "bone"
+            ],
+            "title": "Conduction",
+            "type": "string"
+          },
+          "ear": {
+            "enum": [
+              "right",
+              "left"
+            ],
+            "title": "Ear",
+            "type": "string"
+          },
+          "frequencyHz": {
+            "title": "Frequencyhz",
+            "type": "integer"
+          },
+          "isMasked": {
+            "title": "Ismasked",
+            "type": "boolean"
+          },
+          "isNoResponse": {
+            "title": "Isnoresponse",
+            "type": "boolean"
+          },
+          "levelDb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Leveldb"
+          }
+        },
+        "required": [
+          "ear",
+          "conduction",
+          "frequencyHz",
+          "levelDb",
+          "isMasked",
+          "isNoResponse"
+        ],
+        "title": "ThresholdRead",
+        "type": "object"
+      },
       "TranslationCoverageItem": {
         "properties": {
           "code": {
@@ -19190,6 +20015,550 @@
         "summary": "Create Download Url",
         "tags": [
           "attachments"
+        ]
+      }
+    },
+    "/api/v1/audiograms": {
+      "get": {
+        "operationId": "list_audiograms_api_v1_audiograms_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "patient_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "minLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Patient Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "encounter_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "minLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Encounter Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_AudiogramRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Audiograms",
+        "tags": [
+          "audiology"
+        ]
+      },
+      "post": {
+        "operationId": "create_audiogram_api_v1_audiograms_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AudiogramCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudiogramRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Audiogram",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/audiograms/{audiogram_id}": {
+      "get": {
+        "operationId": "get_audiogram_api_v1_audiograms__audiogram_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "audiogram_id",
+            "required": true,
+            "schema": {
+              "title": "Audiogram Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudiogramRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Audiogram",
+        "tags": [
+          "audiology"
+        ]
+      },
+      "put": {
+        "operationId": "update_audiogram_api_v1_audiograms__audiogram_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "audiogram_id",
+            "required": true,
+            "schema": {
+              "title": "Audiogram Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AudiogramUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudiogramRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Audiogram",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/audiograms/{audiogram_id}/baseline": {
+      "post": {
+        "operationId": "update_audiogram_baseline_api_v1_audiograms__audiogram_id__baseline_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "audiogram_id",
+            "required": true,
+            "schema": {
+              "title": "Audiogram Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AudiogramBaselineUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudiogramRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Audiogram Baseline",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/audiograms/{audiogram_id}/finalize": {
+      "post": {
+        "operationId": "finalize_audiogram_api_v1_audiograms__audiogram_id__finalize_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "audiogram_id",
+            "required": true,
+            "schema": {
+              "title": "Audiogram Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AudiogramFinalize"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudiogramRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Finalize Audiogram",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/audiograms/{audiogram_id}/interpret": {
+      "post": {
+        "operationId": "interpret_audiogram_api_v1_audiograms__audiogram_id__interpret_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "audiogram_id",
+            "required": true,
+            "schema": {
+              "title": "Audiogram Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AudiogramInterpret"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AudiogramRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Interpret Audiogram",
+        "tags": [
+          "audiology"
         ]
       }
     },
@@ -25232,6 +26601,92 @@
         "summary": "Delete Allergy",
         "tags": [
           "patients"
+        ]
+      }
+    },
+    "/api/v1/patients/{patient_id}/audiograms": {
+      "get": {
+        "operationId": "list_patient_audiograms_api_v1_patients__patient_id__audiograms_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_AudiogramRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Patient Audiograms",
+        "tags": [
+          "audiology"
         ]
       }
     },

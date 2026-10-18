@@ -268,6 +268,93 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/audiograms": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Audiograms */
+        get: operations["list_audiograms_api_v1_audiograms_get"];
+        put?: never;
+        /** Create Audiogram */
+        post: operations["create_audiogram_api_v1_audiograms_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/audiograms/{audiogram_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Audiogram */
+        get: operations["get_audiogram_api_v1_audiograms__audiogram_id__get"];
+        /** Update Audiogram */
+        put: operations["update_audiogram_api_v1_audiograms__audiogram_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/audiograms/{audiogram_id}/baseline": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Update Audiogram Baseline */
+        post: operations["update_audiogram_baseline_api_v1_audiograms__audiogram_id__baseline_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/audiograms/{audiogram_id}/finalize": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Finalize Audiogram */
+        post: operations["finalize_audiogram_api_v1_audiograms__audiogram_id__finalize_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/audiograms/{audiogram_id}/interpret": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Interpret Audiogram */
+        post: operations["interpret_audiogram_api_v1_audiograms__audiogram_id__interpret_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/active-clinic": {
         parameters: {
             query?: never;
@@ -1350,6 +1437,23 @@ export interface paths {
         post?: never;
         /** Delete Allergy */
         delete: operations["delete_allergy_api_v1_patients__patient_id__allergies__allergy_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/audiograms": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Patient Audiograms */
+        get: operations["list_patient_audiograms_api_v1_patients__patient_id__audiograms_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -2794,6 +2898,180 @@ export interface components {
             upload: components["schemas"]["PresignedUrlResponse"];
             /** Uploadtoken */
             uploadToken: string;
+        };
+        /** AudiogramBaselineUpdate */
+        AudiogramBaselineUpdate: {
+            /**
+             * Isbaseline
+             * @default true
+             */
+            isBaseline: boolean;
+            /** Version */
+            version: number;
+        };
+        /** AudiogramCreate */
+        AudiogramCreate: {
+            /** Baselineaudiogrampublicid */
+            baselineAudiogramPublicId?: string | null;
+            /** Calibrationdate */
+            calibrationDate?: string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Equipment */
+            equipment?: string | null;
+            /** Interpretationtext */
+            interpretationText?: string | null;
+            /**
+             * Isbaseline
+             * @default false
+             */
+            isBaseline: boolean;
+            /**
+             * Method
+             * @default standard
+             * @enum {string}
+             */
+            method: "standard" | "play" | "vra" | "boa" | "soundfield";
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Performedat */
+            performedAt?: string | null;
+            /** Performedbypublicid */
+            performedByPublicId?: string | null;
+            /**
+             * Reliability
+             * @default good
+             * @enum {string}
+             */
+            reliability: "good" | "fair" | "poor";
+            /** Thresholds */
+            thresholds?: components["schemas"]["ThresholdInput"][];
+            /**
+             * Transducer
+             * @default headphones
+             * @enum {string}
+             */
+            transducer: "headphones" | "inserts" | "free_field" | "bone_oscillator";
+        };
+        /** AudiogramFinalize */
+        AudiogramFinalize: {
+            /** Version */
+            version: number;
+        };
+        /** AudiogramInterpret */
+        AudiogramInterpret: {
+            /** Interpretationtext */
+            interpretationText?: string | null;
+            /** Isbaseline */
+            isBaseline?: boolean | null;
+            /** Version */
+            version: number;
+        };
+        /** AudiogramRead */
+        AudiogramRead: {
+            /** Abgleft */
+            abgLeft: number | null;
+            /** Abgright */
+            abgRight: number | null;
+            /** Asymmetryflag */
+            asymmetryFlag: boolean;
+            /** Baselineaudiogrampublicid */
+            baselineAudiogramPublicId: string | null;
+            /** Calibrationdate */
+            calibrationDate: string | null;
+            /** Configurationleft */
+            configurationLeft: string | null;
+            /** Configurationright */
+            configurationRight: string | null;
+            /** Encounterpublicid */
+            encounterPublicId: string | null;
+            /** Engineversion */
+            engineVersion: string | null;
+            /** Equipment */
+            equipment: string | null;
+            /** Gradeleft */
+            gradeLeft: string | null;
+            /** Graderight */
+            gradeRight: string | null;
+            /** Hasextendedhighfrequencies */
+            hasExtendedHighFrequencies: boolean;
+            /** Interpretationtext */
+            interpretationText: string | null;
+            /** Isbaseline */
+            isBaseline: boolean;
+            /** Losstypeleft */
+            lossTypeLeft: string | null;
+            /** Losstyperight */
+            lossTypeRight: string | null;
+            /**
+             * Method
+             * @enum {string}
+             */
+            method: "standard" | "play" | "vra" | "boa" | "soundfield";
+            /** Patientpublicid */
+            patientPublicId: string;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Performedbypublicid */
+            performedByPublicId: string;
+            /** Ptaformula */
+            ptaFormula: string | null;
+            /** Ptaleft */
+            ptaLeft: number | null;
+            /** Ptaright */
+            ptaRight: number | null;
+            /** Publicid */
+            publicId: string;
+            /**
+             * Reliability
+             * @enum {string}
+             */
+            reliability: "good" | "fair" | "poor";
+            /** Shiftflag */
+            shiftFlag: boolean;
+            /** Status */
+            status: string;
+            /** Thresholds */
+            thresholds: components["schemas"]["ThresholdRead"][];
+            /**
+             * Transducer
+             * @enum {string}
+             */
+            transducer: "headphones" | "inserts" | "free_field" | "bone_oscillator";
+            /** Version */
+            version: number;
+        };
+        /** AudiogramUpdate */
+        AudiogramUpdate: {
+            /** Baselineaudiogrampublicid */
+            baselineAudiogramPublicId?: string | null;
+            /** Calibrationdate */
+            calibrationDate?: string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Equipment */
+            equipment?: string | null;
+            /** Interpretationtext */
+            interpretationText?: string | null;
+            /** Isbaseline */
+            isBaseline?: boolean | null;
+            /** Method */
+            method?: ("standard" | "play" | "vra" | "boa" | "soundfield") | null;
+            /** Performedat */
+            performedAt?: string | null;
+            /** Performedbypublicid */
+            performedByPublicId?: string | null;
+            /** Reliability */
+            reliability?: ("good" | "fair" | "poor") | null;
+            /** Thresholds */
+            thresholds?: components["schemas"]["ThresholdInput"][] | null;
+            /** Transducer */
+            transducer?: ("headphones" | "inserts" | "free_field" | "bone_oscillator") | null;
+            /** Version */
+            version: number;
         };
         /** BiopsyWrite */
         BiopsyWrite: {
@@ -5325,6 +5603,12 @@ export interface components {
             items: components["schemas"]["AttachmentRead"][];
             page: components["schemas"]["PageMeta"];
         };
+        /** PageSchema[AudiogramRead] */
+        PageSchema_AudiogramRead_: {
+            /** Items */
+            items: components["schemas"]["AudiogramRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
         /** PageSchema[ConceptAdminRead] */
         PageSchema_ConceptAdminRead_: {
             /** Items */
@@ -7251,6 +7535,54 @@ export interface components {
             /** Stepmg */
             stepMg: number | string;
         };
+        /** ThresholdInput */
+        ThresholdInput: {
+            /**
+             * Conduction
+             * @enum {string}
+             */
+            conduction: "air" | "bone";
+            /**
+             * Ear
+             * @enum {string}
+             */
+            ear: "right" | "left";
+            /** Frequencyhz */
+            frequencyHz: number;
+            /**
+             * Ismasked
+             * @default false
+             */
+            isMasked: boolean;
+            /**
+             * Isnoresponse
+             * @default false
+             */
+            isNoResponse: boolean;
+            /** Leveldb */
+            levelDb?: number | null;
+        };
+        /** ThresholdRead */
+        ThresholdRead: {
+            /**
+             * Conduction
+             * @enum {string}
+             */
+            conduction: "air" | "bone";
+            /**
+             * Ear
+             * @enum {string}
+             */
+            ear: "right" | "left";
+            /** Frequencyhz */
+            frequencyHz: number;
+            /** Ismasked */
+            isMasked: boolean;
+            /** Isnoresponse */
+            isNoResponse: boolean;
+            /** Leveldb */
+            levelDb: number | null;
+        };
         /** TranslationCoverageItem */
         TranslationCoverageItem: {
             /** Code */
@@ -8205,6 +8537,259 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AttachmentDownloadUrlResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_audiograms_api_v1_audiograms_get: {
+        parameters: {
+            query?: {
+                patient_id?: string | null;
+                encounter_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_AudiogramRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_audiogram_api_v1_audiograms_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Idempotency-Key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AudiogramCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AudiogramRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_audiogram_api_v1_audiograms__audiogram_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                audiogram_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AudiogramRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_audiogram_api_v1_audiograms__audiogram_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                audiogram_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AudiogramUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AudiogramRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_audiogram_baseline_api_v1_audiograms__audiogram_id__baseline_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                audiogram_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AudiogramBaselineUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AudiogramRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    finalize_audiogram_api_v1_audiograms__audiogram_id__finalize_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                audiogram_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AudiogramFinalize"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AudiogramRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    interpret_audiogram_api_v1_audiograms__audiogram_id__interpret_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                audiogram_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AudiogramInterpret"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AudiogramRead"];
                 };
             };
             /** @description Validation Error */
@@ -10978,6 +11563,42 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_patient_audiograms_api_v1_patients__patient_id__audiograms_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_AudiogramRead_"];
+                };
             };
             /** @description Validation Error */
             422: {

@@ -14,6 +14,7 @@ from ent.core.db.session import get_session_factory
 from ent.core.utils.ids import new_ulid
 from ent.engines.patients.name_normalize import build_name_normalized
 from ent.features.attachments.models import Attachment
+from ent.features.audiology.models import Audiogram, AudiogramThreshold
 from ent.features.clinics.models import Clinic, Site
 from ent.features.documents.models import (
     Document,
@@ -417,6 +418,43 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
                 updated_by_id=other_user.id,
             )
         )
+        audiogram_public_id = new_ulid()
+        session.add(
+            Audiogram(
+                public_id=audiogram_public_id,
+                clinic_id=other.id,
+                patient_id=int(patient.id),
+                performed_at=datetime(2026, 6, 15, 11, 0, 0),
+                performed_by_id=other_user.id,
+                transducer="headphones",
+                method="standard",
+                reliability="good",
+                status="draft",
+                created_by_id=other_user.id,
+                updated_by_id=other_user.id,
+            )
+        )
+        await session.flush()
+        audiogram_row = (
+            await session.execute(
+                select(Audiogram).where(Audiogram.public_id == audiogram_public_id)
+            )
+        ).scalar_one()
+        session.add(
+            AudiogramThreshold(
+                public_id=new_ulid(),
+                clinic_id=other.id,
+                audiogram_id=int(audiogram_row.id),
+                ear="right",
+                conduction="air",
+                frequency_hz=1000,
+                level_db=25,
+                is_masked=False,
+                is_no_response=False,
+                created_by_id=other_user.id,
+                updated_by_id=other_user.id,
+            )
+        )
         await session.flush()
 
         ids = {
@@ -449,6 +487,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "exam_id": exam_public_id,
             "device_id": device_public_id,
             "office_procedure_id": office_public_id,
+            "audiogram_id": audiogram_public_id,
         }
         forbidden = [
             patient.public_id,
@@ -473,6 +512,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             exam_public_id,
             device_public_id,
             office_public_id,
+            audiogram_public_id,
             "secret office",
             "secret recall",
             "secret procedure",
@@ -571,6 +611,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             ("GET", "/api/v1/recalls"): {"limit": "100"},
             ("GET", "/api/v1/recalls/summary"): {},
             ("GET", "/api/v1/procedures"): {"limit": "100"},
+            ("GET", "/api/v1/audiograms"): {"limit": "100"},
         }
         try:
             ZoneInfo("Europe/Paris")
