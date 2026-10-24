@@ -7,6 +7,7 @@ from ent.features.attachments.models import Attachment, MediaVariant
 from ent.features.audiology.models import (
     Audiogram,
     AudiogramThreshold,
+    AudiologyMetric,
     AudiologyRequestIdempotency,
 )
 from ent.features.auth.models import Permission, Role, RolePermission
@@ -88,6 +89,7 @@ __all__ = [
     "Attachment",
     "Audiogram",
     "AudiogramThreshold",
+    "AudiologyMetric",
     "AudiologyRequestIdempotency",
     "AuditLog",
     "CalculationResultRow",

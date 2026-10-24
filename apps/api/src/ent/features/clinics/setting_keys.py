@@ -7,7 +7,7 @@ Allowed shapes live here so writes are typed. Runtime defaults live only as
 from __future__ import annotations
 
 from enum import StrEnum
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 from pydantic import ValidationError as PydanticValidationError
@@ -22,6 +22,7 @@ class ClinicalSettingKey(StrEnum):
     TUBE_RECALL_INTERVAL_MONTHS = "tube_recall_interval_months"
     OTOLOGY_FOLLOW_UP = "otology_follow_up"
     FOLLOW_UP_DEFAULTS = "follow_up_defaults"
+    SHIFT_RULE = "shift_rule"
 
 
 # VERIFY: labels match feature-spec §8.5 PTA formula options.
@@ -41,6 +42,10 @@ class AsymmetryRuleValue(BaseModel):
 class FollowUpDefaultsValue(BaseModel):
     routine_months: int = Field(ge=1, le=120)
     post_op_days: int = Field(ge=1, le=365)
+
+
+class ShiftRuleValue(BaseModel):
+    rule: Literal["asha", "occupational"]
 
 
 class OtologyFollowUpValue(BaseModel):
@@ -100,6 +105,12 @@ def validate_setting_value(key: str, value: Any) -> Any:
             return OtologyFollowUpValue.model_validate(value).model_dump()
         except PydanticValidationError as exc:
             raise ValidationError(reason="invalid_otology_follow_up", key=key) from exc
+
+    if clinical_key is ClinicalSettingKey.SHIFT_RULE:
+        try:
+            return ShiftRuleValue.model_validate(value).model_dump()
+        except PydanticValidationError as exc:
+            raise ValidationError(reason="invalid_shift_rule", key=key) from exc
 
     raise ValidationError(reason="unknown_setting_key", key=key)
 

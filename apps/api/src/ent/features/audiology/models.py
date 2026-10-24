@@ -220,6 +220,15 @@ class Audiogram(ClinicalRecordMixin, Base):
         foreign_keys=[baseline_audiogram_id],
         lazy="raise",
     )
+    metrics: Mapped[list[AudiologyMetric]] = relationship(
+        back_populates="audiogram",
+        primaryjoin=(
+            "and_(Audiogram.id == AudiologyMetric.audiogram_id, "
+            "AudiologyMetric.deleted_at.is_(None))"
+        ),
+        foreign_keys="AudiologyMetric.audiogram_id",
+        lazy="selectin",
+    )
     thresholds: Mapped[list[AudiogramThreshold]] = relationship(
         back_populates="audiogram",
         primaryjoin=(
@@ -318,6 +327,57 @@ class AudiogramThreshold(ClinicalRecordMixin, Base):
 
     audiogram: Mapped[Audiogram] = relationship(
         back_populates="thresholds",
+        foreign_keys=[audiogram_id],
+    )
+
+
+class AudiologyMetric(ClinicalRecordMixin, Base):
+    """Computed audiogram values kept for trending (architecture §25.8)."""
+
+    __tablename__ = "audiology_metric"
+    __audit_writes__ = True
+    __table_args__ = (
+        CheckConstraint(
+            "ear IS NULL OR ear IN ('right','left')",
+            name="ck_audiology_metric__ear",
+        ),
+        Index("ix_audiology_metric__audiogram_id", "audiogram_id"),
+        Index(
+            "uq_audiology_metric__audiogram_code_ear",
+            "live_audiogram_id",
+            "metric_code",
+            "ear",
+            unique=True,
+        ),
+    )
+
+    audiogram_id: Mapped[int] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(
+            "audiogram.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+            name="fk_audiology_metric__audiogram",
+        ),
+        nullable=False,
+    )
+    metric_code: Mapped[str] = mapped_column(String(40), nullable=False)
+    ear: Mapped[str | None] = mapped_column(String(5), nullable=True)
+    value: Mapped[Decimal] = mapped_column(Numeric(10, 3), nullable=False)
+    unit: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    formula: Mapped[str] = mapped_column(String(80), nullable=False)
+    engine_version: Mapped[str] = mapped_column(String(20), nullable=False)
+    computed_at: Mapped[datetime] = mapped_column(datetime6(), nullable=False)
+    live_audiogram_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        Computed(
+            "CASE WHEN deleted_at IS NULL THEN audiogram_id ELSE NULL END",
+            persisted=True,
+        ),
+    )
+
+    audiogram: Mapped[Audiogram] = relationship(
+        back_populates="metrics",
         foreign_keys=[audiogram_id],
     )
 

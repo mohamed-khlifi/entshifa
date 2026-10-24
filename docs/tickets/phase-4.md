@@ -24,7 +24,7 @@ never an image. Everything else in this phase depends on that.
 
 ---
 
-## - [ ] P4-02 Audiology calculation engines (backend)
+## - [x] P4-02 Audiology calculation engines (backend)
 
 Use the `add-clinical-calculator` skill for each: pure tone average with the
 formula variants, air-bone gap, interaural difference, WHO 2021 grading, loss

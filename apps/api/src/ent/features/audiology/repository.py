@@ -13,6 +13,7 @@ from ent.core.schemas.base import PaginationParams
 from ent.features.audiology.models import (
     Audiogram,
     AudiogramThreshold,
+    AudiologyMetric,
     AudiologyRequestIdempotency,
 )
 from ent.features.audiology.schemas.requests import ThresholdInput
@@ -152,6 +153,33 @@ class AudiogramRepository(BaseRepository[Audiogram]):
             row.deleted_at = now
             row.deleted_by_id = user_id
             row.updated_by_id = user_id
+
+    async def replace_metrics(
+        self,
+        audiogram_id: int,
+        rows: list[AudiologyMetric],
+        *,
+        user_id: int,
+    ) -> None:
+        existing = list(
+            (
+                await self.session.scalars(
+                    select(AudiologyMetric).where(
+                        AudiologyMetric.clinic_id == self.clinic_id,
+                        AudiologyMetric.audiogram_id == audiogram_id,
+                    )
+                )
+            ).all()
+        )
+        now = datetime.now(UTC).replace(tzinfo=None)
+        for row in existing:
+            if row.deleted_at is not None:
+                continue
+            row.deleted_at = now
+            row.deleted_by_id = user_id
+            row.updated_by_id = user_id
+        for row in rows:
+            self.session.add(row)
 
 
 class AudiologyIdempotencyRepository(BaseRepository[AudiologyRequestIdempotency]):

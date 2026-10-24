@@ -4,6 +4,42 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from ent.engines.audiology.air_bone_gap import CODE as ABG_CODE
+from ent.engines.audiology.air_bone_gap import FORMULA as ABG_FORMULA
+from ent.engines.audiology.air_bone_gap import REFERENCE as ABG_REFERENCE
+from ent.engines.audiology.air_bone_gap import VERSION as ABG_VERSION
+from ent.engines.audiology.asymmetry import CODE as ASYMMETRY_CODE
+from ent.engines.audiology.asymmetry import FORMULA as ASYMMETRY_FORMULA
+from ent.engines.audiology.asymmetry import REFERENCE as ASYMMETRY_REFERENCE
+from ent.engines.audiology.asymmetry import VERSION as ASYMMETRY_VERSION
+from ent.engines.audiology.impairment import CODE as IMPAIRMENT_CODE
+from ent.engines.audiology.impairment import FORMULA as IMPAIRMENT_FORMULA
+from ent.engines.audiology.impairment import REFERENCE as IMPAIRMENT_REFERENCE
+from ent.engines.audiology.impairment import VERSION as IMPAIRMENT_VERSION
+from ent.engines.audiology.interaural import CODE as INTERAURAL_CODE
+from ent.engines.audiology.interaural import FORMULA as INTERAURAL_FORMULA
+from ent.engines.audiology.interaural import REFERENCE as INTERAURAL_REFERENCE
+from ent.engines.audiology.interaural import VERSION as INTERAURAL_VERSION
+from ent.engines.audiology.loss_type import CODE as LOSS_TYPE_CODE
+from ent.engines.audiology.loss_type import FORMULA as LOSS_TYPE_FORMULA
+from ent.engines.audiology.loss_type import REFERENCE as LOSS_TYPE_REFERENCE
+from ent.engines.audiology.loss_type import VERSION as LOSS_TYPE_VERSION
+from ent.engines.audiology.pta import CODE as PTA_CODE
+from ent.engines.audiology.pta import FORMULA as PTA_FORMULA
+from ent.engines.audiology.pta import REFERENCE as PTA_REFERENCE
+from ent.engines.audiology.pta import VERSION as PTA_VERSION
+from ent.engines.audiology.speech_agreement import CODE as SPEECH_CODE
+from ent.engines.audiology.speech_agreement import FORMULA as SPEECH_FORMULA
+from ent.engines.audiology.speech_agreement import REFERENCE as SPEECH_REFERENCE
+from ent.engines.audiology.speech_agreement import VERSION as SPEECH_VERSION
+from ent.engines.audiology.threshold_shift import CODE as SHIFT_CODE
+from ent.engines.audiology.threshold_shift import FORMULA as SHIFT_FORMULA
+from ent.engines.audiology.threshold_shift import REFERENCE as SHIFT_REFERENCE
+from ent.engines.audiology.threshold_shift import VERSION as SHIFT_VERSION
+from ent.engines.audiology.who_grading import CODE as WHO_CODE
+from ent.engines.audiology.who_grading import FORMULA as WHO_FORMULA
+from ent.engines.audiology.who_grading import REFERENCE as WHO_REFERENCE
+from ent.engines.audiology.who_grading import VERSION as WHO_VERSION
 from ent.engines.endoscopy.adenoid import CODE as ADENOID_CODE
 from ent.engines.endoscopy.adenoid import FORMULA as ADENOID_FORMULA
 from ent.engines.endoscopy.adenoid import REFERENCE as ADENOID_REFERENCE
@@ -144,5 +180,68 @@ def registered_calculators() -> tuple[CalculatorSpec, ...]:
             reference=PROTOCOL_RESOLVER_REFERENCE,
             unit="recall",
             formula=PROTOCOL_RESOLVER_FORMULA,
+        ),
+        CalculatorSpec(
+            code=PTA_CODE,
+            version=PTA_VERSION,
+            reference=PTA_REFERENCE,
+            unit="dB HL",
+            formula=PTA_FORMULA,
+        ),
+        CalculatorSpec(
+            code=ABG_CODE,
+            version=ABG_VERSION,
+            reference=ABG_REFERENCE,
+            unit="dB",
+            formula=ABG_FORMULA,
+        ),
+        CalculatorSpec(
+            code=WHO_CODE,
+            version=WHO_VERSION,
+            reference=WHO_REFERENCE,
+            unit=None,
+            formula=WHO_FORMULA,
+        ),
+        CalculatorSpec(
+            code=LOSS_TYPE_CODE,
+            version=LOSS_TYPE_VERSION,
+            reference=LOSS_TYPE_REFERENCE,
+            unit=None,
+            formula=LOSS_TYPE_FORMULA,
+        ),
+        CalculatorSpec(
+            code=INTERAURAL_CODE,
+            version=INTERAURAL_VERSION,
+            reference=INTERAURAL_REFERENCE,
+            unit="dB",
+            formula=INTERAURAL_FORMULA,
+        ),
+        CalculatorSpec(
+            code=IMPAIRMENT_CODE,
+            version=IMPAIRMENT_VERSION,
+            reference=IMPAIRMENT_REFERENCE,
+            unit="%",
+            formula=IMPAIRMENT_FORMULA,
+        ),
+        CalculatorSpec(
+            code=ASYMMETRY_CODE,
+            version=ASYMMETRY_VERSION,
+            reference=ASYMMETRY_REFERENCE,
+            unit=None,
+            formula=ASYMMETRY_FORMULA,
+        ),
+        CalculatorSpec(
+            code=SHIFT_CODE,
+            version=SHIFT_VERSION,
+            reference=SHIFT_REFERENCE,
+            unit=None,
+            formula=SHIFT_FORMULA,
+        ),
+        CalculatorSpec(
+            code=SPEECH_CODE,
+            version=SPEECH_VERSION,
+            reference=SPEECH_REFERENCE,
+            unit=None,
+            formula=SPEECH_FORMULA,
         ),
     )

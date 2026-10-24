@@ -155,6 +155,8 @@ async def test_audiogram_entry_finalize_and_recall_closure() -> None:
         )
         assert finalize.status_code == 200, finalize.text
         assert finalize.json()["status"] == "final"
+        assert finalize.json()["ptaFormula"] == "4freq_who"
+        assert finalize.json()["engineVersion"] == "1.0.0"
 
         locked = await client.put(
             f"/api/v1/audiograms/{audiogram_id}",

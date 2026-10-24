@@ -42,6 +42,11 @@ def test_validate_polyp_scale_accepts_lildholdt() -> None:
     assert validate_setting_value("polyp_scale", "meltzer") == "meltzer"
 
 
+def test_validate_shift_rule() -> None:
+    value = validate_setting_value("shift_rule", {"rule": "asha"})
+    assert value["rule"] == "asha"
+
+
 def test_validate_polyp_scale_rejects_item_scale_name() -> None:
     with pytest.raises(ValidationError) as exc:
         validate_setting_value("polyp_scale", "lund_kennedy")
