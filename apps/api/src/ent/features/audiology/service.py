@@ -149,7 +149,9 @@ class AudiologyService:
             patient_id=int(row.patient_id),
         )
         await self._session.commit()
-        await self._session.refresh(row)
+        row = await self._audiograms(user).get_detail(public_id)
+        if row is None:
+            raise AudiogramNotFoundError(public_id=public_id)
         return audiogram_read(row)
 
     async def list_audiograms(

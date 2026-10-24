@@ -1,0 +1,3 @@
+# Advisory ids allowed until dependency upgrades land (one id per line).
+# Zod 3.x: npm maps GHSA-mrhx-c7xc-m3w5 to zod 4 fix only; migrate to zod 4 in a dedicated ticket.
+GHSA-mrhx-c7xc-m3w5

@@ -96,7 +96,7 @@ e2e: ## Playwright smoke (en / fr / ar)
 
 security: ## Dependency and secret scanning (API + web)
 	cd $(API_DIR) && python scripts/pip_audit_check.py
-	cd $(WEB_DIR) && npm audit --audit-level=critical
+	cd $(WEB_DIR) && node scripts/npm_audit_check.mjs
 
 anonymize: ## Build an anonymized development database dump
 	@bash infra/scripts/anonymize.sh
