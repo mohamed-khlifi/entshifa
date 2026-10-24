@@ -120,7 +120,8 @@ class AudiologyService:
             await self._audiograms(user).sync_thresholds(
                 row, body.thresholds, user_id=user.user_id
             )
-            await self._session.refresh(row, attribute_names=["thresholds"])
+            await self._session.flush()
+            await self._session.refresh(row)
             await self._recompute_metrics(user, row)
         if body.is_baseline:
             await self._audiograms(user).clear_other_baselines(
@@ -148,6 +149,7 @@ class AudiologyService:
             patient_id=int(row.patient_id),
         )
         await self._session.commit()
+        await self._session.refresh(row)
         return audiogram_read(row)
 
     async def list_audiograms(
@@ -216,7 +218,8 @@ class AudiologyService:
             _assert_unique_thresholds(body.thresholds)
         await self._apply_update(user, row, body)
         if body.thresholds is not None:
-            await self._session.refresh(row, attribute_names=["thresholds"])
+            await self._session.flush()
+            await self._session.refresh(row)
             await self._recompute_metrics(user, row)
         row.updated_by_id = user.user_id
         row.version = int(row.version) + 1

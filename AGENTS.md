@@ -131,8 +131,10 @@ converts; never do it by hand.
 - If the change touches a clinical calculation, the engine `VERSION` is bumped
   and the reference is recorded.
 - Before pushing, run the Makefile CI targets with the API virtualenv Python
-  (`apps/api/.venv`) and npm. A skipped test is not a pass. If a probe is
-  skipped because timezone data is missing (`Europe/Paris`,
+  (`apps/api/.venv`) and npm. API lint includes `ruff format --check` (run
+  `python -m ruff format src tests` in `apps/api` after edits). A skipped test
+  is not a pass. If a probe is skipped because timezone data is missing
+  (`Europe/Paris`,
   `ZoneInfoNotFoundError`), run that query against local MySQL 8.4 anyway.
   CI has tzdata and will execute it.
 

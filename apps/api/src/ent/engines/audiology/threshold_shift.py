@@ -65,12 +65,7 @@ def shift_asha(
         base_low, _ = _point_level(baseline, ear=ear, frequency_hz=low_hz)
         cur_high, nr_high = _point_level(current, ear=ear, frequency_hz=high_hz)
         base_high, _ = _point_level(baseline, ear=ear, frequency_hz=high_hz)
-        if (
-            cur_low is None
-            or base_low is None
-            or cur_high is None
-            or base_high is None
-        ):
+        if cur_low is None or base_low is None or cur_high is None or base_high is None:
             continue
         if nr_low or nr_high:
             continue

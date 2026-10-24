@@ -141,6 +141,9 @@ async def sign_encounter(
 
 ## Testing
 
+- Before push, `make lint-api` runs `ruff format --check` on `src` and `tests`;
+  run `python -m ruff format src tests` in `apps/api` after Python edits.
+
 - `tests/unit/` for engines, fast, no database.
 - `tests/clinical/` for known-answer cases per formula and score.
 - `tests/integration/` for repositories and services against real MySQL, each

@@ -30,7 +30,8 @@ def threshold_read(row: AudiogramThreshold) -> ThresholdRead:
 def audiogram_read(row: Audiogram) -> AudiogramRead:
     thresholds = [threshold_read(item) for item in row.thresholds]
     extended = any(
-        item.frequency_hz in EXTENDED_HIGH_FREQUENCIES_HZ for item in row.thresholds
+        int(item.frequency_hz) in EXTENDED_HIGH_FREQUENCIES_HZ
+        for item in row.thresholds
     )
     baseline_public_id = (
         row.baseline_audiogram.public_id if row.baseline_audiogram is not None else None
