@@ -149,6 +149,7 @@ async def test_p4_03_tympanometry_jerger_speech_and_recall() -> None:
         )
         assert speech.status_code == 201, speech.text
         assert speech.json()["speechPtaDiscrepancyFlag"] is True
+        speech_id = speech.json()["publicId"]
 
         tymp = await client.post(
             "/api/v1/tympanograms",
@@ -189,6 +190,7 @@ async def test_p4_03_tympanometry_jerger_speech_and_recall() -> None:
         )
         assert abr.status_code == 201, abr.text
         assert abr.json()["interauralVFlag"] is True
+        abr_id = abr.json()["publicId"]
 
         recall_read = await client.get(
             f"/api/v1/recalls/{recall_id}",
@@ -196,3 +198,51 @@ async def test_p4_03_tympanometry_jerger_speech_and_recall() -> None:
         )
         assert recall_read.status_code == 200, recall_read.text
         assert recall_read.json()["status"] == "done"
+
+        oae = await client.post(
+            "/api/v1/oae-results",
+            headers={**tech_headers, "Idempotency-Key": new_ulid()},
+            json={
+                "patientPublicId": patient_id,
+                "ear": "left",
+                "oaeType": "teoae",
+                "overallResult": "pass",
+                "bands": [{"frequencyHz": 1000, "status": "present"}],
+            },
+        )
+        assert oae.status_code == 201, oae.text
+        oae_id = oae.json()["publicId"]
+
+        oae_interpret = await client.post(
+            f"/api/v1/oae-results/{oae_id}/interpret",
+            headers=admin_headers,
+            json={"version": 1},
+        )
+        assert oae_interpret.status_code == 200, oae_interpret.text
+
+        speech_list = await client.get(
+            f"/api/v1/patients/{patient_id}/speech-audiometry",
+            headers=admin_headers,
+        )
+        assert speech_list.status_code == 200, speech_list.text
+        assert len(speech_list.json()["items"]) >= 1
+
+        speech_update = await client.put(
+            f"/api/v1/speech-audiometry/{speech_id}",
+            headers=tech_headers,
+            json={"version": 1, "wrsPercent": 88},
+        )
+        assert speech_update.status_code == 200, speech_update.text
+
+        abr_get = await client.get(
+            f"/api/v1/abr-results/{abr_id}",
+            headers=admin_headers,
+        )
+        assert abr_get.status_code == 200, abr_get.text
+
+        audiogram_get = await client.get(
+            f"/api/v1/audiograms/{audiogram_id}",
+            headers=admin_headers,
+        )
+        assert audiogram_get.status_code == 200, audiogram_get.text
+        assert audiogram_get.json()["publicId"] == audiogram_id

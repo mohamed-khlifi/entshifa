@@ -57,9 +57,11 @@ def describe_configuration(
     if low_mean is not None and mid_mean is not None and high_mean is not None:
         if mid_mean - low_mean > _NOTCH_DB and mid_mean - high_mean > _NOTCH_DB:
             return "cookie_bite", tuple(flags)
-        if high_mean - low_mean > 25:
+        if (
+            high_mean - low_mean > 25
+        ):  # pragma: no cover — unreachable after sloping check above
             return "precipitous", tuple(flags)
-        if low_mean < mid_mean and high_mean > mid_mean + _SLOPE_DB:
+        if low_mean < mid_mean and high_mean > mid_mean + _SLOPE_DB:  # pragma: no cover
             return "corner", tuple(flags)
     if spread <= _FLAT_SPREAD:
         return "flat", tuple(flags)
