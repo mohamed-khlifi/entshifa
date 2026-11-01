@@ -70,6 +70,9 @@ function parseAudit(stdout) {
       continue;
     }
     if (findings.length === 0) {
+      if (allow.has(`NO_ADVISORY:${name}`)) {
+        continue;
+      }
       unexpected.push(`${name} (no advisory id, ${severity})`);
       continue;
     }

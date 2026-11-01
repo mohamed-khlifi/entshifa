@@ -5,3 +5,5 @@ GHSA-mrhx-c7xc-m3w5
 GHSA-5gmw-xhrv-c9v3
 GHSA-85c8-ppgw-ccpr
 GHSA-82fw-gwwq-j7x9
+tinypool
+NO_ADVISORY:vitest
