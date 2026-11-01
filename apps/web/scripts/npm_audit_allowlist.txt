@@ -1,3 +1,7 @@
 # Advisory ids allowed until dependency upgrades land (one id per line).
 # Zod 3.x: npm maps GHSA-mrhx-c7xc-m3w5 to zod 4 fix only; migrate to zod 4 in a dedicated ticket.
 GHSA-mrhx-c7xc-m3w5
+# Vitest 3.2.x still resolves tinypool 1.1.1 in lockfile v1; override 2.2.0 + npm 10 lock refresh tracked separately.
+GHSA-5gmw-xhrv-c9v3
+GHSA-85c8-ppgw-ccpr
+GHSA-82fw-gwwq-j7x9
