@@ -6,6 +6,7 @@ from ent.core.events.events import DomainEvent
 
 AUDIOGRAM_CREATED = "audiogram.created"
 AUDIOGRAM_BASELINE_CHANGED = "audiogram.baseline_changed"
+TYMPANOMETRY_CREATED = "tympanometry.created"
 _CREATE_RESOURCE = "audiogram.create"
 
 
@@ -41,5 +42,23 @@ def audiogram_baseline_changed_event(
             "audiogram_public_id": audiogram_public_id,
             "patient_public_id": patient_public_id,
             "is_baseline": is_baseline,
+        },
+    )
+
+
+def tympanometry_created_event(
+    *,
+    clinic_id: int,
+    tympanometry_public_id: str,
+    patient_public_id: str,
+    encounter_public_id: str | None,
+) -> DomainEvent:
+    return DomainEvent(
+        name=TYMPANOMETRY_CREATED,
+        payload={
+            "clinic_id": clinic_id,
+            "tympanometry_public_id": tympanometry_public_id,
+            "patient_public_id": patient_public_id,
+            "encounter_public_id": encounter_public_id,
         },
     )

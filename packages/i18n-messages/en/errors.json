@@ -112,6 +112,10 @@
     "incomplete_thresholds": "Add at least one threshold before finalizing.",
     "invalid_threshold": "A threshold value is outside the allowed range or frequency.",
     "not_found": "That audiogram was not found.",
+    "oae_not_found": "That OAE result was not found.",
+    "speech_not_found": "That speech audiometry record was not found.",
+    "tympanometry_not_found": "That tympanogram was not found.",
+    "abr_not_found": "That ABR result was not found.",
     "version_conflict": "This audiogram was updated by someone else. Reload and try again."
   }
 }

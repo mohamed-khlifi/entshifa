@@ -108,3 +108,7 @@ class ErrorCode(StrEnum):
     AUDIOLOGY_DUPLICATE_THRESHOLD = "audiology.duplicate_threshold"
     AUDIOLOGY_INCOMPLETE_THRESHOLDS = "audiology.incomplete_thresholds"
     AUDIOLOGY_IDEMPOTENCY_MISMATCH = "audiology.idempotency_mismatch"
+    AUDIOLOGY_SPEECH_NOT_FOUND = "audiology.speech_not_found"
+    AUDIOLOGY_TYMPANOMETRY_NOT_FOUND = "audiology.tympanometry_not_found"
+    AUDIOLOGY_OAE_NOT_FOUND = "audiology.oae_not_found"
+    AUDIOLOGY_ABR_NOT_FOUND = "audiology.abr_not_found"

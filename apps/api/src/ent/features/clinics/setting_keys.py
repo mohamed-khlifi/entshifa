@@ -6,6 +6,7 @@ Allowed shapes live here so writes are typed. Runtime defaults live only as
 
 from __future__ import annotations
 
+from decimal import Decimal
 from enum import StrEnum
 from typing import Any, Literal
 
@@ -23,6 +24,7 @@ class ClinicalSettingKey(StrEnum):
     OTOLOGY_FOLLOW_UP = "otology_follow_up"
     FOLLOW_UP_DEFAULTS = "follow_up_defaults"
     SHIFT_RULE = "shift_rule"
+    ABR_INTERAURAL_V_THRESHOLD_MS = "abr_interaural_v_threshold_ms"
 
 
 # VERIFY: labels match feature-spec §8.5 PTA formula options.
@@ -46,6 +48,10 @@ class FollowUpDefaultsValue(BaseModel):
 
 class ShiftRuleValue(BaseModel):
     rule: Literal["asha", "occupational"]
+
+
+class AbrInterauralThresholdValue(BaseModel):
+    threshold_ms: Decimal = Field(ge=Decimal("0.05"), le=Decimal("2.00"))
 
 
 class OtologyFollowUpValue(BaseModel):
@@ -111,6 +117,16 @@ def validate_setting_value(key: str, value: Any) -> Any:
             return ShiftRuleValue.model_validate(value).model_dump()
         except PydanticValidationError as exc:
             raise ValidationError(reason="invalid_shift_rule", key=key) from exc
+
+    if clinical_key is ClinicalSettingKey.ABR_INTERAURAL_V_THRESHOLD_MS:
+        try:
+            validated = AbrInterauralThresholdValue.model_validate(value)
+            return {"threshold_ms": float(validated.threshold_ms)}
+        except PydanticValidationError as exc:
+            raise ValidationError(
+                reason="invalid_abr_interaural_threshold",
+                key=key,
+            ) from exc
 
     raise ValidationError(reason="unknown_setting_key", key=key)
 

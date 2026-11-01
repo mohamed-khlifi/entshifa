@@ -112,6 +112,10 @@
     "incomplete_thresholds": "Ajoutez au moins un seuil avant de finaliser.",
     "invalid_threshold": "Un seuil est hors plage ou sur une fréquence non autorisée.",
     "not_found": "Cet audiogramme est introuvable.",
+    "oae_not_found": "Ce résultat OAE est introuvable.",
+    "speech_not_found": "Cet enregistrement d'audiométrie vocale est introuvable.",
+    "tympanometry_not_found": "Cette tympanométrie est introuvable.",
+    "abr_not_found": "Ce résultat d'PEA est introuvable.",
     "version_conflict": "Cet audiogramme a été modifié. Rechargez puis réessayez."
   }
 }

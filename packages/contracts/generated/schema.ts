@@ -9,6 +9,59 @@
  */
 
 export interface paths {
+    "/api/v1/abr-results": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Abr Results */
+        get: operations["list_abr_results_api_v1_abr_results_get"];
+        put?: never;
+        /** Create Abr Result */
+        post: operations["create_abr_result_api_v1_abr_results_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/abr-results/{abr_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Abr Result */
+        get: operations["get_abr_result_api_v1_abr_results__abr_id__get"];
+        /** Update Abr Result */
+        put: operations["update_abr_result_api_v1_abr_results__abr_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/abr-results/{abr_id}/interpret": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Interpret Abr Result */
+        post: operations["interpret_abr_result_api_v1_abr_results__abr_id__interpret_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/appointment-types": {
         parameters: {
             query?: never;
@@ -1180,6 +1233,59 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/oae-results": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Oae Results */
+        get: operations["list_oae_results_api_v1_oae_results_get"];
+        put?: never;
+        /** Create Oae Result */
+        post: operations["create_oae_result_api_v1_oae_results_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/oae-results/{oae_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Oae Result */
+        get: operations["get_oae_result_api_v1_oae_results__oae_id__get"];
+        /** Update Oae Result */
+        put: operations["update_oae_result_api_v1_oae_results__oae_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/oae-results/{oae_id}/interpret": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Interpret Oae Result */
+        post: operations["interpret_oae_result_api_v1_oae_results__oae_id__interpret_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/observations/cohort": {
         parameters: {
             query?: never;
@@ -1405,6 +1511,23 @@ export interface paths {
         head?: never;
         /** Update Patient */
         patch: operations["update_patient_api_v1_patients__patient_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/abr-results": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Patient Abr Results */
+        get: operations["list_patient_abr_results_api_v1_patients__patient_id__abr_results_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/patients/{patient_id}/allergies": {
@@ -1684,6 +1807,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/patients/{patient_id}/oae-results": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Patient Oae Results */
+        get: operations["list_patient_oae_results_api_v1_patients__patient_id__oae_results_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/patients/{patient_id}/office-procedures": {
         parameters: {
             query?: never;
@@ -1839,6 +1979,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/patients/{patient_id}/speech-audiometry": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Patient Speech Audiometry */
+        get: operations["list_patient_speech_audiometry_api_v1_patients__patient_id__speech_audiometry_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/patients/{patient_id}/timeline": {
         parameters: {
             query?: never;
@@ -1848,6 +2005,23 @@ export interface paths {
         };
         /** Patient Timeline */
         get: operations["patient_timeline_api_v1_patients__patient_id__timeline_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/tympanograms": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Patient Tympanograms */
+        get: operations["list_patient_tympanograms_api_v1_patients__patient_id__tympanograms_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2343,6 +2517,42 @@ export interface paths {
         patch: operations["patch_site_api_v1_sites__site_id__patch"];
         trace?: never;
     };
+    "/api/v1/speech-audiometry": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Speech Audiometry */
+        get: operations["list_speech_audiometry_api_v1_speech_audiometry_get"];
+        put?: never;
+        /** Create Speech Audiometry */
+        post: operations["create_speech_audiometry_api_v1_speech_audiometry_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/speech-audiometry/{speech_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Speech Audiometry */
+        get: operations["get_speech_audiometry_api_v1_speech_audiometry__speech_id__get"];
+        /** Update Speech Audiometry */
+        put: operations["update_speech_audiometry_api_v1_speech_audiometry__speech_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/terminology/admin/concepts": {
         parameters: {
             query?: never;
@@ -2517,6 +2727,59 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tympanograms": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Tympanograms */
+        get: operations["list_tympanograms_api_v1_tympanograms_get"];
+        put?: never;
+        /** Create Tympanogram */
+        post: operations["create_tympanogram_api_v1_tympanograms_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tympanograms/{tympanogram_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Tympanogram */
+        get: operations["get_tympanogram_api_v1_tympanograms__tympanogram_id__get"];
+        /** Update Tympanogram */
+        put: operations["update_tympanogram_api_v1_tympanograms__tympanogram_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tympanograms/{tympanogram_id}/interpret": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Interpret Tympanogram */
+        post: operations["interpret_tympanogram_api_v1_tympanograms__tympanogram_id__interpret_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/users": {
         parameters: {
             query?: never;
@@ -2624,10 +2887,196 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AbrInterpret */
+        AbrInterpret: {
+            /** Interpretationtext */
+            interpretationText?: string | null;
+            /** Version */
+            version: number;
+        };
+        /** AbrResultCreate */
+        AbrResultCreate: {
+            /** Assrthresholds */
+            assrThresholds?: components["schemas"]["AssrThresholdInput"][] | null;
+            /** Contralateralwavevms */
+            contralateralWaveVMs?: number | string | null;
+            /**
+             * Ear
+             * @enum {string}
+             */
+            ear: "right" | "left";
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Intensitydb */
+            intensityDb?: number | null;
+            /** Morphology */
+            morphology?: ("normal" | "poor" | "absent" | "reproducible") | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Performedat */
+            performedAt?: string | null;
+            /** Performedbypublicid */
+            performedByPublicId?: string | null;
+            /**
+             * Stimulus
+             * @enum {string}
+             */
+            stimulus: "click" | "tone_burst" | "assr";
+            /** Stimulusfrequencyhz */
+            stimulusFrequencyHz?: number | null;
+            /** Thresholddb */
+            thresholdDb?: number | null;
+            /** Waveims */
+            waveIMs?: number | string | null;
+            /** Waveiiims */
+            waveIiiMs?: number | string | null;
+            /** Wavevms */
+            waveVMs?: number | string | null;
+        };
+        /** AbrResultRead */
+        AbrResultRead: {
+            /** Assrthresholds */
+            assrThresholds: Record<string, never>[] | null;
+            /**
+             * Ear
+             * @enum {string}
+             */
+            ear: "right" | "left";
+            /** Encounterpublicid */
+            encounterPublicId: string | null;
+            /** Engineversion */
+            engineVersion: string | null;
+            /** Iiiims */
+            iIiiMs: number | null;
+            /** Ivms */
+            iVMs: number | null;
+            /** Iiivms */
+            iiiVMs: number | null;
+            /** Intensitydb */
+            intensityDb: number | null;
+            /** Interauralvdiffms */
+            interauralVDiffMs: number | null;
+            /** Interauralvflag */
+            interauralVFlag: boolean;
+            /** Interpretationtext */
+            interpretationText: string | null;
+            /** Morphology */
+            morphology: ("normal" | "poor" | "absent" | "reproducible") | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Performedbypublicid */
+            performedByPublicId: string;
+            /** Publicid */
+            publicId: string;
+            /**
+             * Stimulus
+             * @enum {string}
+             */
+            stimulus: "click" | "tone_burst" | "assr";
+            /** Stimulusfrequencyhz */
+            stimulusFrequencyHz: number | null;
+            /** Thresholddb */
+            thresholdDb: number | null;
+            /** Version */
+            version: number;
+            /** Waveims */
+            waveIMs: number | null;
+            /** Waveiiims */
+            waveIiiMs: number | null;
+            /** Wavevms */
+            waveVMs: number | null;
+        };
+        /** AbrResultUpdate */
+        AbrResultUpdate: {
+            /** Assrthresholds */
+            assrThresholds?: components["schemas"]["AssrThresholdInput"][] | null;
+            /** Contralateralwavevms */
+            contralateralWaveVMs?: number | string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Intensitydb */
+            intensityDb?: number | null;
+            /** Morphology */
+            morphology?: ("normal" | "poor" | "absent" | "reproducible") | null;
+            /** Performedat */
+            performedAt?: string | null;
+            /** Performedbypublicid */
+            performedByPublicId?: string | null;
+            /** Stimulus */
+            stimulus?: ("click" | "tone_burst" | "assr") | null;
+            /** Stimulusfrequencyhz */
+            stimulusFrequencyHz?: number | null;
+            /** Thresholddb */
+            thresholdDb?: number | null;
+            /** Version */
+            version: number;
+            /** Waveims */
+            waveIMs?: number | string | null;
+            /** Waveiiims */
+            waveIiiMs?: number | string | null;
+            /** Wavevms */
+            waveVMs?: number | string | null;
+        };
+        /** AcousticReflexInput */
+        AcousticReflexInput: {
+            /** Frequencyhz */
+            frequencyHz: number;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "ipsi" | "contra";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "present" | "absent" | "elevated" | "not_tested";
+            /**
+             * Stimulusear
+             * @enum {string}
+             */
+            stimulusEar: "right" | "left";
+            /** Thresholddb */
+            thresholdDb?: number | null;
+        };
+        /** AcousticReflexRead */
+        AcousticReflexRead: {
+            /** Frequencyhz */
+            frequencyHz: number;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "ipsi" | "contra";
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "present" | "absent" | "elevated" | "not_tested";
+            /**
+             * Stimulusear
+             * @enum {string}
+             */
+            stimulusEar: "right" | "left";
+            /** Thresholddb */
+            thresholdDb: number | null;
+        };
         /** ActiveClinicRequest */
         ActiveClinicRequest: {
             /** Clinicpublicid */
             clinicPublicId: string;
+        };
+        /** AdditionalWrsPoint */
+        AdditionalWrsPoint: {
+            /** Leveldb */
+            levelDb: number;
+            /** Wrspercent */
+            wrsPercent: number;
         };
         /** AgeCapWrite */
         AgeCapWrite: {
@@ -2799,6 +3248,13 @@ export interface components {
             userId?: string | null;
             /** Version */
             version: number;
+        };
+        /** AssrThresholdInput */
+        AssrThresholdInput: {
+            /** Frequencyhz */
+            frequencyHz: number;
+            /** Thresholddb */
+            thresholdDb: number;
         };
         /**
          * AttachmentConfirmRequest
@@ -5090,6 +5546,122 @@ export interface components {
              */
             subtype: "nasal_fracture_reduction";
         };
+        /** OaeBandInput */
+        OaeBandInput: {
+            /** Frequencyhz */
+            frequencyHz: number;
+            /** Snrdb */
+            snrDb?: number | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "present" | "absent" | "partial";
+        };
+        /** OaeBandRead */
+        OaeBandRead: {
+            /** Frequencyhz */
+            frequencyHz: number;
+            /** Snrdb */
+            snrDb: number | null;
+            /** Status */
+            status: string;
+        };
+        /** OaeInterpret */
+        OaeInterpret: {
+            /** Interpretationtext */
+            interpretationText?: string | null;
+            /** Version */
+            version: number;
+        };
+        /** OaeResultCreate */
+        OaeResultCreate: {
+            /** Bands */
+            bands: components["schemas"]["OaeBandInput"][];
+            /**
+             * Ear
+             * @enum {string}
+             */
+            ear: "right" | "left";
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /**
+             * Oaetype
+             * @enum {string}
+             */
+            oaeType: "teoae" | "dpoae";
+            /**
+             * Overallresult
+             * @enum {string}
+             */
+            overallResult: "pass" | "refer" | "partial" | "not_testable";
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Performedat */
+            performedAt?: string | null;
+            /** Performedbypublicid */
+            performedByPublicId?: string | null;
+            /** Screeningstage */
+            screeningStage?: ("first" | "second" | "diagnostic") | null;
+        };
+        /** OaeResultRead */
+        OaeResultRead: {
+            /** Bands */
+            bands: components["schemas"]["OaeBandRead"][];
+            /**
+             * Ear
+             * @enum {string}
+             */
+            ear: "right" | "left";
+            /** Encounterpublicid */
+            encounterPublicId: string | null;
+            /** Interpretationtext */
+            interpretationText: string | null;
+            /**
+             * Oaetype
+             * @enum {string}
+             */
+            oaeType: "teoae" | "dpoae";
+            /**
+             * Overallresult
+             * @enum {string}
+             */
+            overallResult: "pass" | "refer" | "partial" | "not_testable";
+            /** Patientpublicid */
+            patientPublicId: string;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Performedbypublicid */
+            performedByPublicId: string;
+            /** Publicid */
+            publicId: string;
+            /** Screeningstage */
+            screeningStage: ("first" | "second" | "diagnostic") | null;
+            /** Version */
+            version: number;
+        };
+        /** OaeResultUpdate */
+        OaeResultUpdate: {
+            /** Bands */
+            bands?: components["schemas"]["OaeBandInput"][] | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Oaetype */
+            oaeType?: ("teoae" | "dpoae") | null;
+            /** Overallresult */
+            overallResult?: ("pass" | "refer" | "partial" | "not_testable") | null;
+            /** Performedat */
+            performedAt?: string | null;
+            /** Performedbypublicid */
+            performedByPublicId?: string | null;
+            /** Screeningstage */
+            screeningStage?: ("first" | "second" | "diagnostic") | null;
+            /** Version */
+            version: number;
+        };
         /** ObservationBatchCreate */
         ObservationBatchCreate: {
             /** Encounterpublicid */
@@ -5585,6 +6157,12 @@ export interface components {
             /** Total */
             total?: number | null;
         };
+        /** PageSchema[AbrResultRead] */
+        PageSchema_AbrResultRead_: {
+            /** Items */
+            items: components["schemas"]["AbrResultRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
         /** PageSchema[AppointmentRead] */
         PageSchema_AppointmentRead_: {
             /** Items */
@@ -5673,6 +6251,12 @@ export interface components {
         PageSchema_LaryngoscopyExamRead_: {
             /** Items */
             items: components["schemas"]["LaryngoscopyExamRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[OaeResultRead] */
+        PageSchema_OaeResultRead_: {
+            /** Items */
+            items: components["schemas"]["OaeResultRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[ObservationRead] */
@@ -5777,10 +6361,22 @@ export interface components {
             items: components["schemas"]["SiteRead"][];
             page: components["schemas"]["PageMeta"];
         };
+        /** PageSchema[SpeechAudiometryRead] */
+        PageSchema_SpeechAudiometryRead_: {
+            /** Items */
+            items: components["schemas"]["SpeechAudiometryRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
         /** PageSchema[TranslationCoverageItem] */
         PageSchema_TranslationCoverageItem_: {
             /** Items */
             items: components["schemas"]["TranslationCoverageItem"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[TympanometryRead] */
+        PageSchema_TympanometryRead_: {
+            /** Items */
+            items: components["schemas"]["TympanometryRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[UserRead] */
@@ -7466,6 +8062,142 @@ export interface components {
             /** Postalcode */
             postalCode?: string | null;
         };
+        /** SpeechAudiometryCreate */
+        SpeechAudiometryCreate: {
+            /** Additionalwrspoints */
+            additionalWrsPoints?: components["schemas"]["AdditionalWrsPoint"][] | null;
+            /** Audiogrampublicid */
+            audiogramPublicId?: string | null;
+            /**
+             * Ear
+             * @enum {string}
+             */
+            ear: "right" | "left";
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Listlocale */
+            listLocale?: string | null;
+            /** Mcldb */
+            mclDb?: number | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Performedat */
+            performedAt?: string | null;
+            /** Performedbypublicid */
+            performedByPublicId?: string | null;
+            /** Rollover */
+            rollover?: boolean | null;
+            /** Sdtdb */
+            sdtDb?: number | null;
+            /** Sinscorepercent */
+            sinScorePercent?: number | null;
+            /** Sinsnrdb */
+            sinSnrDb?: number | string | null;
+            /** Sintest */
+            sinTest?: string | null;
+            /** Srtdb */
+            srtDb?: number | null;
+            /** Ucldb */
+            uclDb?: number | null;
+            /** Wordlist */
+            wordList?: string | null;
+            /** Wrsleveldb */
+            wrsLevelDb?: number | null;
+            /** Wrspercent */
+            wrsPercent?: number | null;
+        };
+        /** SpeechAudiometryRead */
+        SpeechAudiometryRead: {
+            /** Additionalwrspoints */
+            additionalWrsPoints: Record<string, never>[] | null;
+            /** Audiogrampublicid */
+            audiogramPublicId: string | null;
+            /**
+             * Ear
+             * @enum {string}
+             */
+            ear: "right" | "left";
+            /** Encounterpublicid */
+            encounterPublicId: string | null;
+            /** Listlocale */
+            listLocale: string | null;
+            /** Mcldb */
+            mclDb: number | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Performedbypublicid */
+            performedByPublicId: string;
+            /** Publicid */
+            publicId: string;
+            /** Rollover */
+            rollover: boolean | null;
+            /** Sdtdb */
+            sdtDb: number | null;
+            /** Sinscorepercent */
+            sinScorePercent: number | null;
+            /** Sinsnrdb */
+            sinSnrDb: number | null;
+            /** Sintest */
+            sinTest: string | null;
+            /** Speechptadiscrepancyflag */
+            speechPtaDiscrepancyFlag: boolean;
+            /** Srtdb */
+            srtDb: number | null;
+            /** Ucldb */
+            uclDb: number | null;
+            /** Version */
+            version: number;
+            /** Wordlist */
+            wordList: string | null;
+            /** Wrsleveldb */
+            wrsLevelDb: number | null;
+            /** Wrspercent */
+            wrsPercent: number | null;
+        };
+        /** SpeechAudiometryUpdate */
+        SpeechAudiometryUpdate: {
+            /** Additionalwrspoints */
+            additionalWrsPoints?: components["schemas"]["AdditionalWrsPoint"][] | null;
+            /** Audiogrampublicid */
+            audiogramPublicId?: string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Listlocale */
+            listLocale?: string | null;
+            /** Mcldb */
+            mclDb?: number | null;
+            /** Performedat */
+            performedAt?: string | null;
+            /** Performedbypublicid */
+            performedByPublicId?: string | null;
+            /** Rollover */
+            rollover?: boolean | null;
+            /** Sdtdb */
+            sdtDb?: number | null;
+            /** Sinscorepercent */
+            sinScorePercent?: number | null;
+            /** Sinsnrdb */
+            sinSnrDb?: number | string | null;
+            /** Sintest */
+            sinTest?: string | null;
+            /** Srtdb */
+            srtDb?: number | null;
+            /** Ucldb */
+            uclDb?: number | null;
+            /** Version */
+            version: number;
+            /** Wordlist */
+            wordList?: string | null;
+            /** Wrsleveldb */
+            wrsLevelDb?: number | null;
+            /** Wrspercent */
+            wrsPercent?: number | null;
+        };
         /** StroboscopyWrite */
         StroboscopyWrite: {
             /**
@@ -7627,6 +8359,130 @@ export interface components {
              * @enum {string}
              */
             subtype: "tube_removal";
+        };
+        /** TympanometryCreate */
+        TympanometryCreate: {
+            /** Complianceml */
+            complianceMl?: number | string | null;
+            /**
+             * Ear
+             * @enum {string}
+             */
+            ear: "right" | "left";
+            /** Ecvml */
+            ecvMl?: number | string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Etfresult */
+            etfResult?: ("intact" | "impaired" | "patulous" | "not_performed") | null;
+            /** Gradientdapa */
+            gradientDapa?: number | null;
+            /** Jergertypeoverride */
+            jergerTypeOverride?: ("A" | "As" | "Ad" | "B" | "C") | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Peakpressuredapa */
+            peakPressureDapa?: number | null;
+            /** Performedat */
+            performedAt?: string | null;
+            /** Performedbypublicid */
+            performedByPublicId?: string | null;
+            /**
+             * Probetonehz
+             * @default 226
+             */
+            probeToneHz: number;
+            /** Reflexes */
+            reflexes?: components["schemas"]["AcousticReflexInput"][];
+        };
+        /** TympanometryInterpret */
+        TympanometryInterpret: {
+            /** Interpretationtext */
+            interpretationText?: string | null;
+            /** Jergertype */
+            jergerType?: ("A" | "As" | "Ad" | "B" | "C") | null;
+            /** Version */
+            version: number;
+        };
+        /** TympanometryRead */
+        TympanometryRead: {
+            /** Complianceml */
+            complianceMl: number | null;
+            /**
+             * Ear
+             * @enum {string}
+             */
+            ear: "right" | "left";
+            /** Ecvml */
+            ecvMl: number | null;
+            /** Encounterpublicid */
+            encounterPublicId: string | null;
+            /** Engineversion */
+            engineVersion: string | null;
+            /** Etfresult */
+            etfResult: ("intact" | "impaired" | "patulous" | "not_performed") | null;
+            /** Gradientdapa */
+            gradientDapa: number | null;
+            /** Interpretationtext */
+            interpretationText: string | null;
+            /** Jergertype */
+            jergerType: ("A" | "As" | "Ad" | "B" | "C") | null;
+            /** Jergertypeisoverridden */
+            jergerTypeIsOverridden: boolean;
+            /** Largecanalvolumeflag */
+            largeCanalVolumeFlag: boolean;
+            /** Overriddenat */
+            overriddenAt: string | null;
+            /** Overriddenbypublicid */
+            overriddenByPublicId: string | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Peakpressuredapa */
+            peakPressureDapa: number | null;
+            /**
+             * Performedat
+             * Format: date-time
+             */
+            performedAt: string;
+            /** Performedbypublicid */
+            performedByPublicId: string;
+            /** Probetonehz */
+            probeToneHz: number;
+            /** Publicid */
+            publicId: string;
+            /** Reflexes */
+            reflexes: components["schemas"]["AcousticReflexRead"][];
+            /** Suggestedjergertype */
+            suggestedJergerType: ("A" | "As" | "Ad" | "B" | "C") | null;
+            /** Version */
+            version: number;
+        };
+        /** TympanometryUpdate */
+        TympanometryUpdate: {
+            /** Complianceml */
+            complianceMl?: number | string | null;
+            /** Ecvml */
+            ecvMl?: number | string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /** Etfresult */
+            etfResult?: ("intact" | "impaired" | "patulous" | "not_performed") | null;
+            /** Gradientdapa */
+            gradientDapa?: number | null;
+            /** Jergertypeoverride */
+            jergerTypeOverride?: ("A" | "As" | "Ad" | "B" | "C") | null;
+            /** Peakpressuredapa */
+            peakPressureDapa?: number | null;
+            /** Performedat */
+            performedAt?: string | null;
+            /** Performedbypublicid */
+            performedByPublicId?: string | null;
+            /** Probetonehz */
+            probeToneHz?: number | null;
+            /** Reflexes */
+            reflexes?: components["schemas"]["AcousticReflexInput"][] | null;
+            /** Version */
+            version: number;
         };
         /** UserRead */
         UserRead: {
@@ -7883,6 +8739,185 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    list_abr_results_api_v1_abr_results_get: {
+        parameters: {
+            query?: {
+                patient_id?: string | null;
+                encounter_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_AbrResultRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_abr_result_api_v1_abr_results_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Idempotency-Key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AbrResultCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AbrResultRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_abr_result_api_v1_abr_results__abr_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                abr_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AbrResultRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_abr_result_api_v1_abr_results__abr_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                abr_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AbrResultUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AbrResultRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    interpret_abr_result_api_v1_abr_results__abr_id__interpret_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                abr_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AbrInterpret"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AbrResultRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_appointment_types_api_v1_appointment_types_get: {
         parameters: {
             query?: {
@@ -10773,6 +11808,185 @@ export interface operations {
             };
         };
     };
+    list_oae_results_api_v1_oae_results_get: {
+        parameters: {
+            query?: {
+                patient_id?: string | null;
+                encounter_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_OaeResultRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_oae_result_api_v1_oae_results_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Idempotency-Key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OaeResultCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OaeResultRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_oae_result_api_v1_oae_results__oae_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                oae_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OaeResultRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_oae_result_api_v1_oae_results__oae_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                oae_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OaeResultUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OaeResultRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    interpret_oae_result_api_v1_oae_results__oae_id__interpret_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                oae_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OaeInterpret"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OaeResultRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     observation_cohort_api_v1_observations_cohort_get: {
         parameters: {
             query: {
@@ -11456,6 +12670,42 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PatientRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_patient_abr_results_api_v1_patients__patient_id__abr_results_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_AbrResultRead_"];
                 };
             };
             /** @description Validation Error */
@@ -12227,6 +13477,42 @@ export interface operations {
             };
         };
     };
+    list_patient_oae_results_api_v1_patients__patient_id__oae_results_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_OaeResultRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_patient_office_procedures_api_v1_patients__patient_id__office_procedures_get: {
         parameters: {
             query?: {
@@ -12631,6 +13917,42 @@ export interface operations {
             };
         };
     };
+    list_patient_speech_audiometry_api_v1_patients__patient_id__speech_audiometry_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_SpeechAudiometryRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     patient_timeline_api_v1_patients__patient_id__timeline_get: {
         parameters: {
             query?: {
@@ -12659,6 +13981,42 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PageSchema_PatientTimelineItemRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_patient_tympanograms_api_v1_patients__patient_id__tympanograms_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_TympanometryRead_"];
                 };
             };
             /** @description Validation Error */
@@ -14036,6 +15394,149 @@ export interface operations {
             };
         };
     };
+    list_speech_audiometry_api_v1_speech_audiometry_get: {
+        parameters: {
+            query?: {
+                patient_id?: string | null;
+                encounter_id?: string | null;
+                audiogram_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_SpeechAudiometryRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_speech_audiometry_api_v1_speech_audiometry_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Idempotency-Key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SpeechAudiometryCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SpeechAudiometryRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_speech_audiometry_api_v1_speech_audiometry__speech_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                speech_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SpeechAudiometryRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_speech_audiometry_api_v1_speech_audiometry__speech_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                speech_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SpeechAudiometryUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SpeechAudiometryRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_admin_concepts_api_v1_terminology_admin_concepts_get: {
         parameters: {
             query?: {
@@ -14516,6 +16017,185 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ValueSetRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_tympanograms_api_v1_tympanograms_get: {
+        parameters: {
+            query?: {
+                patient_id?: string | null;
+                encounter_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_TympanometryRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_tympanogram_api_v1_tympanograms_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Idempotency-Key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TympanometryCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TympanometryRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_tympanogram_api_v1_tympanograms__tympanogram_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                tympanogram_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TympanometryRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_tympanogram_api_v1_tympanograms__tympanogram_id__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                tympanogram_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TympanometryUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TympanometryRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    interpret_tympanogram_api_v1_tympanograms__tympanogram_id__interpret_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                tympanogram_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TympanometryInterpret"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TympanometryRead"];
                 };
             };
             /** @description Validation Error */

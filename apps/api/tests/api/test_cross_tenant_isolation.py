@@ -15,6 +15,12 @@ from ent.core.utils.ids import new_ulid
 from ent.engines.patients.name_normalize import build_name_normalized
 from ent.features.attachments.models import Attachment
 from ent.features.audiology.models import Audiogram, AudiogramThreshold
+from ent.features.audiology.test_records import (
+    AbrResult,
+    OaeResult,
+    SpeechAudiometry,
+    Tympanometry,
+)
 from ent.features.clinics.models import Clinic, Site
 from ent.features.documents.models import (
     Document,
@@ -457,6 +463,68 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
         )
         await session.flush()
 
+        speech_public_id = new_ulid()
+        tymp_public_id = new_ulid()
+        oae_public_id = new_ulid()
+        abr_public_id = new_ulid()
+        session.add(
+            SpeechAudiometry(
+                public_id=speech_public_id,
+                clinic_id=other.id,
+                patient_id=int(patient.id),
+                audiogram_id=int(audiogram_row.id),
+                performed_at=datetime(2026, 6, 15, 11, 30, 0),
+                performed_by_id=other_user.id,
+                ear="right",
+                srt_db=30,
+                created_by_id=other_user.id,
+                updated_by_id=other_user.id,
+            )
+        )
+        session.add(
+            Tympanometry(
+                public_id=tymp_public_id,
+                clinic_id=other.id,
+                patient_id=int(patient.id),
+                performed_at=datetime(2026, 6, 15, 11, 45, 0),
+                performed_by_id=other_user.id,
+                ear="right",
+                suggested_jerger_type="A",
+                jerger_type="A",
+                created_by_id=other_user.id,
+                updated_by_id=other_user.id,
+            )
+        )
+        session.add(
+            OaeResult(
+                public_id=oae_public_id,
+                clinic_id=other.id,
+                patient_id=int(patient.id),
+                performed_at=datetime(2026, 6, 15, 12, 0, 0),
+                performed_by_id=other_user.id,
+                ear="right",
+                oae_type="teoae",
+                overall_result="pass",
+                bands=[{"frequencyHz": 1000, "status": "present"}],
+                created_by_id=other_user.id,
+                updated_by_id=other_user.id,
+            )
+        )
+        session.add(
+            AbrResult(
+                public_id=abr_public_id,
+                clinic_id=other.id,
+                patient_id=int(patient.id),
+                performed_at=datetime(2026, 6, 15, 12, 15, 0),
+                performed_by_id=other_user.id,
+                ear="right",
+                stimulus="click",
+                wave_v_ms=5.5,
+                created_by_id=other_user.id,
+                updated_by_id=other_user.id,
+            )
+        )
+
         ids = {
             "patient_id": patient.public_id,
             "site_id": site.public_id,
@@ -488,6 +556,10 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "device_id": device_public_id,
             "office_procedure_id": office_public_id,
             "audiogram_id": audiogram_public_id,
+            "speech_id": speech_public_id,
+            "tympanogram_id": tymp_public_id,
+            "oae_id": oae_public_id,
+            "abr_id": abr_public_id,
         }
         forbidden = [
             patient.public_id,
@@ -513,6 +585,10 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             device_public_id,
             office_public_id,
             audiogram_public_id,
+            speech_public_id,
+            tymp_public_id,
+            oae_public_id,
+            abr_public_id,
             "secret office",
             "secret recall",
             "secret procedure",

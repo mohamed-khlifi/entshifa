@@ -38,3 +38,21 @@ AUDIOGRAM_STATUSES = ("draft", "final")
 PTA_FORMULAS = ("3freq", "4freq_who", "high_freq", "fletcher")
 MIN_LEVEL_DB = -10
 MAX_LEVEL_DB = 130
+
+PROBE_TONE_HZ = (226, 1000)
+JERGER_TYPES = ("A", "As", "Ad", "B", "C")
+ETF_RESULTS = ("intact", "impaired", "patulous", "not_performed")
+ACOUSTIC_REFLEX_FREQUENCIES_HZ = (500, 1000, 2000, 4000)
+ACOUSTIC_REFLEX_MODES = ("ipsi", "contra")
+ACOUSTIC_REFLEX_STATUSES = ("present", "absent", "elevated", "not_tested")
+OAE_TYPES = ("teoae", "dpoae")
+OAE_OVERALL_RESULTS = ("pass", "refer", "partial", "not_testable")
+OAE_SCREENING_STAGES = ("first", "second", "diagnostic")
+OAE_BAND_STATUSES = ("present", "absent", "partial")
+ABR_STIMULI = ("click", "tone_burst", "assr")
+ABR_MORPHOLOGIES = ("normal", "poor", "absent", "reproducible")
+
+SPEECH_RESOURCE_CREATE = "speech_audiometry.create"
+TYMPANOMETRY_RESOURCE_CREATE = "tympanometry.create"
+OAE_RESOURCE_CREATE = "oae_result.create"
+ABR_RESOURCE_CREATE = "abr_result.create"

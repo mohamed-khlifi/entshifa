@@ -16,6 +16,7 @@ from ent.core.schemas.base import PageSchema, PaginationParams
 from ent.core.security.principal import CurrentUser
 from ent.core.utils.ids import new_ulid
 from ent.engines.audiology.types import AsymmetryRule, PtaFormula, ShiftRule
+from ent.features.audiology.calc_settings import resolve_calc_settings
 from ent.features.audiology.events import (
     _CREATE_RESOURCE,
     audiogram_baseline_changed_event,
@@ -50,12 +51,6 @@ from ent.features.audiology.scoring import (
     compute_metrics,
     metric_rows_for_audiogram,
     threshold_points_from_rows,
-)
-from ent.features.clinics.resolver import SettingResolver
-from ent.features.clinics.setting_keys import (
-    AsymmetryRuleValue,
-    ClinicalSettingKey,
-    ShiftRuleValue,
 )
 from ent.features.encounters.repository import EncounterRepository
 from ent.features.procedures.mapping import blank_to_none, to_utc_naive
@@ -149,10 +144,10 @@ class AudiologyService:
             patient_id=int(row.patient_id),
         )
         await self._session.commit()
-        row = await self._audiograms(user).get_detail(public_id)
-        if row is None:
+        loaded = await self._audiograms(user).get_detail(public_id)
+        if loaded is None:
             raise AudiogramNotFoundError(public_id=public_id)
-        return audiogram_read(row)
+        return audiogram_read(loaded)
 
     async def list_audiograms(
         self,
@@ -354,7 +349,9 @@ class AudiologyService:
     ) -> None:
         if not row.thresholds:
             return
-        pta_formula, asymmetry_rule, shift_rule = await self._calc_settings(user)
+        pta_formula, asymmetry_rule, shift_rule = await resolve_calc_settings(
+            self._session, user
+        )
         baseline_points = None
         if row.baseline_audiogram_id is not None:
             loaded = await self._audiograms(user).get_detail(row.public_id)
@@ -389,37 +386,7 @@ class AudiologyService:
     async def _calc_settings(
         self, user: CurrentUser
     ) -> tuple[PtaFormula, AsymmetryRule, ShiftRule]:
-        resolver = SettingResolver(self._session)
-        pta_resolved = await resolver.resolve(
-            key=ClinicalSettingKey.PTA_FORMULA.value,
-            clinic_id=user.clinic_id,
-            user_id=user.user_id,
-        )
-        asym_resolved = await resolver.resolve(
-            key=ClinicalSettingKey.ASYMMETRY_RULE.value,
-            clinic_id=user.clinic_id,
-            user_id=user.user_id,
-        )
-        shift_resolved = await resolver.resolve(
-            key=ClinicalSettingKey.SHIFT_RULE.value,
-            clinic_id=user.clinic_id,
-            user_id=user.user_id,
-        )
-        pta = pta_resolved.value
-        if not isinstance(pta, str):
-            raise ValidationError(reason="invalid_pta_formula")
-        asym = AsymmetryRuleValue.model_validate(asym_resolved.value)
-        shift = ShiftRuleValue.model_validate(shift_resolved.value)
-        return (
-            pta,  # type: ignore[return-value]
-            AsymmetryRule(
-                adjacent_db=asym.adjacent_db,
-                adjacent_count=asym.adjacent_count,
-                single_db=asym.single_db,
-                wrs_percent=asym.wrs_percent,
-            ),
-            shift.rule,
-        )
+        return await resolve_calc_settings(self._session, user)
 
     async def _set_baseline(
         self,

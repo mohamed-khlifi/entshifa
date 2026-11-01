@@ -112,6 +112,10 @@
     "incomplete_thresholds": "أضف عتبة واحدة على الأقل قبل الإنهاء.",
     "invalid_threshold": "عتبة خارج النطاق أو على تردد غير مسموح.",
     "not_found": "لم يتم العثور على هذا السمعي.",
+    "oae_not_found": "لم يتم العثور على نتيجة انبعاثات الصوت.",
+    "speech_not_found": "لم يتم العثور على سجل audiometrie vocale.",
+    "tympanometry_not_found": "لم يتم العثور على tympanométrie.",
+    "abr_not_found": "لم يتم العثور على نتيجة ABR.",
     "version_conflict": "عدّل شخص آخر هذا السمعي. أعد التحميل ثم حاول مجدداً."
   }
 }

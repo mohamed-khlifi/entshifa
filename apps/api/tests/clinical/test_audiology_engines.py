@@ -154,3 +154,65 @@ def test_registry_lists_audiology_pta() -> None:
     codes = {item.code for item in registered_calculators()}
     assert "audiology.pta" in codes
     assert "audiology.who_grade" in codes
+    assert "audiology.jerger_tympanogram" in codes
+    assert "audiology.abr_latencies" in codes
+
+
+@pytest.mark.clinical
+def test_jerger_type_a_normal_compliance() -> None:
+    """Jerger type A: compliance within 0.3–1.6 mL (feature spec §8.3)."""
+    from decimal import Decimal
+
+    from ent.engines.audiology.tympanometry import (
+        TympanogramInput,
+        classify_tympanogram,
+    )
+
+    result = classify_tympanogram(
+        TympanogramInput(
+            ecv_ml=Decimal("1.0"),
+            peak_pressure_dapa=0,
+            compliance_ml=Decimal("0.8"),
+        )
+    )
+    assert result.suggested_jerger_type == "A"
+
+
+@pytest.mark.clinical
+def test_jerger_type_b_large_ecv_flags_perforation() -> None:
+    from decimal import Decimal
+
+    from ent.engines.audiology.tympanometry import (
+        TympanogramInput,
+        classify_tympanogram,
+    )
+
+    result = classify_tympanogram(
+        TympanogramInput(
+            ecv_ml=Decimal("2.5"),
+            peak_pressure_dapa=0,
+            compliance_ml=Decimal("0.1"),
+        )
+    )
+    assert result.suggested_jerger_type == "B"
+    assert result.large_canal_volume_flag is True
+
+
+@pytest.mark.clinical
+def test_abr_interaural_wave_v_flag_above_threshold() -> None:
+    from decimal import Decimal
+
+    from ent.engines.audiology.abr import AbrWaveInput, compute_abr_metrics
+
+    metrics = compute_abr_metrics(
+        AbrWaveInput(
+            wave_i_ms=Decimal("1.50"),
+            wave_iii_ms=Decimal("3.80"),
+            wave_v_ms=Decimal("5.90"),
+        ),
+        contralateral_wave_v_ms=Decimal("5.50"),
+        threshold_ms=Decimal("0.30"),
+    )
+    assert metrics.i_iii_ms == Decimal("2.30")
+    assert metrics.interaural_v_diff_ms == Decimal("0.40")
+    assert metrics.interaural_v_flag is True

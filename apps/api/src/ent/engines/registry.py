@@ -4,6 +4,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from ent.engines.audiology.abr import CODE as ABR_CODE
+from ent.engines.audiology.abr import FORMULA as ABR_FORMULA
+from ent.engines.audiology.abr import REFERENCE as ABR_REFERENCE
+from ent.engines.audiology.abr import VERSION as ABR_VERSION
 from ent.engines.audiology.air_bone_gap import CODE as ABG_CODE
 from ent.engines.audiology.air_bone_gap import FORMULA as ABG_FORMULA
 from ent.engines.audiology.air_bone_gap import REFERENCE as ABG_REFERENCE
@@ -36,6 +40,10 @@ from ent.engines.audiology.threshold_shift import CODE as SHIFT_CODE
 from ent.engines.audiology.threshold_shift import FORMULA as SHIFT_FORMULA
 from ent.engines.audiology.threshold_shift import REFERENCE as SHIFT_REFERENCE
 from ent.engines.audiology.threshold_shift import VERSION as SHIFT_VERSION
+from ent.engines.audiology.tympanometry import CODE as TYMP_CODE
+from ent.engines.audiology.tympanometry import FORMULA as TYMP_FORMULA
+from ent.engines.audiology.tympanometry import REFERENCE as TYMP_REFERENCE
+from ent.engines.audiology.tympanometry import VERSION as TYMP_VERSION
 from ent.engines.audiology.who_grading import CODE as WHO_CODE
 from ent.engines.audiology.who_grading import FORMULA as WHO_FORMULA
 from ent.engines.audiology.who_grading import REFERENCE as WHO_REFERENCE
@@ -243,5 +251,19 @@ def registered_calculators() -> tuple[CalculatorSpec, ...]:
             reference=SPEECH_REFERENCE,
             unit=None,
             formula=SPEECH_FORMULA,
+        ),
+        CalculatorSpec(
+            code=TYMP_CODE,
+            version=TYMP_VERSION,
+            reference=TYMP_REFERENCE,
+            unit=None,
+            formula=TYMP_FORMULA,
+        ),
+        CalculatorSpec(
+            code=ABR_CODE,
+            version=ABR_VERSION,
+            reference=ABR_REFERENCE,
+            unit="ms",
+            formula=ABR_FORMULA,
         ),
     )

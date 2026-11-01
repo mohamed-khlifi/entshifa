@@ -9,6 +9,10 @@ from ent.core.db.base import Base
 from ent.core.db.mixins import ClinicalRecordMixin
 from ent.core.db.models_registry import ReferenceDataVersion as _registered
 from ent.features.attachments.service import AttachmentService
+from ent.features.audiology.evoked_service import AbrResultService, OaeResultService
+from ent.features.audiology.service import AudiologyService
+from ent.features.audiology.speech_service import SpeechAudiometryService
+from ent.features.audiology.tympanometry_service import TympanometryService
 from ent.features.documents.service import DocumentService
 from ent.features.documents.templates.service import DocumentTemplateService
 from ent.features.encounters.service import EncounterService
@@ -53,6 +57,11 @@ def test_clinical_read_methods_record_access() -> None:
         (RecallService, ("list_", "get_")),
         (ProcedureRecordService, ("list_", "get_")),
         (EndoscopyService, ("list_", "get_")),
+        (AudiologyService, ("list_", "get_")),
+        (SpeechAudiometryService, ("list_", "get_")),
+        (TympanometryService, ("list_", "get_")),
+        (OaeResultService, ("list_", "get_")),
+        (AbrResultService, ("list_", "get_")),
     )
     missing: list[str] = []
     for cls, prefixes in expectations:

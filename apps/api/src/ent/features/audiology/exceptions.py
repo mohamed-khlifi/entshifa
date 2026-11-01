@@ -50,3 +50,43 @@ class AudiogramIncompleteThresholdsError(ConflictError):
 
 class AudiogramIdempotencyMismatchError(ConflictError):
     code = ErrorCode.AUDIOLOGY_IDEMPOTENCY_MISMATCH
+
+
+class SpeechAudiometryNotFoundError(NotFoundError):
+    code = ErrorCode.AUDIOLOGY_SPEECH_NOT_FOUND
+
+    def __init__(self, *, public_id: str | None = None) -> None:
+        if public_id is None:
+            super().__init__(resource="speech_audiometry")
+            return
+        super().__init__(resource="speech_audiometry", publicId=public_id)
+
+
+class TympanometryNotFoundError(NotFoundError):
+    code = ErrorCode.AUDIOLOGY_TYMPANOMETRY_NOT_FOUND
+
+    def __init__(self, *, public_id: str | None = None) -> None:
+        if public_id is None:
+            super().__init__(resource="tympanometry")
+            return
+        super().__init__(resource="tympanometry", publicId=public_id)
+
+
+class OaeResultNotFoundError(NotFoundError):
+    code = ErrorCode.AUDIOLOGY_OAE_NOT_FOUND
+
+    def __init__(self, *, public_id: str | None = None) -> None:
+        if public_id is None:
+            super().__init__(resource="oae_result")
+            return
+        super().__init__(resource="oae_result", publicId=public_id)
+
+
+class AbrResultNotFoundError(NotFoundError):
+    code = ErrorCode.AUDIOLOGY_ABR_NOT_FOUND
+
+    def __init__(self, *, public_id: str | None = None) -> None:
+        if public_id is None:
+            super().__init__(resource="abr_result")
+            return
+        super().__init__(resource="abr_result", publicId=public_id)

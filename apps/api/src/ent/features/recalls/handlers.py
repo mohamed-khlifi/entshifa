@@ -568,3 +568,46 @@ async def handle_audiogram_created(event: DomainEvent) -> None:
                 continue
             recall.status = "done"
         await session.commit()
+
+
+async def handle_tympanometry_created(event: DomainEvent) -> None:
+    """Close open tympanometry-test recalls when a tympanogram is recorded (P4-03)."""
+
+    clinic_id_raw = event.payload.get("clinic_id")
+    patient_public_id = event.payload.get("patient_public_id")
+    if not isinstance(clinic_id_raw, int) or not isinstance(patient_public_id, str):
+        return
+    factory = get_session_factory()
+    async with factory() as session:
+        patient_row = (
+            await session.scalars(
+                select(Patient).where(
+                    Patient.clinic_id == clinic_id_raw,
+                    Patient.public_id == patient_public_id,
+                    Patient.deleted_at.is_(None),
+                )
+            )
+        ).one_or_none()
+        if patient_row is None:
+            return
+        rows = list(
+            (
+                await session.scalars(
+                    select(Recall).where(
+                        Recall.clinic_id == clinic_id_raw,
+                        Recall.patient_id == int(patient_row.id),
+                        Recall.deleted_at.is_(None),
+                        Recall.status.in_(("pending", "booked")),
+                        Recall.action_type == "test",
+                    )
+                )
+            ).all()
+        )
+        for recall in rows:
+            config = (
+                recall.action_config if isinstance(recall.action_config, dict) else {}
+            )
+            if config.get("test") != "tympanometry":
+                continue
+            recall.status = "done"
+        await session.commit()

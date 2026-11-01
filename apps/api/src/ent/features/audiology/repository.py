@@ -36,6 +36,12 @@ class AudiogramRepository(BaseRepository[Audiogram]):
         )
         return result.one_or_none()
 
+    async def get_detail_by_id(self, audiogram_id: int) -> Audiogram | None:
+        result = await self.session.scalars(
+            self._base_query().where(Audiogram.id == audiogram_id).options(*_LOAD)
+        )
+        return result.one_or_none()
+
     async def list_audiograms(
         self,
         page: PaginationParams,

@@ -41,7 +41,7 @@ settings. Every stored result records which one was used.
 
 ---
 
-## - [ ] P4-03 Speech, tympanometry, reflexes, OAE, ABR (backend)
+## - [x] P4-03 Speech, tympanometry, reflexes, OAE, ABR (backend)
 
 The remaining test types from feature spec 8.2 to 8.4. Tympanogram type is
 suggested by the engine and overridable by the doctor, with the override

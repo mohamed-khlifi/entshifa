@@ -44,6 +44,10 @@ TENANT_PATH_PARAMS = frozenset(
         "device_id",
         "office_procedure_id",
         "audiogram_id",
+        "speech_id",
+        "tympanogram_id",
+        "oae_id",
+        "abr_id",
     }
 )
 
@@ -75,6 +79,10 @@ COLLECTION_ROUTES = frozenset(
         ("GET", "/api/v1/recall-protocols"),
         ("GET", "/api/v1/procedures"),
         ("GET", "/api/v1/audiograms"),
+        ("GET", "/api/v1/speech-audiometry"),
+        ("GET", "/api/v1/tympanograms"),
+        ("GET", "/api/v1/oae-results"),
+        ("GET", "/api/v1/abr-results"),
     }
 )
 

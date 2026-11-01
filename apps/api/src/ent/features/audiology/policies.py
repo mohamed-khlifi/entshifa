@@ -22,3 +22,8 @@ def assert_interpret_fields(
         assert_can_interpret(user)
     if is_baseline is True:
         assert_can_interpret(user)
+
+
+def assert_jerger_override(user: CurrentUser, *, jerger_type: str | None) -> None:
+    if jerger_type is not None:
+        assert_can_interpret(user)

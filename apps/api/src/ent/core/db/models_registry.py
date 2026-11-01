@@ -10,6 +10,13 @@ from ent.features.audiology.models import (
     AudiologyMetric,
     AudiologyRequestIdempotency,
 )
+from ent.features.audiology.test_records import (
+    AbrResult,
+    AcousticReflex,
+    OaeResult,
+    SpeechAudiometry,
+    Tympanometry,
+)
 from ent.features.auth.models import Permission, Role, RolePermission
 from ent.features.clinics.models import Clinic, ReferenceDataVersion, Setting, Site
 from ent.features.diagnoses.models import Diagnosis, UserDiagnosisFavorite
@@ -91,6 +98,11 @@ __all__ = [
     "AudiogramThreshold",
     "AudiologyMetric",
     "AudiologyRequestIdempotency",
+    "SpeechAudiometry",
+    "Tympanometry",
+    "AcousticReflex",
+    "OaeResult",
+    "AbrResult",
     "AuditLog",
     "CalculationResultRow",
     "Clinic",

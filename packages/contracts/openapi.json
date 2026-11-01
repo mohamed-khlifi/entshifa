@@ -1,6 +1,779 @@
 {
   "components": {
     "schemas": {
+      "AbrInterpret": {
+        "properties": {
+          "interpretationText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interpretationtext"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "AbrInterpret",
+        "type": "object"
+      },
+      "AbrResultCreate": {
+        "properties": {
+          "assrThresholds": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AssrThresholdInput"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assrthresholds"
+          },
+          "contralateralWaveVMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contralateralwavevms"
+          },
+          "ear": {
+            "enum": [
+              "right",
+              "left"
+            ],
+            "title": "Ear",
+            "type": "string"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "intensityDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Intensitydb"
+          },
+          "morphology": {
+            "anyOf": [
+              {
+                "enum": [
+                  "normal",
+                  "poor",
+                  "absent",
+                  "reproducible"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Morphology"
+          },
+          "patientPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "performedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedat"
+          },
+          "performedByPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedbypublicid"
+          },
+          "stimulus": {
+            "enum": [
+              "click",
+              "tone_burst",
+              "assr"
+            ],
+            "title": "Stimulus",
+            "type": "string"
+          },
+          "stimulusFrequencyHz": {
+            "anyOf": [
+              {
+                "maximum": 4000.0,
+                "minimum": 500.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stimulusfrequencyhz"
+          },
+          "thresholdDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thresholddb"
+          },
+          "waveIMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waveims"
+          },
+          "waveIiiMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waveiiims"
+          },
+          "waveVMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wavevms"
+          }
+        },
+        "required": [
+          "patientPublicId",
+          "ear",
+          "stimulus"
+        ],
+        "title": "AbrResultCreate",
+        "type": "object"
+      },
+      "AbrResultRead": {
+        "properties": {
+          "assrThresholds": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assrthresholds"
+          },
+          "ear": {
+            "enum": [
+              "right",
+              "left"
+            ],
+            "title": "Ear",
+            "type": "string"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "engineVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engineversion"
+          },
+          "iIiiMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Iiiims"
+          },
+          "iVMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ivms"
+          },
+          "iiiVMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Iiivms"
+          },
+          "intensityDb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Intensitydb"
+          },
+          "interauralVDiffMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interauralvdiffms"
+          },
+          "interauralVFlag": {
+            "title": "Interauralvflag",
+            "type": "boolean"
+          },
+          "interpretationText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interpretationtext"
+          },
+          "morphology": {
+            "anyOf": [
+              {
+                "enum": [
+                  "normal",
+                  "poor",
+                  "absent",
+                  "reproducible"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Morphology"
+          },
+          "patientPublicId": {
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "performedAt": {
+            "format": "date-time",
+            "title": "Performedat",
+            "type": "string"
+          },
+          "performedByPublicId": {
+            "title": "Performedbypublicid",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "stimulus": {
+            "enum": [
+              "click",
+              "tone_burst",
+              "assr"
+            ],
+            "title": "Stimulus",
+            "type": "string"
+          },
+          "stimulusFrequencyHz": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stimulusfrequencyhz"
+          },
+          "thresholdDb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thresholddb"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "waveIMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waveims"
+          },
+          "waveIiiMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waveiiims"
+          },
+          "waveVMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wavevms"
+          }
+        },
+        "required": [
+          "publicId",
+          "patientPublicId",
+          "encounterPublicId",
+          "performedAt",
+          "performedByPublicId",
+          "ear",
+          "stimulus",
+          "stimulusFrequencyHz",
+          "thresholdDb",
+          "intensityDb",
+          "waveIMs",
+          "waveIiiMs",
+          "waveVMs",
+          "iIiiMs",
+          "iiiVMs",
+          "iVMs",
+          "interauralVDiffMs",
+          "interauralVFlag",
+          "assrThresholds",
+          "morphology",
+          "engineVersion",
+          "interpretationText",
+          "version"
+        ],
+        "title": "AbrResultRead",
+        "type": "object"
+      },
+      "AbrResultUpdate": {
+        "properties": {
+          "assrThresholds": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AssrThresholdInput"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assrthresholds"
+          },
+          "contralateralWaveVMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contralateralwavevms"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "intensityDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Intensitydb"
+          },
+          "morphology": {
+            "anyOf": [
+              {
+                "enum": [
+                  "normal",
+                  "poor",
+                  "absent",
+                  "reproducible"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Morphology"
+          },
+          "performedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedat"
+          },
+          "performedByPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedbypublicid"
+          },
+          "stimulus": {
+            "anyOf": [
+              {
+                "enum": [
+                  "click",
+                  "tone_burst",
+                  "assr"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stimulus"
+          },
+          "stimulusFrequencyHz": {
+            "anyOf": [
+              {
+                "maximum": 4000.0,
+                "minimum": 500.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stimulusfrequencyhz"
+          },
+          "thresholdDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thresholddb"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          },
+          "waveIMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waveims"
+          },
+          "waveIiiMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Waveiiims"
+          },
+          "waveVMs": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wavevms"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "AbrResultUpdate",
+        "type": "object"
+      },
+      "AcousticReflexInput": {
+        "properties": {
+          "frequencyHz": {
+            "title": "Frequencyhz",
+            "type": "integer"
+          },
+          "mode": {
+            "enum": [
+              "ipsi",
+              "contra"
+            ],
+            "title": "Mode",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "present",
+              "absent",
+              "elevated",
+              "not_tested"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "stimulusEar": {
+            "enum": [
+              "right",
+              "left"
+            ],
+            "title": "Stimulusear",
+            "type": "string"
+          },
+          "thresholdDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": 40.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thresholddb"
+          }
+        },
+        "required": [
+          "stimulusEar",
+          "mode",
+          "frequencyHz",
+          "status"
+        ],
+        "title": "AcousticReflexInput",
+        "type": "object"
+      },
+      "AcousticReflexRead": {
+        "properties": {
+          "frequencyHz": {
+            "title": "Frequencyhz",
+            "type": "integer"
+          },
+          "mode": {
+            "enum": [
+              "ipsi",
+              "contra"
+            ],
+            "title": "Mode",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "present",
+              "absent",
+              "elevated",
+              "not_tested"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "stimulusEar": {
+            "enum": [
+              "right",
+              "left"
+            ],
+            "title": "Stimulusear",
+            "type": "string"
+          },
+          "thresholdDb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Thresholddb"
+          }
+        },
+        "required": [
+          "stimulusEar",
+          "mode",
+          "frequencyHz",
+          "thresholdDb",
+          "status"
+        ],
+        "title": "AcousticReflexRead",
+        "type": "object"
+      },
       "ActiveClinicRequest": {
         "properties": {
           "clinicPublicId": {
@@ -14,6 +787,28 @@
           "clinicPublicId"
         ],
         "title": "ActiveClinicRequest",
+        "type": "object"
+      },
+      "AdditionalWrsPoint": {
+        "properties": {
+          "levelDb": {
+            "maximum": 130.0,
+            "minimum": -10.0,
+            "title": "Leveldb",
+            "type": "integer"
+          },
+          "wrsPercent": {
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Wrspercent",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "levelDb",
+          "wrsPercent"
+        ],
+        "title": "AdditionalWrsPoint",
         "type": "object"
       },
       "AgeCapWrite": {
@@ -553,6 +1348,28 @@
           "version"
         ],
         "title": "AppointmentUpdate",
+        "type": "object"
+      },
+      "AssrThresholdInput": {
+        "properties": {
+          "frequencyHz": {
+            "maximum": 4000.0,
+            "minimum": 500.0,
+            "title": "Frequencyhz",
+            "type": "integer"
+          },
+          "thresholdDb": {
+            "maximum": 130.0,
+            "minimum": -10.0,
+            "title": "Thresholddb",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "frequencyHz",
+          "thresholdDb"
+        ],
+        "title": "AssrThresholdInput",
         "type": "object"
       },
       "AttachmentConfirmRequest": {
@@ -8340,6 +9157,430 @@
         "title": "NasalFractureWrite",
         "type": "object"
       },
+      "OaeBandInput": {
+        "properties": {
+          "frequencyHz": {
+            "maximum": 8000.0,
+            "minimum": 500.0,
+            "title": "Frequencyhz",
+            "type": "integer"
+          },
+          "snrDb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snrdb"
+          },
+          "status": {
+            "enum": [
+              "present",
+              "absent",
+              "partial"
+            ],
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "frequencyHz",
+          "status"
+        ],
+        "title": "OaeBandInput",
+        "type": "object"
+      },
+      "OaeBandRead": {
+        "properties": {
+          "frequencyHz": {
+            "title": "Frequencyhz",
+            "type": "integer"
+          },
+          "snrDb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Snrdb"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "frequencyHz",
+          "status",
+          "snrDb"
+        ],
+        "title": "OaeBandRead",
+        "type": "object"
+      },
+      "OaeInterpret": {
+        "properties": {
+          "interpretationText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interpretationtext"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "OaeInterpret",
+        "type": "object"
+      },
+      "OaeResultCreate": {
+        "properties": {
+          "bands": {
+            "items": {
+              "$ref": "#/components/schemas/OaeBandInput"
+            },
+            "minItems": 1,
+            "title": "Bands",
+            "type": "array"
+          },
+          "ear": {
+            "enum": [
+              "right",
+              "left"
+            ],
+            "title": "Ear",
+            "type": "string"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "oaeType": {
+            "enum": [
+              "teoae",
+              "dpoae"
+            ],
+            "title": "Oaetype",
+            "type": "string"
+          },
+          "overallResult": {
+            "enum": [
+              "pass",
+              "refer",
+              "partial",
+              "not_testable"
+            ],
+            "title": "Overallresult",
+            "type": "string"
+          },
+          "patientPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "performedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedat"
+          },
+          "performedByPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedbypublicid"
+          },
+          "screeningStage": {
+            "anyOf": [
+              {
+                "enum": [
+                  "first",
+                  "second",
+                  "diagnostic"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Screeningstage"
+          }
+        },
+        "required": [
+          "patientPublicId",
+          "ear",
+          "oaeType",
+          "overallResult",
+          "bands"
+        ],
+        "title": "OaeResultCreate",
+        "type": "object"
+      },
+      "OaeResultRead": {
+        "properties": {
+          "bands": {
+            "items": {
+              "$ref": "#/components/schemas/OaeBandRead"
+            },
+            "title": "Bands",
+            "type": "array"
+          },
+          "ear": {
+            "enum": [
+              "right",
+              "left"
+            ],
+            "title": "Ear",
+            "type": "string"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "interpretationText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interpretationtext"
+          },
+          "oaeType": {
+            "enum": [
+              "teoae",
+              "dpoae"
+            ],
+            "title": "Oaetype",
+            "type": "string"
+          },
+          "overallResult": {
+            "enum": [
+              "pass",
+              "refer",
+              "partial",
+              "not_testable"
+            ],
+            "title": "Overallresult",
+            "type": "string"
+          },
+          "patientPublicId": {
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "performedAt": {
+            "format": "date-time",
+            "title": "Performedat",
+            "type": "string"
+          },
+          "performedByPublicId": {
+            "title": "Performedbypublicid",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "screeningStage": {
+            "anyOf": [
+              {
+                "enum": [
+                  "first",
+                  "second",
+                  "diagnostic"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Screeningstage"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "publicId",
+          "patientPublicId",
+          "encounterPublicId",
+          "performedAt",
+          "performedByPublicId",
+          "ear",
+          "oaeType",
+          "overallResult",
+          "screeningStage",
+          "bands",
+          "interpretationText",
+          "version"
+        ],
+        "title": "OaeResultRead",
+        "type": "object"
+      },
+      "OaeResultUpdate": {
+        "properties": {
+          "bands": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/OaeBandInput"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bands"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "oaeType": {
+            "anyOf": [
+              {
+                "enum": [
+                  "teoae",
+                  "dpoae"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Oaetype"
+          },
+          "overallResult": {
+            "anyOf": [
+              {
+                "enum": [
+                  "pass",
+                  "refer",
+                  "partial",
+                  "not_testable"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overallresult"
+          },
+          "performedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedat"
+          },
+          "performedByPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedbypublicid"
+          },
+          "screeningStage": {
+            "anyOf": [
+              {
+                "enum": [
+                  "first",
+                  "second",
+                  "diagnostic"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Screeningstage"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "OaeResultUpdate",
+        "type": "object"
+      },
       "ObservationBatchCreate": {
         "properties": {
           "encounterPublicId": {
@@ -10486,6 +11727,26 @@
         "title": "PageMeta",
         "type": "object"
       },
+      "PageSchema_AbrResultRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AbrResultRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[AbrResultRead]",
+        "type": "object"
+      },
       "PageSchema_AppointmentRead_": {
         "properties": {
           "items": {
@@ -10784,6 +12045,26 @@
           "page"
         ],
         "title": "PageSchema[LaryngoscopyExamRead]",
+        "type": "object"
+      },
+      "PageSchema_OaeResultRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/OaeResultRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[OaeResultRead]",
         "type": "object"
       },
       "PageSchema_ObservationRead_": {
@@ -11126,6 +12407,26 @@
         "title": "PageSchema[SiteRead]",
         "type": "object"
       },
+      "PageSchema_SpeechAudiometryRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SpeechAudiometryRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[SpeechAudiometryRead]",
+        "type": "object"
+      },
       "PageSchema_TranslationCoverageItem_": {
         "properties": {
           "items": {
@@ -11144,6 +12445,26 @@
           "page"
         ],
         "title": "PageSchema[TranslationCoverageItem]",
+        "type": "object"
+      },
+      "PageSchema_TympanometryRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TympanometryRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[TympanometryRead]",
         "type": "object"
       },
       "PageSchema_UserRead_": {
@@ -17182,6 +18503,709 @@
         "title": "SiteUpdate",
         "type": "object"
       },
+      "SpeechAudiometryCreate": {
+        "properties": {
+          "additionalWrsPoints": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AdditionalWrsPoint"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Additionalwrspoints"
+          },
+          "audiogramPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audiogrampublicid"
+          },
+          "ear": {
+            "enum": [
+              "right",
+              "left"
+            ],
+            "title": "Ear",
+            "type": "string"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "listLocale": {
+            "anyOf": [
+              {
+                "maxLength": 10,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Listlocale"
+          },
+          "mclDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mcldb"
+          },
+          "patientPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "performedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedat"
+          },
+          "performedByPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedbypublicid"
+          },
+          "rollover": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rollover"
+          },
+          "sdtDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sdtdb"
+          },
+          "sinScorePercent": {
+            "anyOf": [
+              {
+                "maximum": 100.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sinscorepercent"
+          },
+          "sinSnrDb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sinsnrdb"
+          },
+          "sinTest": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sintest"
+          },
+          "srtDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Srtdb"
+          },
+          "uclDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ucldb"
+          },
+          "wordList": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wordlist"
+          },
+          "wrsLevelDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wrsleveldb"
+          },
+          "wrsPercent": {
+            "anyOf": [
+              {
+                "maximum": 100.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wrspercent"
+          }
+        },
+        "required": [
+          "patientPublicId",
+          "ear"
+        ],
+        "title": "SpeechAudiometryCreate",
+        "type": "object"
+      },
+      "SpeechAudiometryRead": {
+        "properties": {
+          "additionalWrsPoints": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Additionalwrspoints"
+          },
+          "audiogramPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audiogrampublicid"
+          },
+          "ear": {
+            "enum": [
+              "right",
+              "left"
+            ],
+            "title": "Ear",
+            "type": "string"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "listLocale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Listlocale"
+          },
+          "mclDb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mcldb"
+          },
+          "patientPublicId": {
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "performedAt": {
+            "format": "date-time",
+            "title": "Performedat",
+            "type": "string"
+          },
+          "performedByPublicId": {
+            "title": "Performedbypublicid",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "rollover": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rollover"
+          },
+          "sdtDb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sdtdb"
+          },
+          "sinScorePercent": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sinscorepercent"
+          },
+          "sinSnrDb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sinsnrdb"
+          },
+          "sinTest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sintest"
+          },
+          "speechPtaDiscrepancyFlag": {
+            "title": "Speechptadiscrepancyflag",
+            "type": "boolean"
+          },
+          "srtDb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Srtdb"
+          },
+          "uclDb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ucldb"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "wordList": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wordlist"
+          },
+          "wrsLevelDb": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wrsleveldb"
+          },
+          "wrsPercent": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wrspercent"
+          }
+        },
+        "required": [
+          "publicId",
+          "patientPublicId",
+          "encounterPublicId",
+          "audiogramPublicId",
+          "performedAt",
+          "performedByPublicId",
+          "ear",
+          "srtDb",
+          "sdtDb",
+          "wrsPercent",
+          "wrsLevelDb",
+          "additionalWrsPoints",
+          "wordList",
+          "listLocale",
+          "mclDb",
+          "uclDb",
+          "rollover",
+          "sinTest",
+          "sinSnrDb",
+          "sinScorePercent",
+          "speechPtaDiscrepancyFlag",
+          "version"
+        ],
+        "title": "SpeechAudiometryRead",
+        "type": "object"
+      },
+      "SpeechAudiometryUpdate": {
+        "properties": {
+          "additionalWrsPoints": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AdditionalWrsPoint"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Additionalwrspoints"
+          },
+          "audiogramPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audiogrampublicid"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "listLocale": {
+            "anyOf": [
+              {
+                "maxLength": 10,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Listlocale"
+          },
+          "mclDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mcldb"
+          },
+          "performedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedat"
+          },
+          "performedByPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedbypublicid"
+          },
+          "rollover": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rollover"
+          },
+          "sdtDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sdtdb"
+          },
+          "sinScorePercent": {
+            "anyOf": [
+              {
+                "maximum": 100.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sinscorepercent"
+          },
+          "sinSnrDb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sinsnrdb"
+          },
+          "sinTest": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sintest"
+          },
+          "srtDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Srtdb"
+          },
+          "uclDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ucldb"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          },
+          "wordList": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wordlist"
+          },
+          "wrsLevelDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wrsleveldb"
+          },
+          "wrsPercent": {
+            "anyOf": [
+              {
+                "maximum": 100.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wrspercent"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "SpeechAudiometryUpdate",
+        "type": "object"
+      },
       "StroboscopyWrite": {
         "properties": {
           "amplitudeLeft": {
@@ -17648,6 +19672,609 @@
           "devicePublicId"
         ],
         "title": "TubeRemovalWrite",
+        "type": "object"
+      },
+      "TympanometryCreate": {
+        "properties": {
+          "complianceMl": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Complianceml"
+          },
+          "ear": {
+            "enum": [
+              "right",
+              "left"
+            ],
+            "title": "Ear",
+            "type": "string"
+          },
+          "ecvMl": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ecvml"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "etfResult": {
+            "anyOf": [
+              {
+                "enum": [
+                  "intact",
+                  "impaired",
+                  "patulous",
+                  "not_performed"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Etfresult"
+          },
+          "gradientDapa": {
+            "anyOf": [
+              {
+                "maximum": 600.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gradientdapa"
+          },
+          "jergerTypeOverride": {
+            "anyOf": [
+              {
+                "enum": [
+                  "A",
+                  "As",
+                  "Ad",
+                  "B",
+                  "C"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jergertypeoverride"
+          },
+          "patientPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "peakPressureDapa": {
+            "anyOf": [
+              {
+                "maximum": 400.0,
+                "minimum": -600.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Peakpressuredapa"
+          },
+          "performedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedat"
+          },
+          "performedByPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedbypublicid"
+          },
+          "probeToneHz": {
+            "default": 226,
+            "title": "Probetonehz",
+            "type": "integer"
+          },
+          "reflexes": {
+            "items": {
+              "$ref": "#/components/schemas/AcousticReflexInput"
+            },
+            "title": "Reflexes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "patientPublicId",
+          "ear"
+        ],
+        "title": "TympanometryCreate",
+        "type": "object"
+      },
+      "TympanometryInterpret": {
+        "properties": {
+          "interpretationText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interpretationtext"
+          },
+          "jergerType": {
+            "anyOf": [
+              {
+                "enum": [
+                  "A",
+                  "As",
+                  "Ad",
+                  "B",
+                  "C"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jergertype"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "TympanometryInterpret",
+        "type": "object"
+      },
+      "TympanometryRead": {
+        "properties": {
+          "complianceMl": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Complianceml"
+          },
+          "ear": {
+            "enum": [
+              "right",
+              "left"
+            ],
+            "title": "Ear",
+            "type": "string"
+          },
+          "ecvMl": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ecvml"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "engineVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Engineversion"
+          },
+          "etfResult": {
+            "anyOf": [
+              {
+                "enum": [
+                  "intact",
+                  "impaired",
+                  "patulous",
+                  "not_performed"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Etfresult"
+          },
+          "gradientDapa": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gradientdapa"
+          },
+          "interpretationText": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interpretationtext"
+          },
+          "jergerType": {
+            "anyOf": [
+              {
+                "enum": [
+                  "A",
+                  "As",
+                  "Ad",
+                  "B",
+                  "C"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jergertype"
+          },
+          "jergerTypeIsOverridden": {
+            "title": "Jergertypeisoverridden",
+            "type": "boolean"
+          },
+          "largeCanalVolumeFlag": {
+            "title": "Largecanalvolumeflag",
+            "type": "boolean"
+          },
+          "overriddenAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overriddenat"
+          },
+          "overriddenByPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overriddenbypublicid"
+          },
+          "patientPublicId": {
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "peakPressureDapa": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Peakpressuredapa"
+          },
+          "performedAt": {
+            "format": "date-time",
+            "title": "Performedat",
+            "type": "string"
+          },
+          "performedByPublicId": {
+            "title": "Performedbypublicid",
+            "type": "string"
+          },
+          "probeToneHz": {
+            "title": "Probetonehz",
+            "type": "integer"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "reflexes": {
+            "items": {
+              "$ref": "#/components/schemas/AcousticReflexRead"
+            },
+            "title": "Reflexes",
+            "type": "array"
+          },
+          "suggestedJergerType": {
+            "anyOf": [
+              {
+                "enum": [
+                  "A",
+                  "As",
+                  "Ad",
+                  "B",
+                  "C"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suggestedjergertype"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "publicId",
+          "patientPublicId",
+          "encounterPublicId",
+          "performedAt",
+          "performedByPublicId",
+          "ear",
+          "probeToneHz",
+          "ecvMl",
+          "peakPressureDapa",
+          "complianceMl",
+          "gradientDapa",
+          "suggestedJergerType",
+          "jergerType",
+          "jergerTypeIsOverridden",
+          "overriddenByPublicId",
+          "overriddenAt",
+          "largeCanalVolumeFlag",
+          "etfResult",
+          "engineVersion",
+          "interpretationText",
+          "reflexes",
+          "version"
+        ],
+        "title": "TympanometryRead",
+        "type": "object"
+      },
+      "TympanometryUpdate": {
+        "properties": {
+          "complianceMl": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Complianceml"
+          },
+          "ecvMl": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ecvml"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "etfResult": {
+            "anyOf": [
+              {
+                "enum": [
+                  "intact",
+                  "impaired",
+                  "patulous",
+                  "not_performed"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Etfresult"
+          },
+          "gradientDapa": {
+            "anyOf": [
+              {
+                "maximum": 600.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gradientdapa"
+          },
+          "jergerTypeOverride": {
+            "anyOf": [
+              {
+                "enum": [
+                  "A",
+                  "As",
+                  "Ad",
+                  "B",
+                  "C"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jergertypeoverride"
+          },
+          "peakPressureDapa": {
+            "anyOf": [
+              {
+                "maximum": 400.0,
+                "minimum": -600.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Peakpressuredapa"
+          },
+          "performedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedat"
+          },
+          "performedByPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Performedbypublicid"
+          },
+          "probeToneHz": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Probetonehz"
+          },
+          "reflexes": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AcousticReflexInput"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reflexes"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "TympanometryUpdate",
         "type": "object"
       },
       "UserRead": {
@@ -18489,6 +21116,404 @@
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/v1/abr-results": {
+      "get": {
+        "operationId": "list_abr_results_api_v1_abr_results_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "patient_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "minLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Patient Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "encounter_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "minLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Encounter Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_AbrResultRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Abr Results",
+        "tags": [
+          "audiology"
+        ]
+      },
+      "post": {
+        "operationId": "create_abr_result_api_v1_abr_results_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AbrResultCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AbrResultRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Abr Result",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/abr-results/{abr_id}": {
+      "get": {
+        "operationId": "get_abr_result_api_v1_abr_results__abr_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "abr_id",
+            "required": true,
+            "schema": {
+              "title": "Abr Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AbrResultRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Abr Result",
+        "tags": [
+          "audiology"
+        ]
+      },
+      "put": {
+        "operationId": "update_abr_result_api_v1_abr_results__abr_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "abr_id",
+            "required": true,
+            "schema": {
+              "title": "Abr Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AbrResultUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AbrResultRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Abr Result",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/abr-results/{abr_id}/interpret": {
+      "post": {
+        "operationId": "interpret_abr_result_api_v1_abr_results__abr_id__interpret_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "abr_id",
+            "required": true,
+            "schema": {
+              "title": "Abr Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AbrInterpret"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AbrResultRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Interpret Abr Result",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
     "/api/v1/appointment-types": {
       "get": {
         "operationId": "list_appointment_types_api_v1_appointment_types_get",
@@ -24575,6 +27600,404 @@
         ]
       }
     },
+    "/api/v1/oae-results": {
+      "get": {
+        "operationId": "list_oae_results_api_v1_oae_results_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "patient_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "minLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Patient Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "encounter_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "minLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Encounter Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_OaeResultRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Oae Results",
+        "tags": [
+          "audiology"
+        ]
+      },
+      "post": {
+        "operationId": "create_oae_result_api_v1_oae_results_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OaeResultCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OaeResultRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Oae Result",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/oae-results/{oae_id}": {
+      "get": {
+        "operationId": "get_oae_result_api_v1_oae_results__oae_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "oae_id",
+            "required": true,
+            "schema": {
+              "title": "Oae Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OaeResultRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Oae Result",
+        "tags": [
+          "audiology"
+        ]
+      },
+      "put": {
+        "operationId": "update_oae_result_api_v1_oae_results__oae_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "oae_id",
+            "required": true,
+            "schema": {
+              "title": "Oae Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OaeResultUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OaeResultRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Oae Result",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/oae-results/{oae_id}/interpret": {
+      "post": {
+        "operationId": "interpret_oae_result_api_v1_oae_results__oae_id__interpret_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "oae_id",
+            "required": true,
+            "schema": {
+              "title": "Oae Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OaeInterpret"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OaeResultRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Interpret Oae Result",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
     "/api/v1/observations/cohort": {
       "get": {
         "operationId": "observation_cohort_api_v1_observations_cohort_get",
@@ -26366,6 +29789,92 @@
         ]
       }
     },
+    "/api/v1/patients/{patient_id}/abr-results": {
+      "get": {
+        "operationId": "list_patient_abr_results_api_v1_patients__patient_id__abr_results_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_AbrResultRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Patient Abr Results",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
     "/api/v1/patients/{patient_id}/allergies": {
       "get": {
         "operationId": "list_allergies_api_v1_patients__patient_id__allergies_get",
@@ -28151,6 +31660,92 @@
         ]
       }
     },
+    "/api/v1/patients/{patient_id}/oae-results": {
+      "get": {
+        "operationId": "list_patient_oae_results_api_v1_patients__patient_id__oae_results_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_OaeResultRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Patient Oae Results",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
     "/api/v1/patients/{patient_id}/office-procedures": {
       "get": {
         "operationId": "list_patient_office_procedures_api_v1_patients__patient_id__office_procedures_get",
@@ -29123,6 +32718,92 @@
         ]
       }
     },
+    "/api/v1/patients/{patient_id}/speech-audiometry": {
+      "get": {
+        "operationId": "list_patient_speech_audiometry_api_v1_patients__patient_id__speech_audiometry_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_SpeechAudiometryRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Patient Speech Audiometry",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
     "/api/v1/patients/{patient_id}/timeline": {
       "get": {
         "operationId": "patient_timeline_api_v1_patients__patient_id__timeline_get",
@@ -29290,6 +32971,92 @@
         "summary": "Patient Timeline",
         "tags": [
           "patients"
+        ]
+      }
+    },
+    "/api/v1/patients/{patient_id}/tympanograms": {
+      "get": {
+        "operationId": "list_patient_tympanograms_api_v1_patients__patient_id__tympanograms_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_TympanometryRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Patient Tympanograms",
+        "tags": [
+          "audiology"
         ]
       }
     },
@@ -32281,6 +36048,349 @@
         ]
       }
     },
+    "/api/v1/speech-audiometry": {
+      "get": {
+        "operationId": "list_speech_audiometry_api_v1_speech_audiometry_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "patient_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "minLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Patient Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "encounter_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "minLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Encounter Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "audiogram_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "minLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Audiogram Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_SpeechAudiometryRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Speech Audiometry",
+        "tags": [
+          "audiology"
+        ]
+      },
+      "post": {
+        "operationId": "create_speech_audiometry_api_v1_speech_audiometry_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpeechAudiometryCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpeechAudiometryRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Speech Audiometry",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/speech-audiometry/{speech_id}": {
+      "get": {
+        "operationId": "get_speech_audiometry_api_v1_speech_audiometry__speech_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "speech_id",
+            "required": true,
+            "schema": {
+              "title": "Speech Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpeechAudiometryRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Speech Audiometry",
+        "tags": [
+          "audiology"
+        ]
+      },
+      "put": {
+        "operationId": "update_speech_audiometry_api_v1_speech_audiometry__speech_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "speech_id",
+            "required": true,
+            "schema": {
+              "title": "Speech Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpeechAudiometryUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpeechAudiometryRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Speech Audiometry",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
     "/api/v1/terminology/admin/concepts": {
       "get": {
         "operationId": "list_admin_concepts_api_v1_terminology_admin_concepts_get",
@@ -33393,6 +37503,404 @@
         "summary": "Get Value Set",
         "tags": [
           "terminology"
+        ]
+      }
+    },
+    "/api/v1/tympanograms": {
+      "get": {
+        "operationId": "list_tympanograms_api_v1_tympanograms_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "patient_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "minLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Patient Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "encounter_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "minLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Encounter Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_TympanometryRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Tympanograms",
+        "tags": [
+          "audiology"
+        ]
+      },
+      "post": {
+        "operationId": "create_tympanogram_api_v1_tympanograms_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TympanometryCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TympanometryRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Tympanogram",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/tympanograms/{tympanogram_id}": {
+      "get": {
+        "operationId": "get_tympanogram_api_v1_tympanograms__tympanogram_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tympanogram_id",
+            "required": true,
+            "schema": {
+              "title": "Tympanogram Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TympanometryRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Tympanogram",
+        "tags": [
+          "audiology"
+        ]
+      },
+      "put": {
+        "operationId": "update_tympanogram_api_v1_tympanograms__tympanogram_id__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tympanogram_id",
+            "required": true,
+            "schema": {
+              "title": "Tympanogram Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TympanometryUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TympanometryRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Tympanogram",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/tympanograms/{tympanogram_id}/interpret": {
+      "post": {
+        "operationId": "interpret_tympanogram_api_v1_tympanograms__tympanogram_id__interpret_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "tympanogram_id",
+            "required": true,
+            "schema": {
+              "title": "Tympanogram Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TympanometryInterpret"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TympanometryRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Interpret Tympanogram",
+        "tags": [
+          "audiology"
         ]
       }
     },

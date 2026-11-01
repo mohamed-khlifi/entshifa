@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 from decimal import Decimal
+from typing import TypeVar
 
 from ent.core.schemas.base import PageMeta, PageSchema
 from ent.features.audiology.constants import EXTENDED_HIGH_FREQUENCIES_HZ
 from ent.features.audiology.models import Audiogram, AudiogramThreshold
 from ent.features.audiology.schemas.responses import AudiogramRead, ThresholdRead
+
+T = TypeVar("T")
 
 
 def _decimal(value: Decimal | None) -> float | None:
@@ -72,12 +75,12 @@ def audiogram_read(row: Audiogram) -> AudiogramRead:
 
 
 def to_page(
-    items: list[AudiogramRead],
+    items: list[T],
     *,
     total: int,
     limit: int,
     offset: int | None,
-) -> PageSchema[AudiogramRead]:
+) -> PageSchema[T]:
     return PageSchema(
         items=items,
         page=PageMeta(total=total, limit=limit, offset=offset, next_cursor=None),

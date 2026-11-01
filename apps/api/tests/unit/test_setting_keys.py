@@ -47,6 +47,14 @@ def test_validate_shift_rule() -> None:
     assert value["rule"] == "asha"
 
 
+def test_validate_abr_interaural_threshold() -> None:
+    value = validate_setting_value(
+        "abr_interaural_v_threshold_ms",
+        {"threshold_ms": 0.3},
+    )
+    assert value["threshold_ms"] == 0.3
+
+
 def test_validate_polyp_scale_rejects_item_scale_name() -> None:
     with pytest.raises(ValidationError) as exc:
         validate_setting_value("polyp_scale", "lund_kennedy")
