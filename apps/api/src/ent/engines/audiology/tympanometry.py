@@ -93,12 +93,14 @@ def score(data: TympanogramInput) -> CalculationResult:
         value=value,
         unit=None,
         inputs={
-            "compliance_ml": str(data.compliance_ml)
-            if data.compliance_ml is not None
-            else "",
-            "peak_pressure_dapa": str(data.peak_pressure_dapa)
-            if data.peak_pressure_dapa is not None
-            else "",
+            "compliance_ml": (
+                str(data.compliance_ml) if data.compliance_ml is not None else ""
+            ),
+            "peak_pressure_dapa": (
+                str(data.peak_pressure_dapa)
+                if data.peak_pressure_dapa is not None
+                else ""
+            ),
             "ecv_ml": str(data.ecv_ml) if data.ecv_ml is not None else "",
         },
         formula=FORMULA,

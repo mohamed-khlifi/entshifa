@@ -102,9 +102,9 @@ def score(
         unit=None,
         inputs={
             "wave_i_ms": str(waves.wave_i_ms) if waves.wave_i_ms is not None else "",
-            "wave_iii_ms": str(waves.wave_iii_ms)
-            if waves.wave_iii_ms is not None
-            else "",
+            "wave_iii_ms": (
+                str(waves.wave_iii_ms) if waves.wave_iii_ms is not None else ""
+            ),
             "wave_v_ms": str(waves.wave_v_ms) if waves.wave_v_ms is not None else "",
             "threshold_ms": str(threshold_ms),
         },
