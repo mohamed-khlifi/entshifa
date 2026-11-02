@@ -53,6 +53,10 @@
     "typescript": "^5.8.2",
     "vitest": "^4.1.12"
   },
+  "optionalDependencies": {
+    "@parcel/watcher-linux-x64-glibc": "2.6.0",
+    "lightningcss-linux-x64-gnu": "1.33.0"
+  },
   "overrides": {
     "tinypool": "2.2.0",
     "source-map-js": "1.2.2",
