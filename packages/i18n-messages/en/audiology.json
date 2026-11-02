@@ -11,6 +11,13 @@
     "saved": "Audiogram saved.",
     "saving": "Saving…"
   },
+  "alerts": {
+    "abrWaveV": "ABR interaural wave V latency flag",
+    "asymmetry": "Asymmetry criterion met",
+    "largeCanal": "Large ear canal volume",
+    "shift": "Threshold shift vs baseline",
+    "speechDiscrepancy": "Speech–PTA discrepancy"
+  },
   "chart": {
     "aria": "Pure-tone audiogram chart"
   },
@@ -19,9 +26,40 @@
     "bone": "Bone"
   },
   "conflict": "This audiogram was updated elsewhere. Reload before continuing.",
+  "configuration": {
+    "cookie_bite": "Cookie bite",
+    "corner": "Corner",
+    "flat": "Flat",
+    "notched": "Notched",
+    "precipitous": "Precipitous",
+    "rising": "Rising",
+    "sloping": "Sloping"
+  },
+  "dashboard": {
+    "configurationUnknown": "Configuration not recorded",
+    "earMetricsLine": "{loss} · {configuration}",
+    "evolutionAria": "Threshold evolution over time",
+    "evolutionFrequency": "Evolution frequency",
+    "evolutionTitle": "Threshold evolution",
+    "gradeUnknown": "Grade not recorded",
+    "historyTitle": "Audiogram history",
+    "layoutOverlay": "Overlaid ears",
+    "layoutSideBySide": "Side by side",
+    "layoutTitle": "Chart layout",
+    "lossTypeUnknown": "Loss type not recorded",
+    "selectAudiogram": "Select an audiogram to open the dashboard.",
+    "viewDashboard": "Dashboard",
+    "viewEntry": "Entry grid"
+  },
   "ear": {
     "left": "Left",
     "right": "Right"
+  },
+  "etf": {
+    "impaired": "Impaired",
+    "intact": "Intact",
+    "not_performed": "Not performed",
+    "patulous": "Patulous"
   },
   "fields": {
     "calibrationDate": "Calibration date",
@@ -40,12 +78,24 @@
     "series": "Series",
     "unmasked": "Unmasked"
   },
+  "jerger": {
+    "A": "Type A",
+    "Ad": "Type Ad",
+    "As": "Type As",
+    "B": "Type B",
+    "C": "Type C"
+  },
   "method": {
     "boa": "BOA",
     "play": "Play audiometry",
     "soundfield": "Sound field",
     "standard": "Standard",
     "vra": "VRA"
+  },
+  "lossType": {
+    "conductive": "Conductive",
+    "mixed": "Mixed",
+    "sensorineural": "Sensorineural"
   },
   "metrics": {
     "abg": "ABG {ear}: {value} dB HL",
@@ -91,6 +141,12 @@
     "good": "Good",
     "poor": "Poor"
   },
+  "speech": {
+    "save": "Save speech audiometry",
+    "saved": "Speech audiometry saved.",
+    "summary": "SRT {srt} dB · WRS {wrs}%",
+    "title": "Speech audiometry"
+  },
   "state": {
     "empty": "No audiogram yet.",
     "error": "Audiograms could not be loaded.",
@@ -103,7 +159,26 @@
     "headphones": "Headphones",
     "inserts": "Insert earphones"
   },
+  "tympanometry": {
+    "create": "Add tympanogram",
+    "etf": "ETF: {value}",
+    "etfUnknown": "ETF not recorded",
+    "jergerOverride": "Confirm Jerger type",
+    "jergerUnknown": "Jerger type not recorded",
+    "save": "Save tympanogram",
+    "saved": "Tympanogram saved.",
+    "summary": "Jerger {jerger} · peak {peak} daPa · compliance {compliance} mL"
+  },
   "validation": {
     "performedAt": "Enter when the audiogram was performed."
+  },
+  "whoGrade": {
+    "complete": "Complete",
+    "mild": "Mild",
+    "moderate": "Moderate",
+    "moderately_severe": "Moderately severe",
+    "normal": "Normal",
+    "profound": "Profound",
+    "severe": "Severe"
   }
 }

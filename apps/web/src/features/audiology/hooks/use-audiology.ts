@@ -7,12 +7,21 @@ import { toast } from "sonner";
 
 import {
   createAudiogram,
+  createSpeechAudiometry,
+  createTympanogram,
   fetchAudiogram,
+  fetchPatientAbrResults,
   fetchPatientAudiograms,
+  fetchPatientOaeResults,
+  fetchPatientSpeechAudiometry,
+  fetchPatientTympanograms,
   finalizeAudiogram,
   interpretAudiogram,
+  interpretTympanogram,
   updateAudiogram,
   updateAudiogramBaseline,
+  updateSpeechAudiometry,
+  updateTympanogram,
 } from "../api/audiology.api";
 import type {
   AudiogramBaselineUpdate,
@@ -21,6 +30,12 @@ import type {
   AudiogramInterpret,
   AudiogramRead,
   AudiogramUpdate,
+  SpeechAudiometryCreate,
+  SpeechAudiometryRead,
+  SpeechAudiometryUpdate,
+  TympanometryCreate,
+  TympanometryInterpret,
+  TympanometryUpdate,
 } from "@/lib/api/generated";
 import { ApiError, resolveErrorMessage } from "@/lib/api/errors";
 import { queryKeys } from "@/lib/api/query-keys";
@@ -225,6 +240,174 @@ export function useAudiogramCompare(
     idempotencyKey,
     resetIdempotencyKey,
   };
+}
+
+export function usePatientSpeechAudiometry(patientId: string) {
+  const scope = useScope();
+  return useQuery({
+    queryKey: queryKeys.audiology.speechByPatient(patientId),
+    queryFn: () =>
+      fetchPatientSpeechAudiometry(patientId, {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    enabled: scope.enabled && patientId.length > 0,
+    staleTime: RECORD_STALE_MS,
+  });
+}
+
+export type SaveSpeechInput = {
+  speechId: string | null;
+  createBody: SpeechAudiometryCreate;
+  updateBody: SpeechAudiometryUpdate;
+  idempotencyKey: string;
+};
+
+export function useSaveSpeechAudiometry(patientId: string) {
+  const scope = useScope();
+  const t = useTranslations("audiology");
+  const toastError = useAudiologyErrorToast();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: SaveSpeechInput) => {
+      const requestScope = {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      };
+      if (input.speechId) {
+        return updateSpeechAudiometry(
+          input.speechId,
+          input.updateBody,
+          requestScope,
+        );
+      }
+      return createSpeechAudiometry(
+        input.createBody,
+        requestScope,
+        input.idempotencyKey,
+      );
+    },
+    onSuccess: async (exam: SpeechAudiometryRead) => {
+      toast.success(t("speech.saved"));
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.audiology.speechByPatient(patientId),
+      });
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.audiology.patient(patientId),
+      });
+      if (exam.audiogramPublicId) {
+        await queryClient.invalidateQueries({
+          queryKey: queryKeys.audiology.detail(exam.audiogramPublicId),
+        });
+      }
+    },
+    onError: toastError,
+  });
+}
+
+export function usePatientTympanograms(patientId: string) {
+  const scope = useScope();
+  return useQuery({
+    queryKey: queryKeys.audiology.tympanogramsByPatient(patientId),
+    queryFn: () =>
+      fetchPatientTympanograms(patientId, {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    enabled: scope.enabled && patientId.length > 0,
+    staleTime: RECORD_STALE_MS,
+  });
+}
+
+export type SaveTympanogramInput = {
+  tympanogramId: string | null;
+  createBody: TympanometryCreate;
+  updateBody: TympanometryUpdate;
+  idempotencyKey: string;
+};
+
+export function useSaveTympanogram(patientId: string) {
+  const scope = useScope();
+  const t = useTranslations("audiology");
+  const toastError = useAudiologyErrorToast();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: SaveTympanogramInput) => {
+      const requestScope = {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      };
+      if (input.tympanogramId) {
+        return updateTympanogram(
+          input.tympanogramId,
+          input.updateBody,
+          requestScope,
+        );
+      }
+      return createTympanogram(
+        input.createBody,
+        requestScope,
+        input.idempotencyKey,
+      );
+    },
+    onSuccess: async () => {
+      toast.success(t("tympanometry.saved"));
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.audiology.tympanogramsByPatient(patientId),
+      });
+    },
+    onError: toastError,
+  });
+}
+
+export function useInterpretTympanogram(patientId: string) {
+  const scope = useScope();
+  const toastError = useAudiologyErrorToast();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (input: {
+      tympanogramId: string;
+      body: TympanometryInterpret;
+    }) =>
+      interpretTympanogram(input.tympanogramId, input.body, {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.audiology.tympanogramsByPatient(patientId),
+      });
+    },
+    onError: toastError,
+  });
+}
+
+export function usePatientOaeResults(patientId: string) {
+  const scope = useScope();
+  return useQuery({
+    queryKey: queryKeys.audiology.oaeByPatient(patientId),
+    queryFn: () =>
+      fetchPatientOaeResults(patientId, {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    enabled: scope.enabled && patientId.length > 0,
+    staleTime: RECORD_STALE_MS,
+  });
+}
+
+export function usePatientAbrResults(patientId: string) {
+  const scope = useScope();
+  return useQuery({
+    queryKey: queryKeys.audiology.abrByPatient(patientId),
+    queryFn: () =>
+      fetchPatientAbrResults(patientId, {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    enabled: scope.enabled && patientId.length > 0,
+    staleTime: RECORD_STALE_MS,
+  });
 }
 
 export type { AudiogramRead };

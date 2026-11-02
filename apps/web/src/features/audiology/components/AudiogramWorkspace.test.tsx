@@ -26,6 +26,13 @@ vi.mock("../hooks/use-audiology", () => ({
   }),
   useSaveAudiogram: () => ({ mutateAsync: harness.save, isPending: false }),
   useFinalizeAudiogram: () => ({ mutateAsync: vi.fn(), isPending: false }),
+  usePatientSpeechAudiometry: () => ({ data: { items: [] } }),
+  usePatientTympanograms: () => ({ data: { items: [] } }),
+  usePatientAbrResults: () => ({ data: { items: [] } }),
+  usePatientOaeResults: () => ({ data: { items: [] } }),
+  useSaveSpeechAudiometry: () => ({ mutateAsync: vi.fn(), isPending: false }),
+  useSaveTympanogram: () => ({ mutateAsync: vi.fn(), isPending: false }),
+  useInterpretTympanogram: () => ({ mutateAsync: vi.fn(), isPending: false }),
 }));
 
 vi.mock("@/features/clinics", () => ({
@@ -90,6 +97,7 @@ describe("AudiogramWorkspace", () => {
       </NextIntlClientProvider>,
     );
     expect(view.getByTestId(testIds.audiology.root)).toBeTruthy();
+    fireEvent.click(view.getByTestId(testIds.audiology.viewEntry));
     const charts = view.getAllByTestId(testIds.audiology.chart);
     expect(charts[0]?.getAttribute("dir")).toBe("ltr");
     expect(view.getByTestId(testIds.audiology.grid).getAttribute("dir")).toBe(

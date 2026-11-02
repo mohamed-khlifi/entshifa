@@ -11,6 +11,13 @@
     "saved": "Audiogramme enregistré.",
     "saving": "Enregistrement…"
   },
+  "alerts": {
+    "abrWaveV": "Anomalie de latence V interauriculaire (ABR)",
+    "asymmetry": "Critère d’asymétrie atteint",
+    "largeCanal": "Volume du conduit auditif élevé",
+    "shift": "Décalage seuil vs référence",
+    "speechDiscrepancy": "Discordance parole–PTA"
+  },
   "chart": {
     "aria": "Audiogramme tonal pur"
   },
@@ -19,9 +26,40 @@
     "bone": "Osseuse"
   },
   "conflict": "Cet audiogramme a été modifié ailleurs. Rechargez avant de continuer.",
+  "configuration": {
+    "cookie_bite": "Encoche",
+    "corner": "Coin",
+    "flat": "Plate",
+    "notched": "Encochée",
+    "precipitous": "Precipitée",
+    "rising": "Ascendante",
+    "sloping": "Descendante"
+  },
+  "dashboard": {
+    "configurationUnknown": "Configuration non enregistrée",
+    "earMetricsLine": "{loss} · {configuration}",
+    "evolutionAria": "Évolution des seuils dans le temps",
+    "evolutionFrequency": "Fréquence d’évolution",
+    "evolutionTitle": "Évolution des seuils",
+    "gradeUnknown": "Degré non enregistré",
+    "historyTitle": "Historique des audiogrammes",
+    "layoutOverlay": "Oreilles superposées",
+    "layoutSideBySide": "Côte à côte",
+    "layoutTitle": "Disposition du graphique",
+    "lossTypeUnknown": "Type de perte non enregistré",
+    "selectAudiogram": "Sélectionnez un audiogramme pour ouvrir le tableau de bord.",
+    "viewDashboard": "Tableau de bord",
+    "viewEntry": "Grille de saisie"
+  },
   "ear": {
     "left": "Gauche",
     "right": "Droit"
+  },
+  "etf": {
+    "impaired": "Altéré",
+    "intact": "Intact",
+    "not_performed": "Non réalisé",
+    "patulous": "Patulente"
   },
   "fields": {
     "calibrationDate": "Date d’étalonnage",
@@ -40,12 +78,24 @@
     "series": "Série",
     "unmasked": "Non masquée"
   },
+  "jerger": {
+    "A": "Type A",
+    "Ad": "Type Ad",
+    "As": "Type As",
+    "B": "Type B",
+    "C": "Type C"
+  },
   "method": {
     "boa": "BERA comportemental",
     "play": "Audiométrie ludique",
     "soundfield": "Champ libre",
     "standard": "Standard",
     "vra": "RPO"
+  },
+  "lossType": {
+    "conductive": "Transmission",
+    "mixed": "Mixte",
+    "sensorineural": "Perception"
   },
   "metrics": {
     "abg": "EAO {ear} : {value} dB HL",
@@ -91,6 +141,12 @@
     "good": "Bonne",
     "poor": "Faible"
   },
+  "speech": {
+    "save": "Enregistrer l’audiométrie vocale",
+    "saved": "Audiométrie vocale enregistrée.",
+    "summary": "SRT {srt} dB · WRS {wrs} %",
+    "title": "Audiométrie vocale"
+  },
   "state": {
     "empty": "Aucun audiogramme pour l’instant.",
     "error": "Impossible de charger les audiogrammes.",
@@ -103,7 +159,26 @@
     "headphones": "Casque",
     "inserts": "Embouts"
   },
+  "tympanometry": {
+    "create": "Ajouter une tympanométrie",
+    "etf": "ETF : {value}",
+    "etfUnknown": "ETF non enregistré",
+    "jergerOverride": "Confirmer le type de Jerger",
+    "jergerUnknown": "Type Jerger non enregistré",
+    "save": "Enregistrer la tympanométrie",
+    "saved": "Tympanométrie enregistrée.",
+    "summary": "Jerger {jerger} · pic {peak} daPa · compliance {compliance} mL"
+  },
   "validation": {
     "performedAt": "Indiquez la date et l’heure de l’audiogramme."
+  },
+  "whoGrade": {
+    "complete": "Complète",
+    "mild": "Légère",
+    "moderate": "Modérée",
+    "moderately_severe": "Modérément sévère",
+    "normal": "Normale",
+    "profound": "Profonde",
+    "severe": "Sévère"
   }
 }

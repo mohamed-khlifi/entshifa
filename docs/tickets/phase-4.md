@@ -61,7 +61,7 @@ arrows for no response. The chart never mirrors in RTL.
 
 ---
 
-## - [ ] P4-05 Audiology dashboard and comparison (frontend)
+## - [x] P4-05 Audiology dashboard and comparison (frontend)
 
 The layout in feature spec 8.6: both ears side by side, PTA and grade large,
 alerts row, history strip with overlay, threshold evolution per frequency.

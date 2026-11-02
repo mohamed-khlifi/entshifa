@@ -643,6 +643,28 @@ export const testIds = {
     serverMetrics: testId("audiology", "server-metrics"),
     interpretation: testId("audiology", "interpretation"),
     isBaseline: testId("audiology", "is-baseline"),
+    viewDashboard: testId("audiology", "view-dashboard"),
+    viewEntry: testId("audiology", "view-entry"),
+    dashboard: testId("audiology", "dashboard"),
+    layoutSideBySide: testId("audiology", "layout-side-by-side"),
+    layoutOverlay: testId("audiology", "layout-overlay"),
+    earCardRight: testId("audiology", "ear-card-right"),
+    earCardLeft: testId("audiology", "ear-card-left"),
+    chartRight: testId("audiology", "chart-right"),
+    chartLeft: testId("audiology", "chart-left"),
+    alertsRow: testId("audiology", "alerts-row"),
+    alertAsymmetry: testId("audiology", "alert-asymmetry"),
+    alertShift: testId("audiology", "alert-shift"),
+    alertSpeechDiscrepancy: testId("audiology", "alert-speech-discrepancy"),
+    alertLargeCanal: testId("audiology", "alert-large-canal"),
+    alertAbrWaveV: testId("audiology", "alert-abr-wave-v"),
+    historyStrip: testId("audiology", "history-strip"),
+    evolutionChart: testId("audiology", "evolution-chart"),
+    evolutionFrequency: testId("audiology", "evolution-frequency"),
+    tympanogramPanel: testId("audiology", "tympanogram-panel"),
+    speechPanel: testId("audiology", "speech-panel"),
+    tympJergerRight: testId("audiology", "tymp-jerger-right"),
+    tympJergerLeft: testId("audiology", "tymp-jerger-left"),
   },
 } as const;
 
@@ -673,6 +695,30 @@ export function audiogramRowTestId(publicId: string): string {
 
 export function audiogramOverlayToggleTestId(publicId: string): string {
   return publicIdTestId("audiology.overlay", publicId);
+}
+
+export function audiogramThumbnailTestId(publicId: string): string {
+  return publicIdTestId("audiology.thumbnail", publicId);
+}
+
+export function evolutionFrequencyTestId(frequencyHz: number): string {
+  return testId(
+    "audiology",
+    "evolution-freq",
+    examinationToken(`f${frequencyHz}`),
+  );
+}
+
+export function audiogramComparisonRowTestId(
+  ear: string,
+  frequencyHz: number,
+): string {
+  return testId(
+    "audiology",
+    "comparison-row",
+    examinationToken(ear),
+    examinationToken(`f${frequencyHz}`),
+  );
 }
 
 export function audiogramCellTestId(

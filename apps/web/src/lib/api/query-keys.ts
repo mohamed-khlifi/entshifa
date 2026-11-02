@@ -151,6 +151,14 @@ export const queryKeys = {
       [...queryKeys.audiology.all, "patient", patientId] as const,
     detail: (audiogramId: string) =>
       [...queryKeys.audiology.all, "detail", audiogramId] as const,
+    speechByPatient: (patientId: string) =>
+      [...queryKeys.audiology.all, "speech", patientId] as const,
+    tympanogramsByPatient: (patientId: string) =>
+      [...queryKeys.audiology.all, "tympanograms", patientId] as const,
+    oaeByPatient: (patientId: string) =>
+      [...queryKeys.audiology.all, "oae", patientId] as const,
+    abrByPatient: (patientId: string) =>
+      [...queryKeys.audiology.all, "abr", patientId] as const,
   },
   diagnoses: {
     all: ["diagnoses"] as const,

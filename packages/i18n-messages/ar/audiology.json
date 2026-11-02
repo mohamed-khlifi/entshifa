@@ -11,6 +11,13 @@
     "saved": "تم حفظ audiogram.",
     "saving": "جارٍ الحفظ…"
   },
+  "alerts": {
+    "abrWaveV": "علم latency موجة V بين الأذنين (ABR)",
+    "asymmetry": "تحقق معيار عدم التماثل",
+    "largeCanal": "حجم قناة أذن كبير",
+    "shift": "انزياح العتبة مقابل المرجع",
+    "speechDiscrepancy": "تباين الكلام–PTA"
+  },
   "chart": {
     "aria": "مخطط audiogram نغمي"
   },
@@ -19,9 +26,40 @@
     "bone": "عظمي"
   },
   "conflict": "تم تحديث audiogram هذا في مكان آخر. أعد التحميل قبل المتابعة.",
+  "configuration": {
+    "cookie_bite": "Cookie bite",
+    "corner": "Corner",
+    "flat": "مسطح",
+    "notched": "محزوز",
+    "precipitous": "حاد",
+    "rising": "صاعد",
+    "sloping": "منحدر"
+  },
+  "dashboard": {
+    "configurationUnknown": "التوزيع غير مسجل",
+    "earMetricsLine": "{loss} · {configuration}",
+    "evolutionAria": "تطور العتبات عبر الزمن",
+    "evolutionFrequency": "تردد التطور",
+    "evolutionTitle": "تطور العتبات",
+    "gradeUnknown": "الدرجة غير مسجلة",
+    "historyTitle": "سجل audiograms",
+    "layoutOverlay": "أذنان متراكبان",
+    "layoutSideBySide": "جنباً إلى جنب",
+    "layoutTitle": "تخطيط المخطط",
+    "lossTypeUnknown": "نوع الفقد غير مسجل",
+    "selectAudiogram": "اختر audiogram لفتح لوحة المعلومات.",
+    "viewDashboard": "لوحة المعلومات",
+    "viewEntry": "شبكة الإدخال"
+  },
   "ear": {
     "left": "يسار",
     "right": "يمين"
+  },
+  "etf": {
+    "impaired": "ضعيف",
+    "intact": "سليم",
+    "not_performed": "لم يُجرَ",
+    "patulous": "Patulous"
   },
   "fields": {
     "calibrationDate": "تاريخ المعايرة",
@@ -40,12 +78,24 @@
     "series": "السلسلة",
     "unmasked": "غير مقنع"
   },
+  "jerger": {
+    "A": "Type A",
+    "Ad": "Type Ad",
+    "As": "Type As",
+    "B": "Type B",
+    "C": "Type C"
+  },
   "method": {
     "boa": "BOA",
     "play": "audiometry لعب",
     "soundfield": "حقل صوتي",
     "standard": "قياسي",
     "vra": "VRA"
+  },
+  "lossType": {
+    "conductive": "توصيلي",
+    "mixed": "مختلط",
+    "sensorineural": "sensorineural"
   },
   "metrics": {
     "abg": "فجوة هواء-عظم {ear}: {value} dB HL",
@@ -91,6 +141,12 @@
     "good": "جيدة",
     "poor": "ضعيفة"
   },
+  "speech": {
+    "save": "حفظ audiometry الكلام",
+    "saved": "تم حفظ audiometry الكلام.",
+    "summary": "SRT {srt} dB · WRS {wrs}%",
+    "title": "audiometry الكلام"
+  },
   "state": {
     "empty": "لا audiogram بعد.",
     "error": "تعذر تحميل audiograms.",
@@ -103,7 +159,26 @@
     "headphones": "سماعات",
     "inserts": "سدادات"
   },
+  "tympanometry": {
+    "create": "إضافة tympanogram",
+    "etf": "ETF: {value}",
+    "etfUnknown": "ETF غير مسجل",
+    "jergerOverride": "تأكيد نوع Jerger",
+    "jergerUnknown": "نوع Jerger غير مسجل",
+    "save": "حفظ tympanogram",
+    "saved": "تم حفظ tympanogram.",
+    "summary": "Jerger {jerger} · peak {peak} daPa · compliance {compliance} mL"
+  },
   "validation": {
     "performedAt": "أدخل وقت إجراء audiogram."
+  },
+  "whoGrade": {
+    "complete": "كامل",
+    "mild": "خفيف",
+    "moderate": "متوسط",
+    "moderately_severe": "متوسط–شديد",
+    "normal": "طبيعي",
+    "profound": "عميق",
+    "severe": "شديد"
   }
 }

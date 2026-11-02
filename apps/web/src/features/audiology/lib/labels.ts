@@ -46,3 +46,38 @@ export function ptaFormulaLabel(t: AudiogramT, code: string | null): string {
   }
   return t(`ptaFormula.${code}` as "ptaFormula.3freq");
 }
+
+export function whoGradeLabel(t: AudiogramT, code: string | null): string {
+  if (!code) {
+    return t("dashboard.gradeUnknown");
+  }
+  return t(`whoGrade.${code}` as "whoGrade.normal");
+}
+
+export function lossTypeLabel(t: AudiogramT, code: string | null): string {
+  if (!code) {
+    return t("dashboard.lossTypeUnknown");
+  }
+  return t(`lossType.${code}` as "lossType.conductive");
+}
+
+export function configurationLabel(t: AudiogramT, code: string | null): string {
+  if (!code) {
+    return t("dashboard.configurationUnknown");
+  }
+  return t(`configuration.${code}` as "configuration.flat");
+}
+
+export function jergerLabel(t: AudiogramT, code: string | null): string {
+  if (!code) {
+    return t("tympanometry.jergerUnknown");
+  }
+  return t(`jerger.${code}` as "jerger.A");
+}
+
+export function etfLabel(t: AudiogramT, code: string | null): string {
+  if (!code) {
+    return t("tympanometry.etfUnknown");
+  }
+  return t(`etf.${code}` as "etf.intact");
+}

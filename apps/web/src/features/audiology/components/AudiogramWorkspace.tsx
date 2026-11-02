@@ -17,6 +17,7 @@ import {
   applyPlotToCells,
   AudiogramGrid,
 } from "./AudiogramChart/AudiogramGrid";
+import { AudiologyDashboard } from "./AudiologyDashboard";
 import { ComparisonOverlay } from "./ComparisonOverlay";
 import { useCurrentClinicQuery } from "@/features/clinics";
 import { usePatientQuery } from "@/features/patients";
@@ -85,6 +86,7 @@ export function AudiogramWorkspace({
   const [baseline, setBaseline] = useState<string | null>(null);
   const [overlayIds, setOverlayIds] = useState<Set<string>>(() => new Set());
   const [confirmFinalize, setConfirmFinalize] = useState(false);
+  const [viewMode, setViewMode] = useState<"dashboard" | "entry">("dashboard");
   const [issues, setIssues] = useState<string[]>([]);
   const [conflict, setConflict] = useState(false);
   const loadedKey = useRef<string | null>(null);
@@ -162,6 +164,15 @@ export function AudiogramWorkspace({
         thresholds: row.thresholds,
       }));
   }, [overlayCandidates, overlayIds]);
+
+  const overlayOptions: OverlaySeries[] = useMemo(() => {
+    return overlayCandidates.map((row) => ({
+      publicId: row.publicId,
+      performedAt: row.performedAt,
+      isBaseline: row.isBaseline,
+      thresholds: row.thresholds,
+    }));
+  }, [overlayCandidates]);
 
   async function persist(silent: boolean) {
     const found = draftIssues(draft);
@@ -286,314 +297,373 @@ export function AudiogramWorkspace({
           </button>
         </div>
       ) : null}
-      <div className="grid gap-4 md:grid-cols-2 print:hidden">
-        <Field
-          label={t("fields.performedAt")}
-          testId={testIds.audiology.performedAt}
-        >
-          <input
-            type="datetime-local"
-            disabled={readOnly}
-            value={draft.performedAt}
-            onChange={(event) =>
-              setDraft({ ...draft, performedAt: event.target.value })
-            }
-          />
-        </Field>
-        <SelectField
-          label={t("fields.transducer")}
-          testId={testIds.audiology.transducer}
-          value={draft.transducer}
-          disabled={readOnly}
-          options={TRANSDUCERS.map((value) => ({
-            value,
-            label: transducerLabel(t, value),
-          }))}
-          onChange={(transducer) =>
-            setDraft({
-              ...draft,
-              transducer: transducer as AudiogramDraft["transducer"],
-            })
-          }
-        />
-        <SelectField
-          label={t("fields.method")}
-          testId={testIds.audiology.method}
-          value={draft.method}
-          disabled={readOnly}
-          options={TEST_METHODS.map((value) => ({
-            value,
-            label: methodLabel(t, value),
-          }))}
-          onChange={(method) =>
-            setDraft({ ...draft, method: method as AudiogramDraft["method"] })
-          }
-        />
-        <SelectField
-          label={t("fields.reliability")}
-          testId={testIds.audiology.reliability}
-          value={draft.reliability}
-          disabled={readOnly}
-          options={RELIABILITY_VALUES.map((value) => ({
-            value,
-            label: reliabilityLabel(t, value),
-          }))}
-          onChange={(reliability) =>
-            setDraft({
-              ...draft,
-              reliability: reliability as AudiogramDraft["reliability"],
-            })
-          }
-        />
-        <Field
-          label={t("fields.equipment")}
-          testId={testIds.audiology.equipment}
-        >
-          <input
-            disabled={readOnly}
-            value={draft.equipment}
-            onChange={(event) =>
-              setDraft({ ...draft, equipment: event.target.value })
-            }
-          />
-        </Field>
-        <Field
-          label={t("fields.calibrationDate")}
-          testId={testIds.audiology.calibrationDate}
-        >
-          <input
-            type="date"
-            disabled={readOnly}
-            value={draft.calibrationDate}
-            onChange={(event) =>
-              setDraft({ ...draft, calibrationDate: event.target.value })
-            }
-          />
-        </Field>
-      </div>
-      <label className="flex items-center gap-2 text-sm print:hidden">
-        <input
-          type="checkbox"
-          disabled={readOnly}
-          checked={draft.showExtendedHigh}
-          onChange={(event) =>
-            setDraft({ ...draft, showExtendedHigh: event.target.checked })
-          }
-          {...testIdProps(testIds.audiology.extendedFreqToggle)}
-        />
-        {t("fields.extendedHigh")}
-      </label>
       <div className="flex flex-wrap gap-2 print:hidden">
-        <span className="text-sm font-medium">{t("plotMode.title")}</span>
-        <ModeButton
-          active={draft.activeMode.ear === "right"}
-          testId={testIds.audiology.activeEarRight}
-          disabled={readOnly}
-          onClick={() =>
-            setDraft({
-              ...draft,
-              activeMode: { ...draft.activeMode, ear: "right" },
-            })
-          }
+        <button
+          type="button"
+          className={`rounded-full px-3 py-1 text-sm ${
+            viewMode === "dashboard"
+              ? "bg-primary/10 text-primary"
+              : "border border-border text-muted-foreground"
+          }`}
+          onClick={() => setViewMode("dashboard")}
+          {...testIdProps(testIds.audiology.viewDashboard)}
         >
-          {t("plotMode.earRight")}
-        </ModeButton>
-        <ModeButton
-          active={draft.activeMode.ear === "left"}
-          testId={testIds.audiology.activeEarLeft}
-          disabled={readOnly}
-          onClick={() =>
-            setDraft({
-              ...draft,
-              activeMode: { ...draft.activeMode, ear: "left" },
-            })
-          }
+          {t("dashboard.viewDashboard")}
+        </button>
+        <button
+          type="button"
+          className={`rounded-full px-3 py-1 text-sm ${
+            viewMode === "entry"
+              ? "bg-primary/10 text-primary"
+              : "border border-border text-muted-foreground"
+          }`}
+          onClick={() => setViewMode("entry")}
+          {...testIdProps(testIds.audiology.viewEntry)}
         >
-          {t("plotMode.earLeft")}
-        </ModeButton>
-        <ModeButton
-          active={draft.activeMode.conduction === "air"}
-          testId={testIds.audiology.activeConductionAir}
-          disabled={readOnly}
-          onClick={() =>
-            setDraft({
-              ...draft,
-              activeMode: { ...draft.activeMode, conduction: "air" },
-            })
-          }
-        >
-          {t("plotMode.air")}
-        </ModeButton>
-        <ModeButton
-          active={draft.activeMode.conduction === "bone"}
-          testId={testIds.audiology.activeConductionBone}
-          disabled={readOnly}
-          onClick={() =>
-            setDraft({
-              ...draft,
-              activeMode: { ...draft.activeMode, conduction: "bone" },
-            })
-          }
-        >
-          {t("plotMode.bone")}
-        </ModeButton>
-        <ModeButton
-          active={draft.activeMode.isMasked}
-          testId={testIds.audiology.activeMaskedToggle}
-          disabled={readOnly}
-          onClick={() =>
-            setDraft({
-              ...draft,
-              activeMode: toggleActiveMasked(draft.activeMode),
-            })
-          }
-        >
-          {t("plotMode.masked")}
-        </ModeButton>
+          {t("dashboard.viewEntry")}
+        </button>
       </div>
-      <ComparisonOverlay
-        overlays={overlayCandidates.map((row) => ({
-          publicId: row.publicId,
-          performedAt: row.performedAt,
-          isBaseline: row.isBaseline,
-          thresholds: row.thresholds,
-        }))}
-        selectedIds={overlayIds}
-        onToggle={(publicId) => {
-          setOverlayIds((current) => {
-            const next = new Set(current);
-            if (next.has(publicId)) {
-              next.delete(publicId);
-            } else {
-              next.add(publicId);
-            }
-            return next;
-          });
-        }}
-      />
-      <AudiogramChart
-        frequencies={frequencies}
-        points={currentPoints}
-        overlays={overlays}
-        readOnly={readOnly}
-        activeEar={draft.activeMode.ear}
-        activeConduction={draft.activeMode.conduction}
-        activeMasked={draft.activeMode.isMasked}
-        onPlot={(frequencyHz, levelDb) => {
-          setDraft((current: AudiogramDraft) => ({
-            ...current,
-            focusFrequencyHz: frequencyHz,
-            cells: applyPlotToCells(
-              current.cells,
-              current.activeMode,
-              frequencyHz,
-              levelDb,
-            ),
-          }));
-        }}
-      />
-      <AudiogramGrid
-        frequencies={frequencies}
-        cells={draft.cells}
-        activeMode={draft.activeMode}
-        focusFrequencyHz={draft.focusFrequencyHz}
-        readOnly={readOnly}
-        showExtendedHigh={draft.showExtendedHigh}
-        onCellsChange={(cells) =>
-          setDraft((current: AudiogramDraft) => ({ ...current, cells }))
-        }
-        onActiveModeChange={(activeMode) =>
-          setDraft((current: AudiogramDraft) => ({ ...current, activeMode }))
-        }
-        onFocusFrequencyChange={(focusFrequencyHz) =>
-          setDraft((current: AudiogramDraft) => ({
-            ...current,
-            focusFrequencyHz,
-          }))
-        }
-        onToggleEar={() =>
-          setDraft((current: AudiogramDraft) => ({
-            ...current,
-            activeMode: cycleActiveEar(current.activeMode),
-          }))
-        }
-        onToggleMasked={() =>
-          setDraft((current: AudiogramDraft) => ({
-            ...current,
-            activeMode: toggleActiveMasked(current.activeMode),
-          }))
-        }
-      />
-      <ServerMetricsPanel draft={draft} />
-      {canInterpret ? (
-        <>
-          <label className="block space-y-1 text-sm print:hidden">
-            {t("fields.interpretation")}
-            <textarea
-              className="min-h-24 w-full rounded-lg border border-input bg-card px-3 py-2 text-sm"
-              disabled={readOnly}
-              value={draft.interpretationText}
-              onChange={(event) =>
-                setDraft({ ...draft, interpretationText: event.target.value })
+      {viewMode === "dashboard" ? (
+        <AudiologyDashboard
+          patientId={patientId}
+          audiogram={selected ?? null}
+          history={list.data?.items ?? []}
+          overlayCandidates={overlayOptions}
+          overlayIds={overlayIds}
+          onToggleOverlay={(publicId) => {
+            setOverlayIds((current) => {
+              const next = new Set(current);
+              if (next.has(publicId)) {
+                next.delete(publicId);
+              } else {
+                next.add(publicId);
               }
-              {...testIdProps(testIds.audiology.interpretation)}
+              return next;
+            });
+          }}
+        />
+      ) : null}
+      {viewMode === "entry" ? (
+        <>
+          <div className="grid gap-4 md:grid-cols-2 print:hidden">
+            <Field
+              label={t("fields.performedAt")}
+              testId={testIds.audiology.performedAt}
+            >
+              <input
+                type="datetime-local"
+                disabled={readOnly}
+                value={draft.performedAt}
+                onChange={(event) =>
+                  setDraft({ ...draft, performedAt: event.target.value })
+                }
+              />
+            </Field>
+            <SelectField
+              label={t("fields.transducer")}
+              testId={testIds.audiology.transducer}
+              value={draft.transducer}
+              disabled={readOnly}
+              options={TRANSDUCERS.map((value) => ({
+                value,
+                label: transducerLabel(t, value),
+              }))}
+              onChange={(transducer) =>
+                setDraft({
+                  ...draft,
+                  transducer: transducer as AudiogramDraft["transducer"],
+                })
+              }
             />
-          </label>
+            <SelectField
+              label={t("fields.method")}
+              testId={testIds.audiology.method}
+              value={draft.method}
+              disabled={readOnly}
+              options={TEST_METHODS.map((value) => ({
+                value,
+                label: methodLabel(t, value),
+              }))}
+              onChange={(method) =>
+                setDraft({
+                  ...draft,
+                  method: method as AudiogramDraft["method"],
+                })
+              }
+            />
+            <SelectField
+              label={t("fields.reliability")}
+              testId={testIds.audiology.reliability}
+              value={draft.reliability}
+              disabled={readOnly}
+              options={RELIABILITY_VALUES.map((value) => ({
+                value,
+                label: reliabilityLabel(t, value),
+              }))}
+              onChange={(reliability) =>
+                setDraft({
+                  ...draft,
+                  reliability: reliability as AudiogramDraft["reliability"],
+                })
+              }
+            />
+            <Field
+              label={t("fields.equipment")}
+              testId={testIds.audiology.equipment}
+            >
+              <input
+                disabled={readOnly}
+                value={draft.equipment}
+                onChange={(event) =>
+                  setDraft({ ...draft, equipment: event.target.value })
+                }
+              />
+            </Field>
+            <Field
+              label={t("fields.calibrationDate")}
+              testId={testIds.audiology.calibrationDate}
+            >
+              <input
+                type="date"
+                disabled={readOnly}
+                value={draft.calibrationDate}
+                onChange={(event) =>
+                  setDraft({ ...draft, calibrationDate: event.target.value })
+                }
+              />
+            </Field>
+          </div>
           <label className="flex items-center gap-2 text-sm print:hidden">
             <input
               type="checkbox"
               disabled={readOnly}
-              checked={draft.isBaseline}
+              checked={draft.showExtendedHigh}
               onChange={(event) =>
-                setDraft({ ...draft, isBaseline: event.target.checked })
+                setDraft({ ...draft, showExtendedHigh: event.target.checked })
               }
-              {...testIdProps(testIds.audiology.isBaseline)}
+              {...testIdProps(testIds.audiology.extendedFreqToggle)}
             />
-            {t("fields.isBaseline")}
+            {t("fields.extendedHigh")}
           </label>
+          <div className="flex flex-wrap gap-2 print:hidden">
+            <span className="text-sm font-medium">{t("plotMode.title")}</span>
+            <ModeButton
+              active={draft.activeMode.ear === "right"}
+              testId={testIds.audiology.activeEarRight}
+              disabled={readOnly}
+              onClick={() =>
+                setDraft({
+                  ...draft,
+                  activeMode: { ...draft.activeMode, ear: "right" },
+                })
+              }
+            >
+              {t("plotMode.earRight")}
+            </ModeButton>
+            <ModeButton
+              active={draft.activeMode.ear === "left"}
+              testId={testIds.audiology.activeEarLeft}
+              disabled={readOnly}
+              onClick={() =>
+                setDraft({
+                  ...draft,
+                  activeMode: { ...draft.activeMode, ear: "left" },
+                })
+              }
+            >
+              {t("plotMode.earLeft")}
+            </ModeButton>
+            <ModeButton
+              active={draft.activeMode.conduction === "air"}
+              testId={testIds.audiology.activeConductionAir}
+              disabled={readOnly}
+              onClick={() =>
+                setDraft({
+                  ...draft,
+                  activeMode: { ...draft.activeMode, conduction: "air" },
+                })
+              }
+            >
+              {t("plotMode.air")}
+            </ModeButton>
+            <ModeButton
+              active={draft.activeMode.conduction === "bone"}
+              testId={testIds.audiology.activeConductionBone}
+              disabled={readOnly}
+              onClick={() =>
+                setDraft({
+                  ...draft,
+                  activeMode: { ...draft.activeMode, conduction: "bone" },
+                })
+              }
+            >
+              {t("plotMode.bone")}
+            </ModeButton>
+            <ModeButton
+              active={draft.activeMode.isMasked}
+              testId={testIds.audiology.activeMaskedToggle}
+              disabled={readOnly}
+              onClick={() =>
+                setDraft({
+                  ...draft,
+                  activeMode: toggleActiveMasked(draft.activeMode),
+                })
+              }
+            >
+              {t("plotMode.masked")}
+            </ModeButton>
+          </div>
+          <ComparisonOverlay
+            overlays={overlayCandidates.map((row) => ({
+              publicId: row.publicId,
+              performedAt: row.performedAt,
+              isBaseline: row.isBaseline,
+              thresholds: row.thresholds,
+            }))}
+            selectedIds={overlayIds}
+            onToggle={(publicId) => {
+              setOverlayIds((current) => {
+                const next = new Set(current);
+                if (next.has(publicId)) {
+                  next.delete(publicId);
+                } else {
+                  next.add(publicId);
+                }
+                return next;
+              });
+            }}
+          />
+          <AudiogramChart
+            frequencies={frequencies}
+            points={currentPoints}
+            overlays={overlays}
+            readOnly={readOnly}
+            activeEar={draft.activeMode.ear}
+            activeConduction={draft.activeMode.conduction}
+            activeMasked={draft.activeMode.isMasked}
+            onPlot={(frequencyHz, levelDb) => {
+              setDraft((current: AudiogramDraft) => ({
+                ...current,
+                focusFrequencyHz: frequencyHz,
+                cells: applyPlotToCells(
+                  current.cells,
+                  current.activeMode,
+                  frequencyHz,
+                  levelDb,
+                ),
+              }));
+            }}
+          />
+          <AudiogramGrid
+            frequencies={frequencies}
+            cells={draft.cells}
+            activeMode={draft.activeMode}
+            focusFrequencyHz={draft.focusFrequencyHz}
+            readOnly={readOnly}
+            showExtendedHigh={draft.showExtendedHigh}
+            onCellsChange={(cells) =>
+              setDraft((current: AudiogramDraft) => ({ ...current, cells }))
+            }
+            onActiveModeChange={(activeMode) =>
+              setDraft((current: AudiogramDraft) => ({
+                ...current,
+                activeMode,
+              }))
+            }
+            onFocusFrequencyChange={(focusFrequencyHz) =>
+              setDraft((current: AudiogramDraft) => ({
+                ...current,
+                focusFrequencyHz,
+              }))
+            }
+            onToggleEar={() =>
+              setDraft((current: AudiogramDraft) => ({
+                ...current,
+                activeMode: cycleActiveEar(current.activeMode),
+              }))
+            }
+            onToggleMasked={() =>
+              setDraft((current: AudiogramDraft) => ({
+                ...current,
+                activeMode: toggleActiveMasked(current.activeMode),
+              }))
+            }
+          />
+          <ServerMetricsPanel draft={draft} />
+          {canInterpret ? (
+            <>
+              <label className="block space-y-1 text-sm print:hidden">
+                {t("fields.interpretation")}
+                <textarea
+                  className="min-h-24 w-full rounded-lg border border-input bg-card px-3 py-2 text-sm"
+                  disabled={readOnly}
+                  value={draft.interpretationText}
+                  onChange={(event) =>
+                    setDraft({
+                      ...draft,
+                      interpretationText: event.target.value,
+                    })
+                  }
+                  {...testIdProps(testIds.audiology.interpretation)}
+                />
+              </label>
+              <label className="flex items-center gap-2 text-sm print:hidden">
+                <input
+                  type="checkbox"
+                  disabled={readOnly}
+                  checked={draft.isBaseline}
+                  onChange={(event) =>
+                    setDraft({ ...draft, isBaseline: event.target.checked })
+                  }
+                  {...testIdProps(testIds.audiology.isBaseline)}
+                />
+                {t("fields.isBaseline")}
+              </label>
+            </>
+          ) : null}
+          {issues.length > 0 ? (
+            <ul {...testIdProps(testIds.audiology.validation)}>
+              {issues.map((issue) => (
+                <li key={issue}>
+                  {t(`validation.${issue}` as "validation.performedAt")}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          <div className="flex flex-wrap gap-2 print:hidden">
+            {canEnter ? (
+              <button
+                type="button"
+                className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
+                disabled={readOnly || save.isPending}
+                onClick={() => void persist(false)}
+                {...testIdProps(testIds.audiology.save)}
+              >
+                {save.isPending ? t("actions.saving") : t("actions.save")}
+              </button>
+            ) : null}
+            {canEnter ? (
+              <button
+                type="button"
+                className="rounded-full border border-border px-4 py-2 text-sm font-medium disabled:opacity-50"
+                disabled={readOnly || !draft.publicId || finalize.isPending}
+                onClick={() => setConfirmFinalize(true)}
+                {...testIdProps(testIds.audiology.finalize)}
+              >
+                {t("actions.finalize")}
+              </button>
+            ) : null}
+            <button
+              type="button"
+              className="rounded-full border border-border px-4 py-2 text-sm font-medium"
+              onClick={() => window.print()}
+              {...testIdProps(testIds.audiology.print)}
+            >
+              {t("actions.print")}
+            </button>
+          </div>
         </>
       ) : null}
-      {issues.length > 0 ? (
-        <ul {...testIdProps(testIds.audiology.validation)}>
-          {issues.map((issue) => (
-            <li key={issue}>
-              {t(`validation.${issue}` as "validation.performedAt")}
-            </li>
-          ))}
-        </ul>
-      ) : null}
-      <div className="flex flex-wrap gap-2 print:hidden">
-        {canEnter ? (
-          <button
-            type="button"
-            className="rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground disabled:opacity-50"
-            disabled={readOnly || save.isPending}
-            onClick={() => void persist(false)}
-            {...testIdProps(testIds.audiology.save)}
-          >
-            {save.isPending ? t("actions.saving") : t("actions.save")}
-          </button>
-        ) : null}
-        {canEnter ? (
-          <button
-            type="button"
-            className="rounded-full border border-border px-4 py-2 text-sm font-medium disabled:opacity-50"
-            disabled={readOnly || !draft.publicId || finalize.isPending}
-            onClick={() => setConfirmFinalize(true)}
-            {...testIdProps(testIds.audiology.finalize)}
-          >
-            {t("actions.finalize")}
-          </button>
-        ) : null}
-        <button
-          type="button"
-          className="rounded-full border border-border px-4 py-2 text-sm font-medium"
-          onClick={() => window.print()}
-          {...testIdProps(testIds.audiology.print)}
-        >
-          {t("actions.print")}
-        </button>
-      </div>
       {confirmFinalize ? (
         <div className="flex gap-2 print:hidden">
           <button
