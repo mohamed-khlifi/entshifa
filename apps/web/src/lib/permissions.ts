@@ -25,4 +25,6 @@ export const Permission = {
   PRESCRIPTION_SIGN: "prescription.sign",
   RECALL_READ: "recall.read",
   RECALL_WRITE: "recall.write",
+  AUDIOLOGY_ENTER: "audiology.enter",
+  AUDIOLOGY_INTERPRET: "audiology.interpret",
 } as const;

@@ -1,0 +1,109 @@
+{
+  "actions": {
+    "cancelFinalize": "Continuer l’édition",
+    "confirmFinalize": "Finaliser l’audiogramme",
+    "finalize": "Finaliser",
+    "finalized": "Audiogramme finalisé.",
+    "new": "Nouvel audiogramme",
+    "print": "Imprimer l’audiogramme",
+    "reload": "Recharger l’audiogramme",
+    "save": "Enregistrer l’audiogramme",
+    "saved": "Audiogramme enregistré.",
+    "saving": "Enregistrement…"
+  },
+  "chart": {
+    "aria": "Audiogramme tonal pur"
+  },
+  "conduction": {
+    "air": "Aérienne",
+    "bone": "Osseuse"
+  },
+  "conflict": "Cet audiogramme a été modifié ailleurs. Rechargez avant de continuer.",
+  "ear": {
+    "left": "Gauche",
+    "right": "Droit"
+  },
+  "fields": {
+    "calibrationDate": "Date d’étalonnage",
+    "equipment": "Appareil",
+    "extendedHigh": "Hautes fréquences étendues (surveillance ototoxique)",
+    "interpretation": "Interprétation",
+    "isBaseline": "Audiogramme de référence",
+    "method": "Méthode",
+    "performedAt": "Réalisé le",
+    "reliability": "Fiabilité",
+    "transducer": "Transducteur"
+  },
+  "grid": {
+    "masked": "Masquée",
+    "noResponseShort": "SR",
+    "series": "Série",
+    "unmasked": "Non masquée"
+  },
+  "method": {
+    "boa": "BERA comportemental",
+    "play": "Audiométrie ludique",
+    "soundfield": "Champ libre",
+    "standard": "Standard",
+    "vra": "RPO"
+  },
+  "metrics": {
+    "abg": "EAO {ear} : {value} dB HL",
+    "asymmetry": "Critère d’asymétrie atteint",
+    "configuration": "Configuration {ear} : {value}",
+    "formulaUnknown": "Formule PTA non enregistrée",
+    "grade": "Degré {ear} : {value}",
+    "lossType": "Type de perte {ear} : {value}",
+    "pta": "PTA {ear} : {value} dB HL ({formula})",
+    "shift": "Décalage seuil vs référence",
+    "title": "Synthèse calculée (serveur)"
+  },
+  "overlay": {
+    "baseline": "Référence",
+    "legend": "Les superpositions utilisent des symboles plus clairs et des lignes pointillées.",
+    "title": "Comparer avec les audiogrammes antérieurs"
+  },
+  "plotMode": {
+    "air": "Aérienne",
+    "bone": "Osseuse",
+    "earLeft": "Oreille gauche",
+    "earRight": "Oreille droite",
+    "masked": "Masquée",
+    "title": "Mode de tracé"
+  },
+  "print": {
+    "formula": "Formule PTA : {formula}",
+    "interpretation": "Interprétation",
+    "patient": "Patient",
+    "performed": "Réalisé le {date}",
+    "reliability": "Fiabilité : {value}",
+    "symbols": "Symboles selon la convention audiologique standard.",
+    "title": "Audiogramme tonal pur"
+  },
+  "ptaFormula": {
+    "3freq": "PTA 3 fréquences",
+    "4freq_who": "PTA 4 fréquences OMS",
+    "fletcher": "PTA Fletcher",
+    "high_freq": "PTA hautes fréquences"
+  },
+  "reliability": {
+    "fair": "Moyenne",
+    "good": "Bonne",
+    "poor": "Faible"
+  },
+  "state": {
+    "empty": "Aucun audiogramme pour l’instant.",
+    "error": "Impossible de charger les audiogrammes.",
+    "loading": "Chargement des audiogrammes…"
+  },
+  "title": "Audiologie",
+  "transducer": {
+    "bone_oscillator": "Oscillateur osseux",
+    "free_field": "Champ libre",
+    "headphones": "Casque",
+    "inserts": "Embouts"
+  },
+  "validation": {
+    "performedAt": "Indiquez la date et l’heure de l’audiogramme."
+  }
+}

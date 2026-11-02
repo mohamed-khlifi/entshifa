@@ -163,6 +163,7 @@ export const testIds = {
     navEndoscopy: testId("patients", "nav-endoscopy"),
     navLaryngoscopy: testId("patients", "nav-laryngoscopy"),
     navOtology: testId("patients", "nav-otology"),
+    navAudiology: testId("patients", "nav-audiology"),
     navProcedures: testId("patients", "nav-procedures"),
     navPrescriptions: testId("patients", "nav-prescriptions"),
     navConsultation: testId("patients", "nav-consultation"),
@@ -607,6 +608,42 @@ export const testIds = {
     devices: testId("otology", "devices"),
     map: testId("otology", "map"),
   },
+  audiology: {
+    root: testId("audiology", "root"),
+    loading: testId("audiology", "loading"),
+    error: testId("audiology", "error"),
+    empty: testId("audiology", "empty"),
+    list: testId("audiology", "list"),
+    newAudiogram: testId("audiology", "new"),
+    save: testId("audiology", "save"),
+    finalize: testId("audiology", "finalize"),
+    confirmFinalize: testId("audiology", "confirm-finalize"),
+    cancelFinalize: testId("audiology", "cancel-finalize"),
+    print: testId("audiology", "print"),
+    printSheet: testId("audiology", "print-sheet"),
+    conflict: testId("audiology", "conflict"),
+    reload: testId("audiology", "reload"),
+    validation: testId("audiology", "validation"),
+    performedAt: testId("audiology", "performed-at"),
+    transducer: testId("audiology", "transducer"),
+    method: testId("audiology", "method"),
+    reliability: testId("audiology", "reliability"),
+    equipment: testId("audiology", "equipment"),
+    calibrationDate: testId("audiology", "calibration-date"),
+    extendedFreqToggle: testId("audiology", "extended-freq"),
+    activeEarRight: testId("audiology", "active-ear-right"),
+    activeEarLeft: testId("audiology", "active-ear-left"),
+    activeConductionAir: testId("audiology", "active-conduction-air"),
+    activeConductionBone: testId("audiology", "active-conduction-bone"),
+    activeMaskedToggle: testId("audiology", "active-masked"),
+    chart: testId("audiology", "chart"),
+    grid: testId("audiology", "grid"),
+    overlayList: testId("audiology", "overlay-list"),
+    overlayLegend: testId("audiology", "overlay-legend"),
+    serverMetrics: testId("audiology", "server-metrics"),
+    interpretation: testId("audiology", "interpretation"),
+    isBaseline: testId("audiology", "is-baseline"),
+  },
 } as const;
 
 export function patientEarFlagTestId(code: string, laterality: string): string {
@@ -628,6 +665,74 @@ export function otologyExamTestId(publicId: string): string {
 
 export function otologyDeviceStatusTestId(publicId: string): string {
   return publicIdTestId("otology.device", publicId);
+}
+
+export function audiogramRowTestId(publicId: string): string {
+  return publicIdTestId("audiology.row", publicId);
+}
+
+export function audiogramOverlayToggleTestId(publicId: string): string {
+  return publicIdTestId("audiology.overlay", publicId);
+}
+
+export function audiogramCellTestId(
+  ear: string,
+  conduction: string,
+  masked: boolean,
+  frequencyHz: number,
+): string {
+  return testId(
+    "audiology",
+    "cell",
+    examinationToken(ear),
+    examinationToken(conduction),
+    masked ? "masked" : "unmasked",
+    examinationToken(`f${frequencyHz}`),
+  );
+}
+
+export function audiogramNoResponseTestId(
+  ear: string,
+  conduction: string,
+  masked: boolean,
+  frequencyHz: number,
+): string {
+  return testId(
+    "audiology",
+    "no-response",
+    examinationToken(ear),
+    examinationToken(conduction),
+    masked ? "masked" : "unmasked",
+    examinationToken(`f${frequencyHz}`),
+  );
+}
+
+export function audiogramChartPointTestId(
+  ear: string,
+  conduction: string,
+  masked: boolean,
+  frequencyHz: number,
+): string {
+  return testId(
+    "audiology",
+    "chart-point",
+    examinationToken(ear),
+    examinationToken(conduction),
+    masked ? "masked" : "unmasked",
+    examinationToken(`f${frequencyHz}`),
+  );
+}
+
+export function audiogramChartTargetTestId(
+  frequencyHz: number,
+  levelDb: number,
+): string {
+  return testId(
+    "audiology",
+    "chart-target",
+    examinationToken(`f${frequencyHz}`),
+    examinationToken(`l${levelDb}`),
+  );
 }
 
 export function examinationMapTestId(mapId: string): string {

@@ -1,0 +1,109 @@
+{
+  "actions": {
+    "cancelFinalize": "متابعة التحرير",
+    "confirmFinalize": "إنهاء audiogram",
+    "finalize": "إنهاء",
+    "finalized": "تم إنهاء audiogram.",
+    "new": "audiogram جديد",
+    "print": "طباعة audiogram",
+    "reload": "إعادة تحميل audiogram",
+    "save": "حفظ audiogram",
+    "saved": "تم حفظ audiogram.",
+    "saving": "جارٍ الحفظ…"
+  },
+  "chart": {
+    "aria": "مخطط audiogram نغمي"
+  },
+  "conduction": {
+    "air": "هوائي",
+    "bone": "عظمي"
+  },
+  "conflict": "تم تحديث audiogram هذا في مكان آخر. أعد التحميل قبل المتابعة.",
+  "ear": {
+    "left": "يسار",
+    "right": "يمين"
+  },
+  "fields": {
+    "calibrationDate": "تاريخ المعايرة",
+    "equipment": "الجهاز",
+    "extendedHigh": "ترددات عالية موسعة (مراقبة السموم الأذنية)",
+    "interpretation": "التفسير",
+    "isBaseline": "audiogram مرجعي",
+    "method": "الطريقة",
+    "performedAt": "تاريخ الإجراء",
+    "reliability": "الموثوقية",
+    "transducer": "محول الصوت"
+  },
+  "grid": {
+    "masked": "مقنع",
+    "noResponseShort": "لا استجابة",
+    "series": "السلسلة",
+    "unmasked": "غير مقنع"
+  },
+  "method": {
+    "boa": "BOA",
+    "play": "audiometry لعب",
+    "soundfield": "حقل صوتي",
+    "standard": "قياسي",
+    "vra": "VRA"
+  },
+  "metrics": {
+    "abg": "فجوة هواء-عظم {ear}: {value} dB HL",
+    "asymmetry": "تحقق معيار عدم التماثل",
+    "configuration": "التوزيع {ear}: {value}",
+    "formulaUnknown": "صيغة PTA غير مسجلة",
+    "grade": "الدرجة {ear}: {value}",
+    "lossType": "نوع الفقد {ear}: {value}",
+    "pta": "PTA {ear}: {value} dB HL ({formula})",
+    "shift": "انزياح العتبة مقابل المرجع",
+    "title": "ملخص محسوب (الخادم)"
+  },
+  "overlay": {
+    "baseline": "مرجع",
+    "legend": "الطبقات المتراكبة برموز أفتح وخطوط متقطعة.",
+    "title": "مقارنة مع audiograms سابقة"
+  },
+  "plotMode": {
+    "air": "هوائي",
+    "bone": "عظمي",
+    "earLeft": "الأذن اليسرى",
+    "earRight": "الأذن اليمنى",
+    "masked": "مقنع",
+    "title": "وضع الرسم"
+  },
+  "print": {
+    "formula": "صيغة PTA: {formula}",
+    "interpretation": "التفسير",
+    "patient": "المريض",
+    "performed": "أُجري في {date}",
+    "reliability": "الموثوقية: {value}",
+    "symbols": "الرموز وفق الاصطلاح السمعي القياسي.",
+    "title": "audiogram نغمي"
+  },
+  "ptaFormula": {
+    "3freq": "PTA ثلاث ترددات",
+    "4freq_who": "PTA أربع ترددات WHO",
+    "fletcher": "PTA Fletcher",
+    "high_freq": "PTA ترددات عالية"
+  },
+  "reliability": {
+    "fair": "متوسطة",
+    "good": "جيدة",
+    "poor": "ضعيفة"
+  },
+  "state": {
+    "empty": "لا audiogram بعد.",
+    "error": "تعذر تحميل audiograms.",
+    "loading": "جارٍ تحميل audiograms…"
+  },
+  "title": "السمع",
+  "transducer": {
+    "bone_oscillator": "مهتز عظمي",
+    "free_field": "حقل حر",
+    "headphones": "سماعات",
+    "inserts": "سدادات"
+  },
+  "validation": {
+    "performedAt": "أدخل وقت إجراء audiogram."
+  }
+}

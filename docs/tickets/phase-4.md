@@ -49,7 +49,7 @@ recorded.
 
 ---
 
-## - [ ] P4-04 Audiogram chart and entry grid (frontend)
+## - [x] P4-04 Audiogram chart and entry grid (frontend)
 
 Two-way binding between a keyboard-navigable numeric grid and the plotted
 chart. Standard audiometric symbols and colors. Overlay of previous audiograms.

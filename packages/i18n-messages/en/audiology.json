@@ -1,0 +1,109 @@
+{
+  "actions": {
+    "cancelFinalize": "Keep editing",
+    "confirmFinalize": "Finalize audiogram",
+    "finalize": "Finalize",
+    "finalized": "Audiogram finalized.",
+    "new": "New audiogram",
+    "print": "Print audiogram",
+    "reload": "Reload audiogram",
+    "save": "Save audiogram",
+    "saved": "Audiogram saved.",
+    "saving": "Saving…"
+  },
+  "chart": {
+    "aria": "Pure-tone audiogram chart"
+  },
+  "conduction": {
+    "air": "Air",
+    "bone": "Bone"
+  },
+  "conflict": "This audiogram was updated elsewhere. Reload before continuing.",
+  "ear": {
+    "left": "Left",
+    "right": "Right"
+  },
+  "fields": {
+    "calibrationDate": "Calibration date",
+    "equipment": "Equipment",
+    "extendedHigh": "Extended high frequencies (ototoxicity monitoring)",
+    "interpretation": "Interpretation",
+    "isBaseline": "Baseline audiogram",
+    "method": "Method",
+    "performedAt": "Performed at",
+    "reliability": "Reliability",
+    "transducer": "Transducer"
+  },
+  "grid": {
+    "masked": "Masked",
+    "noResponseShort": "NR",
+    "series": "Series",
+    "unmasked": "Unmasked"
+  },
+  "method": {
+    "boa": "BOA",
+    "play": "Play audiometry",
+    "soundfield": "Sound field",
+    "standard": "Standard",
+    "vra": "VRA"
+  },
+  "metrics": {
+    "abg": "ABG {ear}: {value} dB HL",
+    "asymmetry": "Asymmetry criterion met",
+    "configuration": "Configuration {ear}: {value}",
+    "formulaUnknown": "PTA formula not recorded",
+    "grade": "Grade {ear}: {value}",
+    "lossType": "Loss type {ear}: {value}",
+    "pta": "PTA {ear}: {value} dB HL ({formula})",
+    "shift": "Threshold shift vs baseline",
+    "title": "Computed summary (server)"
+  },
+  "overlay": {
+    "baseline": "Baseline",
+    "legend": "Overlays use lighter symbols and dashed lines.",
+    "title": "Compare with previous audiograms"
+  },
+  "plotMode": {
+    "bone": "Bone",
+    "air": "Air",
+    "earLeft": "Left ear",
+    "earRight": "Right ear",
+    "masked": "Masked",
+    "title": "Plotting mode"
+  },
+  "print": {
+    "formula": "PTA formula: {formula}",
+    "interpretation": "Interpretation",
+    "patient": "Patient",
+    "performed": "Performed {date}",
+    "reliability": "Reliability: {value}",
+    "symbols": "Symbols follow standard audiometric convention.",
+    "title": "Pure-tone audiogram"
+  },
+  "ptaFormula": {
+    "3freq": "3-frequency PTA",
+    "4freq_who": "4-frequency WHO PTA",
+    "fletcher": "Fletcher PTA",
+    "high_freq": "High-frequency PTA"
+  },
+  "reliability": {
+    "fair": "Fair",
+    "good": "Good",
+    "poor": "Poor"
+  },
+  "state": {
+    "empty": "No audiogram yet.",
+    "error": "Audiograms could not be loaded.",
+    "loading": "Loading audiograms…"
+  },
+  "title": "Audiology",
+  "transducer": {
+    "bone_oscillator": "Bone oscillator",
+    "free_field": "Free field",
+    "headphones": "Headphones",
+    "inserts": "Insert earphones"
+  },
+  "validation": {
+    "performedAt": "Enter when the audiogram was performed."
+  }
+}

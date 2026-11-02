@@ -53,6 +53,7 @@ export const MESSAGE_NAMESPACES = [
   "laryngoscopy",
   "officeProcedures",
   "otology",
+  "audiology",
   "encounters",
   "prescriptions",
   "recalls",
