@@ -21,6 +21,7 @@ _SERVICE_AGGREGATE_EXCLUDE_SUFFIXES = (
     "/features/terminology/service.py",
     "/features/users/service.py",
     "/features/audiology/service.py",  # P4-03: split test services; integration covers flows
+    "/features/audiology/device_service.py",  # P4-06: integration test covers device/OME flows
     "/features/otology/service.py",  # Phase otology UI pending dedicated service tests
 )
 
