@@ -8,9 +8,20 @@ import type {
   AudiogramUpdate,
   PageSchemaAbrResultRead,
   PageSchemaAudiogramRead,
+  PageSchemaHearingDeviceRead,
   PageSchemaOaeResultRead,
   PageSchemaSpeechAudiometryRead,
   PageSchemaTympanometryRead,
+  CandidacyEvaluate,
+  CandidacyEvaluationRead,
+  HearingDeviceCreate,
+  HearingDeviceRead,
+  MilestonesUpdate,
+  NewbornScreeningUpdate,
+  OmeEpisodeCreate,
+  OmeEpisodeRead,
+  PediatricAudiologyRead,
+  PediatricSummaryRead,
   SpeechAudiometryCreate,
   SpeechAudiometryRead,
   SpeechAudiometryUpdate,
@@ -209,4 +220,94 @@ export function fetchPatientAbrResults(
     `/api/v1/patients/${patientId}/abr-results?limit=50&offset=0`,
     scope,
   );
+}
+
+export function fetchPatientHearingDevices(
+  patientId: string,
+  scope: Scope,
+): Promise<PageSchemaHearingDeviceRead> {
+  return apiFetch<PageSchemaHearingDeviceRead>(
+    `/api/v1/patients/${patientId}/hearing-devices?limit=50&offset=0`,
+    scope,
+  );
+}
+
+export function createHearingDevice(
+  body: HearingDeviceCreate,
+  scope: Scope,
+  idempotencyKey: string,
+): Promise<HearingDeviceRead> {
+  return apiFetch<HearingDeviceRead>("/api/v1/hearing-devices", {
+    ...scope,
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: { "Idempotency-Key": idempotencyKey },
+  });
+}
+
+export function evaluateDeviceCandidacy(
+  body: CandidacyEvaluate,
+  scope: Scope,
+): Promise<CandidacyEvaluationRead> {
+  return apiFetch<CandidacyEvaluationRead>(
+    "/api/v1/audiology/candidacy/evaluate",
+    {
+      ...scope,
+      method: "POST",
+      body: JSON.stringify(body),
+    },
+  );
+}
+
+export function fetchPediatricAudiologySummary(
+  patientId: string,
+  scope: Scope,
+): Promise<PediatricSummaryRead> {
+  return apiFetch<PediatricSummaryRead>(
+    `/api/v1/patients/${patientId}/audiology/pediatric?limit=20&offset=0`,
+    scope,
+  );
+}
+
+export function updateNewbornScreening(
+  patientId: string,
+  body: NewbornScreeningUpdate,
+  scope: Scope,
+): Promise<PediatricAudiologyRead> {
+  return apiFetch<PediatricAudiologyRead>(
+    `/api/v1/patients/${patientId}/audiology/pediatric/screening`,
+    {
+      ...scope,
+      method: "PUT",
+      body: JSON.stringify(body),
+    },
+  );
+}
+
+export function updatePediatricMilestones(
+  patientId: string,
+  body: MilestonesUpdate,
+  scope: Scope,
+): Promise<PediatricAudiologyRead> {
+  return apiFetch<PediatricAudiologyRead>(
+    `/api/v1/patients/${patientId}/audiology/pediatric/milestones`,
+    {
+      ...scope,
+      method: "PUT",
+      body: JSON.stringify(body),
+    },
+  );
+}
+
+export function createOmeEpisode(
+  body: OmeEpisodeCreate,
+  scope: Scope,
+  idempotencyKey: string,
+): Promise<OmeEpisodeRead> {
+  return apiFetch<OmeEpisodeRead>("/api/v1/ome-episodes", {
+    ...scope,
+    method: "POST",
+    body: JSON.stringify(body),
+    headers: { "Idempotency-Key": idempotencyKey },
+  });
 }

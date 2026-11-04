@@ -408,6 +408,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/audiology/candidacy/evaluate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Evaluate Candidacy */
+        post: operations["evaluate_candidacy_api_v1_audiology_candidacy_evaluate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/active-clinic": {
         parameters: {
             query?: never;
@@ -1164,6 +1181,40 @@ export interface paths {
         patch: operations["update_formulary_entry_api_v1_formulary__formulary_id__patch"];
         trace?: never;
     };
+    "/api/v1/hearing-devices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Hearing Device */
+        post: operations["create_hearing_device_api_v1_hearing_devices_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/hearing-devices/{device_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Hearing Device */
+        patch: operations["update_hearing_device_api_v1_hearing_devices__device_id__patch"];
+        trace?: never;
+    };
     "/api/v1/invitations": {
         parameters: {
             query?: never;
@@ -1442,6 +1493,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ome-episodes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Ome Episode */
+        post: operations["create_ome_episode_api_v1_ome_episodes_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/ome-episodes/{ome_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Update Ome Episode */
+        patch: operations["update_ome_episode_api_v1_ome_episodes__ome_id__patch"];
+        trace?: never;
+    };
     "/api/v1/otology-exams": {
         parameters: {
             query?: never;
@@ -1582,6 +1667,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/patients/{patient_id}/audiology/candidacy/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm Candidacy */
+        post: operations["confirm_candidacy_api_v1_patients__patient_id__audiology_candidacy_confirm_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/audiology/pediatric": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Pediatric Audiology */
+        get: operations["get_pediatric_audiology_api_v1_patients__patient_id__audiology_pediatric_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/audiology/pediatric/milestones": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update Pediatric Milestones */
+        put: operations["update_pediatric_milestones_api_v1_patients__patient_id__audiology_pediatric_milestones_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/audiology/pediatric/screening": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Update Newborn Screening */
+        put: operations["update_newborn_screening_api_v1_patients__patient_id__audiology_pediatric_screening_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/patients/{patient_id}/ear-devices": {
         parameters: {
             query?: never;
@@ -1666,6 +1819,23 @@ export interface paths {
         head?: never;
         /** Update Flag */
         patch: operations["update_flag_api_v1_patients__patient_id__flags__flag_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/hearing-devices": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Hearing Devices */
+        get: operations["list_hearing_devices_api_v1_patients__patient_id__hearing_devices_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/patients/{patient_id}/history": {
@@ -3085,6 +3255,20 @@ export interface components {
             /** Maxmgperday */
             maxMgPerDay: number | string;
         };
+        /** AidedThresholdInput */
+        AidedThresholdInput: {
+            /** Frequencyhz */
+            frequencyHz: number;
+            /** Leveldb */
+            levelDb: number;
+        };
+        /** AidedThresholdRead */
+        AidedThresholdRead: {
+            /** Frequencyhz */
+            frequencyHz: number;
+            /** Leveldb */
+            levelDb: number;
+        };
         /** AppointmentCancel */
         AppointmentCancel: {
             /** Cancellationreason */
@@ -3383,6 +3567,11 @@ export interface components {
              */
             isBaseline: boolean;
             /**
+             * Isminimumresponselevel
+             * @default false
+             */
+            isMinimumResponseLevel: boolean;
+            /**
              * Method
              * @default standard
              * @enum {string}
@@ -3455,6 +3644,10 @@ export interface components {
             interpretationText: string | null;
             /** Isbaseline */
             isBaseline: boolean;
+            /** Isbinauralsoundfield */
+            isBinauralSoundfield: boolean;
+            /** Isminimumresponselevel */
+            isMinimumResponseLevel: boolean;
             /** Losstypeleft */
             lossTypeLeft: string | null;
             /** Losstyperight */
@@ -3514,6 +3707,8 @@ export interface components {
             interpretationText?: string | null;
             /** Isbaseline */
             isBaseline?: boolean | null;
+            /** Isminimumresponselevel */
+            isMinimumResponseLevel?: boolean | null;
             /** Method */
             method?: ("standard" | "play" | "vra" | "boa" | "soundfield") | null;
             /** Performedat */
@@ -3652,6 +3847,84 @@ export interface components {
             /** Version */
             version: string;
         };
+        /** CandidacyConfirm */
+        CandidacyConfirm: {
+            /** Audiogrampublicid */
+            audiogramPublicId?: string | null;
+            /**
+             * Communicationimpactassessed
+             * @default false
+             */
+            communicationImpactAssessed: boolean;
+            /**
+             * Hearingaidtrialcompleted
+             * @default false
+             */
+            hearingAidTrialCompleted: boolean;
+            /**
+             * Imagingclearance
+             * @default false
+             */
+            imagingClearance: boolean;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "hearing_aid" | "cochlear_implant";
+        };
+        /** CandidacyConfirmationRead */
+        CandidacyConfirmationRead: {
+            /**
+             * Confirmedat
+             * Format: date-time
+             */
+            confirmedAt: string;
+            /** Confirmedbypublicid */
+            confirmedByPublicId: string;
+            evaluation: components["schemas"]["CandidacyEvaluationRead"];
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "hearing_aid" | "cochlear_implant";
+        };
+        /** CandidacyEvaluate */
+        CandidacyEvaluate: {
+            /** Audiogrampublicid */
+            audiogramPublicId?: string | null;
+            /**
+             * Communicationimpactassessed
+             * @default false
+             */
+            communicationImpactAssessed: boolean;
+            /**
+             * Hearingaidtrialcompleted
+             * @default false
+             */
+            hearingAidTrialCompleted: boolean;
+            /**
+             * Imagingclearance
+             * @default false
+             */
+            imagingClearance: boolean;
+            /** Patientpublicid */
+            patientPublicId: string;
+        };
+        /** CandidacyEvaluationRead */
+        CandidacyEvaluationRead: {
+            /** Cochlearimplanteligible */
+            cochlearImplantEligible: boolean;
+            /** Cochlearimplantitems */
+            cochlearImplantItems: components["schemas"]["ChecklistItemRead"][];
+            /** Enginereference */
+            engineReference: string;
+            /** Engineversion */
+            engineVersion: string;
+            /** Hearingaideligible */
+            hearingAidEligible: boolean;
+            /** Hearingaiditems */
+            hearingAidItems: components["schemas"]["ChecklistItemRead"][];
+        };
         /** CavityCleaningWrite */
         CavityCleaningWrite: {
             /**
@@ -3674,6 +3947,13 @@ export interface components {
              * @enum {string}
              */
             purpose: "fitness" | "swimming_tubes" | "air_travel" | "diving" | "voice" | "attendance" | "other";
+        };
+        /** ChecklistItemRead */
+        ChecklistItemRead: {
+            /** Code */
+            code: string;
+            /** Met */
+            met: boolean;
         };
         /** ClinicMembershipList */
         ClinicMembershipList: {
@@ -5029,6 +5309,172 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** HearingDeviceCreate */
+        HearingDeviceCreate: {
+            /** Aidedthresholds */
+            aidedThresholds?: components["schemas"]["AidedThresholdInput"][] | null;
+            /** Batterytype */
+            batteryType?: string | null;
+            /** Brand */
+            brand?: string | null;
+            /** Complications */
+            complications?: string | null;
+            /** Dailyusehours */
+            dailyUseHours?: number | string | null;
+            /**
+             * Devicetype
+             * @enum {string}
+             */
+            deviceType: "bte" | "ric" | "ite" | "cros" | "bone_conduction" | "cochlear_implant" | "middle_ear_implant";
+            /**
+             * Ear
+             * @enum {string}
+             */
+            ear: "right" | "left";
+            /** Electrodearray */
+            electrodeArray?: string | null;
+            /** Fittedby */
+            fittedBy?: string | null;
+            /** Fittedon */
+            fittedOn?: string | null;
+            /** Implantactivationdate */
+            implantActivationDate?: string | null;
+            /** Lastprogrammedon */
+            lastProgrammedOn?: string | null;
+            /** Mappingdates */
+            mappingDates?: string[] | null;
+            /** Model */
+            model?: string | null;
+            /** Mriconditions */
+            mriConditions?: string | null;
+            /** Notes */
+            notes?: string | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Satisfaction */
+            satisfaction?: number | null;
+            /** Serial */
+            serial?: string | null;
+            /**
+             * Status
+             * @default active
+             * @enum {string}
+             */
+            status: "active" | "trial" | "inactive" | "replaced" | "removed";
+            /** Surgeon */
+            surgeon?: string | null;
+            /** Surgerydate */
+            surgeryDate?: string | null;
+            /** Warrantyend */
+            warrantyEnd?: string | null;
+        };
+        /** HearingDeviceRead */
+        HearingDeviceRead: {
+            /** Aidedthresholds */
+            aidedThresholds: components["schemas"]["AidedThresholdRead"][] | null;
+            /** Batterytype */
+            batteryType: string | null;
+            /** Brand */
+            brand: string | null;
+            /** Complications */
+            complications: string | null;
+            /** Dailyusehours */
+            dailyUseHours: number | null;
+            /**
+             * Devicetype
+             * @enum {string}
+             */
+            deviceType: "bte" | "ric" | "ite" | "cros" | "bone_conduction" | "cochlear_implant" | "middle_ear_implant";
+            /**
+             * Ear
+             * @enum {string}
+             */
+            ear: "right" | "left";
+            /** Electrodearray */
+            electrodeArray: string | null;
+            /** Fittedby */
+            fittedBy: string | null;
+            /** Fittedon */
+            fittedOn: string | null;
+            /** Implantactivationdate */
+            implantActivationDate: string | null;
+            /** Lastprogrammedon */
+            lastProgrammedOn: string | null;
+            /** Mappingdates */
+            mappingDates: string[] | null;
+            /** Model */
+            model: string | null;
+            /** Mriconditions */
+            mriConditions: string | null;
+            /** Notes */
+            notes: string | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Publicid */
+            publicId: string;
+            /** Satisfaction */
+            satisfaction: number | null;
+            /** Serial */
+            serial: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "active" | "trial" | "inactive" | "replaced" | "removed";
+            /** Surgeon */
+            surgeon: string | null;
+            /** Surgerydate */
+            surgeryDate: string | null;
+            /** Version */
+            version: number;
+            /** Warrantyend */
+            warrantyEnd: string | null;
+        };
+        /** HearingDeviceUpdate */
+        HearingDeviceUpdate: {
+            /** Aidedthresholds */
+            aidedThresholds?: components["schemas"]["AidedThresholdInput"][] | null;
+            /** Batterytype */
+            batteryType?: string | null;
+            /** Brand */
+            brand?: string | null;
+            /** Complications */
+            complications?: string | null;
+            /** Dailyusehours */
+            dailyUseHours?: number | string | null;
+            /** Electrodearray */
+            electrodeArray?: string | null;
+            /** Fittedby */
+            fittedBy?: string | null;
+            /** Fittedon */
+            fittedOn?: string | null;
+            /** Implantactivationdate */
+            implantActivationDate?: string | null;
+            /** Lastprogrammedon */
+            lastProgrammedOn?: string | null;
+            /** Mappingdates */
+            mappingDates?: string[] | null;
+            /** Model */
+            model?: string | null;
+            /** Mriconditions */
+            mriConditions?: string | null;
+            /** Notes */
+            notes?: string | null;
+            /** Satisfaction */
+            satisfaction?: number | null;
+            /** Serial */
+            serial?: string | null;
+            /** Status */
+            status?: ("active" | "trial" | "inactive" | "replaced" | "removed") | null;
+            /** Surgeon */
+            surgeon?: string | null;
+            /** Surgerydate */
+            surgeryDate?: string | null;
+            /** Version */
+            version: number;
+            /** Warrantyend */
+            warrantyEnd?: string | null;
+        };
         /** HistoryFieldConfig */
         HistoryFieldConfig: {
             /** Defaultvalue */
@@ -5492,6 +5938,13 @@ export interface components {
             /** Mfatoken */
             mfaToken: string;
         };
+        /** MilestonesUpdate */
+        MilestonesUpdate: {
+            /** Milestones */
+            milestones: {
+                [key: string]: boolean;
+            };
+        };
         /** NarrativeFindingIn */
         NarrativeFindingIn: {
             /** Bodysitecode */
@@ -5545,6 +5998,33 @@ export interface components {
              * @enum {string}
              */
             subtype: "nasal_fracture_reduction";
+        };
+        /** NewbornScreeningUpdate */
+        NewbornScreeningUpdate: {
+            /** Diagnosticabrdate */
+            diagnosticAbrDate?: string | null;
+            /** Diagnosticabrresultleft */
+            diagnosticAbrResultLeft?: ("normal" | "elevated" | "absent" | "not_tested") | null;
+            /** Diagnosticabrresultright */
+            diagnosticAbrResultRight?: ("normal" | "elevated" | "absent" | "not_tested") | null;
+            /** Interventiondate */
+            interventionDate?: string | null;
+            /** Interventiontype */
+            interventionType?: ("hearing_aid" | "cochlear_implant" | "speech_therapy" | "early_intervention" | "monitoring") | null;
+            /** Permanenthearingloss */
+            permanentHearingLoss?: boolean | null;
+            /** Rescreendate */
+            rescreenDate?: string | null;
+            /** Rescreenresultleft */
+            rescreenResultLeft?: ("pass" | "refer" | "not_tested") | null;
+            /** Rescreenresultright */
+            rescreenResultRight?: ("pass" | "refer" | "not_tested") | null;
+            /** Screendate */
+            screenDate?: string | null;
+            /** Screenresultleft */
+            screenResultLeft?: ("pass" | "refer" | "not_tested") | null;
+            /** Screenresultright */
+            screenResultRight?: ("pass" | "refer" | "not_tested") | null;
         };
         /** OaeBandInput */
         OaeBandInput: {
@@ -5942,6 +6422,92 @@ export interface components {
             /** Version */
             version: number;
         };
+        /** OmeEpisodeCreate */
+        OmeEpisodeCreate: {
+            /** Audiogrampublicid */
+            audiogramPublicId?: string | null;
+            /** Encounterpublicid */
+            encounterPublicId?: string | null;
+            /**
+             * Firstseenon
+             * Format: date
+             */
+            firstSeenOn: string;
+            /** Hearingleveldb */
+            hearingLevelDb?: number | string | null;
+            /**
+             * Laterality
+             * @enum {string}
+             */
+            laterality: "right" | "left" | "bilateral";
+            /** Notes */
+            notes?: string | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Tympanometrypublicid */
+            tympanometryPublicId?: string | null;
+            /** Watchfulwaitingstarton */
+            watchfulWaitingStartOn?: string | null;
+        };
+        /** OmeEpisodeRead */
+        OmeEpisodeRead: {
+            /** Audiogrampublicid */
+            audiogramPublicId: string | null;
+            /** Encounterpublicid */
+            encounterPublicId: string | null;
+            /**
+             * Firstseenon
+             * Format: date
+             */
+            firstSeenOn: string;
+            /** Hearingleveldb */
+            hearingLevelDb: number | null;
+            /**
+             * Laterality
+             * @enum {string}
+             */
+            laterality: "right" | "left" | "bilateral";
+            /** Notes */
+            notes: string | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Publicid */
+            publicId: string;
+            /** Resolvedon */
+            resolvedOn: string | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "watchful_waiting" | "resolved" | "persisted_tubes_proposed" | "tubes_inserted";
+            /** Tympanometrypublicid */
+            tympanometryPublicId: string | null;
+            /** Version */
+            version: number;
+            /**
+             * Watchfulwaitingdueon
+             * Format: date
+             */
+            watchfulWaitingDueOn: string;
+            /**
+             * Watchfulwaitingstarton
+             * Format: date
+             */
+            watchfulWaitingStartOn: string;
+        };
+        /** OmeEpisodeUpdate */
+        OmeEpisodeUpdate: {
+            /** Hearingleveldb */
+            hearingLevelDb?: number | string | null;
+            /** Notes */
+            notes?: string | null;
+            /** Resolvedon */
+            resolvedOn?: string | null;
+            /** Status */
+            status?: ("watchful_waiting" | "resolved" | "persisted_tubes_proposed" | "tubes_inserted") | null;
+            /** Version */
+            version: number;
+        };
         /** OtologyCreate */
         OtologyCreate: {
             /**
@@ -6245,6 +6811,12 @@ export interface components {
         PageSchema_FormularyEntryRead_: {
             /** Items */
             items: components["schemas"]["FormularyEntryRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[HearingDeviceRead] */
+        PageSchema_HearingDeviceRead_: {
+            /** Items */
+            items: components["schemas"]["HearingDeviceRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[LaryngoscopyExamRead] */
@@ -7070,6 +7642,61 @@ export interface components {
             /** Version */
             version: number;
         };
+        /** PediatricAudiologyRead */
+        PediatricAudiologyRead: {
+            /** Candidacysnapshot */
+            candidacySnapshot: Record<string, never> | null;
+            /** Cicandidacyconfirmedat */
+            ciCandidacyConfirmedAt: string | null;
+            /** Cicandidacyconfirmedbypublicid */
+            ciCandidacyConfirmedByPublicId: string | null;
+            /** Diagnosisby3Mstatus */
+            diagnosisBy3MStatus: string;
+            /** Diagnosticabrdate */
+            diagnosticAbrDate: string | null;
+            /** Diagnosticabrresultleft */
+            diagnosticAbrResultLeft: ("normal" | "elevated" | "absent" | "not_tested") | null;
+            /** Diagnosticabrresultright */
+            diagnosticAbrResultRight: ("normal" | "elevated" | "absent" | "not_tested") | null;
+            /** Ehdiengineversion */
+            ehdiEngineVersion: string | null;
+            /** Hacandidacyconfirmedat */
+            haCandidacyConfirmedAt: string | null;
+            /** Hacandidacyconfirmedbypublicid */
+            haCandidacyConfirmedByPublicId: string | null;
+            /** Interventionby6Mstatus */
+            interventionBy6MStatus: string;
+            /** Interventiondate */
+            interventionDate: string | null;
+            /** Interventiontype */
+            interventionType: ("hearing_aid" | "cochlear_implant" | "speech_therapy" | "early_intervention" | "monitoring") | null;
+            /** Patientpublicid */
+            patientPublicId: string;
+            /** Permanenthearingloss */
+            permanentHearingLoss: boolean;
+            /** Publicid */
+            publicId: string;
+            /** Rescreendate */
+            rescreenDate: string | null;
+            /** Rescreenresultleft */
+            rescreenResultLeft: ("pass" | "refer" | "not_tested") | null;
+            /** Rescreenresultright */
+            rescreenResultRight: ("pass" | "refer" | "not_tested") | null;
+            /** Screenby1Mstatus */
+            screenBy1MStatus: string;
+            /** Screendate */
+            screenDate: string | null;
+            /** Screenresultleft */
+            screenResultLeft: ("pass" | "refer" | "not_tested") | null;
+            /** Screenresultright */
+            screenResultRight: ("pass" | "refer" | "not_tested") | null;
+            /** Speechlanguagemilestones */
+            speechLanguageMilestones: {
+                [key: string]: boolean;
+            } | null;
+            /** Version */
+            version: number;
+        };
         /** PediatricDoseRequest */
         PediatricDoseRequest: {
             /** Formularyentrypublicid */
@@ -7078,6 +7705,12 @@ export interface components {
             indicationCode?: string | null;
             /** Weightkg */
             weightKg: number | string;
+        };
+        /** PediatricSummaryRead */
+        PediatricSummaryRead: {
+            /** Omeepisodes */
+            omeEpisodes: components["schemas"]["OmeEpisodeRead"][];
+            pediatric: components["schemas"]["PediatricAudiologyRead"] | null;
         };
         /** PeritonsillarWrite */
         "PeritonsillarWrite-Input": {
@@ -9838,6 +10471,41 @@ export interface operations {
             };
         };
     };
+    evaluate_candidacy_api_v1_audiology_candidacy_evaluate_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CandidacyEvaluate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CandidacyEvaluationRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     switch_clinic_api_v1_auth_active_clinic_post: {
         parameters: {
             query?: never;
@@ -11629,6 +12297,79 @@ export interface operations {
             };
         };
     };
+    create_hearing_device_api_v1_hearing_devices_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Idempotency-Key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HearingDeviceCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HearingDeviceRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_hearing_device_api_v1_hearing_devices__device_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                device_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["HearingDeviceUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HearingDeviceRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     create_invitation_api_v1_invitations_post: {
         parameters: {
             query?: never;
@@ -12427,6 +13168,79 @@ export interface operations {
             };
         };
     };
+    create_ome_episode_api_v1_ome_episodes_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Idempotency-Key"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OmeEpisodeCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OmeEpisodeRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_ome_episode_api_v1_ome_episodes__ome_id__patch: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                ome_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["OmeEpisodeUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OmeEpisodeRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     create_otology_exam_api_v1_otology_exams_post: {
         parameters: {
             query?: never;
@@ -12861,6 +13675,153 @@ export interface operations {
             };
         };
     };
+    confirm_candidacy_api_v1_patients__patient_id__audiology_candidacy_confirm_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CandidacyConfirm"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CandidacyConfirmationRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_pediatric_audiology_api_v1_patients__patient_id__audiology_pediatric_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PediatricSummaryRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_pediatric_milestones_api_v1_patients__patient_id__audiology_pediatric_milestones_put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MilestonesUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PediatricAudiologyRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_newborn_screening_api_v1_patients__patient_id__audiology_pediatric_screening_put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NewbornScreeningUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PediatricAudiologyRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_patient_ear_devices_api_v1_patients__patient_id__ear_devices_get: {
         parameters: {
             query?: {
@@ -13072,6 +14033,42 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PatientFlagRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_hearing_devices_api_v1_patients__patient_id__hearing_devices_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_HearingDeviceRead_"];
                 };
             };
             /** @description Validation Error */

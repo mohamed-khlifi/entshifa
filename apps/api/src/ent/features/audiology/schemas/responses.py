@@ -54,4 +54,6 @@ class AudiogramRead(CamelModel):
     status: str
     version: int
     has_extended_high_frequencies: bool
+    is_minimum_response_level: bool
+    is_binaural_soundfield: bool
     thresholds: list[ThresholdRead]

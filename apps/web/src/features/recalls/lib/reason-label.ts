@@ -28,6 +28,12 @@ export function recallReasonLabel(
       return t("reasons.otologyCavityCleaning");
     case "otology_canal_injury":
       return t("reasons.otologyCanalInjury");
+    case "audiology_ome_watchful_waiting":
+      return t("reasons.audiologyOmeWatchfulWaiting");
+    case "audiology_device_annual_review":
+      return t("reasons.audiologyDeviceAnnualReview");
+    case "audiology_device_warranty_expiry":
+      return t("reasons.audiologyDeviceWarrantyExpiry");
     default:
       return reasonText ?? "";
   }

@@ -33,6 +33,24 @@ vi.mock("../hooks/use-audiology", () => ({
   useSaveSpeechAudiometry: () => ({ mutateAsync: vi.fn(), isPending: false }),
   useSaveTympanogram: () => ({ mutateAsync: vi.fn(), isPending: false }),
   useInterpretTympanogram: () => ({ mutateAsync: vi.fn(), isPending: false }),
+  usePatientHearingDevices: () => ({ data: { items: [] } }),
+  useCreateHearingDevice: () => ({ mutateAsync: vi.fn(), isPending: false }),
+  useEvaluateCandidacy: () => ({
+    mutateAsync: vi.fn(),
+    isPending: false,
+    data: undefined,
+  }),
+  usePediatricAudiologySummary: () => ({
+    data: { pediatric: null, omeEpisodes: [] },
+    isLoading: false,
+    isError: false,
+  }),
+  useUpdateNewbornScreening: () => ({ mutateAsync: vi.fn(), isPending: false }),
+  useUpdatePediatricMilestones: () => ({
+    mutateAsync: vi.fn(),
+    isPending: false,
+  }),
+  useCreateOmeEpisode: () => ({ mutateAsync: vi.fn(), isPending: false }),
 }));
 
 vi.mock("@/features/clinics", () => ({

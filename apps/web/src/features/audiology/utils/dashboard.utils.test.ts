@@ -34,6 +34,8 @@ function audiogram(
     hasExtendedHighFrequencies: false,
     interpretationText: null,
     isBaseline: false,
+    isMinimumResponseLevel: false,
+    isBinauralSoundfield: false,
     lossTypeLeft: null,
     lossTypeRight: null,
     method: "standard",

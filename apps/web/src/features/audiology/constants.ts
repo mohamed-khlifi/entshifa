@@ -57,3 +57,22 @@ export const GRID_ROWS = [
   { ear: "left", conduction: "bone", isMasked: false },
   { ear: "left", conduction: "bone", isMasked: true },
 ] as const;
+
+export const HEARING_DEVICE_TYPES = [
+  "bte",
+  "ric",
+  "ite",
+  "cros",
+  "bone_conduction",
+  "cochlear_implant",
+  "middle_ear_implant",
+] as const;
+
+export const NEWBORN_SCREEN_RESULTS = ["pass", "refer", "not_tested"] as const;
+
+export const PEDIATRIC_MILESTONE_KEYS = [
+  "babbling",
+  "firstWords",
+  "twoWordPhrases",
+  "sentences",
+] as const;

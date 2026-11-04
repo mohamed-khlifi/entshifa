@@ -106,6 +106,10 @@ class AudiologyService:
             baseline_audiogram_id=int(baseline.id) if baseline is not None else None,
             interpretation_text=blank_to_none(body.interpretation_text),
             status="draft",
+            is_minimum_response_level=body.is_minimum_response_level,
+            is_binaural_soundfield=_is_binaural_soundfield(
+                body.method, body.transducer
+            ),
             created_by_id=user.user_id,
             updated_by_id=user.user_id,
         )
@@ -324,6 +328,12 @@ class AudiologyService:
             row.method = body.method
         if body.reliability is not None:
             row.reliability = body.reliability
+        if body.is_minimum_response_level is not None:
+            row.is_minimum_response_level = body.is_minimum_response_level
+        if body.method is not None or body.transducer is not None:
+            row.is_binaural_soundfield = _is_binaural_soundfield(
+                row.method, row.transducer
+            )
         if body.baseline_audiogram_public_id is not None:
             baseline = await self._refs.baseline_audiogram(
                 user,
@@ -476,6 +486,10 @@ def _hash(body: AudiogramCreate) -> str:
         body.model_dump(mode="json"), sort_keys=True, separators=(",", ":")
     )
     return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+
+def _is_binaural_soundfield(method: str, transducer: str) -> bool:
+    return method == "soundfield" or transducer == "free_field"
 
 
 def _assert_unique_thresholds(thresholds: list[ThresholdInput]) -> None:

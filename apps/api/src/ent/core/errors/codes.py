@@ -112,3 +112,9 @@ class ErrorCode(StrEnum):
     AUDIOLOGY_TYMPANOMETRY_NOT_FOUND = "audiology.tympanometry_not_found"
     AUDIOLOGY_OAE_NOT_FOUND = "audiology.oae_not_found"
     AUDIOLOGY_ABR_NOT_FOUND = "audiology.abr_not_found"
+    AUDIOLOGY_HEARING_DEVICE_NOT_FOUND = "audiology.hearing_device_not_found"
+    AUDIOLOGY_HEARING_DEVICE_VERSION_CONFLICT = (
+        "audiology.hearing_device_version_conflict"
+    )
+    AUDIOLOGY_OME_NOT_FOUND = "audiology.ome_not_found"
+    AUDIOLOGY_OME_VERSION_CONFLICT = "audiology.ome_version_conflict"

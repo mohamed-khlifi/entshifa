@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from ent.core.db.session import get_session
 from ent.core.i18n.content_locale import content_locale_from_accept_language
+from ent.features.audiology.device_service import HearingDeviceService
 from ent.features.audiology.evoked_service import AbrResultService, OaeResultService
 from ent.features.audiology.service import AudiologyService
 from ent.features.audiology.speech_service import SpeechAudiometryService
@@ -41,6 +42,12 @@ def get_abr_result_service(
     session: AsyncSession = Depends(get_session),
 ) -> AbrResultService:
     return AbrResultService(session=session)
+
+
+def get_hearing_device_service(
+    session: AsyncSession = Depends(get_session),
+) -> HearingDeviceService:
+    return HearingDeviceService(session=session)
 
 
 def get_content_locale(

@@ -56,3 +56,40 @@ SPEECH_RESOURCE_CREATE = "speech_audiometry.create"
 TYMPANOMETRY_RESOURCE_CREATE = "tympanometry.create"
 OAE_RESOURCE_CREATE = "oae_result.create"
 ABR_RESOURCE_CREATE = "abr_result.create"
+
+HEARING_DEVICE_TYPES = (
+    "bte",
+    "ric",
+    "ite",
+    "cros",
+    "bone_conduction",
+    "cochlear_implant",
+    "middle_ear_implant",
+)
+HEARING_DEVICE_STATUSES = ("active", "trial", "inactive", "replaced", "removed")
+NEWBORN_SCREEN_RESULTS = ("pass", "refer", "not_tested")
+DIAGNOSTIC_ABR_RESULTS = ("normal", "elevated", "absent", "not_tested")
+INTERVENTION_TYPES = (
+    "hearing_aid",
+    "cochlear_implant",
+    "speech_therapy",
+    "early_intervention",
+    "monitoring",
+)
+EHDI_BENCHMARK_STATUSES = (
+    "not_applicable",
+    "pending",
+    "met",
+    "late",
+    "overdue",
+)
+OME_STATUSES = (
+    "watchful_waiting",
+    "resolved",
+    "persisted_tubes_proposed",
+    "tubes_inserted",
+)
+CANDIDACY_KINDS = ("hearing_aid", "cochlear_implant")
+
+HEARING_DEVICE_RESOURCE_CREATE = "hearing_device.create"
+OME_EPISODE_RESOURCE_CREATE = "ome_episode.create"

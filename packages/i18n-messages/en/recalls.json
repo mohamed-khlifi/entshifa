@@ -87,6 +87,9 @@
     "title": "Recalls"
   },
   "reasons": {
+    "audiologyDeviceAnnualReview": "Hearing device annual review",
+    "audiologyDeviceWarrantyExpiry": "Hearing device warranty expiry",
+    "audiologyOmeWatchfulWaiting": "OME watchful waiting audiogram",
     "otologyCanalInjury": "Ear canal injury follow-up",
     "otologyCavityCleaning": "Mastoid cavity cleaning",
     "otologyTubeAudiogram": "Post-tube audiogram",

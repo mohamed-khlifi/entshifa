@@ -207,6 +207,18 @@ class Audiogram(ClinicalRecordMixin, Base):
         default="draft",
         server_default="draft",
     )
+    is_minimum_response_level: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=False,
+        server_default=text("0"),
+    )
+    is_binaural_soundfield: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=False,
+        server_default=text("0"),
+    )
 
     patient: Mapped[Patient] = relationship(foreign_keys=[patient_id], lazy="raise")
     encounter: Mapped[Encounter | None] = relationship(
@@ -420,3 +432,9 @@ class AudiologyRequestIdempotency(SurrogatePkMixin, TimestampMixin, Base):
 from ent.features.audiology.guard import install_audiology_guards  # noqa: E402
 
 install_audiology_guards(Audiogram, AudiogramThreshold)
+
+from ent.features.audiology.device_models import (  # noqa: E402,F401
+    HearingDevice,
+    OmeEpisode,
+    PediatricAudiologyRecord,
+)

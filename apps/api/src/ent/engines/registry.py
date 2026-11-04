@@ -16,6 +16,14 @@ from ent.engines.audiology.asymmetry import CODE as ASYMMETRY_CODE
 from ent.engines.audiology.asymmetry import FORMULA as ASYMMETRY_FORMULA
 from ent.engines.audiology.asymmetry import REFERENCE as ASYMMETRY_REFERENCE
 from ent.engines.audiology.asymmetry import VERSION as ASYMMETRY_VERSION
+from ent.engines.audiology.candidacy import CODE as CANDIDACY_CODE
+from ent.engines.audiology.candidacy import FORMULA as CANDIDACY_FORMULA
+from ent.engines.audiology.candidacy import REFERENCE as CANDIDACY_REFERENCE
+from ent.engines.audiology.candidacy import VERSION as CANDIDACY_VERSION
+from ent.engines.audiology.ehdi_136 import CODE as EHDI_CODE
+from ent.engines.audiology.ehdi_136 import FORMULA as EHDI_FORMULA
+from ent.engines.audiology.ehdi_136 import REFERENCE as EHDI_REFERENCE
+from ent.engines.audiology.ehdi_136 import VERSION as EHDI_VERSION
 from ent.engines.audiology.impairment import CODE as IMPAIRMENT_CODE
 from ent.engines.audiology.impairment import FORMULA as IMPAIRMENT_FORMULA
 from ent.engines.audiology.impairment import REFERENCE as IMPAIRMENT_REFERENCE
@@ -265,5 +273,19 @@ def registered_calculators() -> tuple[CalculatorSpec, ...]:
             reference=ABR_REFERENCE,
             unit="ms",
             formula=ABR_FORMULA,
+        ),
+        CalculatorSpec(
+            code=EHDI_CODE,
+            version=EHDI_VERSION,
+            reference=EHDI_REFERENCE,
+            unit="overdue_benchmark",
+            formula=EHDI_FORMULA,
+        ),
+        CalculatorSpec(
+            code=CANDIDACY_CODE,
+            version=CANDIDACY_VERSION,
+            reference=CANDIDACY_REFERENCE,
+            unit=None,
+            formula=CANDIDACY_FORMULA,
         ),
     )

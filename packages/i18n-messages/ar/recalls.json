@@ -87,6 +87,9 @@
     "title": "المتابعات"
   },
   "reasons": {
+    "audiologyDeviceAnnualReview": "Hearing device annual review",
+    "audiologyDeviceWarrantyExpiry": "Hearing device warranty expiry",
+    "audiologyOmeWatchfulWaiting": "OME watchful waiting audiogram",
     "otologyCanalInjury": "متابعة إصابة مجرى السمع",
     "otologyCavityCleaning": "تنظيف تجويف الخشاء",
     "otologyTubeAudiogram": "مخطط سمع بعد أنبوب التهوية",

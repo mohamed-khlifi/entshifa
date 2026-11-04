@@ -265,6 +265,62 @@ SYSTEM_PROTOCOLS: tuple[ProtocolSeedSpec, ...] = (
             ),
         ),
     ),
+    # Feature spec §8.8 / §15.3: OME watchful waiting audiogram at 3 months (90d + 14d).
+    ProtocolSeedSpec(
+        code="PROT.OME_WATCHFUL_WAITING",
+        name_key="recalls.protocols.ome_watchful_waiting",
+        trigger_type="manual",
+        trigger_concept_codes=(),
+        rules=(
+            ProtocolRuleSeedSpec(
+                sequence=1,
+                offset_days=90,
+                window_days=14,
+                action_type="test",
+                label_key="audiology_ome_watchful_waiting",
+                action_config={
+                    "test": "audiogram",
+                    "offsetMonths": 3,
+                },
+            ),
+        ),
+    ),
+    # Feature spec §8.7: annual device review and warranty expiry recalls.
+    ProtocolSeedSpec(
+        code="PROT.HEARING_DEVICE_FOLLOWUP",
+        name_key="recalls.protocols.hearing_device_followup",
+        trigger_type="manual",
+        trigger_concept_codes=(),
+        rules=(
+            ProtocolRuleSeedSpec(
+                sequence=1,
+                offset_days=365,
+                window_days=30,
+                action_type="visit",
+                label_key="audiology_device_annual_review",
+                action_config={
+                    "offsetMonths": 12,
+                    "repeatEveryMonths": 12,
+                    "stopCondition": {
+                        "deviceType": "hearing_device",
+                        "closedStatuses": ["inactive", "replaced", "removed"],
+                    },
+                },
+            ),
+            ProtocolRuleSeedSpec(
+                sequence=2,
+                offset_days=0,
+                window_days=30,
+                action_type="visit",
+                label_key="audiology_device_warranty_expiry",
+                condition={"field": "warranty_end", "exists": True},
+                action_config={
+                    "dueDateField": "warranty_end",
+                    "requireDueDateField": True,
+                },
+            ),
+        ),
+    ),
 )
 
 

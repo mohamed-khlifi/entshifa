@@ -48,6 +48,7 @@ TENANT_PATH_PARAMS = frozenset(
         "tympanogram_id",
         "oae_id",
         "abr_id",
+        "ome_id",
     }
 )
 

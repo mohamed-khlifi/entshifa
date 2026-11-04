@@ -22,6 +22,8 @@ from ent.engines.recalls.protocol_resolver import (
     PlannedProtocolRecall,
     ProcedureTriggerContext,
     ProtocolRuleSpec,
+    _resolve_due_on,
+    evaluate_condition,
     is_stop_condition_met,
     resolve_protocol,
 )
@@ -561,13 +563,123 @@ async def handle_audiogram_created(event: DomainEvent) -> None:
             config = (
                 recall.action_config if isinstance(recall.action_config, dict) else {}
             )
-            if (
-                config.get("test") != "audiogram"
-                and recall.reason_key != "otology_tube_audiogram"
+            if config.get("test") != "audiogram" and recall.reason_key not in (
+                "otology_tube_audiogram",
+                "audiology_ome_watchful_waiting",
             ):
                 continue
             recall.status = "done"
         await session.commit()
+
+
+async def materialize_protocol_rule_recall(
+    session: AsyncSession,
+    *,
+    clinic_id: int,
+    patient_id: int,
+    user_id: int | None,
+    protocol_code: str,
+    rule_sequence: int,
+    anchor_date: date,
+    laterality: str = "na",
+    attributes: dict[str, Any] | None = None,
+    source_type: str = "manual",
+    source_id: int | None = None,
+) -> Recall | None:
+    """Create one recall row from a seeded protocol rule (P4-06)."""
+
+    await ensure_protocols_for_clinic(session, clinic_id=clinic_id)
+    proto_repo = ProtocolRepository(session, clinic_id=clinic_id)
+    protocol = await proto_repo.get_effective_by_code(protocol_code)
+    if protocol is None or not protocol.is_active:
+        return None
+    rule = next(
+        (row for row in protocol.rules if int(row.sequence) == rule_sequence),
+        None,
+    )
+    if rule is None or rule.deleted_at is not None:
+        return None
+    attrs = dict(attributes or {})
+    rule_spec = ProtocolRuleSpec(
+        protocol_id=int(protocol.id),
+        protocol_code=protocol.code,
+        rule_id=int(rule.id),
+        sequence=int(rule.sequence),
+        offset_days=int(rule.offset_days),
+        window_days=int(rule.window_days),
+        action_type=rule.action_type,
+        action_config=dict(rule.action_config) if rule.action_config else None,
+        condition=dict(rule.condition) if rule.condition else None,
+        label_key=rule.label_key,
+    )
+    if rule_spec.condition and not evaluate_condition(rule_spec.condition, attrs):
+        return None
+    context = ProcedureTriggerContext(
+        procedure_concept_code=protocol.code,
+        performed_on=anchor_date,
+        laterality=laterality,
+        attributes=attrs,
+        devices=(),
+    )
+    due_on = _resolve_due_on(rule_spec, context)
+    if due_on is None:
+        return None
+    merged_config: dict[str, Any] = {
+        "reasonKey": rule.label_key,
+        **(rule.action_config or {}),
+    }
+    recall_repo = ProcedureRecallRepository(session, clinic_id=clinic_id)
+    open_rows = await recall_repo.list_open_for_patient(patient_id)
+    if any(
+        row.reason_key == rule.label_key
+        and row.laterality == laterality
+        and row.status in {"pending", "booked", "unreachable"}
+        for row in open_rows
+    ):
+        return None
+    row = Recall(
+        public_id=new_ulid(),
+        clinic_id=clinic_id,
+        patient_id=patient_id,
+        source_type=source_type,
+        source_id=source_id,
+        protocol_id=int(protocol.id),
+        protocol_rule_id=int(rule.id),
+        reason_key=rule.label_key,
+        due_on=due_on,
+        window_days=int(rule.window_days),
+        action_type=rule.action_type,
+        action_config=merged_config,
+        laterality=laterality,
+        status="pending",
+        created_by_id=user_id,
+        updated_by_id=user_id,
+    )
+    await recall_repo.add(row)
+    return row
+
+
+async def cancel_open_recalls_for_reason(
+    session: AsyncSession,
+    *,
+    clinic_id: int,
+    patient_id: int,
+    reason_key: str,
+    cancelled_reason: str,
+    user_id: int | None,
+) -> int:
+    recall_repo = ProcedureRecallRepository(session, clinic_id=clinic_id)
+    rows = await recall_repo.list_open_for_patient(patient_id)
+    count = 0
+    for row in rows:
+        if row.reason_key != reason_key:
+            continue
+        row.status = "cancelled"
+        row.cancelled_reason = cancelled_reason
+        row.updated_by_id = user_id
+        row.version = int(row.version) + 1
+        count += 1
+    return count
 
 
 async def handle_tympanometry_created(event: DomainEvent) -> None:

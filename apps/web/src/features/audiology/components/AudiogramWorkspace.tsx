@@ -18,6 +18,8 @@ import {
   AudiogramGrid,
 } from "./AudiogramChart/AudiogramGrid";
 import { AudiologyDashboard } from "./AudiologyDashboard";
+import { HearingDevicesPanel } from "./HearingDevicesPanel";
+import { PediatricAudiologyPanel } from "./PediatricAudiologyPanel";
 import { ComparisonOverlay } from "./ComparisonOverlay";
 import { useCurrentClinicQuery } from "@/features/clinics";
 import { usePatientQuery } from "@/features/patients";
@@ -86,7 +88,9 @@ export function AudiogramWorkspace({
   const [baseline, setBaseline] = useState<string | null>(null);
   const [overlayIds, setOverlayIds] = useState<Set<string>>(() => new Set());
   const [confirmFinalize, setConfirmFinalize] = useState(false);
-  const [viewMode, setViewMode] = useState<"dashboard" | "entry">("dashboard");
+  const [viewMode, setViewMode] = useState<
+    "dashboard" | "entry" | "devices" | "pediatric"
+  >("dashboard");
   const [issues, setIssues] = useState<string[]>([]);
   const [conflict, setConflict] = useState(false);
   const loadedKey = useRef<string | null>(null);
@@ -322,6 +326,30 @@ export function AudiogramWorkspace({
         >
           {t("dashboard.viewEntry")}
         </button>
+        <button
+          type="button"
+          className={`rounded-full px-3 py-1 text-sm ${
+            viewMode === "devices"
+              ? "bg-primary/10 text-primary"
+              : "border border-border text-muted-foreground"
+          }`}
+          onClick={() => setViewMode("devices")}
+          {...testIdProps(testIds.audiology.viewDevices)}
+        >
+          {t("dashboard.viewDevices")}
+        </button>
+        <button
+          type="button"
+          className={`rounded-full px-3 py-1 text-sm ${
+            viewMode === "pediatric"
+              ? "bg-primary/10 text-primary"
+              : "border border-border text-muted-foreground"
+          }`}
+          onClick={() => setViewMode("pediatric")}
+          {...testIdProps(testIds.audiology.viewPediatric)}
+        >
+          {t("dashboard.viewPediatric")}
+        </button>
       </div>
       {viewMode === "dashboard" ? (
         <AudiologyDashboard
@@ -341,6 +369,18 @@ export function AudiogramWorkspace({
               return next;
             });
           }}
+        />
+      ) : null}
+      {viewMode === "devices" ? (
+        <HearingDevicesPanel
+          patientId={patientId}
+          audiogramPublicId={audiogramId}
+        />
+      ) : null}
+      {viewMode === "pediatric" ? (
+        <PediatricAudiologyPanel
+          patientId={patientId}
+          audiogramPublicId={audiogramId}
         />
       ) : null}
       {viewMode === "entry" ? (
@@ -445,6 +485,29 @@ export function AudiogramWorkspace({
             />
             {t("fields.extendedHigh")}
           </label>
+          <label className="flex items-center gap-2 text-sm print:hidden">
+            <input
+              type="checkbox"
+              disabled={readOnly}
+              checked={draft.isMinimumResponseLevel}
+              onChange={(event) =>
+                setDraft({
+                  ...draft,
+                  isMinimumResponseLevel: event.target.checked,
+                })
+              }
+              {...testIdProps(testIds.audiology.minimumResponseLevel)}
+            />
+            {t("fields.minimumResponseLevel")}
+          </label>
+          {selected?.isBinauralSoundfield ? (
+            <p
+              className="text-sm text-muted-foreground print:hidden"
+              {...testIdProps(testIds.audiology.binauralSoundfieldFlag)}
+            >
+              {t("behavioralFlags.binauralSoundfield")}
+            </p>
+          ) : null}
           <div className="flex flex-wrap gap-2 print:hidden">
             <span className="text-sm font-medium">{t("plotMode.title")}</span>
             <ModeButton

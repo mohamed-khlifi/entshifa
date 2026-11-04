@@ -65,6 +65,7 @@ export type AudiogramDraft = {
   interpretationText: string;
   isBaseline: boolean;
   showExtendedHigh: boolean;
+  isMinimumResponseLevel: boolean;
   cells: Record<string, ThresholdCell>;
   activeMode: ActivePlotMode;
   focusFrequencyHz: number;

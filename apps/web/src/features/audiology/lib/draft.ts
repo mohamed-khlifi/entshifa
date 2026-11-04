@@ -33,6 +33,7 @@ export function emptyDraft(performedAt: string): AudiogramDraft {
     interpretationText: "",
     isBaseline: false,
     showExtendedHigh: false,
+    isMinimumResponseLevel: false,
     cells: {},
     activeMode: { ear: "right", conduction: "air", isMasked: false },
     focusFrequencyHz: 1000,
@@ -95,6 +96,7 @@ export function draftFromExam(
     showExtendedHigh:
       exam.hasExtendedHighFrequencies ||
       hasExtendedHighFrequencies(exam.thresholds),
+    isMinimumResponseLevel: Boolean(exam.isMinimumResponseLevel),
     cells: cellsFromThresholds(exam.thresholds),
     activeMode: { ear: "right", conduction: "air", isMasked: false },
     focusFrequencyHz: 1000,
@@ -135,6 +137,7 @@ export function toWrite(
     method: draft.method,
     reliability: draft.reliability,
     thresholds,
+    isMinimumResponseLevel: draft.isMinimumResponseLevel,
     ...(options.canInterpret
       ? {
           interpretationText: draft.interpretationText.trim() || null,

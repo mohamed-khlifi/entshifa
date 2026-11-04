@@ -665,6 +665,46 @@ export const testIds = {
     speechPanel: testId("audiology", "speech-panel"),
     tympJergerRight: testId("audiology", "tymp-jerger-right"),
     tympJergerLeft: testId("audiology", "tymp-jerger-left"),
+    hearingDevicesPanel: testId("audiology", "hearing-devices-panel"),
+    hearingDevicesList: testId("audiology", "hearing-devices-list"),
+    hearingDeviceCreateForm: testId("audiology", "hearing-device-create-form"),
+    hearingDeviceEar: testId("audiology", "hearing-device-ear"),
+    hearingDeviceType: testId("audiology", "hearing-device-type"),
+    hearingDeviceFittedOn: testId("audiology", "hearing-device-fitted-on"),
+    hearingDeviceCreateSubmit: testId(
+      "audiology",
+      "hearing-device-create-submit",
+    ),
+    candidacyPanel: testId("audiology", "candidacy-panel"),
+    candidacyTrialCompleted: testId("audiology", "candidacy-trial-completed"),
+    candidacyImagingClearance: testId(
+      "audiology",
+      "candidacy-imaging-clearance",
+    ),
+    candidacyCommunicationImpact: testId(
+      "audiology",
+      "candidacy-communication-impact",
+    ),
+    candidacyEvaluate: testId("audiology", "candidacy-evaluate"),
+    candidacyResults: testId("audiology", "candidacy-results"),
+    pediatricPanel: testId("audiology", "pediatric-panel"),
+    ehdiBenchmarks: testId("audiology", "ehdi-benchmarks"),
+    newbornScreeningForm: testId("audiology", "newborn-screening-form"),
+    screenDate: testId("audiology", "screen-date"),
+    screenResultRight: testId("audiology", "screen-result-right"),
+    screenResultLeft: testId("audiology", "screen-result-left"),
+    screeningSave: testId("audiology", "screening-save"),
+    milestonesForm: testId("audiology", "milestones-form"),
+    milestonesSave: testId("audiology", "milestones-save"),
+    omePanel: testId("audiology", "ome-panel"),
+    omeLaterality: testId("audiology", "ome-laterality"),
+    omeFirstSeen: testId("audiology", "ome-first-seen"),
+    omeHearingDb: testId("audiology", "ome-hearing-db"),
+    omeCreateSubmit: testId("audiology", "ome-create-submit"),
+    minimumResponseLevel: testId("audiology", "minimum-response-level"),
+    binauralSoundfieldFlag: testId("audiology", "binaural-soundfield-flag"),
+    viewDevices: testId("audiology", "view-devices"),
+    viewPediatric: testId("audiology", "view-pediatric"),
   },
 } as const;
 
@@ -691,6 +731,18 @@ export function otologyDeviceStatusTestId(publicId: string): string {
 
 export function audiogramRowTestId(publicId: string): string {
   return publicIdTestId("audiology.row", publicId);
+}
+
+export function hearingDeviceRowTestId(publicId: string): string {
+  return publicIdTestId("audiology.hearing-device", publicId);
+}
+
+export function omeEpisodeRowTestId(publicId: string): string {
+  return publicIdTestId("audiology.ome-episode", publicId);
+}
+
+export function pediatricMilestoneTestId(key: string): string {
+  return testId("audiology", "milestone", examinationToken(key));
 }
 
 export function audiogramOverlayToggleTestId(publicId: string): string {

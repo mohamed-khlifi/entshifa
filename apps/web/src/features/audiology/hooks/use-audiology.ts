@@ -9,9 +9,14 @@ import {
   createAudiogram,
   createSpeechAudiometry,
   createTympanogram,
+  createHearingDevice,
+  createOmeEpisode,
+  evaluateDeviceCandidacy,
   fetchAudiogram,
   fetchPatientAbrResults,
   fetchPatientAudiograms,
+  fetchPatientHearingDevices,
+  fetchPediatricAudiologySummary,
   fetchPatientOaeResults,
   fetchPatientSpeechAudiometry,
   fetchPatientTympanograms,
@@ -20,6 +25,8 @@ import {
   interpretTympanogram,
   updateAudiogram,
   updateAudiogramBaseline,
+  updateNewbornScreening,
+  updatePediatricMilestones,
   updateSpeechAudiometry,
   updateTympanogram,
 } from "../api/audiology.api";
@@ -30,6 +37,11 @@ import type {
   AudiogramInterpret,
   AudiogramRead,
   AudiogramUpdate,
+  CandidacyEvaluationRead,
+  HearingDeviceCreate,
+  MilestonesUpdate,
+  NewbornScreeningUpdate,
+  OmeEpisodeCreate,
   SpeechAudiometryCreate,
   SpeechAudiometryRead,
   SpeechAudiometryUpdate,
@@ -410,4 +422,153 @@ export function usePatientAbrResults(patientId: string) {
   });
 }
 
-export type { AudiogramRead };
+export function usePatientHearingDevices(patientId: string) {
+  const scope = useScope();
+  return useQuery({
+    queryKey: queryKeys.audiology.hearingDevicesByPatient(patientId),
+    queryFn: () =>
+      fetchPatientHearingDevices(patientId, {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    enabled: scope.enabled && patientId.length > 0,
+    staleTime: RECORD_STALE_MS,
+  });
+}
+
+export function useCreateHearingDevice(patientId: string) {
+  const scope = useScope();
+  const t = useTranslations("audiology");
+  const toastError = useAudiologyErrorToast();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (body: HearingDeviceCreate) =>
+      createHearingDevice(
+        body,
+        {
+          locale: scope.locale,
+          clinicPublicId: scope.clinicPublicId,
+        },
+        crypto.randomUUID(),
+      ),
+    onSuccess: async () => {
+      toast.success(t("devices.saved"));
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.audiology.hearingDevicesByPatient(patientId),
+      });
+    },
+    onError: toastError,
+  });
+}
+
+export type EvaluateCandidacyInput = {
+  audiogramPublicId: string | null;
+  hearingAidTrialCompleted: boolean;
+  imagingClearance: boolean;
+  communicationImpactAssessed: boolean;
+};
+
+export function useEvaluateCandidacy(patientId: string) {
+  const scope = useScope();
+  const toastError = useAudiologyErrorToast();
+  return useMutation({
+    mutationFn: (input: EvaluateCandidacyInput) =>
+      evaluateDeviceCandidacy(
+        {
+          patientPublicId: patientId,
+          audiogramPublicId: input.audiogramPublicId,
+          hearingAidTrialCompleted: input.hearingAidTrialCompleted,
+          imagingClearance: input.imagingClearance,
+          communicationImpactAssessed: input.communicationImpactAssessed,
+        },
+        {
+          locale: scope.locale,
+          clinicPublicId: scope.clinicPublicId,
+        },
+      ),
+    onError: toastError,
+  });
+}
+
+export function usePediatricAudiologySummary(patientId: string) {
+  const scope = useScope();
+  return useQuery({
+    queryKey: queryKeys.audiology.pediatricByPatient(patientId),
+    queryFn: () =>
+      fetchPediatricAudiologySummary(patientId, {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    enabled: scope.enabled && patientId.length > 0,
+    staleTime: RECORD_STALE_MS,
+  });
+}
+
+export function useUpdateNewbornScreening(patientId: string) {
+  const scope = useScope();
+  const t = useTranslations("audiology");
+  const toastError = useAudiologyErrorToast();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (body: NewbornScreeningUpdate) =>
+      updateNewbornScreening(patientId, body, {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    onSuccess: async () => {
+      toast.success(t("pediatric.screeningSaved"));
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.audiology.pediatricByPatient(patientId),
+      });
+    },
+    onError: toastError,
+  });
+}
+
+export function useUpdatePediatricMilestones(patientId: string) {
+  const scope = useScope();
+  const t = useTranslations("audiology");
+  const toastError = useAudiologyErrorToast();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (body: MilestonesUpdate) =>
+      updatePediatricMilestones(patientId, body, {
+        locale: scope.locale,
+        clinicPublicId: scope.clinicPublicId,
+      }),
+    onSuccess: async () => {
+      toast.success(t("pediatric.milestonesSaved"));
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.audiology.pediatricByPatient(patientId),
+      });
+    },
+    onError: toastError,
+  });
+}
+
+export function useCreateOmeEpisode(patientId: string) {
+  const scope = useScope();
+  const t = useTranslations("audiology");
+  const toastError = useAudiologyErrorToast();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (body: OmeEpisodeCreate) =>
+      createOmeEpisode(
+        body,
+        {
+          locale: scope.locale,
+          clinicPublicId: scope.clinicPublicId,
+        },
+        crypto.randomUUID(),
+      ),
+    onSuccess: async () => {
+      toast.success(t("pediatric.omeStarted"));
+      await queryClient.invalidateQueries({
+        queryKey: queryKeys.audiology.pediatricByPatient(patientId),
+      });
+    },
+    onError: toastError,
+  });
+}
+
+export type { AudiogramRead, CandidacyEvaluationRead };

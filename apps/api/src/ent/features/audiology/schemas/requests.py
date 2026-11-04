@@ -66,6 +66,7 @@ class AudiogramCreate(CamelModel):
         default=None, min_length=26, max_length=26
     )
     interpretation_text: str | None = None
+    is_minimum_response_level: bool = False
     thresholds: list[ThresholdInput] = Field(default_factory=list)
 
 
@@ -86,6 +87,7 @@ class AudiogramUpdate(CamelModel):
         default=None, min_length=26, max_length=26
     )
     interpretation_text: str | None = None
+    is_minimum_response_level: bool | None = None
     thresholds: list[ThresholdInput] | None = None
 
 

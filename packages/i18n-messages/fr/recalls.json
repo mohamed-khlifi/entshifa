@@ -87,6 +87,9 @@
     "title": "Rappels"
   },
   "reasons": {
+    "audiologyDeviceAnnualReview": "Hearing device annual review",
+    "audiologyDeviceWarrantyExpiry": "Hearing device warranty expiry",
+    "audiologyOmeWatchfulWaiting": "OME watchful waiting audiogram",
     "otologyCanalInjury": "Suivi de lésion du conduit auditif",
     "otologyCavityCleaning": "Nettoyage de cavité mastoïdienne",
     "otologyTubeAudiogram": "Audiogramme post-aérateur",

@@ -90,3 +90,37 @@ class AbrResultNotFoundError(NotFoundError):
             super().__init__(resource="abr_result")
             return
         super().__init__(resource="abr_result", publicId=public_id)
+
+
+class HearingDeviceNotFoundError(NotFoundError):
+    code = ErrorCode.AUDIOLOGY_HEARING_DEVICE_NOT_FOUND
+
+    def __init__(self, *, public_id: str | None = None) -> None:
+        if public_id is None:
+            super().__init__(resource="hearing_device")
+            return
+        super().__init__(resource="hearing_device", publicId=public_id)
+
+
+class HearingDeviceVersionConflictError(ConflictError):
+    code = ErrorCode.AUDIOLOGY_HEARING_DEVICE_VERSION_CONFLICT
+
+    def __init__(self, *, server_version: int, client_version: int) -> None:
+        super().__init__(serverVersion=server_version, clientVersion=client_version)
+
+
+class OmeEpisodeNotFoundError(NotFoundError):
+    code = ErrorCode.AUDIOLOGY_OME_NOT_FOUND
+
+    def __init__(self, *, public_id: str | None = None) -> None:
+        if public_id is None:
+            super().__init__(resource="ome_episode")
+            return
+        super().__init__(resource="ome_episode", publicId=public_id)
+
+
+class OmeEpisodeVersionConflictError(ConflictError):
+    code = ErrorCode.AUDIOLOGY_OME_VERSION_CONFLICT
+
+    def __init__(self, *, server_version: int, client_version: int) -> None:
+        super().__init__(serverVersion=server_version, clientVersion=client_version)

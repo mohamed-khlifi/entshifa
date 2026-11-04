@@ -70,6 +70,8 @@ def audiogram_read(row: Audiogram) -> AudiogramRead:
         status=row.status,
         version=int(row.version),
         has_extended_high_frequencies=extended,
+        is_minimum_response_level=bool(row.is_minimum_response_level),
+        is_binaural_soundfield=bool(row.is_binaural_soundfield),
         thresholds=thresholds,
     )
 

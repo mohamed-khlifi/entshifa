@@ -35,6 +35,8 @@ const audiogram = {
   hasExtendedHighFrequencies: false,
   interpretationText: "Stable vs baseline.",
   isBaseline: false,
+  isMinimumResponseLevel: false,
+  isBinauralSoundfield: false,
   lossTypeLeft: "sensorineural",
   lossTypeRight: "mixed",
   method: "standard" as const,

@@ -839,6 +839,46 @@
         "title": "AgeCapWrite",
         "type": "object"
       },
+      "AidedThresholdInput": {
+        "properties": {
+          "frequencyHz": {
+            "maximum": 16000.0,
+            "minimum": 125.0,
+            "title": "Frequencyhz",
+            "type": "integer"
+          },
+          "levelDb": {
+            "maximum": 130.0,
+            "minimum": -10.0,
+            "title": "Leveldb",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "frequencyHz",
+          "levelDb"
+        ],
+        "title": "AidedThresholdInput",
+        "type": "object"
+      },
+      "AidedThresholdRead": {
+        "properties": {
+          "frequencyHz": {
+            "title": "Frequencyhz",
+            "type": "integer"
+          },
+          "levelDb": {
+            "title": "Leveldb",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "frequencyHz",
+          "levelDb"
+        ],
+        "title": "AidedThresholdRead",
+        "type": "object"
+      },
       "AppointmentCancel": {
         "properties": {
           "cancellationReason": {
@@ -1834,6 +1874,11 @@
             "title": "Isbaseline",
             "type": "boolean"
           },
+          "isMinimumResponseLevel": {
+            "default": false,
+            "title": "Isminimumresponselevel",
+            "type": "boolean"
+          },
           "method": {
             "default": "standard",
             "enum": [
@@ -2109,6 +2154,14 @@
             "title": "Isbaseline",
             "type": "boolean"
           },
+          "isBinauralSoundfield": {
+            "title": "Isbinauralsoundfield",
+            "type": "boolean"
+          },
+          "isMinimumResponseLevel": {
+            "title": "Isminimumresponselevel",
+            "type": "boolean"
+          },
           "lossTypeLeft": {
             "anyOf": [
               {
@@ -2262,6 +2315,8 @@
           "status",
           "version",
           "hasExtendedHighFrequencies",
+          "isMinimumResponseLevel",
+          "isBinauralSoundfield",
           "thresholds"
         ],
         "title": "AudiogramRead",
@@ -2340,6 +2395,17 @@
               }
             ],
             "title": "Isbaseline"
+          },
+          "isMinimumResponseLevel": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Isminimumresponselevel"
           },
           "method": {
             "anyOf": [
@@ -2797,6 +2863,170 @@
         "title": "CalculationRead",
         "type": "object"
       },
+      "CandidacyConfirm": {
+        "properties": {
+          "audiogramPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audiogrampublicid"
+          },
+          "communicationImpactAssessed": {
+            "default": false,
+            "title": "Communicationimpactassessed",
+            "type": "boolean"
+          },
+          "hearingAidTrialCompleted": {
+            "default": false,
+            "title": "Hearingaidtrialcompleted",
+            "type": "boolean"
+          },
+          "imagingClearance": {
+            "default": false,
+            "title": "Imagingclearance",
+            "type": "boolean"
+          },
+          "kind": {
+            "enum": [
+              "hearing_aid",
+              "cochlear_implant"
+            ],
+            "title": "Kind",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind"
+        ],
+        "title": "CandidacyConfirm",
+        "type": "object"
+      },
+      "CandidacyConfirmationRead": {
+        "properties": {
+          "confirmedAt": {
+            "format": "date-time",
+            "title": "Confirmedat",
+            "type": "string"
+          },
+          "confirmedByPublicId": {
+            "title": "Confirmedbypublicid",
+            "type": "string"
+          },
+          "evaluation": {
+            "$ref": "#/components/schemas/CandidacyEvaluationRead"
+          },
+          "kind": {
+            "enum": [
+              "hearing_aid",
+              "cochlear_implant"
+            ],
+            "title": "Kind",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "confirmedAt",
+          "confirmedByPublicId",
+          "evaluation"
+        ],
+        "title": "CandidacyConfirmationRead",
+        "type": "object"
+      },
+      "CandidacyEvaluate": {
+        "properties": {
+          "audiogramPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audiogrampublicid"
+          },
+          "communicationImpactAssessed": {
+            "default": false,
+            "title": "Communicationimpactassessed",
+            "type": "boolean"
+          },
+          "hearingAidTrialCompleted": {
+            "default": false,
+            "title": "Hearingaidtrialcompleted",
+            "type": "boolean"
+          },
+          "imagingClearance": {
+            "default": false,
+            "title": "Imagingclearance",
+            "type": "boolean"
+          },
+          "patientPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Patientpublicid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "patientPublicId"
+        ],
+        "title": "CandidacyEvaluate",
+        "type": "object"
+      },
+      "CandidacyEvaluationRead": {
+        "properties": {
+          "cochlearImplantEligible": {
+            "title": "Cochlearimplanteligible",
+            "type": "boolean"
+          },
+          "cochlearImplantItems": {
+            "items": {
+              "$ref": "#/components/schemas/ChecklistItemRead"
+            },
+            "title": "Cochlearimplantitems",
+            "type": "array"
+          },
+          "engineReference": {
+            "title": "Enginereference",
+            "type": "string"
+          },
+          "engineVersion": {
+            "title": "Engineversion",
+            "type": "string"
+          },
+          "hearingAidEligible": {
+            "title": "Hearingaideligible",
+            "type": "boolean"
+          },
+          "hearingAidItems": {
+            "items": {
+              "$ref": "#/components/schemas/ChecklistItemRead"
+            },
+            "title": "Hearingaiditems",
+            "type": "array"
+          }
+        },
+        "required": [
+          "hearingAidItems",
+          "cochlearImplantItems",
+          "hearingAidEligible",
+          "cochlearImplantEligible",
+          "engineVersion",
+          "engineReference"
+        ],
+        "title": "CandidacyEvaluationRead",
+        "type": "object"
+      },
       "CavityCleaningWrite": {
         "properties": {
           "condition": {
@@ -2850,6 +3080,24 @@
           "bodyText"
         ],
         "title": "CertificateInput",
+        "type": "object"
+      },
+      "ChecklistItemRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "met": {
+            "title": "Met",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "met"
+        ],
+        "title": "ChecklistItemRead",
         "type": "object"
       },
       "ClinicMembershipList": {
@@ -7419,6 +7667,860 @@
         "title": "HTTPValidationError",
         "type": "object"
       },
+      "HearingDeviceCreate": {
+        "properties": {
+          "aidedThresholds": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AidedThresholdInput"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aidedthresholds"
+          },
+          "batteryType": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batterytype"
+          },
+          "brand": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand"
+          },
+          "complications": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Complications"
+          },
+          "dailyUseHours": {
+            "anyOf": [
+              {
+                "maximum": 24.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dailyusehours"
+          },
+          "deviceType": {
+            "enum": [
+              "bte",
+              "ric",
+              "ite",
+              "cros",
+              "bone_conduction",
+              "cochlear_implant",
+              "middle_ear_implant"
+            ],
+            "title": "Devicetype",
+            "type": "string"
+          },
+          "ear": {
+            "enum": [
+              "right",
+              "left"
+            ],
+            "title": "Ear",
+            "type": "string"
+          },
+          "electrodeArray": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Electrodearray"
+          },
+          "fittedBy": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fittedby"
+          },
+          "fittedOn": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fittedon"
+          },
+          "implantActivationDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Implantactivationdate"
+          },
+          "lastProgrammedOn": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastprogrammedon"
+          },
+          "mappingDates": {
+            "anyOf": [
+              {
+                "items": {
+                  "format": "date",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mappingdates"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          },
+          "mriConditions": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mriconditions"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "patientPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "satisfaction": {
+            "anyOf": [
+              {
+                "maximum": 10.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Satisfaction"
+          },
+          "serial": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serial"
+          },
+          "status": {
+            "default": "active",
+            "enum": [
+              "active",
+              "trial",
+              "inactive",
+              "replaced",
+              "removed"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "surgeon": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Surgeon"
+          },
+          "surgeryDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Surgerydate"
+          },
+          "warrantyEnd": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warrantyend"
+          }
+        },
+        "required": [
+          "patientPublicId",
+          "ear",
+          "deviceType"
+        ],
+        "title": "HearingDeviceCreate",
+        "type": "object"
+      },
+      "HearingDeviceRead": {
+        "properties": {
+          "aidedThresholds": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AidedThresholdRead"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aidedthresholds"
+          },
+          "batteryType": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batterytype"
+          },
+          "brand": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand"
+          },
+          "complications": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Complications"
+          },
+          "dailyUseHours": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dailyusehours"
+          },
+          "deviceType": {
+            "enum": [
+              "bte",
+              "ric",
+              "ite",
+              "cros",
+              "bone_conduction",
+              "cochlear_implant",
+              "middle_ear_implant"
+            ],
+            "title": "Devicetype",
+            "type": "string"
+          },
+          "ear": {
+            "enum": [
+              "right",
+              "left"
+            ],
+            "title": "Ear",
+            "type": "string"
+          },
+          "electrodeArray": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Electrodearray"
+          },
+          "fittedBy": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fittedby"
+          },
+          "fittedOn": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fittedon"
+          },
+          "implantActivationDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Implantactivationdate"
+          },
+          "lastProgrammedOn": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastprogrammedon"
+          },
+          "mappingDates": {
+            "anyOf": [
+              {
+                "items": {
+                  "format": "date",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mappingdates"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          },
+          "mriConditions": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mriconditions"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "patientPublicId": {
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "satisfaction": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Satisfaction"
+          },
+          "serial": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serial"
+          },
+          "status": {
+            "enum": [
+              "active",
+              "trial",
+              "inactive",
+              "replaced",
+              "removed"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "surgeon": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Surgeon"
+          },
+          "surgeryDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Surgerydate"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "warrantyEnd": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warrantyend"
+          }
+        },
+        "required": [
+          "publicId",
+          "patientPublicId",
+          "ear",
+          "deviceType",
+          "brand",
+          "model",
+          "serial",
+          "fittedOn",
+          "fittedBy",
+          "warrantyEnd",
+          "lastProgrammedOn",
+          "batteryType",
+          "dailyUseHours",
+          "satisfaction",
+          "status",
+          "aidedThresholds",
+          "surgeon",
+          "surgeryDate",
+          "electrodeArray",
+          "implantActivationDate",
+          "mappingDates",
+          "complications",
+          "mriConditions",
+          "notes",
+          "version"
+        ],
+        "title": "HearingDeviceRead",
+        "type": "object"
+      },
+      "HearingDeviceUpdate": {
+        "properties": {
+          "aidedThresholds": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/AidedThresholdInput"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aidedthresholds"
+          },
+          "batteryType": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Batterytype"
+          },
+          "brand": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Brand"
+          },
+          "complications": {
+            "anyOf": [
+              {
+                "maxLength": 255,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Complications"
+          },
+          "dailyUseHours": {
+            "anyOf": [
+              {
+                "maximum": 24.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dailyusehours"
+          },
+          "electrodeArray": {
+            "anyOf": [
+              {
+                "maxLength": 80,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Electrodearray"
+          },
+          "fittedBy": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fittedby"
+          },
+          "fittedOn": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fittedon"
+          },
+          "implantActivationDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Implantactivationdate"
+          },
+          "lastProgrammedOn": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastprogrammedon"
+          },
+          "mappingDates": {
+            "anyOf": [
+              {
+                "items": {
+                  "format": "date",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mappingdates"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          },
+          "mriConditions": {
+            "anyOf": [
+              {
+                "maxLength": 160,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mriconditions"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "satisfaction": {
+            "anyOf": [
+              {
+                "maximum": 10.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Satisfaction"
+          },
+          "serial": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Serial"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "active",
+                  "trial",
+                  "inactive",
+                  "replaced",
+                  "removed"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "surgeon": {
+            "anyOf": [
+              {
+                "maxLength": 120,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Surgeon"
+          },
+          "surgeryDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Surgerydate"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          },
+          "warrantyEnd": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Warrantyend"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "HearingDeviceUpdate",
+        "type": "object"
+      },
       "HistoryFieldConfig": {
         "properties": {
           "defaultValue": {
@@ -9005,6 +10107,22 @@
         "title": "MfaLogin",
         "type": "object"
       },
+      "MilestonesUpdate": {
+        "properties": {
+          "milestones": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "title": "Milestones",
+            "type": "object"
+          }
+        },
+        "required": [
+          "milestones"
+        ],
+        "title": "MilestonesUpdate",
+        "type": "object"
+      },
       "NarrativeFindingIn": {
         "properties": {
           "bodySiteCode": {
@@ -9155,6 +10273,187 @@
           "splintRemovalDate"
         ],
         "title": "NasalFractureWrite",
+        "type": "object"
+      },
+      "NewbornScreeningUpdate": {
+        "properties": {
+          "diagnosticAbrDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diagnosticabrdate"
+          },
+          "diagnosticAbrResultLeft": {
+            "anyOf": [
+              {
+                "enum": [
+                  "normal",
+                  "elevated",
+                  "absent",
+                  "not_tested"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diagnosticabrresultleft"
+          },
+          "diagnosticAbrResultRight": {
+            "anyOf": [
+              {
+                "enum": [
+                  "normal",
+                  "elevated",
+                  "absent",
+                  "not_tested"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diagnosticabrresultright"
+          },
+          "interventionDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interventiondate"
+          },
+          "interventionType": {
+            "anyOf": [
+              {
+                "enum": [
+                  "hearing_aid",
+                  "cochlear_implant",
+                  "speech_therapy",
+                  "early_intervention",
+                  "monitoring"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interventiontype"
+          },
+          "permanentHearingLoss": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Permanenthearingloss"
+          },
+          "rescreenDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rescreendate"
+          },
+          "rescreenResultLeft": {
+            "anyOf": [
+              {
+                "enum": [
+                  "pass",
+                  "refer",
+                  "not_tested"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rescreenresultleft"
+          },
+          "rescreenResultRight": {
+            "anyOf": [
+              {
+                "enum": [
+                  "pass",
+                  "refer",
+                  "not_tested"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rescreenresultright"
+          },
+          "screenDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Screendate"
+          },
+          "screenResultLeft": {
+            "anyOf": [
+              {
+                "enum": [
+                  "pass",
+                  "refer",
+                  "not_tested"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Screenresultleft"
+          },
+          "screenResultRight": {
+            "anyOf": [
+              {
+                "enum": [
+                  "pass",
+                  "refer",
+                  "not_tested"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Screenresultright"
+          }
+        },
+        "title": "NewbornScreeningUpdate",
         "type": "object"
       },
       "OaeBandInput": {
@@ -10828,6 +12127,320 @@
         "title": "OfficeProcedureUpdate",
         "type": "object"
       },
+      "OmeEpisodeCreate": {
+        "properties": {
+          "audiogramPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audiogrampublicid"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "firstSeenOn": {
+            "format": "date",
+            "title": "Firstseenon",
+            "type": "string"
+          },
+          "hearingLevelDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hearingleveldb"
+          },
+          "laterality": {
+            "enum": [
+              "right",
+              "left",
+              "bilateral"
+            ],
+            "title": "Laterality",
+            "type": "string"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "patientPublicId": {
+            "maxLength": 26,
+            "minLength": 26,
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "tympanometryPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tympanometrypublicid"
+          },
+          "watchfulWaitingStartOn": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Watchfulwaitingstarton"
+          }
+        },
+        "required": [
+          "patientPublicId",
+          "laterality",
+          "firstSeenOn"
+        ],
+        "title": "OmeEpisodeCreate",
+        "type": "object"
+      },
+      "OmeEpisodeRead": {
+        "properties": {
+          "audiogramPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audiogrampublicid"
+          },
+          "encounterPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterpublicid"
+          },
+          "firstSeenOn": {
+            "format": "date",
+            "title": "Firstseenon",
+            "type": "string"
+          },
+          "hearingLevelDb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hearingleveldb"
+          },
+          "laterality": {
+            "enum": [
+              "right",
+              "left",
+              "bilateral"
+            ],
+            "title": "Laterality",
+            "type": "string"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "patientPublicId": {
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "resolvedOn": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolvedon"
+          },
+          "status": {
+            "enum": [
+              "watchful_waiting",
+              "resolved",
+              "persisted_tubes_proposed",
+              "tubes_inserted"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "tympanometryPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tympanometrypublicid"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          },
+          "watchfulWaitingDueOn": {
+            "format": "date",
+            "title": "Watchfulwaitingdueon",
+            "type": "string"
+          },
+          "watchfulWaitingStartOn": {
+            "format": "date",
+            "title": "Watchfulwaitingstarton",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "patientPublicId",
+          "encounterPublicId",
+          "audiogramPublicId",
+          "tympanometryPublicId",
+          "laterality",
+          "firstSeenOn",
+          "hearingLevelDb",
+          "watchfulWaitingStartOn",
+          "watchfulWaitingDueOn",
+          "status",
+          "resolvedOn",
+          "notes",
+          "version"
+        ],
+        "title": "OmeEpisodeRead",
+        "type": "object"
+      },
+      "OmeEpisodeUpdate": {
+        "properties": {
+          "hearingLevelDb": {
+            "anyOf": [
+              {
+                "maximum": 130.0,
+                "minimum": -10.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hearingleveldb"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "resolvedOn": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolvedon"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "enum": [
+                  "watchful_waiting",
+                  "resolved",
+                  "persisted_tubes_proposed",
+                  "tubes_inserted"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "version": {
+            "minimum": 1.0,
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "OmeEpisodeUpdate",
+        "type": "object"
+      },
       "OtologyCreate": {
         "properties": {
           "anesthesia": {
@@ -12025,6 +13638,26 @@
           "page"
         ],
         "title": "PageSchema[FormularyEntryRead]",
+        "type": "object"
+      },
+      "PageSchema_HearingDeviceRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/HearingDeviceRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[HearingDeviceRead]",
         "type": "object"
       },
       "PageSchema_LaryngoscopyExamRead_": {
@@ -15139,6 +16772,313 @@
         "title": "PatientUpdate",
         "type": "object"
       },
+      "PediatricAudiologyRead": {
+        "properties": {
+          "candidacySnapshot": {
+            "anyOf": [
+              {
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Candidacysnapshot"
+          },
+          "ciCandidacyConfirmedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cicandidacyconfirmedat"
+          },
+          "ciCandidacyConfirmedByPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cicandidacyconfirmedbypublicid"
+          },
+          "diagnosisBy3MStatus": {
+            "title": "Diagnosisby3Mstatus",
+            "type": "string"
+          },
+          "diagnosticAbrDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diagnosticabrdate"
+          },
+          "diagnosticAbrResultLeft": {
+            "anyOf": [
+              {
+                "enum": [
+                  "normal",
+                  "elevated",
+                  "absent",
+                  "not_tested"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diagnosticabrresultleft"
+          },
+          "diagnosticAbrResultRight": {
+            "anyOf": [
+              {
+                "enum": [
+                  "normal",
+                  "elevated",
+                  "absent",
+                  "not_tested"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Diagnosticabrresultright"
+          },
+          "ehdiEngineVersion": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ehdiengineversion"
+          },
+          "haCandidacyConfirmedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hacandidacyconfirmedat"
+          },
+          "haCandidacyConfirmedByPublicId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Hacandidacyconfirmedbypublicid"
+          },
+          "interventionBy6MStatus": {
+            "title": "Interventionby6Mstatus",
+            "type": "string"
+          },
+          "interventionDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interventiondate"
+          },
+          "interventionType": {
+            "anyOf": [
+              {
+                "enum": [
+                  "hearing_aid",
+                  "cochlear_implant",
+                  "speech_therapy",
+                  "early_intervention",
+                  "monitoring"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Interventiontype"
+          },
+          "patientPublicId": {
+            "title": "Patientpublicid",
+            "type": "string"
+          },
+          "permanentHearingLoss": {
+            "title": "Permanenthearingloss",
+            "type": "boolean"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "rescreenDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rescreendate"
+          },
+          "rescreenResultLeft": {
+            "anyOf": [
+              {
+                "enum": [
+                  "pass",
+                  "refer",
+                  "not_tested"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rescreenresultleft"
+          },
+          "rescreenResultRight": {
+            "anyOf": [
+              {
+                "enum": [
+                  "pass",
+                  "refer",
+                  "not_tested"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rescreenresultright"
+          },
+          "screenBy1MStatus": {
+            "title": "Screenby1Mstatus",
+            "type": "string"
+          },
+          "screenDate": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Screendate"
+          },
+          "screenResultLeft": {
+            "anyOf": [
+              {
+                "enum": [
+                  "pass",
+                  "refer",
+                  "not_tested"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Screenresultleft"
+          },
+          "screenResultRight": {
+            "anyOf": [
+              {
+                "enum": [
+                  "pass",
+                  "refer",
+                  "not_tested"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Screenresultright"
+          },
+          "speechLanguageMilestones": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "boolean"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Speechlanguagemilestones"
+          },
+          "version": {
+            "title": "Version",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "publicId",
+          "patientPublicId",
+          "screenDate",
+          "screenResultRight",
+          "screenResultLeft",
+          "rescreenDate",
+          "rescreenResultRight",
+          "rescreenResultLeft",
+          "diagnosticAbrDate",
+          "diagnosticAbrResultRight",
+          "diagnosticAbrResultLeft",
+          "permanentHearingLoss",
+          "interventionDate",
+          "interventionType",
+          "screenBy1MStatus",
+          "diagnosisBy3MStatus",
+          "interventionBy6MStatus",
+          "ehdiEngineVersion",
+          "speechLanguageMilestones",
+          "candidacySnapshot",
+          "haCandidacyConfirmedAt",
+          "haCandidacyConfirmedByPublicId",
+          "ciCandidacyConfirmedAt",
+          "ciCandidacyConfirmedByPublicId",
+          "version"
+        ],
+        "title": "PediatricAudiologyRead",
+        "type": "object"
+      },
       "PediatricDoseRequest": {
         "properties": {
           "formularyEntryPublicId": {
@@ -15178,6 +17118,33 @@
           "weightKg"
         ],
         "title": "PediatricDoseRequest",
+        "type": "object"
+      },
+      "PediatricSummaryRead": {
+        "properties": {
+          "omeEpisodes": {
+            "items": {
+              "$ref": "#/components/schemas/OmeEpisodeRead"
+            },
+            "title": "Omeepisodes",
+            "type": "array"
+          },
+          "pediatric": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PediatricAudiologyRead"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "pediatric",
+          "omeEpisodes"
+        ],
+        "title": "PediatricSummaryRead",
         "type": "object"
       },
       "PeritonsillarWrite-Input": {
@@ -23587,6 +25554,70 @@
         ]
       }
     },
+    "/api/v1/audiology/candidacy/evaluate": {
+      "post": {
+        "operationId": "evaluate_candidacy_api_v1_audiology_candidacy_evaluate_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CandidacyEvaluate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CandidacyEvaluationRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Evaluate Candidacy",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
     "/api/v1/auth/active-clinic": {
       "post": {
         "operationId": "switch_clinic_api_v1_auth_active_clinic_post",
@@ -27210,6 +29241,159 @@
         ]
       }
     },
+    "/api/v1/hearing-devices": {
+      "post": {
+        "operationId": "create_hearing_device_api_v1_hearing_devices_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HearingDeviceCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HearingDeviceRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Hearing Device",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/hearing-devices/{device_id}": {
+      "patch": {
+        "operationId": "update_hearing_device_api_v1_hearing_devices__device_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "device_id",
+            "required": true,
+            "schema": {
+              "title": "Device Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/HearingDeviceUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HearingDeviceRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Hearing Device",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
     "/api/v1/invitations": {
       "post": {
         "operationId": "create_invitation_api_v1_invitations_post",
@@ -29121,6 +31305,159 @@
         ]
       }
     },
+    "/api/v1/ome-episodes": {
+      "post": {
+        "operationId": "create_ome_episode_api_v1_ome_episodes_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OmeEpisodeCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OmeEpisodeRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Ome Episode",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/ome-episodes/{ome_id}": {
+      "patch": {
+        "operationId": "update_ome_episode_api_v1_ome_episodes__ome_id__patch",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ome_id",
+            "required": true,
+            "schema": {
+              "title": "Ome Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OmeEpisodeUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OmeEpisodeRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Ome Episode",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
     "/api/v1/otology-exams": {
       "post": {
         "operationId": "create_otology_exam_api_v1_otology_exams_post",
@@ -30199,6 +32536,311 @@
         ]
       }
     },
+    "/api/v1/patients/{patient_id}/audiology/candidacy/confirm": {
+      "post": {
+        "operationId": "confirm_candidacy_api_v1_patients__patient_id__audiology_candidacy_confirm_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CandidacyConfirm"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CandidacyConfirmationRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Confirm Candidacy",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/patients/{patient_id}/audiology/pediatric": {
+      "get": {
+        "operationId": "get_pediatric_audiology_api_v1_patients__patient_id__audiology_pediatric_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PediatricSummaryRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Pediatric Audiology",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/patients/{patient_id}/audiology/pediatric/milestones": {
+      "put": {
+        "operationId": "update_pediatric_milestones_api_v1_patients__patient_id__audiology_pediatric_milestones_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MilestonesUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PediatricAudiologyRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Pediatric Milestones",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
+    "/api/v1/patients/{patient_id}/audiology/pediatric/screening": {
+      "put": {
+        "operationId": "update_newborn_screening_api_v1_patients__patient_id__audiology_pediatric_screening_put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewbornScreeningUpdate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PediatricAudiologyRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Update Newborn Screening",
+        "tags": [
+          "audiology"
+        ]
+      }
+    },
     "/api/v1/patients/{patient_id}/ear-devices": {
       "get": {
         "operationId": "list_patient_ear_devices_api_v1_patients__patient_id__ear_devices_get",
@@ -30768,6 +33410,92 @@
         "summary": "Update Flag",
         "tags": [
           "patients"
+        ]
+      }
+    },
+    "/api/v1/patients/{patient_id}/hearing-devices": {
+      "get": {
+        "operationId": "list_hearing_devices_api_v1_patients__patient_id__hearing_devices_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_HearingDeviceRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Hearing Devices",
+        "tags": [
+          "audiology"
         ]
       }
     },
