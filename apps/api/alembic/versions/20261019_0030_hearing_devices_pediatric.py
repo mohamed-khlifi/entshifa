@@ -328,10 +328,6 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.drop_index(
-        "ix_ome_episode__clinic_id__patient_id__first_seen_on",
-        table_name="ome_episode",
-    )
     op.drop_table("ome_episode")
     op.drop_index(
         "uq_pediatric_audiology__live_patient",

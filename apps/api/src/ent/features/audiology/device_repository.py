@@ -5,8 +5,8 @@ from __future__ import annotations
 from sqlalchemy import func, select
 from sqlalchemy.orm import selectinload
 
-import ent.features.audiology.models  # noqa: F401 — register Audiogram for OmeEpisode relationships
-import ent.features.audiology.test_records  # noqa: F401 — register Tympanometry
+import ent.features.audiology.models  # noqa: F401 - register Audiogram for OmeEpisode relationships
+import ent.features.audiology.test_records  # noqa: F401 - register Tympanometry
 from ent.core.repository.base import BaseRepository
 from ent.core.repository.pagination import Page, apply_pagination, normalize_pagination
 from ent.core.schemas.base import PaginationParams

@@ -560,6 +560,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "tympanogram_id": tymp_public_id,
             "oae_id": oae_public_id,
             "abr_id": abr_public_id,
+            "ome_id": new_ulid(),
         }
         forbidden = [
             patient.public_id,

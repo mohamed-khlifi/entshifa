@@ -117,9 +117,7 @@ def device_candidacy_calculation(data: CandidacyInput) -> CalculationResult:
     summary = (
         "ci"
         if result.cochlear_implant_eligible
-        else "ha"
-        if result.hearing_aid_eligible
-        else "none"
+        else "ha" if result.hearing_aid_eligible else "none"
     )
     return CalculationResult(
         code=CODE,
