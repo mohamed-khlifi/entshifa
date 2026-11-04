@@ -329,19 +329,7 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     op.drop_table("ome_episode")
-    op.drop_index(
-        "uq_pediatric_audiology__live_patient",
-        table_name="pediatric_audiology_record",
-    )
     op.drop_table("pediatric_audiology_record")
-    op.drop_index(
-        "ix_hearing_device__clinic_id__status__warranty_end",
-        table_name="hearing_device",
-    )
-    op.drop_index(
-        "ix_hearing_device__clinic_id__patient_id__fitted_on",
-        table_name="hearing_device",
-    )
     op.drop_table("hearing_device")
     op.drop_column("audiogram", "is_binaural_soundfield")
     op.drop_column("audiogram", "is_minimum_response_level")

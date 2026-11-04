@@ -9,11 +9,7 @@ from ent.engines.results import CalculationResult, Flag
 
 VERSION = "1.0.0"
 CODE = "audiology.device_candidacy"
-REFERENCE = (
-    "Feature specification §8.7; WHO 2021 hearing impairment grades; "
-    "AAO-HNS / NICE TA566 cochlear implant audiometric thresholds "
-    "(# VERIFY: local reimbursement thresholds)"
-)
+REFERENCE = "Feature specification §8.7; WHO 2021 grades; AAO-HNS/NICE CI thresholds (# VERIFY: local policy)"
 FORMULA = (
     "HA: PTA >= 20 dB HL and audiogram documented; "
     "CI: bilateral PTA >= 70 dB HL or WRS <= 50% with trial documented"
@@ -60,10 +56,14 @@ def _wrs_at_most(wrs: int | None, maximum: int) -> bool:
     return wrs is not None and wrs <= maximum
 
 
-def evaluate_device_candidacy(data: CandidacyInput) -> CandidacyResult:
-    loss_documented = bool(data.loss_type_right or data.loss_type_left) or (
+def _loss_documented(data: CandidacyInput) -> bool:
+    return bool(data.loss_type_right or data.loss_type_left) or (
         data.pta_right is not None or data.pta_left is not None
     )
+
+
+def evaluate_device_candidacy(data: CandidacyInput) -> CandidacyResult:
+    loss_documented = _loss_documented(data)
     speech_recorded = (
         data.wrs_right_percent is not None or data.wrs_left_percent is not None
     )
@@ -114,11 +114,12 @@ def evaluate_device_candidacy(data: CandidacyInput) -> CandidacyResult:
 
 def device_candidacy_calculation(data: CandidacyInput) -> CalculationResult:
     result = evaluate_device_candidacy(data)
-    summary = (
-        "ci"
-        if result.cochlear_implant_eligible
-        else "ha" if result.hearing_aid_eligible else "none"
-    )
+    if result.cochlear_implant_eligible:
+        summary = "ci"
+    elif result.hearing_aid_eligible:
+        summary = "ha"
+    else:
+        summary = "none"
     return CalculationResult(
         code=CODE,
         value=summary,
