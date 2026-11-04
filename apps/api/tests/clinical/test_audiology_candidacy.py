@@ -4,7 +4,11 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-from ent.engines.audiology.candidacy import CandidacyInput, evaluate_device_candidacy
+from ent.engines.audiology.candidacy import (
+    CandidacyInput,
+    device_candidacy_calculation,
+    evaluate_device_candidacy,
+)
 
 
 def test_hearing_aid_candidacy_when_pta_elevated_and_documented() -> None:
@@ -57,3 +61,97 @@ def test_cochlear_implant_fails_without_trial() -> None:
         )
     )
     assert result.cochlear_implant_eligible is False
+
+
+def test_device_candidacy_calculation_summaries() -> None:
+    ha = device_candidacy_calculation(
+        CandidacyInput(
+            pta_right=Decimal("35"),
+            pta_left=None,
+            wrs_right_percent=80,
+            wrs_left_percent=None,
+            loss_type_right="sensorineural",
+            loss_type_left=None,
+            hearing_aid_trial_completed=False,
+            imaging_clearance=False,
+            communication_impact_assessed=True,
+        )
+    )
+    assert ha.value == "ha"
+
+    ci = device_candidacy_calculation(
+        CandidacyInput(
+            pta_right=Decimal("75"),
+            pta_left=Decimal("75"),
+            wrs_right_percent=40,
+            wrs_left_percent=40,
+            loss_type_right="sensorineural",
+            loss_type_left="sensorineural",
+            hearing_aid_trial_completed=True,
+            imaging_clearance=True,
+            communication_impact_assessed=True,
+        )
+    )
+    assert ci.value == "ci"
+
+    none = device_candidacy_calculation(
+        CandidacyInput(
+            pta_right=Decimal("10"),
+            pta_left=Decimal("10"),
+            wrs_right_percent=98,
+            wrs_left_percent=98,
+            loss_type_right=None,
+            loss_type_left=None,
+            hearing_aid_trial_completed=False,
+            imaging_clearance=False,
+            communication_impact_assessed=False,
+        )
+    )
+    assert none.value == "none"
+
+
+def test_device_candidacy_calculation_summaries() -> None:
+    ha = device_candidacy_calculation(
+        CandidacyInput(
+            pta_right=Decimal("35"),
+            pta_left=None,
+            wrs_right_percent=80,
+            wrs_left_percent=None,
+            loss_type_right="sensorineural",
+            loss_type_left=None,
+            hearing_aid_trial_completed=False,
+            imaging_clearance=False,
+            communication_impact_assessed=True,
+        )
+    )
+    assert ha.value == "ha"
+
+    ci = device_candidacy_calculation(
+        CandidacyInput(
+            pta_right=Decimal("75"),
+            pta_left=Decimal("75"),
+            wrs_right_percent=40,
+            wrs_left_percent=40,
+            loss_type_right="sensorineural",
+            loss_type_left="sensorineural",
+            hearing_aid_trial_completed=True,
+            imaging_clearance=True,
+            communication_impact_assessed=True,
+        )
+    )
+    assert ci.value == "ci"
+
+    none = device_candidacy_calculation(
+        CandidacyInput(
+            pta_right=Decimal("10"),
+            pta_left=Decimal("10"),
+            wrs_right_percent=98,
+            wrs_left_percent=98,
+            loss_type_right=None,
+            loss_type_left=None,
+            hearing_aid_trial_completed=False,
+            imaging_clearance=False,
+            communication_impact_assessed=False,
+        )
+    )
+    assert none.value == "none"

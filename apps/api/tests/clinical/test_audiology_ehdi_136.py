@@ -7,6 +7,7 @@ from datetime import date
 from ent.engines.audiology.ehdi_136 import (
     BenchmarkStatus,
     Ehdi136Input,
+    ehdi_136_calculation,
     evaluate_ehdi_136,
 )
 
@@ -46,6 +47,59 @@ def test_screen_overdue_after_day_30_without_screen() -> None:
         )
     )
     assert result.screen_by_1m == BenchmarkStatus.OVERDUE
+
+
+def test_screen_pending_before_day_30() -> None:
+    birth = date(2026, 1, 1)
+    result = evaluate_ehdi_136(
+        Ehdi136Input(
+            birth_date=birth,
+            as_of_date=date(2026, 1, 20),
+            screen_date=None,
+            screen_refer=False,
+            rescreen_date=None,
+            diagnostic_abr_date=None,
+            permanent_hearing_loss=False,
+            intervention_date=None,
+        )
+    )
+    assert result.screen_by_1m == BenchmarkStatus.PENDING
+
+
+def test_screen_late_after_day_30() -> None:
+    birth = date(2026, 1, 1)
+    result = evaluate_ehdi_136(
+        Ehdi136Input(
+            birth_date=birth,
+            as_of_date=date(2026, 2, 10),
+            screen_date=date(2026, 2, 5),
+            screen_refer=False,
+            rescreen_date=None,
+            diagnostic_abr_date=None,
+            permanent_hearing_loss=False,
+            intervention_date=None,
+        )
+    )
+    assert result.screen_by_1m == BenchmarkStatus.LATE
+    assert any(flag.code == "ehdi_screen_by_1m_late" for flag in result.flags)
+
+
+def test_ehdi_136_calculation_counts_overdue() -> None:
+    birth = date(2026, 1, 1)
+    calc = ehdi_136_calculation(
+        Ehdi136Input(
+            birth_date=birth,
+            as_of_date=date(2026, 2, 5),
+            screen_date=None,
+            screen_refer=False,
+            rescreen_date=None,
+            diagnostic_abr_date=None,
+            permanent_hearing_loss=False,
+            intervention_date=None,
+        )
+    )
+    assert calc.value == "1"
+    assert calc.unit == "overdue_benchmark"
 
 
 def test_diagnosis_met_on_day_90_when_referred() -> None:
