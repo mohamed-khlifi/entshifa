@@ -50,9 +50,7 @@ def engine_scoring_spec_from_launch(
     subscales = tuple(
         SubscaleSpec(code=s.code, item_codes=s.item_codes) for s in spec.subscales
     )
-    st: ScoringType = (
-        "weighted_sum" if spec.scoring_type == "weighted_sum" else "sum"
-    )
+    st: ScoringType = "weighted_sum" if spec.scoring_type == "weighted_sum" else "sum"
     return InstrumentScoringSpec(
         code=spec.code,
         version=spec.version,
