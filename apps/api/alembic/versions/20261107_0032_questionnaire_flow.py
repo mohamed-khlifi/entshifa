@@ -326,10 +326,6 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.drop_index(
-        "uq_questionnaire_idempotency__clinic_id__key",
-        table_name="questionnaire_request_idempotency",
-    )
     op.drop_table("questionnaire_request_idempotency")
     op.drop_table("questionnaire_answer")
     op.drop_index(

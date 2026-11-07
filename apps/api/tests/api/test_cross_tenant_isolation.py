@@ -582,6 +582,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "abr_id": abr_public_id,
             "ome_id": new_ulid(),
             "instrument_id": instrument_public_id,
+            "response_id": new_ulid(),
         }
         forbidden = [
             patient.public_id,
