@@ -68,7 +68,7 @@ alerts row, history strip with overlay, threshold evolution per frequency.
 
 ---
 
-## - [ ] P4-06 Hearing devices and pediatric audiology (backend and frontend)
+## - [x] P4-06 Hearing devices and pediatric audiology (backend and frontend)
 
 `hearing_device` tracking, candidacy checklists, newborn screening chain with
 the 1-3-6 targets, behavioral test methods, OME tracking with the 3-month
@@ -76,7 +76,7 @@ watchful waiting recall.
 
 ---
 
-## - [ ] P4-07 Audiology report and technician role
+## - [x] P4-07 Audiology report and technician role
 
 The audiology report template with the plotted audiogram. The technician role
 enters data but does not see consultation notes beyond what the task needs.

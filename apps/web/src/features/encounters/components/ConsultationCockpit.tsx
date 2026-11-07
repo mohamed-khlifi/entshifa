@@ -150,7 +150,23 @@ const emptyEditor: EditorState = {
   expandedMaps: [],
 };
 
-export function ConsultationCockpit({
+export function ConsultationCockpit(props: ConsultationCockpitProps) {
+  const t = useTranslations("encounters");
+  const canWrite = usePermission(Permission.ENCOUNTER_WRITE);
+  if (!canWrite) {
+    return (
+      <p
+        className="text-sm text-muted-foreground"
+        {...testIdProps(testIds.encounters.forbidden)}
+      >
+        {t("forbidden.message")}
+      </p>
+    );
+  }
+  return <ConsultationCockpitEditor {...props} />;
+}
+
+function ConsultationCockpitEditor({
   patientId,
   encounterId,
 }: ConsultationCockpitProps) {

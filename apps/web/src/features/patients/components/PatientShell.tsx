@@ -24,6 +24,15 @@ export function PatientShell({
   const canReadAttachments = usePermission(Permission.ATTACHMENT_READ);
   const canFinalizeDocuments = usePermission(Permission.DOCUMENT_FINALIZE);
   const canPrescribe = usePermission(Permission.PRESCRIPTION_CREATE);
+  const canEncounterWrite = usePermission(Permission.ENCOUNTER_WRITE);
+  const canEncounterCreate = usePermission(Permission.ENCOUNTER_CREATE);
+  const canProcedureRead = usePermission(Permission.PROCEDURE_READ);
+  const canAudiologyEnter = usePermission(Permission.AUDIOLOGY_ENTER);
+  const canAudiologyInterpret = usePermission(Permission.AUDIOLOGY_INTERPRET);
+  const canAudiology =
+    canAudiologyEnter || canAudiologyInterpret || canProcedureRead;
+  const canConsultation =
+    canEncounterWrite || canEncounterCreate || canProcedureRead;
   const patient = usePatientQuery(patientId);
   const overviewHref = `/patients/${patientId}`;
   const attachmentsHref = `/patients/${patientId}/attachments`;
@@ -78,19 +87,21 @@ export function PatientShell({
         >
           {t("nav.overview")}
         </Link>
-        <Link
-          href={`/patients/${patientId}/consultation`}
-          className={cn(
-            "rounded-full px-3 py-1.5 text-sm font-medium",
-            pathname === `/patients/${patientId}/consultation` ||
-              pathname.startsWith(`/patients/${patientId}/encounters/`)
-              ? "bg-primary/10 text-primary"
-              : "text-muted-foreground hover:bg-muted",
-          )}
-          {...testIdProps(testIds.patients.navConsultation)}
-        >
-          {t("nav.consultation")}
-        </Link>
+        {canConsultation ? (
+          <Link
+            href={`/patients/${patientId}/consultation`}
+            className={cn(
+              "rounded-full px-3 py-1.5 text-sm font-medium",
+              pathname === `/patients/${patientId}/consultation` ||
+                pathname.startsWith(`/patients/${patientId}/encounters/`)
+                ? "bg-primary/10 text-primary"
+                : "text-muted-foreground hover:bg-muted",
+            )}
+            {...testIdProps(testIds.patients.navConsultation)}
+          >
+            {t("nav.consultation")}
+          </Link>
+        ) : null}
         {canReadAttachments ? (
           <Link
             href={attachmentsHref}
@@ -105,78 +116,90 @@ export function PatientShell({
             {t("nav.attachments")}
           </Link>
         ) : null}
-        <Link
-          href={examinationHref}
-          className={cn(
-            "rounded-full px-3 py-1.5 text-sm font-medium",
-            pathname === examinationHref
-              ? "bg-primary/10 text-primary"
-              : "text-muted-foreground hover:bg-muted",
-          )}
-          {...testIdProps(testIds.patients.navExamination)}
-        >
-          {t("nav.examination")}
-        </Link>
-        <Link
-          href={endoscopyHref}
-          className={cn(
-            "rounded-full px-3 py-1.5 text-sm font-medium",
-            pathname === endoscopyHref
-              ? "bg-primary/10 text-primary"
-              : "text-muted-foreground hover:bg-muted",
-          )}
-          {...testIdProps(testIds.patients.navEndoscopy)}
-        >
-          {t("nav.endoscopy")}
-        </Link>
-        <Link
-          href={laryngoscopyHref}
-          className={cn(
-            "rounded-full px-3 py-1.5 text-sm font-medium",
-            pathname === laryngoscopyHref
-              ? "bg-primary/10 text-primary"
-              : "text-muted-foreground hover:bg-muted",
-          )}
-          {...testIdProps(testIds.patients.navLaryngoscopy)}
-        >
-          {t("nav.laryngoscopy")}
-        </Link>
-        <Link
-          href={otologyHref}
-          className={cn(
-            "rounded-full px-3 py-1.5 text-sm font-medium",
-            pathname === otologyHref
-              ? "bg-primary/10 text-primary"
-              : "text-muted-foreground hover:bg-muted",
-          )}
-          {...testIdProps(testIds.patients.navOtology)}
-        >
-          {t("nav.otology")}
-        </Link>
-        <Link
-          href={audiologyHref}
-          className={cn(
-            "rounded-full px-3 py-1.5 text-sm font-medium",
-            pathname === audiologyHref
-              ? "bg-primary/10 text-primary"
-              : "text-muted-foreground hover:bg-muted",
-          )}
-          {...testIdProps(testIds.patients.navAudiology)}
-        >
-          {t("nav.audiology")}
-        </Link>
-        <Link
-          href={proceduresHref}
-          className={cn(
-            "rounded-full px-3 py-1.5 text-sm font-medium",
-            pathname === proceduresHref
-              ? "bg-primary/10 text-primary"
-              : "text-muted-foreground hover:bg-muted",
-          )}
-          {...testIdProps(testIds.patients.navProcedures)}
-        >
-          {t("nav.procedures")}
-        </Link>
+        {canConsultation ? (
+          <Link
+            href={examinationHref}
+            className={cn(
+              "rounded-full px-3 py-1.5 text-sm font-medium",
+              pathname === examinationHref
+                ? "bg-primary/10 text-primary"
+                : "text-muted-foreground hover:bg-muted",
+            )}
+            {...testIdProps(testIds.patients.navExamination)}
+          >
+            {t("nav.examination")}
+          </Link>
+        ) : null}
+        {canProcedureRead ? (
+          <Link
+            href={endoscopyHref}
+            className={cn(
+              "rounded-full px-3 py-1.5 text-sm font-medium",
+              pathname === endoscopyHref
+                ? "bg-primary/10 text-primary"
+                : "text-muted-foreground hover:bg-muted",
+            )}
+            {...testIdProps(testIds.patients.navEndoscopy)}
+          >
+            {t("nav.endoscopy")}
+          </Link>
+        ) : null}
+        {canProcedureRead ? (
+          <Link
+            href={laryngoscopyHref}
+            className={cn(
+              "rounded-full px-3 py-1.5 text-sm font-medium",
+              pathname === laryngoscopyHref
+                ? "bg-primary/10 text-primary"
+                : "text-muted-foreground hover:bg-muted",
+            )}
+            {...testIdProps(testIds.patients.navLaryngoscopy)}
+          >
+            {t("nav.laryngoscopy")}
+          </Link>
+        ) : null}
+        {canProcedureRead ? (
+          <Link
+            href={otologyHref}
+            className={cn(
+              "rounded-full px-3 py-1.5 text-sm font-medium",
+              pathname === otologyHref
+                ? "bg-primary/10 text-primary"
+                : "text-muted-foreground hover:bg-muted",
+            )}
+            {...testIdProps(testIds.patients.navOtology)}
+          >
+            {t("nav.otology")}
+          </Link>
+        ) : null}
+        {canAudiology ? (
+          <Link
+            href={audiologyHref}
+            className={cn(
+              "rounded-full px-3 py-1.5 text-sm font-medium",
+              pathname === audiologyHref
+                ? "bg-primary/10 text-primary"
+                : "text-muted-foreground hover:bg-muted",
+            )}
+            {...testIdProps(testIds.patients.navAudiology)}
+          >
+            {t("nav.audiology")}
+          </Link>
+        ) : null}
+        {canProcedureRead ? (
+          <Link
+            href={proceduresHref}
+            className={cn(
+              "rounded-full px-3 py-1.5 text-sm font-medium",
+              pathname === proceduresHref
+                ? "bg-primary/10 text-primary"
+                : "text-muted-foreground hover:bg-muted",
+            )}
+            {...testIdProps(testIds.patients.navProcedures)}
+          >
+            {t("nav.procedures")}
+          </Link>
+        ) : null}
         {canPrescribe ? (
           <Link
             href={prescriptionsHref}

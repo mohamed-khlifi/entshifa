@@ -170,7 +170,9 @@ function renderCockpit() {
         locale="en"
         messages={{ documents, encounters, examination, patients }}
       >
-        <PermissionProvider permissions={[Permission.ENCOUNTER_SIGN]}>
+        <PermissionProvider
+          permissions={[Permission.ENCOUNTER_WRITE, Permission.ENCOUNTER_SIGN]}
+        >
           <ConsultationCockpit
             patientId={patientId}
             encounterId={encounterId}

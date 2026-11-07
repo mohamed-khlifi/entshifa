@@ -45,6 +45,7 @@ SICK_LEAVE_CODE = "sick_leave"
 MEDICAL_CERTIFICATE_CODE = "medical_certificate"
 IMAGING_REQUEST_CODE = "imaging_request"
 LAB_REQUEST_CODE = "lab_request"
+AUDIOLOGY_REPORT_CODE = "audiology_report"
 
 CLINICAL_TEMPLATE_CODES = (
     CONSULTATION_REPORT_CODE,
@@ -53,6 +54,7 @@ CLINICAL_TEMPLATE_CODES = (
     MEDICAL_CERTIFICATE_CODE,
     IMAGING_REQUEST_CODE,
     LAB_REQUEST_CODE,
+    AUDIOLOGY_REPORT_CODE,
 )
 
 # Feature spec §14.4. MRI members must stay in engines.documents.safety.MRI_MODALITIES.

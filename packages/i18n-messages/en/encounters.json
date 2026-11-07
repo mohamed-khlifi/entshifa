@@ -1,4 +1,7 @@
 {
+  "forbidden": {
+    "message": "Consultation notes are not available for your role."
+  },
   "actions": {
     "print": "Print",
     "sign": "Sign"

@@ -74,6 +74,7 @@
     "certificate": "Certificat",
     "imaging": "Demande d'imagerie",
     "laboratory": "Demande d'examens biologiques",
+    "audiology": "Compte rendu d'audiologie",
     "batch": "Imprimer la visite",
     "close": "Fermer",
     "create": "Créer le brouillon",

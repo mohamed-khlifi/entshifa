@@ -8,18 +8,34 @@ from __future__ import annotations
 
 from typing import Any
 
+from ent.features.audiology.constants import (
+    PTA_FORMULAS,
+    RELIABILITY_VALUES,
+    TEST_METHODS,
+    TRANSDUCERS,
+)
 from ent.features.documents.clinical_labels import (
     ABSENCE_TYPE_LABELS,
+    AUDIOLOGY_ALERT_LABELS,
+    AUDIOLOGY_NEGATIVE_LABELS,
     COMMON_LABELS,
+    CONFIGURATION_LABELS,
     ENCOUNTER_TYPE_LABELS,
+    LOSS_TYPE_LABELS,
+    METHOD_LABELS,
     MODALITY_LABELS,
     PANEL_LABELS,
+    PTA_FORMULA_LABELS,
     PURPOSE_LABELS,
+    RELIABILITY_LABELS,
     SECTION_LABELS,
     SEX_LABELS,
+    TRANSDUCER_LABELS,
+    WHO_GRADE_LABELS,
 )
 from ent.features.documents.constants import (
     ABSENCE_TYPES,
+    AUDIOLOGY_REPORT_CODE,
     CERTIFICATE_PURPOSES,
     CONSULTATION_REPORT_CODE,
     IMAGING_MODALITIES,
@@ -42,6 +58,7 @@ table { width: 100%; border-collapse: collapse; margin: 8pt 0 12pt; }
 th, td { border: 1px solid #444; padding: 4pt 6pt; text-align: start; vertical-align: top; }
 th { width: 34%; }
 td.num, .num { direction: ltr; unicode-bidi: isolate; }
+.audiogram-chart { direction: ltr; unicode-bidi: isolate; text-align: center; }
 ul { margin: 0; padding-inline-start: 16pt; }
 footer { margin-top: 16pt; font-size: 9pt; }
 """
@@ -331,6 +348,165 @@ def _lab_body(locale: str) -> str:
     )
 
 
+_WHO_GRADES = (
+    "normal",
+    "mild",
+    "moderate",
+    "moderately_severe",
+    "severe",
+    "profound",
+    "complete",
+)
+_LOSS_TYPES = ("conductive", "sensorineural", "mixed")
+_CONFIGURATIONS = (
+    "flat",
+    "sloping",
+    "rising",
+    "notched",
+    "cookie_bite",
+    "precipitous",
+    "corner",
+)
+
+
+def _ear_metrics_rows(locale: str, ear_title: str, stem: str) -> str:
+    labels = SECTION_LABELS[locale]
+    _require_codes(WHO_GRADE_LABELS[locale], _WHO_GRADES, name=f"who {locale}")
+    _require_codes(LOSS_TYPE_LABELS[locale], _LOSS_TYPES, name=f"loss {locale}")
+    _require_codes(
+        CONFIGURATION_LABELS[locale], _CONFIGURATIONS, name=f"configuration {locale}"
+    )
+    rows = "".join(
+        (
+            _row(
+                labels["pta"],
+                f'<span class="num">{_j(f"audiogram.pta{stem}")} dB HL</span>',
+            ),
+            _row(
+                labels["grade"],
+                _choice_chain(f"audiogram.grade{stem}", WHO_GRADE_LABELS[locale])
+                + f' <span class="num">({labels["scale_who"]})</span>',
+            ),
+            _row(
+                labels["loss_type"],
+                _choice_chain(f"audiogram.lossType{stem}", LOSS_TYPE_LABELS[locale]),
+            ),
+            _row(
+                labels["configuration"],
+                _choice_chain(
+                    f"audiogram.configuration{stem}", CONFIGURATION_LABELS[locale]
+                ),
+            ),
+            _row(
+                labels["abg"],
+                f'<span class="num">{_j(f"audiogram.abg{stem}")} dB</span>',
+            ),
+        )
+    )
+    return f"<h3>{ear_title}</h3><table><tbody>{rows}</tbody></table>"
+
+
+def _audiology_body(locale: str) -> str:
+    labels = SECTION_LABELS[locale]
+    common = COMMON_LABELS[locale]
+    none = common["none"]
+    _require_codes(TRANSDUCER_LABELS[locale], TRANSDUCERS, name=f"transducer {locale}")
+    _require_codes(METHOD_LABELS[locale], TEST_METHODS, name=f"method {locale}")
+    _require_codes(
+        RELIABILITY_LABELS[locale], RELIABILITY_VALUES, name=f"reliability {locale}"
+    )
+    _require_codes(PTA_FORMULA_LABELS[locale], PTA_FORMULAS, name=f"pta {locale}")
+    meta_rows = "".join(
+        (
+            _row(common["visit_date"], _j("audiogram.performedAt"), numeric=True),
+            _row(
+                labels["transducer_label"],
+                _choice_chain("audiogram.transducer", TRANSDUCER_LABELS[locale]),
+            ),
+            _row(
+                labels["method_label"],
+                _choice_chain("audiogram.method", METHOD_LABELS[locale]),
+            ),
+            _row(
+                labels["reliability_label"],
+                _choice_chain("audiogram.reliability", RELIABILITY_LABELS[locale]),
+            ),
+            _row(labels["equipment_label"], _j("audiogram.equipment")),
+            _row(
+                labels["calibration_label"],
+                _j("audiogram.calibrationDate"),
+                numeric=True,
+            ),
+            _row(
+                labels["pta"],
+                _choice_chain("audiogram.ptaFormula", PTA_FORMULA_LABELS[locale]),
+            ),
+        )
+    )
+    alerts = (
+        "{% if audiogram.alerts %}<ul>{% for code in audiogram.alerts %}<li>"
+        + _choice_chain("code", AUDIOLOGY_ALERT_LABELS[locale])
+        + "</li>{% endfor %}</ul>{% else %}<p>"
+        + none
+        + "</p>{% endif %}"
+    )
+    negatives = (
+        "{% if audiogram.negativeFindings %}<ul>{% for code in audiogram.negativeFindings %}<li>"
+        + _choice_chain("code", AUDIOLOGY_NEGATIVE_LABELS[locale])
+        + "</li>{% endfor %}</ul>{% else %}<p>"
+        + none
+        + "</p>{% endif %}"
+    )
+    chart = (
+        '<div class="audiogram-chart"><img alt="" src="'
+        + _j("audiogram.chartDataUri")
+        + '" style="max-width:100%;height:auto"/></div>'
+    )
+    right = _ear_metrics_rows(locale, labels["right_ear"], "Right")
+    left = _ear_metrics_rows(locale, labels["left_ear"], "Left")
+    return (
+        f"<h1>{labels['audiology_title']}</h1>"
+        + _identity(locale)
+        + "<table><tbody>"
+        + meta_rows
+        + "</tbody></table>"
+        + _section(labels["audiogram_chart"], chart)
+        + _section(labels["audiogram_metrics"], right + left)
+        + _section(labels["audiogram_alerts"], alerts)
+        + _section(labels["audiogram_negatives"], negatives)
+        + _section(
+            labels["tympanometry"],
+            "<p>"
+            + labels["right_ear"]
+            + ": "
+            + _j("tympanometry.rightSummary")
+            + "</p><p>"
+            + labels["left_ear"]
+            + ": "
+            + _j("tympanometry.leftSummary")
+            + "</p>",
+        )
+        + _section(
+            labels["speech"],
+            "<p>"
+            + labels["right_ear"]
+            + ": "
+            + _j("speech.rightSummary")
+            + "</p><p>"
+            + labels["left_ear"]
+            + ": "
+            + _j("speech.leftSummary")
+            + "</p>",
+        )
+        + _section(labels["evoked"], "<p>" + _j("evoked.summary") + "</p>")
+        + _section(
+            labels["audiology_conclusion"], "<p>" + _j("audiogram.conclusion") + "</p>"
+        )
+    )
+
+
+_audiology_body.title_key = "audiology_title"  # type: ignore[attr-defined]
+
 _consultation_body.title_key = "consultation_title"  # type: ignore[attr-defined]
 _referral_body.title_key = "referral_title"  # type: ignore[attr-defined]
 _sick_leave_body.title_key = "sick_leave_title"  # type: ignore[attr-defined]
@@ -390,6 +566,36 @@ LAB_PLACEHOLDERS = _placeholders(
         "request.indication": {"type": "string", "required": False},
     }
 )
+AUDIOLOGY_REPORT_PLACEHOLDERS = _placeholders(
+    {
+        "audiogram.performedAt": {"type": "string", "required": True},
+        "audiogram.transducer": {"type": "code", "required": True},
+        "audiogram.method": {"type": "code", "required": True},
+        "audiogram.reliability": {"type": "code", "required": True},
+        "audiogram.equipment": {"type": "string", "required": False},
+        "audiogram.calibrationDate": {"type": "date", "required": False},
+        "audiogram.ptaFormula": {"type": "code", "required": True},
+        "audiogram.chartDataUri": {"type": "string", "required": True},
+        "audiogram.ptaRight": {"type": "string", "required": False},
+        "audiogram.ptaLeft": {"type": "string", "required": False},
+        "audiogram.gradeRight": {"type": "code", "required": False},
+        "audiogram.gradeLeft": {"type": "code", "required": False},
+        "audiogram.lossTypeRight": {"type": "code", "required": False},
+        "audiogram.lossTypeLeft": {"type": "code", "required": False},
+        "audiogram.configurationRight": {"type": "code", "required": False},
+        "audiogram.configurationLeft": {"type": "code", "required": False},
+        "audiogram.abgRight": {"type": "string", "required": False},
+        "audiogram.abgLeft": {"type": "string", "required": False},
+        "audiogram.alerts": {"type": "text_list", "required": True},
+        "audiogram.negativeFindings": {"type": "text_list", "required": True},
+        "audiogram.conclusion": {"type": "string", "required": False},
+        "tympanometry.rightSummary": {"type": "string", "required": False},
+        "tympanometry.leftSummary": {"type": "string", "required": False},
+        "speech.rightSummary": {"type": "string", "required": False},
+        "speech.leftSummary": {"type": "string", "required": False},
+        "evoked.summary": {"type": "string", "required": False},
+    }
+)
 
 
 def clinical_template_specs() -> list[dict[str, Any]]:
@@ -431,5 +637,11 @@ def clinical_template_specs() -> list[dict[str, Any]]:
             "category": "lab_request",
             "placeholders": LAB_PLACEHOLDERS,
             "versions": _versions(_lab_body),
+        },
+        {
+            "code": AUDIOLOGY_REPORT_CODE,
+            "category": "audiology_report",
+            "placeholders": AUDIOLOGY_REPORT_PLACEHOLDERS,
+            "versions": _versions(_audiology_body),
         },
     ]

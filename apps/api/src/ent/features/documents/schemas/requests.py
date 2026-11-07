@@ -149,6 +149,11 @@ class ConsultationReportInput(CamelModel):
     conclusion: str | None = Field(default=None, max_length=4000)
 
 
+class AudiologyReportInput(CamelModel):
+    audiogram_public_id: str | None = Field(default=None, min_length=26, max_length=26)
+    conclusion: str | None = Field(default=None, max_length=4000)
+
+
 class DocumentCreate(CamelModel):
     patient_public_id: str = Field(min_length=26, max_length=26)
     template_code: str = Field(min_length=1, max_length=60)
@@ -160,6 +165,7 @@ class DocumentCreate(CamelModel):
     certificate: CertificateInput | None = None
     referral: ReferralInput | None = None
     consultation: ConsultationReportInput | None = None
+    audiology: AudiologyReportInput | None = None
 
 
 class DocumentBatchPreviewRequest(CamelModel):

@@ -95,6 +95,9 @@ async def ensure_clinical_templates(session: AsyncSession) -> None:
             )
             session.add(template)
             await session.flush()
+        elif template.placeholders != placeholders:
+            template.placeholders = placeholders
+            await session.flush()
         declared = set(placeholders)
         for version in spec["versions"]:
             issue = validate_placeholders(

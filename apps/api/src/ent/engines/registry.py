@@ -16,6 +16,10 @@ from ent.engines.audiology.asymmetry import CODE as ASYMMETRY_CODE
 from ent.engines.audiology.asymmetry import FORMULA as ASYMMETRY_FORMULA
 from ent.engines.audiology.asymmetry import REFERENCE as ASYMMETRY_REFERENCE
 from ent.engines.audiology.asymmetry import VERSION as ASYMMETRY_VERSION
+from ent.engines.audiology.audiogram_svg import CODE as AUDIOGRAM_SVG_CODE
+from ent.engines.audiology.audiogram_svg import FORMULA as AUDIOGRAM_SVG_FORMULA
+from ent.engines.audiology.audiogram_svg import REFERENCE as AUDIOGRAM_SVG_REFERENCE
+from ent.engines.audiology.audiogram_svg import VERSION as AUDIOGRAM_SVG_VERSION
 from ent.engines.audiology.candidacy import CODE as CANDIDACY_CODE
 from ent.engines.audiology.candidacy import FORMULA as CANDIDACY_FORMULA
 from ent.engines.audiology.candidacy import REFERENCE as CANDIDACY_REFERENCE
@@ -196,6 +200,13 @@ def registered_calculators() -> tuple[CalculatorSpec, ...]:
             reference=PROTOCOL_RESOLVER_REFERENCE,
             unit="recall",
             formula=PROTOCOL_RESOLVER_FORMULA,
+        ),
+        CalculatorSpec(
+            code=AUDIOGRAM_SVG_CODE,
+            version=AUDIOGRAM_SVG_VERSION,
+            reference=AUDIOGRAM_SVG_REFERENCE,
+            unit=None,
+            formula=AUDIOGRAM_SVG_FORMULA,
         ),
         CalculatorSpec(
             code=PTA_CODE,

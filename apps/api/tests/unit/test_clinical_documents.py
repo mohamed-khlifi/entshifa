@@ -175,6 +175,7 @@ def test_every_clinical_template_locale_declares_its_placeholders() -> None:
         "medical_certificate",
         "imaging_request",
         "lab_request",
+        "audiology_report",
     }
     for spec in specs:
         declared = set(spec["placeholders"])

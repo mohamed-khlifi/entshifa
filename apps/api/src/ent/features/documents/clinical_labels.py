@@ -238,6 +238,28 @@ SECTION_LABELS: dict[str, dict[str, str]] = {
         "mri_clear": "No non-MRI-safe implant is recorded.",
         "panels": "Panels",
         "indication": "Indication",
+        "audiology_title": "Audiology report",
+        "audiogram_chart": "Audiogram",
+        "audiogram_metrics": "Pure-tone metrics",
+        "audiogram_alerts": "Alerts",
+        "audiogram_negatives": "Negative findings",
+        "tympanometry": "Tympanometry",
+        "speech": "Speech audiometry",
+        "evoked": "Evoked potentials / OAE",
+        "audiology_conclusion": "Interpretation",
+        "right_ear": "Right ear",
+        "left_ear": "Left ear",
+        "pta": "PTA",
+        "grade": "WHO 2021 grade",
+        "loss_type": "Loss type",
+        "configuration": "Configuration",
+        "abg": "Air–bone gap",
+        "scale_who": "WHO 2021",
+        "transducer_label": "Transducer",
+        "method_label": "Method",
+        "reliability_label": "Reliability",
+        "equipment_label": "Equipment",
+        "calibration_label": "Calibration date",
     },
     "fr": {
         "consultation_title": "Compte rendu de consultation",
@@ -272,6 +294,28 @@ SECTION_LABELS: dict[str, dict[str, str]] = {
         "mri_clear": "Aucun implant non compatible IRM n'est enregistré.",
         "panels": "Panels",
         "indication": "Indication",
+        "audiology_title": "Compte rendu d'audiologie",
+        "audiogram_chart": "Audiogramme",
+        "audiogram_metrics": "Mesures tonales",
+        "audiogram_alerts": "Alertes",
+        "audiogram_negatives": "Éléments négatifs",
+        "tympanometry": "Tympanométrie",
+        "speech": "Audiométrie vocale",
+        "evoked": "Potentiels évoqués / OAE",
+        "audiology_conclusion": "Interprétation",
+        "right_ear": "Oreille droite",
+        "left_ear": "Oreille gauche",
+        "pta": "PTA",
+        "grade": "Classe OMS 2021",
+        "loss_type": "Type de perte",
+        "configuration": "Configuration",
+        "abg": "Écart air–os",
+        "scale_who": "OMS 2021",
+        "transducer_label": "Transducteur",
+        "method_label": "Méthode",
+        "reliability_label": "Fiabilité",
+        "equipment_label": "Appareil",
+        "calibration_label": "Date d'étalonnage",
     },
     "ar": {
         "consultation_title": "تقرير الاستشارة",
@@ -306,5 +350,216 @@ SECTION_LABELS: dict[str, dict[str, str]] = {
         "mri_clear": "لا توجد زرعة غير آمنة للرنين المغناطيسي.",
         "panels": "اللوحات",
         "indication": "الاستطباب",
+        "audiology_title": "تقرير السمع",
+        "audiogram_chart": "المنحنى السمعي",
+        "audiogram_metrics": "مقاييس النغمات",
+        "audiogram_alerts": "تنبيهات",
+        "audiogram_negatives": "نتائج سلبية",
+        "tympanometry": "قياس الطبلة",
+        "speech": "قياس الكلام",
+        "evoked": "الجهد السمعي / OAE",
+        "audiology_conclusion": "التفسير",
+        "right_ear": "الأذن اليمنى",
+        "left_ear": "الأذن اليسرى",
+        "pta": "PTA",
+        "grade": "درجة WHO 2021",
+        "loss_type": "نوع الفقد",
+        "configuration": "التوزيع",
+        "abg": "فجوة هواء–عظم",
+        "scale_who": "WHO 2021",
+        "transducer_label": "المحول",
+        "method_label": "الطريقة",
+        "reliability_label": "الموثوقية",
+        "equipment_label": "الجهاز",
+        "calibration_label": "تاريخ المعايرة",
+    },
+}
+
+TRANSDUCER_LABELS: dict[str, dict[str, str]] = {
+    "en": {
+        "headphones": "Headphones",
+        "inserts": "Insert earphones",
+        "free_field": "Free field",
+        "bone_oscillator": "Bone oscillator",
+    },
+    "fr": {
+        "headphones": "Casque",
+        "inserts": "Embouts",
+        "free_field": "Champ libre",
+        "bone_oscillator": "Oscillateur osseux",
+    },
+    "ar": {
+        "headphones": "سماعات",
+        "inserts": "سماعات داخلية",
+        "free_field": "حقل حر",
+        "bone_oscillator": "هزاز عظمي",
+    },
+}
+
+METHOD_LABELS: dict[str, dict[str, str]] = {
+    "en": {
+        "standard": "Standard",
+        "play": "Play audiometry",
+        "vra": "VRA",
+        "boa": "BOA",
+        "soundfield": "Sound field",
+    },
+    "fr": {
+        "standard": "Standard",
+        "play": "Audiométrie ludique",
+        "vra": "VRA",
+        "boa": "BOA",
+        "soundfield": "Champ sonore",
+    },
+    "ar": {
+        "standard": "قياس قياسي",
+        "play": "قياس لعب",
+        "vra": "VRA",
+        "boa": "BOA",
+        "soundfield": "حقل صوتي",
+    },
+}
+
+RELIABILITY_LABELS: dict[str, dict[str, str]] = {
+    "en": {"good": "Good", "fair": "Fair", "poor": "Poor"},
+    "fr": {"good": "Bonne", "fair": "Moyenne", "poor": "Faible"},
+    "ar": {"good": "جيدة", "fair": "متوسطة", "poor": "ضعيفة"},
+}
+
+PTA_FORMULA_LABELS: dict[str, dict[str, str]] = {
+    "en": {
+        "3freq": "PTA3",
+        "4freq_who": "PTA4 (WHO)",
+        "high_freq": "HF-PTA",
+        "fletcher": "Fletcher PTA",
+    },
+    "fr": {
+        "3freq": "PTA3",
+        "4freq_who": "PTA4 (OMS)",
+        "high_freq": "PTA HF",
+        "fletcher": "PTA Fletcher",
+    },
+    "ar": {
+        "3freq": "PTA3",
+        "4freq_who": "PTA4 (WHO)",
+        "high_freq": "HF-PTA",
+        "fletcher": "Fletcher PTA",
+    },
+}
+
+WHO_GRADE_LABELS: dict[str, dict[str, str]] = {
+    "en": {
+        "normal": "Normal",
+        "mild": "Mild",
+        "moderate": "Moderate",
+        "moderately_severe": "Moderately severe",
+        "severe": "Severe",
+        "profound": "Profound",
+        "complete": "Complete",
+    },
+    "fr": {
+        "normal": "Normale",
+        "mild": "Légère",
+        "moderate": "Modérée",
+        "moderately_severe": "Modérément sévère",
+        "severe": "Sévère",
+        "profound": "Profonde",
+        "complete": "Complète",
+    },
+    "ar": {
+        "normal": "طبيعي",
+        "mild": "خفيف",
+        "moderate": "متوسط",
+        "moderately_severe": "متوسط إلى شديد",
+        "severe": "شديد",
+        "profound": "عميق",
+        "complete": "كامل",
+    },
+}
+
+LOSS_TYPE_LABELS: dict[str, dict[str, str]] = {
+    "en": {
+        "conductive": "Conductive",
+        "sensorineural": "Sensorineural",
+        "mixed": "Mixed",
+    },
+    "fr": {
+        "conductive": "Transmission",
+        "sensorineural": "Perception",
+        "mixed": "Mixte",
+    },
+    "ar": {
+        "conductive": "توصيلي",
+        "sensorineural": "عصبي حسي",
+        "mixed": "مختلط",
+    },
+}
+
+CONFIGURATION_LABELS: dict[str, dict[str, str]] = {
+    "en": {
+        "flat": "Flat",
+        "sloping": "Sloping",
+        "rising": "Rising",
+        "notched": "Notched",
+        "cookie_bite": "Cookie-bite",
+        "precipitous": "Precipitous",
+        "corner": "Corner",
+    },
+    "fr": {
+        "flat": "Plate",
+        "sloping": "Pente descendante",
+        "rising": "Montante",
+        "notched": "Encoche",
+        "cookie_bite": "Cookie-bite",
+        "precipitous": "Précipitée",
+        "corner": "Coin",
+    },
+    "ar": {
+        "flat": "مسطح",
+        "sloping": "منحدر",
+        "rising": "صاعد",
+        "notched": "مع نقص",
+        "cookie_bite": "Cookie-bite",
+        "precipitous": "حاد",
+        "corner": "زاوية",
+    },
+}
+
+AUDIOLOGY_ALERT_LABELS: dict[str, dict[str, str]] = {
+    "en": {
+        "asymmetry": "Interaural asymmetry",
+        "shift": "Significant threshold shift",
+        "speech_discrepancy": "Speech–tone discrepancy",
+        "large_canal": "Large ear canal volume",
+        "abr_wave_v": "ABR wave V interaural difference",
+    },
+    "fr": {
+        "asymmetry": "Asymétrie interauriculaire",
+        "shift": "Déplacement significatif des seuils",
+        "speech_discrepancy": "Discordance voix–tons",
+        "large_canal": "Volume canalaire élevé",
+        "abr_wave_v": "Différence interauriculaire onde V ABR",
+    },
+    "ar": {
+        "asymmetry": "عدم تماثل بين الأذنين",
+        "shift": "انزياح عتبات ملحوظ",
+        "speech_discrepancy": "تناقض الكلام والنغمات",
+        "large_canal": "حجم قناة سمع كبير",
+        "abr_wave_v": "فرق موجة V بين الأذنين",
+    },
+}
+
+AUDIOLOGY_NEGATIVE_LABELS: dict[str, dict[str, str]] = {
+    "en": {
+        "right_hearing_normal": "Right ear: hearing within normal limits",
+        "left_hearing_normal": "Left ear: hearing within normal limits",
+    },
+    "fr": {
+        "right_hearing_normal": "Oreille droite : audition normale",
+        "left_hearing_normal": "Oreille gauche : audition normale",
+    },
+    "ar": {
+        "right_hearing_normal": "الأذن اليمنى: سمع ضمن الحدود الطبيعية",
+        "left_hearing_normal": "الأذن اليسرى: سمع ضمن الحدود الطبيعية",
     },
 }

@@ -16,11 +16,13 @@ from ent.core.events.bus import get_event_bus
 from ent.core.repository.base import BaseRepository
 from ent.core.schemas.base import PageMeta, PageSchema, PaginationParams
 from ent.core.schemas.common import CodeableConcept
+from ent.core.security.permissions import Permission
 from ent.core.security.principal import CurrentUser
 from ent.core.utils.ids import new_ulid
 from ent.engines.patients.duplicates import is_likely_duplicate
 from ent.engines.patients.name_normalize import build_name_normalized, normalize_phone
 from ent.features.clinics.repository import ClinicRepository
+from ent.features.encounters.constants import ENCOUNTER_TYPES
 from ent.features.patients.events import patient_created_event, patient_merged_event
 from ent.features.patients.exceptions import (
     PatientIdempotencyMismatchError,
@@ -386,7 +388,7 @@ class PatientService:
     ) -> PageSchema[PatientTimelineItemRead]:
         self._bind(user)
         patient = await self._visible(user, public_id)
-        selected = _timeline_types(types)
+        selected = _timeline_types_for_user(user, types)
         if laterality is not None and laterality not in {
             "right",
             "left",
@@ -1495,6 +1497,31 @@ def _timeline_types(types: list[str] | None) -> frozenset[str] | None:
     if unknown:
         raise ValidationError(reason="invalid_timeline_type", types=unknown)
     return frozenset(types)
+
+
+def _timeline_types_for_user(
+    user: CurrentUser,
+    types: list[str] | None,
+) -> frozenset[str] | None:
+    selected = _timeline_types(types)
+    sensitive = (
+        Permission.ENCOUNTER_WRITE.value not in user.permissions
+        and Permission.PROCEDURE_READ.value not in user.permissions
+    )
+    if not sensitive:
+        return selected
+    forbidden = frozenset(
+        {
+            *ENCOUNTER_TYPES,
+            "diagnosis",
+            "prescription",
+            "document",
+        }
+    )
+    allowed = frozenset(TIMELINE_EVENT_TYPES) - forbidden
+    if selected is None:
+        return allowed
+    return frozenset(name for name in selected if name in allowed)
 
 
 def _timeline_item(

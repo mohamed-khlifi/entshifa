@@ -80,6 +80,7 @@ export function VisitDocuments({
         <KindButton kind="certificate" current={kind} onKind={onKind} />
         <KindButton kind="imaging" current={kind} onKind={onKind} />
         <KindButton kind="laboratory" current={kind} onKind={onKind} />
+        <KindButton kind="audiology" current={kind} onKind={onKind} />
         <KindButton kind="batch" current={kind} onKind={onKind} />
       </div>
       {kind == null ? null : (
@@ -153,6 +154,21 @@ export function VisitDocuments({
               }
             />
           ) : null}
+          {kind === "audiology" ? (
+            <TextDocumentForm
+              title={t("visit.audiology")}
+              fieldLabel={t("visit.conclusion")}
+              pending={create.isPending}
+              onClose={() => onKind(null)}
+              onSubmit={(text, locale) =>
+                submit({
+                  templateCode: "audiology_report",
+                  locale,
+                  audiology: { conclusion: text || null },
+                })
+              }
+            />
+          ) : null}
           {kind === "batch" ? (
             <BatchPrint
               patientId={patientId}
@@ -183,6 +199,7 @@ function KindButton({
     certificate: testIds.documents.certificate,
     imaging: testIds.documents.imaging,
     laboratory: testIds.documents.laboratory,
+    audiology: testIds.documents.audiology,
     batch: testIds.documents.batch,
   }[kind];
   const label = {
@@ -192,6 +209,7 @@ function KindButton({
     certificate: t("visit.certificate"),
     imaging: t("visit.imaging"),
     laboratory: t("visit.laboratory"),
+    audiology: t("visit.audiology"),
     batch: t("visit.batch"),
   }[kind];
   return (

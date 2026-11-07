@@ -9,9 +9,15 @@ from typing import Any
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ent.core.audit.recorder import AuditRecorder
-from ent.core.errors.exceptions import ConflictError, NotFoundError, ValidationError
+from ent.core.errors.exceptions import (
+    ConflictError,
+    NotFoundError,
+    PermissionDeniedError,
+    ValidationError,
+)
 from ent.core.schemas.base import PageMeta, PageSchema, PaginationParams
 from ent.core.schemas.common import CodeableConcept, Laterality
+from ent.core.security.permissions import Permission
 from ent.core.security.principal import CurrentUser
 from ent.core.utils.ids import new_ulid
 from ent.features.attachments.models import ATTACHMENT_CATEGORIES, Attachment
@@ -322,6 +328,8 @@ class AttachmentService:
     ) -> PageSchema[AttachmentRead]:
         if category is not None and category not in _ALLOWED_CATEGORIES:
             raise ValidationError(reason="category", category=category)
+        if _clinical_pdf_restricted(user) and category == "document_pdf":
+            raise PermissionDeniedError()
         if laterality is not None and laterality not in Laterality:
             raise ValidationError(reason="laterality", laterality=laterality)
         start = _to_utc_naive(captured_from) if captured_from is not None else None
@@ -334,6 +342,11 @@ class AttachmentService:
             user, procedure_public_id, patient_id=int(patient.id)
         )
         repo = AttachmentRepository(self._session, clinic_id=user.clinic_id)
+        exclude = (
+            frozenset({"document_pdf"})
+            if _clinical_pdf_restricted(user) and category is None
+            else None
+        )
         result = await repo.list_for_chart(
             patient_id=int(patient.id),
             category=category,
@@ -341,6 +354,7 @@ class AttachmentService:
             captured_from=start,
             captured_to=end,
             procedure_record_id=(int(procedure.id) if procedure is not None else None),
+            exclude_categories=exclude,
             page=page,
         )
         sites = await self._body_sites(user, result.items, content_locale)
@@ -389,6 +403,8 @@ class AttachmentService:
         attachment = await repo.get_by_public_id_with_variants(public_id)
         if attachment is None:
             raise NotFoundError(resource="attachment", public_id=public_id)
+        if _clinical_pdf_restricted(user) and attachment.category == "document_pdf":
+            raise PermissionDeniedError()
         read = await self._read_one(user, attachment, content_locale)
         AuditRecorder(self._session).record_access(
             action="read",
@@ -416,6 +432,8 @@ class AttachmentService:
         attachment = await repo.get_by_public_id_with_variants(public_id)
         if attachment is None:
             raise NotFoundError(resource="attachment", public_id=public_id)
+        if _clinical_pdf_restricted(user) and attachment.category == "document_pdf":
+            raise PermissionDeniedError()
 
         storage_key = attachment.storage_key
         filename = attachment.filename
@@ -572,3 +590,10 @@ class AttachmentService:
         if clinic is None:
             raise NotFoundError(resource="clinic", public_id=str(clinic_id))
         return clinic
+
+
+def _clinical_pdf_restricted(user: CurrentUser) -> bool:
+    return (
+        Permission.DOCUMENT_FINALIZE.value not in user.permissions
+        and Permission.ENCOUNTER_WRITE.value not in user.permissions
+    )

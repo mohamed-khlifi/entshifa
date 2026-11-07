@@ -1,4 +1,7 @@
 {
+  "forbidden": {
+    "message": "Les notes de consultation ne sont pas accessibles avec votre rôle."
+  },
   "actions": {
     "print": "Imprimer",
     "sign": "Signer"

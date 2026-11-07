@@ -74,6 +74,7 @@
     "certificate": "Certificate",
     "imaging": "Imaging request",
     "laboratory": "Laboratory request",
+    "audiology": "Audiology report",
     "batch": "Print visit",
     "close": "Close",
     "create": "Create draft",

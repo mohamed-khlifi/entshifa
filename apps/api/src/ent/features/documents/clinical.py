@@ -15,7 +15,17 @@ from ent.features.documents.assemble import (
     is_clinical_template,
     resolve_document_locale,
 )
-from ent.features.documents.constants import DOCUMENT_LOCALES, IMAGING_REQUEST_CODE
+from ent.features.documents.audiology_context import (
+    build_audiology_snapshot,
+    load_audiogram_for_report,
+    load_patient_for_report,
+    resolve_audiology_encounter,
+)
+from ent.features.documents.constants import (
+    AUDIOLOGY_REPORT_CODE,
+    DOCUMENT_LOCALES,
+    IMAGING_REQUEST_CODE,
+)
 from ent.features.documents.context import load_visit_facts
 from ent.features.documents.exceptions import DocumentEncounterRequiredError
 from ent.features.documents.html_render import (
@@ -55,15 +65,43 @@ async def create_clinical_document(
 ) -> DocumentRead:
     if not is_clinical_template(body.template_code):
         raise ValidationError(reason="template")
-    if body.encounter_public_id is None:
-        raise DocumentEncounterRequiredError()
-    patient = await _patient(session, user, body.patient_public_id)
+    patient = await load_patient_for_report(session, user, body.patient_public_id)
     clinic = await _clinic(session, user)
-    encounter = await EncounterRepository(session, clinic_id=user.clinic_id).get_detail(
-        body.encounter_public_id
-    )
-    if encounter is None or int(encounter.patient_id) != int(patient.id):
-        raise NotFoundError()
+    if body.template_code == AUDIOLOGY_REPORT_CODE:
+        if body.audiology is None:
+            raise ValidationError(reason="audiology")
+        provisional_encounter = None
+        if body.encounter_public_id is not None:
+            provisional_encounter = await EncounterRepository(
+                session, clinic_id=user.clinic_id
+            ).get_detail(body.encounter_public_id)
+            if provisional_encounter is None or int(
+                provisional_encounter.patient_id
+            ) != int(patient.id):
+                raise NotFoundError()
+        audiogram = await load_audiogram_for_report(
+            session,
+            user,
+            patient=patient,
+            audiogram_public_id=body.audiology.audiogram_public_id,
+            encounter=provisional_encounter,
+        )
+        encounter, facts = await resolve_audiology_encounter(
+            session,
+            user,
+            patient=patient,
+            body_encounter_public_id=body.encounter_public_id,
+            audiogram=audiogram,
+        )
+    else:
+        if body.encounter_public_id is None:
+            raise DocumentEncounterRequiredError()
+        encounter = await EncounterRepository(
+            session, clinic_id=user.clinic_id
+        ).get_detail(body.encounter_public_id)
+        if encounter is None or int(encounter.patient_id) != int(patient.id):
+            raise NotFoundError()
+        facts = None
     locale = resolve_document_locale(
         template_code=body.template_code,
         requested=body.locale,
@@ -83,24 +121,37 @@ async def create_clinical_document(
     ).latest(template_id=int(template.id), locale=locale)
     if version is None:
         raise NotFoundError()
-    facts = await load_visit_facts(
-        session,
-        user,
-        patient=patient,
-        clinic=clinic,
-        encounter=encounter,
-        locale=locale,
-    )
+    if facts is None:
+        assert encounter is not None
+        facts = await load_visit_facts(
+            session,
+            user,
+            patient=patient,
+            clinic=clinic,
+            encounter=encounter,
+            locale=locale,
+        )
+    audiology_snapshot = None
+    if body.template_code == AUDIOLOGY_REPORT_CODE:
+        assert body.audiology is not None
+        audiology_snapshot = await build_audiology_snapshot(
+            session,
+            user,
+            audiogram=audiogram,
+            conclusion=body.audiology.conclusion,
+            locale=locale,
+        )
     data = build_document_data(
         facts,
         body,
         clinician_public_id=user.user_public_id,
+        audiology_snapshot=audiology_snapshot,
     )
     require_data(placeholder_map(dict(template.placeholders)), data)
     row = Document(
         clinic_id=user.clinic_id,
         patient_id=int(patient.id),
-        encounter_id=int(encounter.id),
+        encounter_id=int(encounter.id) if encounter is not None else None,
         template_id=int(template.id),
         template_version_id=int(version.id),
         category=template.category,
@@ -125,7 +176,7 @@ async def create_clinical_document(
         row,
         patient.public_id,
         template.code,
-        encounter.public_id,
+        encounter.public_id if encounter is not None else None,
     )
 
 

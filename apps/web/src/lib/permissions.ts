@@ -27,4 +27,6 @@ export const Permission = {
   RECALL_WRITE: "recall.write",
   AUDIOLOGY_ENTER: "audiology.enter",
   AUDIOLOGY_INTERPRET: "audiology.interpret",
+  PROCEDURE_READ: "procedure.read",
+  PROCEDURE_WRITE: "procedure.write",
 } as const;

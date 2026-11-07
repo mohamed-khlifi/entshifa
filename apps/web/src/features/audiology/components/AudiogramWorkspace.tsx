@@ -21,6 +21,10 @@ import { AudiologyDashboard } from "./AudiologyDashboard";
 import { HearingDevicesPanel } from "./HearingDevicesPanel";
 import { PediatricAudiologyPanel } from "./PediatricAudiologyPanel";
 import { ComparisonOverlay } from "./ComparisonOverlay";
+import {
+  useCreateDocumentMutation,
+  useDocumentPreviewQuery,
+} from "@/features/documents";
 import { useCurrentClinicQuery } from "@/features/clinics";
 import { usePatientQuery } from "@/features/patients";
 import { ApiError } from "@/lib/api/errors";
@@ -75,6 +79,13 @@ export function AudiogramWorkspace({
   const locale = useLocale();
   const canEnter = usePermission(Permission.AUDIOLOGY_ENTER);
   const canInterpret = usePermission(Permission.AUDIOLOGY_INTERPRET);
+  const canFinalizeDocument = usePermission(Permission.DOCUMENT_FINALIZE);
+  const createReport = useCreateDocumentMutation(patientId);
+  const [reportDocumentId, setReportDocumentId] = useState("");
+  const reportPreview = useDocumentPreviewQuery(
+    reportDocumentId,
+    reportDocumentId.length > 0,
+  );
   const clinic = useCurrentClinicQuery();
   const patient = usePatientQuery(patientId);
   const timeZone = clinic.data?.timezone ?? "UTC";
@@ -724,7 +735,50 @@ export function AudiogramWorkspace({
             >
               {t("actions.print")}
             </button>
+            {canFinalizeDocument || canInterpret ? (
+              <button
+                type="button"
+                className="rounded-full border border-border px-4 py-2 text-sm font-medium disabled:opacity-50"
+                disabled={
+                  !draft.publicId ||
+                  draft.status !== "final" ||
+                  createReport.isPending
+                }
+                onClick={() => {
+                  if (!draft.publicId) {
+                    return;
+                  }
+                  createReport.mutate(
+                    {
+                      patientPublicId: patientId,
+                      templateCode: "audiology_report",
+                      encounterPublicId: selected?.encounterPublicId ?? null,
+                      audiology: {
+                        audiogramPublicId: draft.publicId,
+                        conclusion: draft.interpretationText?.trim() || null,
+                      },
+                    },
+                    {
+                      onSuccess: (doc) => setReportDocumentId(doc.publicId),
+                    },
+                  );
+                }}
+                {...testIdProps(testIds.audiology.generateReport)}
+              >
+                {createReport.isPending
+                  ? t("actions.generatingReport")
+                  : t("actions.generateReport")}
+              </button>
+            ) : null}
           </div>
+          {reportDocumentId && reportPreview.data ? (
+            <iframe
+              title={t("actions.reportPreviewTitle")}
+              className="mt-4 h-96 w-full rounded-lg border border-border"
+              srcDoc={reportPreview.data.html}
+              {...testIdProps(testIds.audiology.reportPreview)}
+            />
+          ) : null}
         </>
       ) : null}
       {confirmFinalize ? (

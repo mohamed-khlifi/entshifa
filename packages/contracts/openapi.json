@@ -2509,6 +2509,37 @@
         "title": "AudiogramUpdate",
         "type": "object"
       },
+      "AudiologyReportInput": {
+        "properties": {
+          "audiogramPublicId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "minLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audiogrampublicid"
+          },
+          "conclusion": {
+            "anyOf": [
+              {
+                "maxLength": 4000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conclusion"
+          }
+        },
+        "title": "AudiologyReportInput",
+        "type": "object"
+      },
       "BiopsyWrite": {
         "properties": {
           "laboratoryLocale": {
@@ -4310,6 +4341,16 @@
       },
       "DocumentCreate": {
         "properties": {
+          "audiology": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AudiologyReportInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "certificate": {
             "anyOf": [
               {

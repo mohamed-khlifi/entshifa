@@ -13,6 +13,14 @@ const harness = vi.hoisted(() => ({
   save: vi.fn(),
 }));
 
+vi.mock("@/features/documents", () => ({
+  useCreateDocumentMutation: () => ({
+    mutate: vi.fn(),
+    isPending: false,
+  }),
+  useDocumentPreviewQuery: () => ({ data: undefined }),
+}));
+
 vi.mock("../hooks/use-audiology", () => ({
   useAudiogramCompare: () => ({
     list: {

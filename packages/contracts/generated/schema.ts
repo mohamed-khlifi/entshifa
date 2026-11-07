@@ -3724,6 +3724,13 @@ export interface components {
             /** Version */
             version: number;
         };
+        /** AudiologyReportInput */
+        AudiologyReportInput: {
+            /** Audiogrampublicid */
+            audiogramPublicId?: string | null;
+            /** Conclusion */
+            conclusion?: string | null;
+        };
         /** BiopsyWrite */
         BiopsyWrite: {
             /**
@@ -4289,6 +4296,7 @@ export interface components {
         };
         /** DocumentCreate */
         DocumentCreate: {
+            audiology?: components["schemas"]["AudiologyReportInput"] | null;
             certificate?: components["schemas"]["CertificateInput"] | null;
             consultation?: components["schemas"]["ConsultationReportInput"] | null;
             /** Encounterpublicid */

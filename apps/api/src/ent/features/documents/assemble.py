@@ -17,6 +17,7 @@ from ent.engines.documents.safety import (
     mentions_contrast_media,
 )
 from ent.features.documents.constants import (
+    AUDIOLOGY_REPORT_CODE,
     CLINICAL_TEMPLATE_CODES,
     CONSULTATION_REPORT_CODE,
     DOCUMENT_LOCALES,
@@ -96,6 +97,7 @@ def build_document_data(
     body: DocumentCreate,
     *,
     clinician_public_id: str,
+    audiology_snapshot: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Return the snapshot data for this template, or raise a domain error."""
 
@@ -157,6 +159,11 @@ def build_document_data(
             "panels": list(body.laboratory.panels),
             "indication": (body.laboratory.indication or "").strip(),
         }
+        return data
+    if code == AUDIOLOGY_REPORT_CODE:
+        if body.audiology is None or audiology_snapshot is None:
+            raise DocumentPayloadError()
+        data.update(audiology_snapshot)
         return data
     raise DocumentPayloadError()
 
@@ -288,6 +295,7 @@ def _reject_unexpected_payload(body: DocumentCreate) -> None:
             ("certificate", body.certificate),
             ("referral", body.referral),
             ("consultation", body.consultation),
+            ("audiology", body.audiology),
         )
         if value is not None
     }
@@ -298,6 +306,7 @@ def _reject_unexpected_payload(body: DocumentCreate) -> None:
         MEDICAL_CERTIFICATE_CODE: frozenset({"certificate"}),
         IMAGING_REQUEST_CODE: frozenset({"imaging"}),
         LAB_REQUEST_CODE: frozenset({"laboratory"}),
+        AUDIOLOGY_REPORT_CODE: frozenset({"audiology"}),
     }[body.template_code]
     if not present <= allowed:
         raise DocumentPayloadError()

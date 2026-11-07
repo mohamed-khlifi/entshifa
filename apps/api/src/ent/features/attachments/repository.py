@@ -49,6 +49,7 @@ class AttachmentRepository(BaseRepository[Attachment]):
         captured_from: datetime | None,
         captured_to: datetime | None,
         procedure_record_id: int | None = None,
+        exclude_categories: frozenset[str] | None = None,
         page: PaginationParams | None,
     ) -> Page[Attachment]:
         """Tenant-scoped chart media, newest capture (or upload) first."""
@@ -58,6 +59,8 @@ class AttachmentRepository(BaseRepository[Attachment]):
         stmt = self._base_query().where(Attachment.patient_id == patient_id)
         if category is not None:
             stmt = stmt.where(Attachment.category == category)
+        if exclude_categories:
+            stmt = stmt.where(Attachment.category.notin_(exclude_categories))
         if laterality is not None:
             stmt = stmt.where(Attachment.laterality == laterality)
         if procedure_record_id is not None:

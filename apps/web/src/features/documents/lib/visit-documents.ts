@@ -43,6 +43,7 @@ export const VISIT_DOCUMENT_KINDS = [
   "certificate",
   "imaging",
   "laboratory",
+  "audiology",
   "batch",
 ] as const;
 
