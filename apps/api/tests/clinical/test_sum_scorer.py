@@ -322,9 +322,7 @@ def test_total_out_of_range_rejected() -> None:
             min_score=Decimal("0"),
             max_score=Decimal("1"),
             reference="x",
-            items=(
-                InstrumentItemSpec(code="a", position=1, allowed_values=()),
-            ),
+            items=(InstrumentItemSpec(code="a", position=1, allowed_values=()),),
         ),
         InstrumentScoringSpec(
             code="weight",
