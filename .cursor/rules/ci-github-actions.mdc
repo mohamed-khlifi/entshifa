@@ -1,0 +1,21 @@
+---
+description: After git push, verify GitHub Actions with gh and fix red jobs
+alwaysApply: true
+---
+
+# CI after push
+
+When this agent pushes to `origin` (or completes a user-requested push):
+
+1. Confirm `gh auth status` works (Windows fallback:
+   `C:\Program Files\GitHub CLI\gh.exe`).
+2. List runs: `gh run list --limit 5` from the repository root.
+3. Watch the run for the pushed commit/branch: `gh run watch` or poll until not
+   `in_progress`.
+4. On failure: `gh run view <run-id> --log-failed`, diagnose, fix, push again,
+   repeat until all required jobs pass.
+5. Tell the user the run URL or conclusion; do not leave verification to them
+   by default.
+
+Local Makefile targets (`make lint-api`, tests, etc.) run before push; `gh`
+confirms what ran on GitHub.

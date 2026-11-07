@@ -137,6 +137,17 @@ converts; never do it by hand.
   (`Europe/Paris`,
   `ZoneInfoNotFoundError`), run that query against local MySQL 8.4 anyway.
   CI has tzdata and will execute it.
+- After **you** push to GitHub (or the user asked you to push), verify CI yourself
+  with the [GitHub CLI](https://cli.github.com/) (`gh`). Do not ask the user to
+  check Actions unless `gh` is missing or not authenticated.
+  - From the repo root (same remote you pushed): `gh run list --limit 5`
+  - For the latest run on the current branch: `gh run list --branch "$(git branch --show-current)" --limit 3`
+  - Wait until it finishes: `gh run watch` (or re-list until not `in_progress`)
+  - If anything failed: `gh run view <run-id> --log-failed`, fix, re-run local
+    checks, push again, and repeat until green or you report a blocker.
+  - On Windows, if `gh` is not found in the agent shell, use
+    `"C:\Program Files\GitHub CLI\gh.exe"` or refresh `$env:Path` from Machine +
+    User before calling `gh`.
 
 ## How to work with me
 

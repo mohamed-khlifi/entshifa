@@ -15,5 +15,6 @@ describe the task and let it be picked up.
 | `add-document-template` | a new printed or PDF output |
 | `add-recall-protocol` | a clinical event should schedule future actions |
 
-Standing rules that always apply live in `AGENTS.md` and `.cursor/rules/`.
+Standing rules that always apply live in `AGENTS.md` and `.cursor/rules/`
+(including **ci-github-actions** — verify GitHub Actions with `gh` after push).
 Skills describe how to do a specific job; rules describe how all code must look.
