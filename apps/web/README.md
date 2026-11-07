@@ -6,7 +6,9 @@ Next.js App Router frontend. Full skeleton in **P0-09** per
 ## Design
 
 Light-first, modern clinical UI: tokens in `src/styles/tokens.css`, Inter
-typography, teal/blue-gray palette, soft elevation. See `.cursor/rules/frontend.mdc`
+and Noto Sans Arabic from vendored `.woff2` files (`src/assets/fonts/`, loaded
+with `next/font/local`), teal/blue-gray palette, soft elevation. See
+`.cursor/rules/frontend.mdc`
 (Visual design).
 
 ## i18n

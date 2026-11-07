@@ -1,4 +1,3 @@
-import { Inter, Noto_Sans_Arabic } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -8,20 +7,8 @@ import type { ReactNode } from "react";
 import { routing } from "@/lib/i18n/routing";
 import { getLocaleDirection, usesArabicFont } from "@/lib/i18n/config";
 import { AppProviders } from "@/providers/app-providers";
+import { fontArabic, fontSans } from "@/lib/fonts";
 import { cn } from "@/lib/utils/cn";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-sans",
-});
-
-const notoSansArabic = Noto_Sans_Arabic({
-  subsets: ["arabic"],
-  display: "swap",
-  variable: "--font-arabic",
-  weight: ["400", "500", "600", "700"],
-});
 
 type Props = {
   children: ReactNode;
@@ -42,8 +29,8 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages();
   const direction = getLocaleDirection(locale);
   const fontVariables = usesArabicFont(locale)
-    ? cn(inter.variable, notoSansArabic.variable)
-    : inter.variable;
+    ? cn(fontSans.variable, fontArabic.variable)
+    : fontSans.variable;
 
   return (
     <html lang={locale} dir={direction} suppressHydrationWarning>
