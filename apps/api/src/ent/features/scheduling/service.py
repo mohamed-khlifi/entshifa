@@ -17,6 +17,7 @@ from ent.features.clinics.models import Clinic
 from ent.features.clinics.repository import ClinicRepository, SiteRepository
 from ent.features.patients.models import Patient
 from ent.features.patients.repository import PatientRepository
+from ent.features.questionnaires.flow_service import QuestionnaireFlowService
 from ent.features.scheduling.exceptions import (
     AppointmentInvalidTimeRangeError,
     AppointmentInvalidTransitionError,
@@ -539,6 +540,22 @@ class SchedulingService:
         )
         if site is None or patient is None or doctor is None or appt_type is None:
             raise NotFoundError(resource="appointment")
+        clinic = await self._clinic(user)
+        appt_local_date = (
+            row.starts_at.replace(tzinfo=UTC)
+            .astimezone(ZoneInfo(clinic.timezone))
+            .date()
+        )
+        day_start, day_end = _clinic_day_bounds(appt_local_date, clinic.timezone)
+        questionnaire_status_value = await QuestionnaireFlowService(
+            self._session,
+        ).questionnaire_status_for_patient(
+            clinic_id=user.clinic_id,
+            patient_id=int(patient.id),
+            day_start=day_start,
+            day_end=day_end,
+            now=_now(),
+        )
         return AppointmentRead(
             public_id=row.public_id,
             site_id=site.public_id,
@@ -554,7 +571,9 @@ class SchedulingService:
             started_at=as_utc_aware(row.started_at) if row.started_at else None,
             ended_at=as_utc_aware(row.ended_at) if row.ended_at else None,
             cancellation_reason=row.cancellation_reason,
-            questionnaire_status=QuestionnaireStatusRead(status="not_applicable"),
+            questionnaire_status=QuestionnaireStatusRead(
+                status=questionnaire_status_value,
+            ),
             version=row.version,
             created_at=row.created_at,
             updated_at=row.updated_at,

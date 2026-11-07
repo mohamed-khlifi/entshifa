@@ -32,6 +32,9 @@ _CLINICAL_DATES = frozenset(
         "scheduled_for",
         "sent_at",
         "effective_at",
+        "expires_at",
+        "opened_at",
+        "completed_at",
     }
 )
 
@@ -47,6 +50,7 @@ _GLOBAL_SCRUB = frozenset(
         "phone",
         "phone_primary",
         "phone_secondary",
+        "recipient_address",
         "referring_doctor_name",
         "referring_doctor_phone",
         "referring_doctor_email",

@@ -113,7 +113,14 @@
     "translation_incomplete": "Cet instrument n'est pas entièrement traduit pour la langue demandée.",
     "invalid_definition": "La définition de l'instrument est invalide.",
     "incomplete_response": "Une ou plusieurs questions ne sont pas renseignées.",
-    "invalid_answer": "Une réponse n'est pas autorisée pour cet item."
+    "invalid_answer": "Une réponse n'est pas autorisée pour cet item.",
+    "invitation_not_found": "Ce lien de questionnaire est introuvable.",
+    "invitation_expired": "Ce lien de questionnaire a expiré.",
+    "invitation_already_completed": "Ce questionnaire a déjà été envoyé.",
+    "rate_limited": "Trop de tentatives. Patientez quelques minutes.",
+    "contact_missing": "Le patient n’a pas de coordonnée pour ce canal.",
+    "response_not_found": "Cette réponse au questionnaire est introuvable.",
+    "idempotency_mismatch": "Cette clé d’idempotence correspond à une autre requête."
   },
   "audiology": {
     "already_finalized": "Cet audiogramme est finalisé et ne peut plus être modifié.",

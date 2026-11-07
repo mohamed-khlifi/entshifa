@@ -113,7 +113,14 @@
     "translation_incomplete": "This instrument is not fully translated for the requested language.",
     "invalid_definition": "The instrument definition is invalid.",
     "incomplete_response": "One or more items are unanswered.",
-    "invalid_answer": "An answer is not allowed for this item."
+    "invalid_answer": "An answer is not allowed for this item.",
+    "invitation_not_found": "This questionnaire link was not found.",
+    "invitation_expired": "This questionnaire link has expired.",
+    "invitation_already_completed": "This questionnaire was already submitted.",
+    "rate_limited": "Too many attempts. Wait a few minutes and try again.",
+    "contact_missing": "The patient has no contact detail for this channel.",
+    "response_not_found": "That questionnaire response was not found.",
+    "idempotency_mismatch": "This idempotency key was already used for a different request."
   },
   "audiology": {
     "already_finalized": "This audiogram is finalized and cannot be changed.",

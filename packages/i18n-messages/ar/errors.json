@@ -113,7 +113,14 @@
     "translation_incomplete": "الأداة غير مترجمة بالكامل للغة المطلوبة.",
     "invalid_definition": "تعريف الأداة غير صالح.",
     "incomplete_response": "سؤال واحد أو أكثر بلا إجابة.",
-    "invalid_answer": "إجابة غير مسموحة لهذا البند."
+    "invalid_answer": "إجابة غير مسموحة لهذا البند.",
+    "invitation_not_found": "لم يتم العثور على رابط الاستبيان هذا.",
+    "invitation_expired": "انتهت صلاحية رابط الاستبيان.",
+    "invitation_already_completed": "تم إرسال هذا الاستبيان مسبقًا.",
+    "rate_limited": "محاولات كثيرة. انتظر بضع دقائق.",
+    "contact_missing": "لا توجد بيانات اتصال للمريض على هذه القناة.",
+    "response_not_found": "لم يتم العثور على إجابة الاستبيان.",
+    "idempotency_mismatch": "مفتاح التكرار هذا لطلب مختلف."
   },
   "audiology": {
     "already_finalized": "هذا السمعي مُنهى ولا يمكن تعديله.",

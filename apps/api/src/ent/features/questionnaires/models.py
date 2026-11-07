@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import date
+from datetime import date, datetime
 from decimal import Decimal
 from typing import Any
 
@@ -24,18 +24,24 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from ent.core.db.base import Base
 from ent.core.db.mixins import (
     AuditMixin,
+    ClinicalRecordMixin,
     GlobalRecordMixin,
     PublicIdMixin,
     SoftDeleteMixin,
     SurrogatePkMixin,
     TimestampMixin,
 )
-from ent.core.db.mysql_types import mysql_json, unsigned_bigint
+from ent.core.db.mysql_types import datetime6, mysql_json, unsigned_bigint
+from ent.core.db.types import ULIDType
+from ent.core.utils.ids import new_ulid
 from ent.features.questionnaires.constants import (
     INSTRUMENT_CATEGORIES,
     INSTRUMENT_LOCALES,
     INSTRUMENT_RESPONDENTS,
     INSTRUMENT_SCORING_TYPES,
+    QUESTIONNAIRE_CHANNELS,
+    QUESTIONNAIRE_CONTEXTS,
+    QUESTIONNAIRE_ENTERED_BY,
 )
 
 
@@ -48,6 +54,9 @@ _CATEGORY_SQL = _in_check("category", INSTRUMENT_CATEGORIES)
 _RESPONDENT_SQL = _in_check("respondent", INSTRUMENT_RESPONDENTS)
 _SCORING_SQL = _in_check("scoring_type", INSTRUMENT_SCORING_TYPES)
 _LOCALE_SQL = _in_check("locale", INSTRUMENT_LOCALES)
+_CHANNEL_SQL = _in_check("channel", QUESTIONNAIRE_CHANNELS)
+_CONTEXT_SQL = _in_check("context", QUESTIONNAIRE_CONTEXTS)
+_ENTERED_BY_SQL = _in_check("entered_by", QUESTIONNAIRE_ENTERED_BY)
 
 
 class Instrument(GlobalRecordMixin, Base):
@@ -351,3 +360,215 @@ class InstrumentTranslation(GlobalRecordMixin, Base):
         back_populates="translations",
         lazy="raise",
     )
+
+
+class QuestionnaireInvitation(ClinicalRecordMixin, Base):
+    """Single-use patient questionnaire link (architecture §25.10 / P5-03)."""
+
+    __audit_writes__ = True
+    __tablename__ = "questionnaire_invitation"
+    __table_args__ = (
+        CheckConstraint(_CHANNEL_SQL, name="ck_questionnaire_invitation__channel"),
+        CheckConstraint(_CONTEXT_SQL, name="ck_questionnaire_invitation__context"),
+        CheckConstraint(_LOCALE_SQL, name="ck_questionnaire_invitation__locale"),
+        Index(
+            "uq_questionnaire_invitation__token_hash",
+            "token_hash",
+            unique=True,
+        ),
+        Index(
+            "ix_questionnaire_invitation__clinic_patient_sent",
+            "clinic_id",
+            "patient_id",
+            "sent_at",
+        ),
+    )
+
+    patient_id: Mapped[int] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("patient.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=False,
+    )
+    instrument_version_id: Mapped[int] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("instrument_version.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=False,
+    )
+    token_hash: Mapped[str] = mapped_column(
+        String(64, collation="utf8mb4_0900_as_cs"),
+        nullable=False,
+    )
+    channel: Mapped[str] = mapped_column(String(20), nullable=False)
+    sent_at: Mapped[datetime] = mapped_column(datetime6(), nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(datetime6(), nullable=False)
+    opened_at: Mapped[datetime | None] = mapped_column(datetime6(), nullable=True)
+    completed_at: Mapped[datetime | None] = mapped_column(datetime6(), nullable=True)
+    context: Mapped[str] = mapped_column(String(40), nullable=False)
+    related_surgery_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        nullable=True,
+    )
+    encounter_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("encounter.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=True,
+    )
+    locale: Mapped[str] = mapped_column(String(10), nullable=False)
+    recipient_address: Mapped[str | None] = mapped_column(String(190), nullable=True)
+
+
+class QuestionnaireResponse(ClinicalRecordMixin, Base):
+    """Completed questionnaire with derived scores (P5-03)."""
+
+    __audit_writes__ = True
+    __tablename__ = "questionnaire_response"
+    __table_args__ = (
+        CheckConstraint(_LOCALE_SQL, name="ck_questionnaire_response__locale"),
+        CheckConstraint(_ENTERED_BY_SQL, name="ck_questionnaire_response__entered_by"),
+        Index(
+            "ix_questionnaire_response__clinic_patient_version_completed",
+            "clinic_id",
+            "patient_id",
+            "instrument_version_id",
+            "completed_at",
+        ),
+        Index(
+            "uq_questionnaire_response__invitation_id",
+            "invitation_id",
+            unique=True,
+        ),
+    )
+
+    patient_id: Mapped[int] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("patient.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=False,
+    )
+    instrument_version_id: Mapped[int] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("instrument_version.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=False,
+    )
+    encounter_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("encounter.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=True,
+    )
+    invitation_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(
+            "questionnaire_invitation.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+        ),
+        nullable=True,
+    )
+    completed_at: Mapped[datetime] = mapped_column(datetime6(), nullable=False)
+    locale: Mapped[str] = mapped_column(String(10), nullable=False)
+    entered_by: Mapped[str] = mapped_column(String(20), nullable=False)
+    total_score: Mapped[Decimal] = mapped_column(
+        Numeric(7, 2),
+        nullable=False,
+    )
+    subscale_scores: Mapped[dict[str, Any]] = mapped_column(
+        mysql_json(),
+        nullable=False,
+    )
+    severity_band: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    change_from_previous: Mapped[Decimal | None] = mapped_column(
+        Numeric(7, 2),
+        nullable=True,
+    )
+    mcid_reached: Mapped[bool | None] = mapped_column(Boolean, nullable=True)
+    previous_response_id: Mapped[int | None] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(
+            "questionnaire_response.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+        ),
+        nullable=True,
+    )
+
+    answers: Mapped[list[QuestionnaireAnswer]] = relationship(
+        back_populates="questionnaire_response",
+        lazy="raise",
+    )
+
+
+class QuestionnaireAnswer(
+    SurrogatePkMixin,
+    PublicIdMixin,
+    TimestampMixin,
+    AuditMixin,
+    SoftDeleteMixin,
+    Base,
+):
+    """One item answer on a questionnaire response."""
+
+    __tablename__ = "questionnaire_answer"
+    __table_args__ = (
+        UniqueConstraint(
+            "questionnaire_response_id",
+            "instrument_item_id",
+            name="uq_questionnaire_answer__response__item",
+        ),
+    )
+
+    questionnaire_response_id: Mapped[int] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey(
+            "questionnaire_response.id",
+            ondelete="RESTRICT",
+            onupdate="RESTRICT",
+        ),
+        nullable=False,
+    )
+    instrument_item_id: Mapped[int] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("instrument_item.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=False,
+    )
+    value: Mapped[int] = mapped_column(SmallInteger, nullable=False)
+
+    questionnaire_response: Mapped[QuestionnaireResponse] = relationship(
+        back_populates="answers",
+        foreign_keys=[questionnaire_response_id],
+        lazy="raise",
+    )
+
+
+class QuestionnaireRequestIdempotency(SurrogatePkMixin, TimestampMixin, Base):
+    """Idempotency-Key memory for questionnaire flow writes."""
+
+    __tablename__ = "questionnaire_request_idempotency"
+    __table_args__ = (
+        Index(
+            "uq_questionnaire_idempotency__clinic_id__key",
+            "clinic_id",
+            "idempotency_key",
+            unique=True,
+        ),
+    )
+
+    public_id: Mapped[str] = mapped_column(
+        ULIDType(),
+        nullable=False,
+        unique=True,
+        default=new_ulid,
+        insert_default=new_ulid,
+    )
+    clinic_id: Mapped[int] = mapped_column(
+        unsigned_bigint(),
+        ForeignKey("clinic.id", ondelete="RESTRICT", onupdate="RESTRICT"),
+        nullable=False,
+    )
+    idempotency_key: Mapped[str] = mapped_column(
+        String(80, collation="utf8mb4_0900_as_cs"),
+        nullable=False,
+    )
+    request_hash: Mapped[str] = mapped_column(
+        String(64, collation="utf8mb4_0900_as_cs"),
+        nullable=False,
+    )
+    resource_public_id: Mapped[str] = mapped_column(ULIDType(), nullable=False)

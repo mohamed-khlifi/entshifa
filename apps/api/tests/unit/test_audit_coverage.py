@@ -20,6 +20,7 @@ from ent.features.endoscopy.service import EndoscopyService
 from ent.features.observations.service import ObservationService
 from ent.features.patients.service import PatientService
 from ent.features.procedures.service import ProcedureRecordService
+from ent.features.questionnaires.flow_service import QuestionnaireFlowService
 from ent.features.recalls.service import RecallService
 from ent.features.scheduling.service import SchedulingService
 
@@ -62,6 +63,7 @@ def test_clinical_read_methods_record_access() -> None:
         (TympanometryService, ("list_", "get_")),
         (OaeResultService, ("list_", "get_")),
         (AbrResultService, ("list_", "get_")),
+        (QuestionnaireFlowService, ("list_", "get_", "public_get_")),
     )
     missing: list[str] = []
     for cls, prefixes in expectations:

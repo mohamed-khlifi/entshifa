@@ -6,6 +6,7 @@ import {
   conceptDisplayText,
   PatientSafetyAlertBanner,
 } from "@/features/patients";
+import { usePatientQuestionnaireResponses } from "@/features/questionnaires";
 import type { EncounterRead, PatientRead } from "@/lib/api/generated";
 import {
   formatDate,
@@ -25,6 +26,8 @@ export function CockpitPatientColumn({
   visits,
 }: CockpitPatientColumnProps) {
   const t = useTranslations("encounters");
+  const tQ = useTranslations("questionnaires");
+  const scores = usePatientQuestionnaireResponses(patient.publicId, {});
   const locale = useLocale();
   const age = patientAgeDisplay(patient.birthDate);
   const ageText =
@@ -103,12 +106,41 @@ export function CockpitPatientColumn({
         )}
       </section>
       <section {...testIdProps(testIds.encounters.questionnaire)}>
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          {t("patientCard.questionnaire")}
-        </h3>
-        <p className="text-sm text-muted-foreground">
-          {t("patientCard.questionnaireEmpty")}
-        </p>
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+            {t("patientCard.questionnaire")}
+          </h3>
+          <Link
+            href={`/patients/${patient.publicId}/questionnaires`}
+            className="text-xs text-primary underline-offset-2 hover:underline"
+          >
+            {tQ("delivery.title")}
+          </Link>
+        </div>
+        <ul
+          className="mt-1 space-y-1"
+          {...testIdProps(testIds.questionnaires.cockpitScores)}
+        >
+          {scores.data?.items.length ? (
+            scores.data.items.slice(0, 3).map((row) => (
+              <li key={row.publicId} className="text-sm">
+                <span className="font-medium">
+                  {row.instrumentTitle ?? row.instrumentCode}
+                </span>{" "}
+                <span>{row.totalScore}</span>
+                <span className="ms-2 text-xs text-muted-foreground">
+                  {row.enteredBy === "patient"
+                    ? tQ("delivery.provenancePatient")
+                    : tQ("delivery.provenanceStaff")}
+                </span>
+              </li>
+            ))
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              {t("patientCard.questionnaireEmpty")}
+            </p>
+          )}
+        </ul>
       </section>
     </aside>
   );

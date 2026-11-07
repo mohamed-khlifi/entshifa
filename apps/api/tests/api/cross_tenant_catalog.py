@@ -50,10 +50,11 @@ TENANT_PATH_PARAMS = frozenset(
         "abr_id",
         "ome_id",
         "instrument_id",
+        "response_id",
     }
 )
 
-SHARED_PATH_PARAMS = frozenset({"code", "locale"})
+SHARED_PATH_PARAMS = frozenset({"code", "locale", "token"})
 
 # Lists that are scoped to the caller. The integration test proves foreign ids
 # are absent. Query-scoped reads (documents, attachments) are tenant routes.

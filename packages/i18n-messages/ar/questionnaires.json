@@ -1,0 +1,34 @@
+{
+  "delivery": {
+    "title": "الاستبيانات",
+    "launchTablet": "بدء وضع الجهاز اللوحي",
+    "sendInvitation": "إرسال دعوة",
+    "linkLabel": "رابط لمرة واحدة",
+    "launchOpen": "فتح على هذا الجهاز",
+    "historyTitle": "النتائج المسجّلة",
+    "provenancePatient": "أكملها المريض",
+    "provenanceStaff": "أدخلها الموظف",
+    "provenanceClinician": "أدخلها الطبيب",
+    "emptyHistory": "لا توجد نتائج مسجّلة بعد."
+  },
+  "runner": {
+    "greeting": "مرحبًا، {firstName}",
+    "progress": "السؤال {current} من {total}",
+    "previous": "السابق",
+    "next": "التالي",
+    "submit": "إرسال",
+    "completeTitle": "شكرًا لك",
+    "completeBody": "تم حفظ إجاباتك.",
+    "tabletHandback": "يرجى إعادة الجهاز اللوحي إلى الاستقبال.",
+    "loading": "جارٍ تحميل الاستبيان…",
+    "expiredTitle": "انتهت صلاحية الرابط",
+    "expiredBody": "اطلب رابطًا جديدًا من العيادة.",
+    "completedTitle": "مكتمل مسبقًا",
+    "completedBody": "تم إرسال هذا الاستبيان بالفعل.",
+    "notFoundTitle": "الرابط غير موجود",
+    "notFoundBody": "تحقق من الرابط أو اطلب المساعدة من الاستقبال.",
+    "rateLimitedTitle": "محاولات كثيرة",
+    "rateLimitedBody": "انتظر بضع دقائق ثم أعد المحاولة."
+  },
+  "patientNav": "الاستبيانات"
+}

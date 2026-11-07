@@ -3,7 +3,12 @@
 from __future__ import annotations
 
 from ent.core.errors.codes import ErrorCode
-from ent.core.errors.exceptions import ConflictError, NotFoundError, ValidationError
+from ent.core.errors.exceptions import (
+    ConflictError,
+    DomainError,
+    NotFoundError,
+    ValidationError,
+)
 
 
 class InstrumentNotFoundError(NotFoundError):
@@ -42,3 +47,33 @@ class InstrumentInvalidAnswerError(ValidationError):
 
     def __init__(self, *, item_code: str, value: int) -> None:
         super().__init__(itemCode=item_code, value=value)
+
+
+class QuestionnaireInvitationNotFoundError(NotFoundError):
+    code = ErrorCode.QUESTIONNAIRE_INVITATION_NOT_FOUND
+
+
+class QuestionnaireInvitationExpiredError(ValidationError):
+    code = ErrorCode.QUESTIONNAIRE_INVITATION_EXPIRED
+    http_status = 410
+
+
+class QuestionnaireInvitationAlreadyCompletedError(ConflictError):
+    code = ErrorCode.QUESTIONNAIRE_INVITATION_ALREADY_COMPLETED
+
+
+class QuestionnaireRateLimitedError(DomainError):
+    code = ErrorCode.QUESTIONNAIRE_RATE_LIMITED
+    http_status = 429
+
+
+class QuestionnaireContactMissingError(ValidationError):
+    code = ErrorCode.QUESTIONNAIRE_CONTACT_MISSING
+
+
+class QuestionnaireResponseNotFoundError(NotFoundError):
+    code = ErrorCode.QUESTIONNAIRE_RESPONSE_NOT_FOUND
+
+
+class QuestionnaireIdempotencyMismatchError(ConflictError):
+    code = ErrorCode.QUESTIONNAIRE_IDEMPOTENCY_MISMATCH

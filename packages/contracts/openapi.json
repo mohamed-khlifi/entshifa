@@ -15005,6 +15005,46 @@
         "title": "PageSchema[ProcedureRecordRead]",
         "type": "object"
       },
+      "PageSchema_QuestionnaireInvitationRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/QuestionnaireInvitationRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[QuestionnaireInvitationRead]",
+        "type": "object"
+      },
+      "PageSchema_QuestionnaireResponseRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/QuestionnaireResponseRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[QuestionnaireResponseRead]",
+        "type": "object"
+      },
       "PageSchema_RecallRead_": {
         "properties": {
           "items": {
@@ -19907,6 +19947,653 @@
           }
         },
         "title": "ProtocolUpdate",
+        "type": "object"
+      },
+      "PublicInstrumentItemRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "options": {
+            "items": {
+              "type": "object"
+            },
+            "title": "Options",
+            "type": "array"
+          },
+          "position": {
+            "title": "Position",
+            "type": "integer"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "position",
+          "text",
+          "options"
+        ],
+        "title": "PublicInstrumentItemRead",
+        "type": "object"
+      },
+      "PublicInstrumentRead": {
+        "properties": {
+          "category": {
+            "title": "Category",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PublicInstrumentItemRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "respondent": {
+            "title": "Respondent",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "title",
+          "category",
+          "respondent",
+          "items"
+        ],
+        "title": "PublicInstrumentRead",
+        "type": "object"
+      },
+      "PublicQuestionnaireCompletionRead": {
+        "properties": {
+          "completedAt": {
+            "format": "date-time",
+            "title": "Completedat",
+            "type": "string"
+          },
+          "locale": {
+            "title": "Locale",
+            "type": "string"
+          }
+        },
+        "required": [
+          "completedAt",
+          "locale"
+        ],
+        "title": "PublicQuestionnaireCompletionRead",
+        "type": "object"
+      },
+      "PublicQuestionnaireSessionRead": {
+        "properties": {
+          "channel": {
+            "title": "Channel",
+            "type": "string"
+          },
+          "clinicName": {
+            "title": "Clinicname",
+            "type": "string"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "title": "Expiresat",
+            "type": "string"
+          },
+          "instrument": {
+            "$ref": "#/components/schemas/PublicInstrumentRead"
+          },
+          "locale": {
+            "title": "Locale",
+            "type": "string"
+          },
+          "patientFirstName": {
+            "title": "Patientfirstname",
+            "type": "string"
+          }
+        },
+        "required": [
+          "patientFirstName",
+          "clinicName",
+          "locale",
+          "channel",
+          "expiresAt",
+          "instrument"
+        ],
+        "title": "PublicQuestionnaireSessionRead",
+        "type": "object"
+      },
+      "PublicQuestionnaireSubmit": {
+        "properties": {
+          "answers": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "minProperties": 1,
+            "title": "Answers",
+            "type": "object"
+          }
+        },
+        "required": [
+          "answers"
+        ],
+        "title": "PublicQuestionnaireSubmit",
+        "type": "object"
+      },
+      "QuestionnaireAnswerRead": {
+        "properties": {
+          "itemCode": {
+            "title": "Itemcode",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "itemCode",
+          "value"
+        ],
+        "title": "QuestionnaireAnswerRead",
+        "type": "object"
+      },
+      "QuestionnaireInvitationCreate": {
+        "properties": {
+          "channel": {
+            "enum": [
+              "sms",
+              "whatsapp",
+              "email",
+              "tablet"
+            ],
+            "title": "Channel",
+            "type": "string"
+          },
+          "context": {
+            "default": "pre_visit",
+            "enum": [
+              "pre_visit",
+              "waiting_room",
+              "post_op_3m",
+              "post_op_6m",
+              "post_op_12m",
+              "follow_up"
+            ],
+            "title": "Context",
+            "type": "string"
+          },
+          "encounterId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterid"
+          },
+          "expiresInMinutes": {
+            "anyOf": [
+              {
+                "maximum": 10080.0,
+                "minimum": 15.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expiresinminutes"
+          },
+          "instrumentCode": {
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Instrumentcode",
+            "type": "string"
+          },
+          "locale": {
+            "anyOf": [
+              {
+                "maxLength": 10,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locale"
+          }
+        },
+        "required": [
+          "instrumentCode",
+          "channel"
+        ],
+        "title": "QuestionnaireInvitationCreate",
+        "type": "object"
+      },
+      "QuestionnaireInvitationCreatedRead": {
+        "properties": {
+          "channel": {
+            "title": "Channel",
+            "type": "string"
+          },
+          "context": {
+            "title": "Context",
+            "type": "string"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "title": "Expiresat",
+            "type": "string"
+          },
+          "instrumentCode": {
+            "title": "Instrumentcode",
+            "type": "string"
+          },
+          "locale": {
+            "title": "Locale",
+            "type": "string"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "publicPath": {
+            "title": "Publicpath",
+            "type": "string"
+          },
+          "sentAt": {
+            "format": "date-time",
+            "title": "Sentat",
+            "type": "string"
+          },
+          "token": {
+            "title": "Token",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "instrumentCode",
+          "channel",
+          "context",
+          "locale",
+          "sentAt",
+          "expiresAt",
+          "token",
+          "publicPath"
+        ],
+        "title": "QuestionnaireInvitationCreatedRead",
+        "type": "object"
+      },
+      "QuestionnaireInvitationRead": {
+        "properties": {
+          "channel": {
+            "title": "Channel",
+            "type": "string"
+          },
+          "completedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Completedat"
+          },
+          "context": {
+            "title": "Context",
+            "type": "string"
+          },
+          "expiresAt": {
+            "format": "date-time",
+            "title": "Expiresat",
+            "type": "string"
+          },
+          "instrumentCode": {
+            "title": "Instrumentcode",
+            "type": "string"
+          },
+          "locale": {
+            "title": "Locale",
+            "type": "string"
+          },
+          "openedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Openedat"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "sentAt": {
+            "format": "date-time",
+            "title": "Sentat",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "instrumentCode",
+          "channel",
+          "context",
+          "locale",
+          "sentAt",
+          "expiresAt",
+          "openedAt",
+          "completedAt"
+        ],
+        "title": "QuestionnaireInvitationRead",
+        "type": "object"
+      },
+      "QuestionnaireResponseDetailRead": {
+        "properties": {
+          "answers": {
+            "items": {
+              "$ref": "#/components/schemas/QuestionnaireAnswerRead"
+            },
+            "title": "Answers",
+            "type": "array"
+          },
+          "changeFromPrevious": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Changefromprevious"
+          },
+          "completedAt": {
+            "format": "date-time",
+            "title": "Completedat",
+            "type": "string"
+          },
+          "encounterId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterid"
+          },
+          "enteredBy": {
+            "title": "Enteredby",
+            "type": "string"
+          },
+          "instrumentCode": {
+            "title": "Instrumentcode",
+            "type": "string"
+          },
+          "instrumentTitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instrumenttitle"
+          },
+          "items": {
+            "items": {
+              "type": "object"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "locale": {
+            "title": "Locale",
+            "type": "string"
+          },
+          "mcidReached": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mcidreached"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "severityBand": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Severityband"
+          },
+          "subscaleScores": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Subscalescores",
+            "type": "object"
+          },
+          "totalScore": {
+            "title": "Totalscore",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "instrumentCode",
+          "instrumentTitle",
+          "locale",
+          "enteredBy",
+          "completedAt",
+          "totalScore",
+          "subscaleScores",
+          "severityBand",
+          "changeFromPrevious",
+          "mcidReached",
+          "encounterId"
+        ],
+        "title": "QuestionnaireResponseDetailRead",
+        "type": "object"
+      },
+      "QuestionnaireResponseRead": {
+        "properties": {
+          "answers": {
+            "items": {
+              "$ref": "#/components/schemas/QuestionnaireAnswerRead"
+            },
+            "title": "Answers",
+            "type": "array"
+          },
+          "changeFromPrevious": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Changefromprevious"
+          },
+          "completedAt": {
+            "format": "date-time",
+            "title": "Completedat",
+            "type": "string"
+          },
+          "encounterId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterid"
+          },
+          "enteredBy": {
+            "title": "Enteredby",
+            "type": "string"
+          },
+          "instrumentCode": {
+            "title": "Instrumentcode",
+            "type": "string"
+          },
+          "instrumentTitle": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Instrumenttitle"
+          },
+          "locale": {
+            "title": "Locale",
+            "type": "string"
+          },
+          "mcidReached": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mcidreached"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "severityBand": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Severityband"
+          },
+          "subscaleScores": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Subscalescores",
+            "type": "object"
+          },
+          "totalScore": {
+            "title": "Totalscore",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "instrumentCode",
+          "instrumentTitle",
+          "locale",
+          "enteredBy",
+          "completedAt",
+          "totalScore",
+          "subscaleScores",
+          "severityBand",
+          "changeFromPrevious",
+          "mcidReached",
+          "encounterId"
+        ],
+        "title": "QuestionnaireResponseRead",
+        "type": "object"
+      },
+      "QuestionnaireStaffResponseCreate": {
+        "properties": {
+          "answers": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "minProperties": 1,
+            "title": "Answers",
+            "type": "object"
+          },
+          "encounterId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterid"
+          },
+          "enteredBy": {
+            "default": "staff",
+            "enum": [
+              "staff",
+              "clinician"
+            ],
+            "title": "Enteredby",
+            "type": "string"
+          },
+          "instrumentCode": {
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Instrumentcode",
+            "type": "string"
+          },
+          "locale": {
+            "maxLength": 10,
+            "title": "Locale",
+            "type": "string"
+          }
+        },
+        "required": [
+          "instrumentCode",
+          "locale",
+          "answers"
+        ],
+        "title": "QuestionnaireStaffResponseCreate",
         "type": "object"
       },
       "QuestionnaireStatusRead": {
@@ -37122,6 +37809,386 @@
         ]
       }
     },
+    "/api/v1/patients/{patient_id}/questionnaire-invitations": {
+      "get": {
+        "operationId": "list_questionnaire_invitations_api_v1_patients__patient_id__questionnaire_invitations_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_QuestionnaireInvitationRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Questionnaire Invitations",
+        "tags": [
+          "questionnaire-flow"
+        ]
+      },
+      "post": {
+        "operationId": "create_questionnaire_invitation_api_v1_patients__patient_id__questionnaire_invitations_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuestionnaireInvitationCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestionnaireInvitationCreatedRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Questionnaire Invitation",
+        "tags": [
+          "questionnaire-flow"
+        ]
+      }
+    },
+    "/api/v1/patients/{patient_id}/questionnaire-responses": {
+      "get": {
+        "operationId": "list_questionnaire_responses_api_v1_patients__patient_id__questionnaire_responses_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "instrument_code",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 40,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Instrument Code"
+            }
+          },
+          {
+            "in": "query",
+            "name": "encounter_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Encounter Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_QuestionnaireResponseRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Questionnaire Responses",
+        "tags": [
+          "questionnaire-flow"
+        ]
+      },
+      "post": {
+        "operationId": "create_questionnaire_response_api_v1_patients__patient_id__questionnaire_responses_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          },
+          {
+            "in": "header",
+            "name": "Idempotency-Key",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuestionnaireStaffResponseCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestionnaireResponseRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Questionnaire Response",
+        "tags": [
+          "questionnaire-flow"
+        ]
+      }
+    },
     "/api/v1/patients/{patient_id}/speech-audiometry": {
       "get": {
         "operationId": "list_patient_speech_audiometry_api_v1_patients__patient_id__speech_audiometry_get",
@@ -38831,6 +39898,163 @@
         "summary": "Sign Procedure",
         "tags": [
           "procedures"
+        ]
+      }
+    },
+    "/api/v1/public/questionnaires/{token}": {
+      "get": {
+        "operationId": "get_public_questionnaire_session_api_v1_public_questionnaires__token__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "title": "Token",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicQuestionnaireSessionRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Get Public Questionnaire Session",
+        "tags": [
+          "public-questionnaires"
+        ]
+      }
+    },
+    "/api/v1/public/questionnaires/{token}/submit": {
+      "post": {
+        "operationId": "submit_public_questionnaire_api_v1_public_questionnaires__token__submit_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "token",
+            "required": true,
+            "schema": {
+              "title": "Token",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PublicQuestionnaireSubmit"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicQuestionnaireCompletionRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Submit Public Questionnaire",
+        "tags": [
+          "public-questionnaires"
+        ]
+      }
+    },
+    "/api/v1/questionnaire-responses/{response_id}": {
+      "get": {
+        "operationId": "get_questionnaire_response_api_v1_questionnaire_responses__response_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "response_id",
+            "required": true,
+            "schema": {
+              "title": "Response Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuestionnaireResponseDetailRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Questionnaire Response",
+        "tags": [
+          "questionnaire-flow"
         ]
       }
     },

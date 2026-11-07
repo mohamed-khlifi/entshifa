@@ -24,6 +24,9 @@ function isPublicPath(pathname: string): boolean {
   if (path === "/invite/accept" || path.startsWith("/invite/")) {
     return true;
   }
+  if (path.startsWith("/q/")) {
+    return true;
+  }
   return false;
 }
 

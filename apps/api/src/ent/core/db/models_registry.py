@@ -70,6 +70,10 @@ from ent.features.questionnaires.models import (
     InstrumentOption,
     InstrumentTranslation,
     InstrumentVersion,
+    QuestionnaireAnswer,
+    QuestionnaireInvitation,
+    QuestionnaireRequestIdempotency,
+    QuestionnaireResponse,
 )
 from ent.features.recalls.models import (
     Protocol,
@@ -132,6 +136,10 @@ __all__ = [
     "InstrumentOption",
     "InstrumentTranslation",
     "InstrumentVersion",
+    "QuestionnaireAnswer",
+    "QuestionnaireInvitation",
+    "QuestionnaireRequestIdempotency",
+    "QuestionnaireResponse",
     "EndoscopyExam",
     "EarDevice",
     "LaryngoscopyExam",

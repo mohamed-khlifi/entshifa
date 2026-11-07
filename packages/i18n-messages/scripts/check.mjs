@@ -40,6 +40,7 @@ const NAMESPACES = [
   'encounters',
   'prescriptions',
   'recalls',
+  'questionnaires',
 ];
 
 /**

@@ -1,0 +1,34 @@
+{
+  "delivery": {
+    "title": "Questionnaires",
+    "launchTablet": "Start tablet mode",
+    "sendInvitation": "Send invitation",
+    "linkLabel": "One-time link",
+    "launchOpen": "Open on this device",
+    "historyTitle": "Completed scores",
+    "provenancePatient": "Completed by patient",
+    "provenanceStaff": "Entered by staff",
+    "provenanceClinician": "Entered by clinician",
+    "emptyHistory": "No scores recorded yet."
+  },
+  "runner": {
+    "greeting": "Hello, {firstName}",
+    "progress": "Question {current} of {total}",
+    "previous": "Previous",
+    "next": "Next",
+    "submit": "Submit",
+    "completeTitle": "Thank you",
+    "completeBody": "Your answers have been saved.",
+    "tabletHandback": "Please hand the tablet back to reception.",
+    "loading": "Loading questionnaire…",
+    "expiredTitle": "Link expired",
+    "expiredBody": "Ask the clinic for a new link.",
+    "completedTitle": "Already completed",
+    "completedBody": "This questionnaire was already submitted.",
+    "notFoundTitle": "Link not found",
+    "notFoundBody": "Check the link or ask reception for help.",
+    "rateLimitedTitle": "Too many attempts",
+    "rateLimitedBody": "Wait a few minutes and try again."
+  },
+  "patientNav": "Questionnaires"
+}

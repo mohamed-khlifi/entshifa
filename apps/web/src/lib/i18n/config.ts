@@ -57,6 +57,7 @@ export const MESSAGE_NAMESPACES = [
   "encounters",
   "prescriptions",
   "recalls",
+  "questionnaires",
 ] as const;
 
 export type MessageNamespace = (typeof MESSAGE_NAMESPACES)[number];

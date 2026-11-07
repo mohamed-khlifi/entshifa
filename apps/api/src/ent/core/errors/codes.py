@@ -127,3 +127,12 @@ class ErrorCode(StrEnum):
     QUESTIONNAIRE_INVALID_DEFINITION = "questionnaire.invalid_definition"
     QUESTIONNAIRE_INCOMPLETE_RESPONSE = "questionnaire.incomplete_response"
     QUESTIONNAIRE_INVALID_ANSWER = "questionnaire.invalid_answer"
+    QUESTIONNAIRE_INVITATION_NOT_FOUND = "questionnaire.invitation_not_found"
+    QUESTIONNAIRE_INVITATION_EXPIRED = "questionnaire.invitation_expired"
+    QUESTIONNAIRE_INVITATION_ALREADY_COMPLETED = (
+        "questionnaire.invitation_already_completed"
+    )
+    QUESTIONNAIRE_RATE_LIMITED = "questionnaire.rate_limited"
+    QUESTIONNAIRE_CONTACT_MISSING = "questionnaire.contact_missing"
+    QUESTIONNAIRE_RESPONSE_NOT_FOUND = "questionnaire.response_not_found"
+    QUESTIONNAIRE_IDEMPOTENCY_MISMATCH = "questionnaire.idempotency_mismatch"

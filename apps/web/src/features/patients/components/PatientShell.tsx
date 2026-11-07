@@ -24,6 +24,8 @@ export function PatientShell({
   const canReadAttachments = usePermission(Permission.ATTACHMENT_READ);
   const canFinalizeDocuments = usePermission(Permission.DOCUMENT_FINALIZE);
   const canPrescribe = usePermission(Permission.PRESCRIPTION_CREATE);
+  const canQuestionnaires = usePermission(Permission.PATIENT_READ_CLINIC);
+  const tQuestionnaires = useTranslations("questionnaires");
   const canEncounterWrite = usePermission(Permission.ENCOUNTER_WRITE);
   const canEncounterCreate = usePermission(Permission.ENCOUNTER_CREATE);
   const canProcedureRead = usePermission(Permission.PROCEDURE_READ);
@@ -44,6 +46,7 @@ export function PatientShell({
   const audiologyHref = `/patients/${patientId}/audiology`;
   const proceduresHref = `/patients/${patientId}/procedures`;
   const prescriptionsHref = `/patients/${patientId}/prescriptions`;
+  const questionnairesHref = `/patients/${patientId}/questionnaires`;
 
   if (patient.isLoading) {
     return (
@@ -212,6 +215,20 @@ export function PatientShell({
             {...testIdProps(testIds.patients.navPrescriptions)}
           >
             {t("nav.prescriptions")}
+          </Link>
+        ) : null}
+        {canQuestionnaires ? (
+          <Link
+            href={questionnairesHref}
+            className={cn(
+              "rounded-full px-3 py-1.5 text-sm font-medium",
+              pathname === questionnairesHref
+                ? "bg-primary/10 text-primary"
+                : "text-muted-foreground hover:bg-muted",
+            )}
+            {...testIdProps(testIds.questionnaires.patientPage)}
+          >
+            {tQuestionnaires("patientNav")}
           </Link>
         ) : null}
         <Link

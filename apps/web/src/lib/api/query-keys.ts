@@ -210,6 +210,25 @@ export const queryKeys = {
       offset?: number;
     }) => [...queryKeys.recalls.all, "list", filters ?? {}] as const,
   },
+  questionnaires: {
+    all: ["questionnaires"] as const,
+    patientResponses: (
+      patientId: string,
+      filters?: { instrumentCode?: string },
+    ) =>
+      [
+        ...queryKeys.questionnaires.all,
+        "responses",
+        patientId,
+        filters ?? {},
+      ] as const,
+    patientInvitations: (patientId: string) =>
+      [...queryKeys.questionnaires.all, "invitations", patientId] as const,
+    publicSession: (token: string) =>
+      [...queryKeys.questionnaires.all, "public", token] as const,
+    responseDetail: (responseId: string) =>
+      [...queryKeys.questionnaires.all, "detail", responseId] as const,
+  },
   terminology: {
     all: ["terminology"] as const,
     adminConcepts: (params?: { q?: string; limit?: number; offset?: number }) =>

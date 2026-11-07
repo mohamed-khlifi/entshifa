@@ -1,0 +1,34 @@
+{
+  "delivery": {
+    "title": "Questionnaires",
+    "launchTablet": "Démarrer sur tablette",
+    "sendInvitation": "Envoyer l’invitation",
+    "linkLabel": "Lien à usage unique",
+    "launchOpen": "Ouvrir sur cet appareil",
+    "historyTitle": "Scores enregistrés",
+    "provenancePatient": "Rempli par le patient",
+    "provenanceStaff": "Saisi par l’accueil",
+    "provenanceClinician": "Saisi par le clinicien",
+    "emptyHistory": "Aucun score enregistré."
+  },
+  "runner": {
+    "greeting": "Bonjour, {firstName}",
+    "progress": "Question {current} sur {total}",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "submit": "Envoyer",
+    "completeTitle": "Merci",
+    "completeBody": "Vos réponses ont été enregistrées.",
+    "tabletHandback": "Merci de rendre la tablette à l’accueil.",
+    "loading": "Chargement du questionnaire…",
+    "expiredTitle": "Lien expiré",
+    "expiredBody": "Demandez un nouveau lien à la clinique.",
+    "completedTitle": "Déjà complété",
+    "completedBody": "Ce questionnaire a déjà été envoyé.",
+    "notFoundTitle": "Lien introuvable",
+    "notFoundBody": "Vérifiez le lien ou demandez de l’aide à l’accueil.",
+    "rateLimitedTitle": "Trop de tentatives",
+    "rateLimitedBody": "Attendez quelques minutes et réessayez."
+  },
+  "patientNav": "Questionnaires"
+}

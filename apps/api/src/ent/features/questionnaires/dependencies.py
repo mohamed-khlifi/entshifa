@@ -6,6 +6,7 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from ent.core.db.session import get_session
+from ent.features.questionnaires.flow_service import QuestionnaireFlowService
 from ent.features.questionnaires.service import QuestionnaireService
 
 
@@ -13,3 +14,9 @@ def get_questionnaire_service(
     session: AsyncSession = Depends(get_session),
 ) -> QuestionnaireService:
     return QuestionnaireService(session=session)
+
+
+def get_questionnaire_flow_service(
+    session: AsyncSession = Depends(get_session),
+) -> QuestionnaireFlowService:
+    return QuestionnaireFlowService(session=session)

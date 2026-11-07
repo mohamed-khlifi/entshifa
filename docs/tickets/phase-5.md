@@ -31,7 +31,7 @@ spec appendix A or the publication, never from memory.
 
 ---
 
-## - [ ] P5-03 Patient-facing questionnaire flow (backend and frontend)
+## - [x] P5-03 Patient-facing questionnaire flow (backend and frontend)
 
 Single-use hashed expiring tokens, a public route with no auth and no patient
 data beyond a first name, tablet mode for the waiting room, SMS, WhatsApp and

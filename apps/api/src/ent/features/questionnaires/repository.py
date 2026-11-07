@@ -121,6 +121,21 @@ class InstrumentVersionRepository:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
+    async def get_by_id(self, version_id: int) -> InstrumentVersion | None:
+        result = await self.session.scalars(
+            select(InstrumentVersion)
+            .where(
+                InstrumentVersion.deleted_at.is_(None),
+                InstrumentVersion.id == version_id,
+            )
+            .options(
+                selectinload(InstrumentVersion.items),
+                selectinload(InstrumentVersion.options),
+                selectinload(InstrumentVersion.translations),
+            ),
+        )
+        return result.unique().one_or_none()
+
     async def get_current(self, instrument_id: int) -> InstrumentVersion | None:
         result = await self.session.scalars(
             select(InstrumentVersion)

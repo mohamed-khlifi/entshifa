@@ -2252,6 +2252,42 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/patients/{patient_id}/questionnaire-invitations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Questionnaire Invitations */
+        get: operations["list_questionnaire_invitations_api_v1_patients__patient_id__questionnaire_invitations_get"];
+        put?: never;
+        /** Create Questionnaire Invitation */
+        post: operations["create_questionnaire_invitation_api_v1_patients__patient_id__questionnaire_invitations_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/questionnaire-responses": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Questionnaire Responses */
+        get: operations["list_questionnaire_responses_api_v1_patients__patient_id__questionnaire_responses_get"];
+        put?: never;
+        /** Create Questionnaire Response */
+        post: operations["create_questionnaire_response_api_v1_patients__patient_id__questionnaire_responses_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/patients/{patient_id}/speech-audiometry": {
         parameters: {
             query?: never;
@@ -2522,6 +2558,57 @@ export interface paths {
         put?: never;
         /** Sign Procedure */
         post: operations["sign_procedure_api_v1_procedures__procedure_id__sign_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/public/questionnaires/{token}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Public Questionnaire Session */
+        get: operations["get_public_questionnaire_session_api_v1_public_questionnaires__token__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/public/questionnaires/{token}/submit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Submit Public Questionnaire */
+        post: operations["submit_public_questionnaire_api_v1_public_questionnaires__token__submit_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/questionnaire-responses/{response_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Questionnaire Response */
+        get: operations["get_questionnaire_response_api_v1_questionnaire_responses__response_id__get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -7348,6 +7435,18 @@ export interface components {
             items: components["schemas"]["ProcedureRecordRead"][];
             page: components["schemas"]["PageMeta"];
         };
+        /** PageSchema[QuestionnaireInvitationRead] */
+        PageSchema_QuestionnaireInvitationRead_: {
+            /** Items */
+            items: components["schemas"]["QuestionnaireInvitationRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[QuestionnaireResponseRead] */
+        PageSchema_QuestionnaireResponseRead_: {
+            /** Items */
+            items: components["schemas"]["QuestionnaireResponseRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
         /** PageSchema[RecallRead] */
         PageSchema_RecallRead_: {
             /** Items */
@@ -8629,6 +8728,236 @@ export interface components {
             isActive?: boolean | null;
             /** Rules */
             rules?: components["schemas"]["ProtocolRuleUpdate"][];
+        };
+        /** PublicInstrumentItemRead */
+        PublicInstrumentItemRead: {
+            /** Code */
+            code: string;
+            /** Options */
+            options: Record<string, never>[];
+            /** Position */
+            position: number;
+            /** Text */
+            text: string;
+        };
+        /** PublicInstrumentRead */
+        PublicInstrumentRead: {
+            /** Category */
+            category: string;
+            /** Code */
+            code: string;
+            /** Items */
+            items: components["schemas"]["PublicInstrumentItemRead"][];
+            /** Respondent */
+            respondent: string;
+            /** Title */
+            title: string;
+        };
+        /** PublicQuestionnaireCompletionRead */
+        PublicQuestionnaireCompletionRead: {
+            /**
+             * Completedat
+             * Format: date-time
+             */
+            completedAt: string;
+            /** Locale */
+            locale: string;
+        };
+        /** PublicQuestionnaireSessionRead */
+        PublicQuestionnaireSessionRead: {
+            /** Channel */
+            channel: string;
+            /** Clinicname */
+            clinicName: string;
+            /**
+             * Expiresat
+             * Format: date-time
+             */
+            expiresAt: string;
+            instrument: components["schemas"]["PublicInstrumentRead"];
+            /** Locale */
+            locale: string;
+            /** Patientfirstname */
+            patientFirstName: string;
+        };
+        /** PublicQuestionnaireSubmit */
+        PublicQuestionnaireSubmit: {
+            /** Answers */
+            answers: {
+                [key: string]: number;
+            };
+        };
+        /** QuestionnaireAnswerRead */
+        QuestionnaireAnswerRead: {
+            /** Itemcode */
+            itemCode: string;
+            /** Value */
+            value: number;
+        };
+        /** QuestionnaireInvitationCreate */
+        QuestionnaireInvitationCreate: {
+            /**
+             * Channel
+             * @enum {string}
+             */
+            channel: "sms" | "whatsapp" | "email" | "tablet";
+            /**
+             * Context
+             * @default pre_visit
+             * @enum {string}
+             */
+            context: "pre_visit" | "waiting_room" | "post_op_3m" | "post_op_6m" | "post_op_12m" | "follow_up";
+            /** Encounterid */
+            encounterId?: string | null;
+            /** Expiresinminutes */
+            expiresInMinutes?: number | null;
+            /** Instrumentcode */
+            instrumentCode: string;
+            /** Locale */
+            locale?: string | null;
+        };
+        /** QuestionnaireInvitationCreatedRead */
+        QuestionnaireInvitationCreatedRead: {
+            /** Channel */
+            channel: string;
+            /** Context */
+            context: string;
+            /**
+             * Expiresat
+             * Format: date-time
+             */
+            expiresAt: string;
+            /** Instrumentcode */
+            instrumentCode: string;
+            /** Locale */
+            locale: string;
+            /** Publicid */
+            publicId: string;
+            /** Publicpath */
+            publicPath: string;
+            /**
+             * Sentat
+             * Format: date-time
+             */
+            sentAt: string;
+            /** Token */
+            token: string;
+        };
+        /** QuestionnaireInvitationRead */
+        QuestionnaireInvitationRead: {
+            /** Channel */
+            channel: string;
+            /** Completedat */
+            completedAt: string | null;
+            /** Context */
+            context: string;
+            /**
+             * Expiresat
+             * Format: date-time
+             */
+            expiresAt: string;
+            /** Instrumentcode */
+            instrumentCode: string;
+            /** Locale */
+            locale: string;
+            /** Openedat */
+            openedAt: string | null;
+            /** Publicid */
+            publicId: string;
+            /**
+             * Sentat
+             * Format: date-time
+             */
+            sentAt: string;
+        };
+        /** QuestionnaireResponseDetailRead */
+        QuestionnaireResponseDetailRead: {
+            /** Answers */
+            answers?: components["schemas"]["QuestionnaireAnswerRead"][];
+            /** Changefromprevious */
+            changeFromPrevious: string | null;
+            /**
+             * Completedat
+             * Format: date-time
+             */
+            completedAt: string;
+            /** Encounterid */
+            encounterId: string | null;
+            /** Enteredby */
+            enteredBy: string;
+            /** Instrumentcode */
+            instrumentCode: string;
+            /** Instrumenttitle */
+            instrumentTitle: string | null;
+            /** Items */
+            items?: Record<string, never>[];
+            /** Locale */
+            locale: string;
+            /** Mcidreached */
+            mcidReached: boolean | null;
+            /** Publicid */
+            publicId: string;
+            /** Severityband */
+            severityBand: string | null;
+            /** Subscalescores */
+            subscaleScores: {
+                [key: string]: string;
+            };
+            /** Totalscore */
+            totalScore: string;
+        };
+        /** QuestionnaireResponseRead */
+        QuestionnaireResponseRead: {
+            /** Answers */
+            answers?: components["schemas"]["QuestionnaireAnswerRead"][];
+            /** Changefromprevious */
+            changeFromPrevious: string | null;
+            /**
+             * Completedat
+             * Format: date-time
+             */
+            completedAt: string;
+            /** Encounterid */
+            encounterId: string | null;
+            /** Enteredby */
+            enteredBy: string;
+            /** Instrumentcode */
+            instrumentCode: string;
+            /** Instrumenttitle */
+            instrumentTitle: string | null;
+            /** Locale */
+            locale: string;
+            /** Mcidreached */
+            mcidReached: boolean | null;
+            /** Publicid */
+            publicId: string;
+            /** Severityband */
+            severityBand: string | null;
+            /** Subscalescores */
+            subscaleScores: {
+                [key: string]: string;
+            };
+            /** Totalscore */
+            totalScore: string;
+        };
+        /** QuestionnaireStaffResponseCreate */
+        QuestionnaireStaffResponseCreate: {
+            /** Answers */
+            answers: {
+                [key: string]: number;
+            };
+            /** Encounterid */
+            encounterId?: string | null;
+            /**
+             * Enteredby
+             * @default staff
+             * @enum {string}
+             */
+            enteredBy: "staff" | "clinician";
+            /** Instrumentcode */
+            instrumentCode: string;
+            /** Locale */
+            locale: string;
         };
         /**
          * QuestionnaireStatusRead
@@ -15617,6 +15946,156 @@ export interface operations {
             };
         };
     };
+    list_questionnaire_invitations_api_v1_patients__patient_id__questionnaire_invitations_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_QuestionnaireInvitationRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_questionnaire_invitation_api_v1_patients__patient_id__questionnaire_invitations_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Idempotency-Key"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QuestionnaireInvitationCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QuestionnaireInvitationCreatedRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_questionnaire_responses_api_v1_patients__patient_id__questionnaire_responses_get: {
+        parameters: {
+            query?: {
+                instrument_code?: string | null;
+                encounter_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_QuestionnaireResponseRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_questionnaire_response_api_v1_patients__patient_id__questionnaire_responses_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+                "Idempotency-Key"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QuestionnaireStaffResponseCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QuestionnaireResponseRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     list_patient_speech_audiometry_api_v1_patients__patient_id__speech_audiometry_get: {
         parameters: {
             query?: {
@@ -16313,6 +16792,105 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ProcedureRecordRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_public_questionnaire_session_api_v1_public_questionnaires__token__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicQuestionnaireSessionRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    submit_public_questionnaire_api_v1_public_questionnaires__token__submit_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PublicQuestionnaireSubmit"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PublicQuestionnaireCompletionRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_questionnaire_response_api_v1_questionnaire_responses__response_id__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                response_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QuestionnaireResponseDetailRead"];
                 };
             };
             /** @description Validation Error */
