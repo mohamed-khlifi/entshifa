@@ -19,7 +19,7 @@ Instruments are data. Adding one after this ticket must not require a deploy.
 
 ---
 
-## - [ ] P5-02 Seed the launch instruments
+## - [x] P5-02 Seed the launch instruments
 
 SNOT-22, NOSE, THI, DHI, VHI-10, RSI, EAT-10, Epworth, STOP-BANG, OSA-18.
 Use the `add-questionnaire-instrument` skill for each.

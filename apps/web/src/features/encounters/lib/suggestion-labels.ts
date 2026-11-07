@@ -38,14 +38,22 @@ export function instrumentLabel(t: EncountersTranslator, code: string): string {
   switch (code) {
     case "dhi":
       return t("suggestions.instruments.dhi");
+    case "eat10":
+      return t("suggestions.instruments.eat10");
+    case "epworth":
+      return t("suggestions.instruments.epworth");
     case "hhie":
       return t("suggestions.instruments.hhie");
     case "nose":
       return t("suggestions.instruments.nose");
+    case "osa18":
+      return t("suggestions.instruments.osa18");
     case "rsi":
       return t("suggestions.instruments.rsi");
     case "snot22":
       return t("suggestions.instruments.snot22");
+    case "stopbang":
+      return t("suggestions.instruments.stopbang");
     case "thi":
       return t("suggestions.instruments.thi");
     case "vhi10":

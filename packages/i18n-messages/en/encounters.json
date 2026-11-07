@@ -207,10 +207,14 @@
     },
     "instruments": {
       "dhi": "DHI",
+      "eat10": "EAT-10",
+      "epworth": "Epworth",
       "hhie": "HHIE",
       "nose": "NOSE",
+      "osa18": "OSA-18",
       "rsi": "RSI",
       "snot22": "SNOT-22",
+      "stopbang": "STOP-Bang",
       "thi": "THI",
       "vhi10": "VHI-10"
     },

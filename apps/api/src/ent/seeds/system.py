@@ -13,12 +13,14 @@ from ent.features.documents.seed import (
 from ent.seeds.encounter_templates import seed_encounter_templates
 from ent.seeds.formulary import seed_formulary
 from ent.seeds.identity import ensure_all_permissions
+from ent.seeds.instruments import seed_instruments
 from ent.seeds.protocols import seed_protocols
 from ent.seeds.reference_data import record_reference_data_version
 from ent.seeds.terminology import TerminologySeedReport, seed_terminology
 from ent.seeds.versions import (
     ENCOUNTER_TEMPLATES_VERSION,
     FORMULARY_VERSION,
+    INSTRUMENTS_VERSION,
     PERMISSIONS_VERSION,
     PROTOCOLS_VERSION,
     TEMPLATES_VERSION,
@@ -43,6 +45,7 @@ async def seed_system(session: AsyncSession) -> SystemSeedReport:
     encounter_templates_created = await seed_encounter_templates(session)
     await seed_formulary(session)
     protocols_created = await seed_protocols(session)
+    instruments_created = await seed_instruments(session)
     created = 0
     if await record_reference_data_version(
         session,
@@ -84,6 +87,13 @@ async def seed_system(session: AsyncSession) -> SystemSeedReport:
         dataset="protocols",
         version=PROTOCOLS_VERSION,
         notes=f"seed_system procedure recall protocols ({protocols_created} created)",
+    ):
+        created += 1
+    if await record_reference_data_version(
+        session,
+        dataset="instruments",
+        version=INSTRUMENTS_VERSION,
+        notes=f"seed_system launch instruments ({instruments_created} created)",
     ):
         created += 1
     return SystemSeedReport(
