@@ -360,8 +360,10 @@ class QuestionnaireFlowService:
             raise QuestionnaireResponseNotFoundError()
         self._audit.record_access(
             action="read",
-            entity=row,
+            entity_type="questionnaire_response",
             clinic_id=user.clinic_id,
+            entity_id=int(row.id),
+            entity_public_id=row.public_id,
             patient_id=int(row.patient_id),
         )
         instrument, version = await self._instrument_for_version(

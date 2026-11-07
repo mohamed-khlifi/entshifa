@@ -326,23 +326,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.drop_table("questionnaire_request_idempotency")
     op.drop_table("questionnaire_answer")
-    op.drop_index(
-        "uq_questionnaire_response__invitation_id",
-        table_name="questionnaire_response",
-    )
-    op.drop_index(
-        "ix_questionnaire_response__clinic_patient_version_completed",
-        table_name="questionnaire_response",
-    )
     op.drop_table("questionnaire_response")
-    op.drop_index(
-        "ix_questionnaire_invitation__clinic_patient_sent",
-        table_name="questionnaire_invitation",
-    )
-    op.drop_index(
-        "uq_questionnaire_invitation__token_hash",
-        table_name="questionnaire_invitation",
-    )
     op.drop_table("questionnaire_invitation")
+    op.drop_table("questionnaire_request_idempotency")
