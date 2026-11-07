@@ -49,6 +49,7 @@ TENANT_PATH_PARAMS = frozenset(
         "oae_id",
         "abr_id",
         "ome_id",
+        "instrument_id",
     }
 )
 
@@ -84,6 +85,7 @@ COLLECTION_ROUTES = frozenset(
         ("GET", "/api/v1/tympanograms"),
         ("GET", "/api/v1/oae-results"),
         ("GET", "/api/v1/abr-results"),
+        ("GET", "/api/v1/instruments"),
     }
 )
 

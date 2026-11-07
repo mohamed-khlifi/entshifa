@@ -118,3 +118,12 @@ class ErrorCode(StrEnum):
     )
     AUDIOLOGY_OME_NOT_FOUND = "audiology.ome_not_found"
     AUDIOLOGY_OME_VERSION_CONFLICT = "audiology.ome_version_conflict"
+
+    QUESTIONNAIRE_INSTRUMENT_NOT_FOUND = "questionnaire.instrument_not_found"
+    QUESTIONNAIRE_CODE_CONFLICT = "questionnaire.code_conflict"
+    QUESTIONNAIRE_VERSION_CONFLICT = "questionnaire.version_conflict"
+    QUESTIONNAIRE_SYSTEM_IMMUTABLE = "questionnaire.system_immutable"
+    QUESTIONNAIRE_TRANSLATION_INCOMPLETE = "questionnaire.translation_incomplete"
+    QUESTIONNAIRE_INVALID_DEFINITION = "questionnaire.invalid_definition"
+    QUESTIONNAIRE_INCOMPLETE_RESPONSE = "questionnaire.incomplete_response"
+    QUESTIONNAIRE_INVALID_ANSWER = "questionnaire.invalid_answer"

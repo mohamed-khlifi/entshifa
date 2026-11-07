@@ -10,7 +10,7 @@ Reference: feature spec sections 11 and 12. Architecture section 25.10.
 
 ---
 
-## - [ ] P5-01 Instrument model and scoring engine (backend)
+## - [x] P5-01 Instrument model and scoring engine (backend)
 
 `instrument`, `instrument_version`, `instrument_item`, `instrument_option`,
 `instrument_translation`, plus the generic sum and weighted-sum scorer.

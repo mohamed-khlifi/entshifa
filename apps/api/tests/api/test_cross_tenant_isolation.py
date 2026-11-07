@@ -42,6 +42,7 @@ from ent.features.patients.models import (
     PatientProblem,
 )
 from ent.features.procedures.models import ProcedureRecord
+from ent.features.questionnaires.models import Instrument
 from ent.features.recalls.models import Recall
 from ent.features.scheduling.models import Appointment, AppointmentType
 from ent.features.terminology.models import CodeSystem, Concept
@@ -312,6 +313,25 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
         )
         session.add(observation)
         await session.flush()
+        instrument_public_id = new_ulid()
+        session.add(
+            Instrument(
+                public_id=instrument_public_id,
+                clinic_id=other.id,
+                code=f"xtinst{token[:6].lower()}",
+                category="sinonasal",
+                respondent="patient",
+                scoring_type="sum",
+                min_score=0,
+                max_score=10,
+                license_note="secret",
+                reference="secret",
+                is_system=False,
+                is_active=True,
+                created_by_id=other_user.id,
+                updated_by_id=other_user.id,
+            )
+        )
         recall_public_id = new_ulid()
         session.add(
             Recall(
@@ -561,6 +581,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "oae_id": oae_public_id,
             "abr_id": abr_public_id,
             "ome_id": new_ulid(),
+            "instrument_id": instrument_public_id,
         }
         forbidden = [
             patient.public_id,
@@ -596,6 +617,8 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             "secret endoscopy",
             "secret laryngoscopy",
             "secret otology",
+            instrument_public_id,
+            f"xtinst{token[:6].lower()}",
         ]
         await session.commit()
 
@@ -689,6 +712,7 @@ async def test_registered_routes_do_not_leak_across_tenants() -> None:
             ("GET", "/api/v1/recalls/summary"): {},
             ("GET", "/api/v1/procedures"): {"limit": "100"},
             ("GET", "/api/v1/audiograms"): {"limit": "100"},
+            ("GET", "/api/v1/instruments"): {"limit": "100"},
         }
         try:
             ZoneInfo("Europe/Paris")

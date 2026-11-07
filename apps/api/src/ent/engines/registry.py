@@ -116,6 +116,10 @@ from ent.engines.recalls.protocol_resolver import (
     REFERENCE as PROTOCOL_RESOLVER_REFERENCE,
 )
 from ent.engines.recalls.protocol_resolver import VERSION as PROTOCOL_RESOLVER_VERSION
+from ent.engines.scoring.sum_scorer import CODE as SCORING_SUM_CODE
+from ent.engines.scoring.sum_scorer import FORMULA as SCORING_SUM_FORMULA
+from ent.engines.scoring.sum_scorer import REFERENCE as SCORING_SUM_REFERENCE
+from ent.engines.scoring.sum_scorer import VERSION as SCORING_SUM_VERSION
 
 
 @dataclass(frozen=True, slots=True)
@@ -298,5 +302,12 @@ def registered_calculators() -> tuple[CalculatorSpec, ...]:
             reference=CANDIDACY_REFERENCE,
             unit=None,
             formula=CANDIDACY_FORMULA,
+        ),
+        CalculatorSpec(
+            code=SCORING_SUM_CODE,
+            version=SCORING_SUM_VERSION,
+            reference=SCORING_SUM_REFERENCE,
+            unit="points",
+            formula=SCORING_SUM_FORMULA,
         ),
     )

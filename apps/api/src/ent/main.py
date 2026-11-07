@@ -32,6 +32,7 @@ from ent.features.otology.router import router as otology_router
 from ent.features.patients.router import router as patients_router
 from ent.features.prescriptions.router import router as prescriptions_router
 from ent.features.procedures.router import router as procedures_router
+from ent.features.questionnaires.router import router as questionnaires_router
 from ent.features.recalls.router import router as recalls_router
 from ent.features.scheduling.router import router as scheduling_router
 from ent.features.terminology.router import router as terminology_router
@@ -95,4 +96,5 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(laryngoscopy_router)
     app.include_router(otology_router)
     app.include_router(office_procedures_router)
+    app.include_router(questionnaires_router)
     return app

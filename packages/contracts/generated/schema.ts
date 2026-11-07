@@ -1215,6 +1215,109 @@ export interface paths {
         patch: operations["update_hearing_device_api_v1_hearing_devices__device_id__patch"];
         trace?: never;
     };
+    "/api/v1/instruments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Instruments */
+        get: operations["list_instruments_api_v1_instruments_get"];
+        put?: never;
+        /** Create Instrument */
+        post: operations["create_instrument_api_v1_instruments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/instruments/by-code/{code}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Instrument By Code */
+        get: operations["get_instrument_by_code_api_v1_instruments_by_code__code__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/instruments/{instrument_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Instrument */
+        get: operations["get_instrument_api_v1_instruments__instrument_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/instruments/{instrument_id}/score": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Score Instrument */
+        post: operations["score_instrument_api_v1_instruments__instrument_id__score_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/instruments/{instrument_id}/translations/{locale}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Upsert Instrument Translations */
+        put: operations["upsert_instrument_translations_api_v1_instruments__instrument_id__translations__locale__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/instruments/{instrument_id}/versions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Instrument Version */
+        post: operations["create_instrument_version_api_v1_instruments__instrument_id__versions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/invitations": {
         parameters: {
             query?: never;
@@ -5537,6 +5640,322 @@ export interface components {
             /** Mgperkgperday */
             mgPerKgPerDay?: number | string | null;
         };
+        /** InstrumentCreate */
+        InstrumentCreate: {
+            /**
+             * Category
+             * @enum {string}
+             */
+            category: "sinonasal" | "ear" | "vertigo" | "voice" | "reflux" | "swallowing" | "sleep" | "qol" | "head_neck" | "airway" | "pediatrics" | "other";
+            /** Code */
+            code: string;
+            /**
+             * Effectivefrom
+             * Format: date
+             */
+            effectiveFrom: string;
+            /** Items */
+            items: components["schemas"]["InstrumentItemInput"][];
+            /** Licensenote */
+            licenseNote: string;
+            /** Maxscore */
+            maxScore: number;
+            /** Mcid */
+            mcid?: number | string | null;
+            /** Minscore */
+            minScore: number;
+            /** Reference */
+            reference: string;
+            /**
+             * Respondent
+             * @enum {string}
+             */
+            respondent: "patient" | "clinician" | "parent";
+            scoringConfig: components["schemas"]["InstrumentScoringConfigInput"];
+            /**
+             * Scoringtype
+             * @enum {string}
+             */
+            scoringType: "sum" | "weighted_sum" | "custom";
+            sharedOptions?: components["schemas"]["InstrumentSharedOptionInput"] | null;
+            /** Translations */
+            translations: components["schemas"]["InstrumentLocaleTranslationInput"][];
+            /** Version */
+            version: string;
+        };
+        /** InstrumentDetailRead */
+        InstrumentDetailRead: {
+            /** Category */
+            category: string;
+            /** Code */
+            code: string;
+            currentVersion?: components["schemas"]["InstrumentVersionRead"] | null;
+            /** Isactive */
+            isActive: boolean;
+            /** Issystem */
+            isSystem: boolean;
+            /** Items */
+            items?: components["schemas"]["InstrumentItemRead"][];
+            /** Licensenote */
+            licenseNote: string;
+            /** Localesavailable */
+            localesAvailable?: string[];
+            /** Maxscore */
+            maxScore: number;
+            /** Mcid */
+            mcid: string | null;
+            /** Minscore */
+            minScore: number;
+            /** Publicid */
+            publicId: string;
+            /** Reference */
+            reference: string;
+            /** Respondent */
+            respondent: string;
+            /** Scoringtype */
+            scoringType: string;
+        };
+        /** InstrumentItemInput */
+        InstrumentItemInput: {
+            /** Code */
+            code: string;
+            /**
+             * Isreversescored
+             * @default false
+             */
+            isReverseScored: boolean;
+            /** Options */
+            options?: components["schemas"]["InstrumentOptionInput"][] | null;
+            /** Position */
+            position: number;
+            /** Subscale */
+            subscale?: string | null;
+            /**
+             * Weight
+             * @default 1
+             */
+            weight: number | string;
+        };
+        /** InstrumentItemRead */
+        InstrumentItemRead: {
+            /** Code */
+            code: string;
+            /** Isreversescored */
+            isReverseScored: boolean;
+            /** Options */
+            options?: components["schemas"]["InstrumentOptionRead"][];
+            /** Position */
+            position: number;
+            /** Publicid */
+            publicId: string;
+            /** Subscale */
+            subscale: string | null;
+            /** Text */
+            text?: string | null;
+            /** Weight */
+            weight: string;
+        };
+        /** InstrumentLocaleTranslationInput */
+        InstrumentLocaleTranslationInput: {
+            /** Items */
+            items?: {
+                [key: string]: string;
+            };
+            /** Locale */
+            locale: string;
+            /** Options */
+            options?: {
+                [key: string]: string;
+            };
+            /** Title */
+            title: string;
+        };
+        /** InstrumentLocalizedRead */
+        InstrumentLocalizedRead: {
+            /** Category */
+            category: string;
+            /** Code */
+            code: string;
+            currentVersion?: components["schemas"]["InstrumentVersionRead"] | null;
+            /** Isactive */
+            isActive: boolean;
+            /** Issystem */
+            isSystem: boolean;
+            /** Items */
+            items?: components["schemas"]["InstrumentItemRead"][];
+            /** Licensenote */
+            licenseNote: string;
+            /** Locale */
+            locale: string;
+            /** Localesavailable */
+            localesAvailable?: string[];
+            /** Maxscore */
+            maxScore: number;
+            /** Mcid */
+            mcid: string | null;
+            /** Minscore */
+            minScore: number;
+            /** Publicid */
+            publicId: string;
+            /** Reference */
+            reference: string;
+            /** Respondent */
+            respondent: string;
+            /** Scoringtype */
+            scoringType: string;
+            /** Title */
+            title: string;
+        };
+        /** InstrumentOptionInput */
+        InstrumentOptionInput: {
+            /** Position */
+            position: number;
+            /** Value */
+            value: number;
+        };
+        /** InstrumentOptionRead */
+        InstrumentOptionRead: {
+            /** Position */
+            position: number;
+            /** Publicid */
+            publicId: string;
+            /** Text */
+            text?: string | null;
+            /** Value */
+            value: number;
+        };
+        /** InstrumentScoreRead */
+        InstrumentScoreRead: {
+            /** Changefromprevious */
+            changeFromPrevious: string | null;
+            /** Enginecode */
+            engineCode: string;
+            /** Engineversion */
+            engineVersion: string;
+            /** Mcidreached */
+            mcidReached: boolean | null;
+            /** Reference */
+            reference: string;
+            /** Severityband */
+            severityBand: string | null;
+            /** Subscalescores */
+            subscaleScores: {
+                [key: string]: string;
+            };
+            /** Totalscore */
+            totalScore: string;
+        };
+        /** InstrumentScoreRequest */
+        InstrumentScoreRequest: {
+            /** Answers */
+            answers: {
+                [key: string]: number;
+            };
+            /** Locale */
+            locale?: string | null;
+            /** Previoustotalscore */
+            previousTotalScore?: number | string | null;
+        };
+        /** InstrumentScoringConfigInput */
+        InstrumentScoringConfigInput: {
+            /** Customscorercode */
+            customScorerCode?: string | null;
+            /** Reversescoreditems */
+            reverseScoredItems?: string[];
+            /**
+             * Scalemultiplier
+             * @default 1
+             */
+            scaleMultiplier: number | string;
+            /** Severitybands */
+            severityBands?: components["schemas"]["SeverityBandInput"][];
+            /** Subscales */
+            subscales?: components["schemas"]["SubscaleInput"][];
+        };
+        /** InstrumentSharedOptionInput */
+        InstrumentSharedOptionInput: {
+            /** Options */
+            options: components["schemas"]["InstrumentOptionInput"][];
+        };
+        /** InstrumentSummaryRead */
+        InstrumentSummaryRead: {
+            /** Category */
+            category: string;
+            /** Code */
+            code: string;
+            /** Isactive */
+            isActive: boolean;
+            /** Issystem */
+            isSystem: boolean;
+            /** Licensenote */
+            licenseNote: string;
+            /** Localesavailable */
+            localesAvailable?: string[];
+            /** Maxscore */
+            maxScore: number;
+            /** Mcid */
+            mcid: string | null;
+            /** Minscore */
+            minScore: number;
+            /** Publicid */
+            publicId: string;
+            /** Reference */
+            reference: string;
+            /** Respondent */
+            respondent: string;
+            /** Scoringtype */
+            scoringType: string;
+        };
+        /** InstrumentTranslationUpsert */
+        InstrumentTranslationUpsert: {
+            /** Items */
+            items?: {
+                [key: string]: string;
+            };
+            /** Options */
+            options?: {
+                [key: string]: string;
+            };
+            /** Title */
+            title: string;
+        };
+        /** InstrumentVersionCreate */
+        InstrumentVersionCreate: {
+            /**
+             * Effectivefrom
+             * Format: date
+             */
+            effectiveFrom: string;
+            /**
+             * Iscurrent
+             * @default true
+             */
+            isCurrent: boolean;
+            /** Items */
+            items: components["schemas"]["InstrumentItemInput"][];
+            scoringConfig: components["schemas"]["InstrumentScoringConfigInput"];
+            sharedOptions?: components["schemas"]["InstrumentSharedOptionInput"] | null;
+            /** Translations */
+            translations: components["schemas"]["InstrumentLocaleTranslationInput"][];
+            /** Version */
+            version: string;
+        };
+        /** InstrumentVersionRead */
+        InstrumentVersionRead: {
+            /**
+             * Effectivefrom
+             * Format: date
+             */
+            effectiveFrom: string;
+            /** Iscurrent */
+            isCurrent: boolean;
+            /** Publicid */
+            publicId: string;
+            /** Scoringconfig */
+            scoringConfig: Record<string, never>;
+            /** Version */
+            version: string;
+        };
         /** IntratympanicInjectionWrite */
         IntratympanicInjectionWrite: {
             /** Doseamount */
@@ -6825,6 +7244,12 @@ export interface components {
         PageSchema_HearingDeviceRead_: {
             /** Items */
             items: components["schemas"]["HearingDeviceRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[InstrumentSummaryRead] */
+        PageSchema_InstrumentSummaryRead_: {
+            /** Items */
+            items: components["schemas"]["InstrumentSummaryRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[LaryngoscopyExamRead] */
@@ -8586,6 +9011,15 @@ export interface components {
             /** Userpublicid */
             userPublicId: string;
         };
+        /** SeverityBandInput */
+        SeverityBandInput: {
+            /** Code */
+            code: string;
+            /** Maxscore */
+            maxScore: number | string;
+            /** Minscore */
+            minScore: number | string;
+        };
         /** SialendoscopyWrite */
         SialendoscopyWrite: {
             /** Findings */
@@ -8879,6 +9313,13 @@ export interface components {
             symmetry: "symmetric" | "asymmetric";
             /** Verticallevel */
             verticalLevel?: ("on_plane" | "off_plane_right_lower" | "off_plane_left_lower") | null;
+        };
+        /** SubscaleInput */
+        SubscaleInput: {
+            /** Code */
+            code: string;
+            /** Itemcodes */
+            itemCodes: string[];
         };
         /** TaperRequest */
         TaperRequest: {
@@ -12365,6 +12806,260 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HearingDeviceRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_instruments_api_v1_instruments_get: {
+        parameters: {
+            query?: {
+                category?: string | null;
+                respondent?: string | null;
+                locale?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_InstrumentSummaryRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_instrument_api_v1_instruments_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InstrumentCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InstrumentDetailRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_instrument_by_code_api_v1_instruments_by_code__code__get: {
+        parameters: {
+            query?: {
+                locale?: string | null;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InstrumentDetailRead"] | components["schemas"]["InstrumentLocalizedRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_instrument_api_v1_instruments__instrument_id__get: {
+        parameters: {
+            query?: {
+                locale?: string | null;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                instrument_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InstrumentDetailRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    score_instrument_api_v1_instruments__instrument_id__score_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                instrument_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InstrumentScoreRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InstrumentScoreRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    upsert_instrument_translations_api_v1_instruments__instrument_id__translations__locale__put: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                instrument_id: string;
+                locale: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InstrumentTranslationUpsert"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InstrumentLocalizedRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_instrument_version_api_v1_instruments__instrument_id__versions_post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                instrument_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InstrumentVersionCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InstrumentDetailRead"];
                 };
             };
             /** @description Validation Error */

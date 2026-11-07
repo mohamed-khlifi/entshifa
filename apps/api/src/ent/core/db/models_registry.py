@@ -64,6 +64,13 @@ from ent.features.prescriptions.models import (
     PrescriptionTemplate,
 )
 from ent.features.procedures.models import ProcedureRecord, ProcedureRecordAddendum
+from ent.features.questionnaires.models import (
+    Instrument,
+    InstrumentItem,
+    InstrumentOption,
+    InstrumentTranslation,
+    InstrumentVersion,
+)
 from ent.features.recalls.models import (
     Protocol,
     ProtocolRule,
@@ -120,6 +127,11 @@ __all__ = [
     "EncounterComplaint",
     "EncounterSignature",
     "EncounterTemplate",
+    "Instrument",
+    "InstrumentItem",
+    "InstrumentOption",
+    "InstrumentTranslation",
+    "InstrumentVersion",
     "EndoscopyExam",
     "EarDevice",
     "LaryngoscopyExam",

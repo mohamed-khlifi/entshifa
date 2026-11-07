@@ -8744,6 +8744,970 @@
         "title": "IndicationWrite",
         "type": "object"
       },
+      "InstrumentCreate": {
+        "properties": {
+          "category": {
+            "enum": [
+              "sinonasal",
+              "ear",
+              "vertigo",
+              "voice",
+              "reflux",
+              "swallowing",
+              "sleep",
+              "qol",
+              "head_neck",
+              "airway",
+              "pediatrics",
+              "other"
+            ],
+            "title": "Category",
+            "type": "string"
+          },
+          "code": {
+            "maxLength": 40,
+            "minLength": 1,
+            "pattern": "^[a-z0-9_]+$",
+            "title": "Code",
+            "type": "string"
+          },
+          "effectiveFrom": {
+            "format": "date",
+            "title": "Effectivefrom",
+            "type": "string"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InstrumentItemInput"
+            },
+            "minItems": 1,
+            "title": "Items",
+            "type": "array"
+          },
+          "licenseNote": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Licensenote",
+            "type": "string"
+          },
+          "maxScore": {
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Maxscore",
+            "type": "integer"
+          },
+          "mcid": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 1000.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mcid"
+          },
+          "minScore": {
+            "maximum": 10000.0,
+            "minimum": 0.0,
+            "title": "Minscore",
+            "type": "integer"
+          },
+          "reference": {
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Reference",
+            "type": "string"
+          },
+          "respondent": {
+            "enum": [
+              "patient",
+              "clinician",
+              "parent"
+            ],
+            "title": "Respondent",
+            "type": "string"
+          },
+          "scoringConfig": {
+            "$ref": "#/components/schemas/InstrumentScoringConfigInput"
+          },
+          "scoringType": {
+            "enum": [
+              "sum",
+              "weighted_sum",
+              "custom"
+            ],
+            "title": "Scoringtype",
+            "type": "string"
+          },
+          "sharedOptions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InstrumentSharedOptionInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "translations": {
+            "items": {
+              "$ref": "#/components/schemas/InstrumentLocaleTranslationInput"
+            },
+            "minItems": 1,
+            "title": "Translations",
+            "type": "array"
+          },
+          "version": {
+            "maxLength": 20,
+            "minLength": 1,
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "category",
+          "respondent",
+          "scoringType",
+          "minScore",
+          "maxScore",
+          "licenseNote",
+          "reference",
+          "version",
+          "effectiveFrom",
+          "scoringConfig",
+          "items",
+          "translations"
+        ],
+        "title": "InstrumentCreate",
+        "type": "object"
+      },
+      "InstrumentDetailRead": {
+        "properties": {
+          "category": {
+            "title": "Category",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "currentVersion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InstrumentVersionRead"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean"
+          },
+          "isSystem": {
+            "title": "Issystem",
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InstrumentItemRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "licenseNote": {
+            "title": "Licensenote",
+            "type": "string"
+          },
+          "localesAvailable": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Localesavailable",
+            "type": "array"
+          },
+          "maxScore": {
+            "title": "Maxscore",
+            "type": "integer"
+          },
+          "mcid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mcid"
+          },
+          "minScore": {
+            "title": "Minscore",
+            "type": "integer"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "reference": {
+            "title": "Reference",
+            "type": "string"
+          },
+          "respondent": {
+            "title": "Respondent",
+            "type": "string"
+          },
+          "scoringType": {
+            "title": "Scoringtype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "code",
+          "category",
+          "respondent",
+          "scoringType",
+          "minScore",
+          "maxScore",
+          "mcid",
+          "licenseNote",
+          "reference",
+          "isSystem",
+          "isActive"
+        ],
+        "title": "InstrumentDetailRead",
+        "type": "object"
+      },
+      "InstrumentItemInput": {
+        "properties": {
+          "code": {
+            "maxLength": 40,
+            "minLength": 1,
+            "pattern": "^[a-z0-9_]+$",
+            "title": "Code",
+            "type": "string"
+          },
+          "isReverseScored": {
+            "default": false,
+            "title": "Isreversescored",
+            "type": "boolean"
+          },
+          "options": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/InstrumentOptionInput"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Options"
+          },
+          "position": {
+            "maximum": 200.0,
+            "minimum": 1.0,
+            "title": "Position",
+            "type": "integer"
+          },
+          "subscale": {
+            "anyOf": [
+              {
+                "maxLength": 40,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subscale"
+          },
+          "weight": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 100.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "default": "1",
+            "title": "Weight"
+          }
+        },
+        "required": [
+          "code",
+          "position"
+        ],
+        "title": "InstrumentItemInput",
+        "type": "object"
+      },
+      "InstrumentItemRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "isReverseScored": {
+            "title": "Isreversescored",
+            "type": "boolean"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/InstrumentOptionRead"
+            },
+            "title": "Options",
+            "type": "array"
+          },
+          "position": {
+            "title": "Position",
+            "type": "integer"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "subscale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subscale"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          },
+          "weight": {
+            "title": "Weight",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "code",
+          "position",
+          "subscale",
+          "isReverseScored",
+          "weight"
+        ],
+        "title": "InstrumentItemRead",
+        "type": "object"
+      },
+      "InstrumentLocaleTranslationInput": {
+        "properties": {
+          "items": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Items",
+            "type": "object"
+          },
+          "locale": {
+            "maxLength": 10,
+            "minLength": 2,
+            "title": "Locale",
+            "type": "string"
+          },
+          "options": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Options",
+            "type": "object"
+          },
+          "title": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "locale",
+          "title"
+        ],
+        "title": "InstrumentLocaleTranslationInput",
+        "type": "object"
+      },
+      "InstrumentLocalizedRead": {
+        "properties": {
+          "category": {
+            "title": "Category",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "currentVersion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InstrumentVersionRead"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean"
+          },
+          "isSystem": {
+            "title": "Issystem",
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InstrumentItemRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "licenseNote": {
+            "title": "Licensenote",
+            "type": "string"
+          },
+          "locale": {
+            "title": "Locale",
+            "type": "string"
+          },
+          "localesAvailable": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Localesavailable",
+            "type": "array"
+          },
+          "maxScore": {
+            "title": "Maxscore",
+            "type": "integer"
+          },
+          "mcid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mcid"
+          },
+          "minScore": {
+            "title": "Minscore",
+            "type": "integer"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "reference": {
+            "title": "Reference",
+            "type": "string"
+          },
+          "respondent": {
+            "title": "Respondent",
+            "type": "string"
+          },
+          "scoringType": {
+            "title": "Scoringtype",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "code",
+          "category",
+          "respondent",
+          "scoringType",
+          "minScore",
+          "maxScore",
+          "mcid",
+          "licenseNote",
+          "reference",
+          "isSystem",
+          "isActive",
+          "locale",
+          "title"
+        ],
+        "title": "InstrumentLocalizedRead",
+        "type": "object"
+      },
+      "InstrumentOptionInput": {
+        "properties": {
+          "position": {
+            "maximum": 50.0,
+            "minimum": 1.0,
+            "title": "Position",
+            "type": "integer"
+          },
+          "value": {
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "Value",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "value",
+          "position"
+        ],
+        "title": "InstrumentOptionInput",
+        "type": "object"
+      },
+      "InstrumentOptionRead": {
+        "properties": {
+          "position": {
+            "title": "Position",
+            "type": "integer"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          },
+          "value": {
+            "title": "Value",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "publicId",
+          "value",
+          "position"
+        ],
+        "title": "InstrumentOptionRead",
+        "type": "object"
+      },
+      "InstrumentScoreRead": {
+        "properties": {
+          "changeFromPrevious": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Changefromprevious"
+          },
+          "engineCode": {
+            "title": "Enginecode",
+            "type": "string"
+          },
+          "engineVersion": {
+            "title": "Engineversion",
+            "type": "string"
+          },
+          "mcidReached": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mcidreached"
+          },
+          "reference": {
+            "title": "Reference",
+            "type": "string"
+          },
+          "severityBand": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Severityband"
+          },
+          "subscaleScores": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Subscalescores",
+            "type": "object"
+          },
+          "totalScore": {
+            "title": "Totalscore",
+            "type": "string"
+          }
+        },
+        "required": [
+          "totalScore",
+          "severityBand",
+          "subscaleScores",
+          "changeFromPrevious",
+          "mcidReached",
+          "engineCode",
+          "engineVersion",
+          "reference"
+        ],
+        "title": "InstrumentScoreRead",
+        "type": "object"
+      },
+      "InstrumentScoreRequest": {
+        "properties": {
+          "answers": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "minProperties": 1,
+            "title": "Answers",
+            "type": "object"
+          },
+          "locale": {
+            "anyOf": [
+              {
+                "maxLength": 10,
+                "minLength": 2,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locale"
+          },
+          "previousTotalScore": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previoustotalscore"
+          }
+        },
+        "required": [
+          "answers"
+        ],
+        "title": "InstrumentScoreRequest",
+        "type": "object"
+      },
+      "InstrumentScoringConfigInput": {
+        "properties": {
+          "customScorerCode": {
+            "anyOf": [
+              {
+                "maxLength": 60,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Customscorercode"
+          },
+          "reverseScoredItems": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reversescoreditems",
+            "type": "array"
+          },
+          "scaleMultiplier": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 100.0,
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "default": "1",
+            "title": "Scalemultiplier"
+          },
+          "severityBands": {
+            "items": {
+              "$ref": "#/components/schemas/SeverityBandInput"
+            },
+            "title": "Severitybands",
+            "type": "array"
+          },
+          "subscales": {
+            "items": {
+              "$ref": "#/components/schemas/SubscaleInput"
+            },
+            "title": "Subscales",
+            "type": "array"
+          }
+        },
+        "title": "InstrumentScoringConfigInput",
+        "type": "object"
+      },
+      "InstrumentSharedOptionInput": {
+        "properties": {
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/InstrumentOptionInput"
+            },
+            "minItems": 1,
+            "title": "Options",
+            "type": "array"
+          }
+        },
+        "required": [
+          "options"
+        ],
+        "title": "InstrumentSharedOptionInput",
+        "type": "object"
+      },
+      "InstrumentSummaryRead": {
+        "properties": {
+          "category": {
+            "title": "Category",
+            "type": "string"
+          },
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "isActive": {
+            "title": "Isactive",
+            "type": "boolean"
+          },
+          "isSystem": {
+            "title": "Issystem",
+            "type": "boolean"
+          },
+          "licenseNote": {
+            "title": "Licensenote",
+            "type": "string"
+          },
+          "localesAvailable": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Localesavailable",
+            "type": "array"
+          },
+          "maxScore": {
+            "title": "Maxscore",
+            "type": "integer"
+          },
+          "mcid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mcid"
+          },
+          "minScore": {
+            "title": "Minscore",
+            "type": "integer"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "reference": {
+            "title": "Reference",
+            "type": "string"
+          },
+          "respondent": {
+            "title": "Respondent",
+            "type": "string"
+          },
+          "scoringType": {
+            "title": "Scoringtype",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "code",
+          "category",
+          "respondent",
+          "scoringType",
+          "minScore",
+          "maxScore",
+          "mcid",
+          "licenseNote",
+          "reference",
+          "isSystem",
+          "isActive"
+        ],
+        "title": "InstrumentSummaryRead",
+        "type": "object"
+      },
+      "InstrumentTranslationUpsert": {
+        "properties": {
+          "items": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Items",
+            "type": "object"
+          },
+          "options": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Options",
+            "type": "object"
+          },
+          "title": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title"
+        ],
+        "title": "InstrumentTranslationUpsert",
+        "type": "object"
+      },
+      "InstrumentVersionCreate": {
+        "properties": {
+          "effectiveFrom": {
+            "format": "date",
+            "title": "Effectivefrom",
+            "type": "string"
+          },
+          "isCurrent": {
+            "default": true,
+            "title": "Iscurrent",
+            "type": "boolean"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InstrumentItemInput"
+            },
+            "minItems": 1,
+            "title": "Items",
+            "type": "array"
+          },
+          "scoringConfig": {
+            "$ref": "#/components/schemas/InstrumentScoringConfigInput"
+          },
+          "sharedOptions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/InstrumentSharedOptionInput"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "translations": {
+            "items": {
+              "$ref": "#/components/schemas/InstrumentLocaleTranslationInput"
+            },
+            "minItems": 1,
+            "title": "Translations",
+            "type": "array"
+          },
+          "version": {
+            "maxLength": 20,
+            "minLength": 1,
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "version",
+          "effectiveFrom",
+          "scoringConfig",
+          "items",
+          "translations"
+        ],
+        "title": "InstrumentVersionCreate",
+        "type": "object"
+      },
+      "InstrumentVersionRead": {
+        "properties": {
+          "effectiveFrom": {
+            "format": "date",
+            "title": "Effectivefrom",
+            "type": "string"
+          },
+          "isCurrent": {
+            "title": "Iscurrent",
+            "type": "boolean"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "scoringConfig": {
+            "title": "Scoringconfig",
+            "type": "object"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "version",
+          "effectiveFrom",
+          "isCurrent",
+          "scoringConfig"
+        ],
+        "title": "InstrumentVersionRead",
+        "type": "object"
+      },
       "IntratympanicInjectionWrite": {
         "properties": {
           "doseAmount": {
@@ -13699,6 +14663,26 @@
           "page"
         ],
         "title": "PageSchema[HearingDeviceRead]",
+        "type": "object"
+      },
+      "PageSchema_InstrumentSummaryRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/InstrumentSummaryRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[InstrumentSummaryRead]",
         "type": "object"
       },
       "PageSchema_LaryngoscopyExamRead_": {
@@ -20124,6 +21108,46 @@
         "title": "SessionResponse",
         "type": "object"
       },
+      "SeverityBandInput": {
+        "properties": {
+          "code": {
+            "maxLength": 40,
+            "minLength": 1,
+            "pattern": "^[a-z0-9_]+$",
+            "title": "Code",
+            "type": "string"
+          },
+          "maxScore": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Maxscore"
+          },
+          "minScore": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              }
+            ],
+            "title": "Minscore"
+          }
+        },
+        "required": [
+          "code",
+          "minScore",
+          "maxScore"
+        ],
+        "title": "SeverityBandInput",
+        "type": "object"
+      },
       "SialendoscopyWrite": {
         "properties": {
           "findings": {
@@ -21343,6 +22367,31 @@
           "mucosalWaveLeft"
         ],
         "title": "StroboscopyWrite",
+        "type": "object"
+      },
+      "SubscaleInput": {
+        "properties": {
+          "code": {
+            "maxLength": 40,
+            "minLength": 1,
+            "pattern": "^[a-z0-9_]+$",
+            "title": "Code",
+            "type": "string"
+          },
+          "itemCodes": {
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Itemcodes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "code",
+          "itemCodes"
+        ],
+        "title": "SubscaleInput",
         "type": "object"
       },
       "TaperRequest": {
@@ -29432,6 +30481,592 @@
         "summary": "Update Hearing Device",
         "tags": [
           "audiology"
+        ]
+      }
+    },
+    "/api/v1/instruments": {
+      "get": {
+        "operationId": "list_instruments_api_v1_instruments_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 30,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Category"
+            }
+          },
+          {
+            "in": "query",
+            "name": "respondent",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 20,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Respondent"
+            }
+          },
+          {
+            "in": "query",
+            "name": "locale",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 10,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Locale"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_InstrumentSummaryRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Instruments",
+        "tags": [
+          "instruments"
+        ]
+      },
+      "post": {
+        "operationId": "create_instrument_api_v1_instruments_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstrumentCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstrumentDetailRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Instrument",
+        "tags": [
+          "instruments"
+        ]
+      }
+    },
+    "/api/v1/instruments/by-code/{code}": {
+      "get": {
+        "operationId": "get_instrument_by_code_api_v1_instruments_by_code__code__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "title": "Code",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "locale",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 10,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Locale"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/InstrumentDetailRead"
+                    },
+                    {
+                      "$ref": "#/components/schemas/InstrumentLocalizedRead"
+                    }
+                  ],
+                  "title": "Response Get Instrument By Code Api V1 Instruments By Code  Code  Get"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Instrument By Code",
+        "tags": [
+          "instruments"
+        ]
+      }
+    },
+    "/api/v1/instruments/{instrument_id}": {
+      "get": {
+        "operationId": "get_instrument_api_v1_instruments__instrument_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "instrument_id",
+            "required": true,
+            "schema": {
+              "title": "Instrument Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "locale",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 10,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Locale"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstrumentDetailRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Instrument",
+        "tags": [
+          "instruments"
+        ]
+      }
+    },
+    "/api/v1/instruments/{instrument_id}/score": {
+      "post": {
+        "operationId": "score_instrument_api_v1_instruments__instrument_id__score_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "instrument_id",
+            "required": true,
+            "schema": {
+              "title": "Instrument Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstrumentScoreRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstrumentScoreRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Score Instrument",
+        "tags": [
+          "instruments"
+        ]
+      }
+    },
+    "/api/v1/instruments/{instrument_id}/translations/{locale}": {
+      "put": {
+        "operationId": "upsert_instrument_translations_api_v1_instruments__instrument_id__translations__locale__put",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "instrument_id",
+            "required": true,
+            "schema": {
+              "title": "Instrument Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "locale",
+            "required": true,
+            "schema": {
+              "title": "Locale",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstrumentTranslationUpsert"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstrumentLocalizedRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Upsert Instrument Translations",
+        "tags": [
+          "instruments"
+        ]
+      }
+    },
+    "/api/v1/instruments/{instrument_id}/versions": {
+      "post": {
+        "operationId": "create_instrument_version_api_v1_instruments__instrument_id__versions_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "instrument_id",
+            "required": true,
+            "schema": {
+              "title": "Instrument Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InstrumentVersionCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InstrumentDetailRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Create Instrument Version",
+        "tags": [
+          "instruments"
         ]
       }
     },

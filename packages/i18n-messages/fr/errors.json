@@ -105,6 +105,16 @@
     "not_found": "Cet examen otologique est introuvable.",
     "version_conflict": "Cet examen otologique a été modifié. Rechargez puis réessayez."
   },
+  "questionnaire": {
+    "instrument_not_found": "Ce questionnaire est introuvable.",
+    "code_conflict": "Un instrument avec ce code existe déjà pour la clinique.",
+    "version_conflict": "Cette version d'instrument ne peut pas être appliquée.",
+    "system_immutable": "Les instruments système ne peuvent pas être modifiés.",
+    "translation_incomplete": "Cet instrument n'est pas entièrement traduit pour la langue demandée.",
+    "invalid_definition": "La définition de l'instrument est invalide.",
+    "incomplete_response": "Une ou plusieurs questions ne sont pas renseignées.",
+    "invalid_answer": "Une réponse n'est pas autorisée pour cet item."
+  },
   "audiology": {
     "already_finalized": "Cet audiogramme est finalisé et ne peut plus être modifié.",
     "duplicate_threshold": "La même oreille, conduction, fréquence et masquage apparaissent deux fois.",

@@ -105,6 +105,16 @@
     "not_found": "لم يتم العثور على فحص الأذن هذا.",
     "version_conflict": "عدّل شخص آخر فحص الأذن هذا. أعد التحميل ثم حاول مجدداً."
   },
+  "questionnaire": {
+    "instrument_not_found": "لم يتم العثور على هذا الاستبيان.",
+    "code_conflict": "أداة بهذا الرمز موجودة بالفعل للعيادة.",
+    "version_conflict": "تعذر تطبيق إصدار الأداة هذا.",
+    "system_immutable": "لا يمكن تغيير أدوات النظام.",
+    "translation_incomplete": "الأداة غير مترجمة بالكامل للغة المطلوبة.",
+    "invalid_definition": "تعريف الأداة غير صالح.",
+    "incomplete_response": "سؤال واحد أو أكثر بلا إجابة.",
+    "invalid_answer": "إجابة غير مسموحة لهذا البند."
+  },
   "audiology": {
     "already_finalized": "هذا السمعي مُنهى ولا يمكن تعديله.",
     "duplicate_threshold": "نفس الأذن والتوصيل والتردد والإخفاء مكررة.",

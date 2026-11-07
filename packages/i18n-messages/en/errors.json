@@ -105,6 +105,16 @@
     "not_found": "That otology exam was not found.",
     "version_conflict": "This otology exam was updated by someone else. Reload and try again."
   },
+  "questionnaire": {
+    "instrument_not_found": "That questionnaire was not found.",
+    "code_conflict": "An instrument with this code already exists for the clinic.",
+    "version_conflict": "This instrument version could not be applied.",
+    "system_immutable": "System instruments cannot be changed.",
+    "translation_incomplete": "This instrument is not fully translated for the requested language.",
+    "invalid_definition": "The instrument definition is invalid.",
+    "incomplete_response": "One or more items are unanswered.",
+    "invalid_answer": "An answer is not allowed for this item."
+  },
   "audiology": {
     "already_finalized": "This audiogram is finalized and cannot be changed.",
     "duplicate_threshold": "The same ear, conduction, frequency and masking appear twice.",
