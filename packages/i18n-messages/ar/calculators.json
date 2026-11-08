@@ -26,15 +26,29 @@
     "audiology_jerger_tympanogram": "Jerger tympanogram",
     "audiology_abr_latencies": "ABR interpeak intervals",
     "audiology_ehdi_136": "EHDI 1-3-6 benchmarks",
-    "audiology_device_candidacy": "Device candidacy checklist"
+    "audiology_device_candidacy": "Device candidacy checklist",
+    "prescriptions_pediatric_dose": "Pediatric weight-based dose",
+    "prescriptions_steroid_taper": "Steroid taper schedule",
+    "general_bmi": "Body mass index (BMI)",
+    "general_bsa": "Body surface area (BSA)",
+    "general_corrected_age": "Corrected age (preterm)",
+    "endoscopy_lund_mackay": "Lund-Mackay CT score",
+    "airway_myer_cotton": "Myer-Cotton subglottic grade",
+    "airway_ett_size": "Endotracheal tube size by age",
+    "surgery_paradise_criteria": "Paradise tonsillectomy criteria",
+    "surgery_tube_criteria": "Ventilation tube criteria",
+    "surgery_adenotonsillectomy_osa": "Pediatric OSA adenotonsillectomy checklist"
   },
   "domains": {
     "audiology": "Audiology",
+    "airway": "Airway",
     "endoscopy": "Nasal endoscopy",
+    "general": "General",
     "laryngoscopy": "Laryngoscopy",
     "prescriptions": "Prescriptions",
     "recalls": "Recalls",
-    "scoring": "Scoring"
+    "scoring": "Scoring",
+    "surgery": "Surgical decisions"
   },
   "empty": {
     "result": "Enter values and run the calculator. The server computes every clinical number."
@@ -126,7 +140,33 @@
       },
       "polypScale": "Polyp scale",
       "scaleLildholdt": "Lildholdt (0–3)",
-      "scaleMeltzer": "Meltzer (0–4)"
+      "scaleMeltzer": "Meltzer (0–4)",
+      "lundMackay": {
+        "anterior_ethmoid": {
+          "left": "Left anterior ethmoid",
+          "right": "Right anterior ethmoid"
+        },
+        "frontal": {
+          "left": "Left frontal sinus",
+          "right": "Right frontal sinus"
+        },
+        "maxillary": {
+          "left": "Left maxillary sinus",
+          "right": "Right maxillary sinus"
+        },
+        "omc": {
+          "left": "Left ostiomeatal complex (0 or 2)",
+          "right": "Right ostiomeatal complex (0 or 2)"
+        },
+        "posterior_ethmoid": {
+          "left": "Left posterior ethmoid",
+          "right": "Right posterior ethmoid"
+        },
+        "sphenoid": {
+          "left": "Left sphenoid sinus",
+          "right": "Right sphenoid sinus"
+        }
+      }
     },
     "laryngoscopy": {
       "grbas": {
@@ -147,6 +187,58 @@
         "ventricular_obliteration": "Ventricular obliteration",
         "vocal_fold_edema": "Vocal fold edema"
       }
+    },
+    "airway": {
+      "ageYears": "Age (years)",
+      "cuffedTube": "Cuffed endotracheal tube",
+      "obstructionPercent": "Subglottic obstruction (%)"
+    },
+    "general": {
+      "asOfDate": "As-of date",
+      "birthDate": "Birth date",
+      "bsaDuBois": "Du Bois",
+      "bsaMethod": "BSA formula",
+      "bsaMosteller": "Mosteller",
+      "gestationalDays": "Gestational age (days)",
+      "gestationalWeeks": "Gestational age (weeks)",
+      "heightCm": "Height",
+      "weightKg": "Weight"
+    },
+    "prescriptions": {
+      "completedYears": "Completed years of age",
+      "concentrationMgPerMl": "Syrup concentration",
+      "dosesPerDay": "Doses per day",
+      "maxMgPerDay": "Maximum daily dose",
+      "mgPerKgPerDay": "Dose rule (mg/kg/day)",
+      "taperDaysPerStep": "Days at each taper step",
+      "taperMinimumMg": "Minimum dose before stopping",
+      "taperStartMg": "Starting daily dose",
+      "taperStepMg": "Dose decrement per step",
+      "weightKg": "Weight"
+    },
+    "surgery": {
+      "adenoidHypertrophy": "Adenoid hypertrophy documented",
+      "ageUnder3": "Age under 3 years",
+      "aom12Months": "AOM episodes (12 months)",
+      "aom6Months": "AOM episodes (6 months)",
+      "atRiskOme": "At-risk profile or symptomatic OME",
+      "bilateralOme": "Bilateral OME",
+      "brodskyGrade": "Brodsky tonsil grade",
+      "cervicalAdenopathy": "Cervical adenopathy",
+      "effusionPresent": "Middle-ear effusion present",
+      "episodesDocumented": "Episodes documented in record",
+      "episodesLastYear": "Tonsillitis episodes (last year)",
+      "episodesYear2": "Episodes per year (year 2 ago)",
+      "episodesYear3": "Episodes per year (year 3 ago)",
+      "fever383": "Fever ≥ 38.3 °C or 101 °F",
+      "hearingDifficulty": "Hearing difficulty documented",
+      "highRiskComorbidity": "High-risk comorbidity",
+      "omeDurationMonths": "OME duration (months)",
+      "positiveStrepA": "Culture-positive group A strep",
+      "psgAhi": "PSG apnea-hypopnea index",
+      "psgPerformed": "Polysomnography performed",
+      "sdbSymptoms": "Sleep-disordered breathing symptoms",
+      "tonsillarExudate": "Tonsillar exudate"
     },
     "shared": {
       "ear": "Ear",

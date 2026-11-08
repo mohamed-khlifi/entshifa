@@ -67,7 +67,7 @@ def test_pta_three_frequency_mean() -> None:
 @pytest.mark.clinical
 def test_non_interactive_engine_rejected() -> None:
     with pytest.raises(CalculatorInputError) as exc:
-        evaluate_calculator("prescriptions.pediatric_dose", {"weight_kg": "10"})
+        evaluate_calculator("scoring.questionnaire_sum", {"weight_kg": "10"})
     assert exc.value.code == "calculator.not_interactive"
 
 

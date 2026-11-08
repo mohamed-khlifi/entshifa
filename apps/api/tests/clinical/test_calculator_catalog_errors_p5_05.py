@@ -79,6 +79,25 @@ def test_evaluate_maps_prescription_engine_input_error() -> None:
 
 
 @pytest.mark.clinical
+def test_evaluate_maps_general_input_error() -> None:
+    from ent.engines.general.errors import GeneralCalculatorInputError
+
+    def _boom(_raw: object) -> object:
+        raise GeneralCalculatorInputError("general.bmi_input_invalid")
+
+    spec, _ = catalog._CATALOG["general.bmi"]
+    catalog._CATALOG["general.bmi"] = (spec, _boom)
+    try:
+        with pytest.raises(CalculatorInputError) as exc:
+            catalog.evaluate_calculator(
+                "general.bmi",
+                {"weight_kg": "70", "height_cm": "170"},
+            )
+        assert exc.value.code == "calculator.clinical_input"
+    finally:
+        catalog._CATALOG["general.bmi"] = (spec, catalog._run_bmi)
+
+
 def test_evaluate_unexpected_error_propagates() -> None:
     def _boom(_raw: object) -> object:
         raise RuntimeError("unexpected")

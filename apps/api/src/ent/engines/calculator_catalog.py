@@ -7,6 +7,16 @@ from dataclasses import dataclass
 from decimal import Decimal
 from typing import Any, Literal
 
+from ent.engines.airway.ett_size import CODE as ETT_CODE
+from ent.engines.airway.ett_size import FORMULA as ETT_FORMULA
+from ent.engines.airway.ett_size import REFERENCE as ETT_REFERENCE
+from ent.engines.airway.ett_size import VERSION as ETT_VERSION
+from ent.engines.airway.ett_size import score as ett_score
+from ent.engines.airway.myer_cotton import CODE as MYER_COTTON_CODE
+from ent.engines.airway.myer_cotton import FORMULA as MYER_COTTON_FORMULA
+from ent.engines.airway.myer_cotton import REFERENCE as MYER_COTTON_REFERENCE
+from ent.engines.airway.myer_cotton import VERSION as MYER_COTTON_VERSION
+from ent.engines.airway.myer_cotton import score as myer_cotton_score
 from ent.engines.audiology.abr import CODE as ABR_CODE
 from ent.engines.audiology.abr import FORMULA as ABR_FORMULA
 from ent.engines.audiology.abr import REFERENCE as ABR_REFERENCE
@@ -102,6 +112,7 @@ from ent.engines.calculator_parsers import (
     optional_str,
     require_bool,
     require_date,
+    require_decimal,
     require_int,
     require_str,
 )
@@ -116,6 +127,12 @@ from ent.engines.endoscopy.lund_kennedy import ITEMS as LK_ITEMS
 from ent.engines.endoscopy.lund_kennedy import REFERENCE as LK_REFERENCE
 from ent.engines.endoscopy.lund_kennedy import VERSION as LK_VERSION
 from ent.engines.endoscopy.lund_kennedy import score as lk_score
+from ent.engines.endoscopy.lund_mackay import CODE as LM_CODE
+from ent.engines.endoscopy.lund_mackay import FORMULA as LM_FORMULA
+from ent.engines.endoscopy.lund_mackay import REFERENCE as LM_REFERENCE
+from ent.engines.endoscopy.lund_mackay import SINUS_ITEMS as LM_SINUS_ITEMS
+from ent.engines.endoscopy.lund_mackay import VERSION as LM_VERSION
+from ent.engines.endoscopy.lund_mackay import score as lund_mackay_score
 from ent.engines.endoscopy.modified_lund_kennedy import CODE as MODIFIED_LK_CODE
 from ent.engines.endoscopy.modified_lund_kennedy import FORMULA as MODIFIED_LK_FORMULA
 from ent.engines.endoscopy.modified_lund_kennedy import ITEMS as MODIFIED_LK_ITEMS
@@ -129,6 +146,21 @@ from ent.engines.endoscopy.polyp_grade import FORMULA as POLYP_FORMULA
 from ent.engines.endoscopy.polyp_grade import REFERENCE as POLYP_REFERENCE
 from ent.engines.endoscopy.polyp_grade import VERSION as POLYP_VERSION
 from ent.engines.endoscopy.polyp_grade import score as polyp_score
+from ent.engines.general.bmi import CODE as BMI_CODE
+from ent.engines.general.bmi import FORMULA as BMI_FORMULA
+from ent.engines.general.bmi import REFERENCE as BMI_REFERENCE
+from ent.engines.general.bmi import VERSION as BMI_VERSION
+from ent.engines.general.bmi import score as bmi_score
+from ent.engines.general.bsa import CODE as BSA_CODE
+from ent.engines.general.bsa import FORMULA as BSA_FORMULA
+from ent.engines.general.bsa import REFERENCE as BSA_REFERENCE
+from ent.engines.general.bsa import VERSION as BSA_VERSION
+from ent.engines.general.bsa import score as bsa_score
+from ent.engines.general.corrected_age import CODE as CORRECTED_AGE_CODE
+from ent.engines.general.corrected_age import FORMULA as CORRECTED_AGE_FORMULA
+from ent.engines.general.corrected_age import REFERENCE as CORRECTED_AGE_REFERENCE
+from ent.engines.general.corrected_age import VERSION as CORRECTED_AGE_VERSION
+from ent.engines.general.corrected_age import score as corrected_age_score
 from ent.engines.laryngoscopy.grbas import CODE as GRBAS_CODE
 from ent.engines.laryngoscopy.grbas import FORMULA as GRBAS_FORMULA
 from ent.engines.laryngoscopy.grbas import ITEMS as GRBAS_ITEMS
@@ -154,11 +186,19 @@ from ent.engines.laryngoscopy.reflux_finding_score import score as rfs_score
 from ent.engines.prescriptions.pediatric_dosing import CODE as PEDIATRIC_CODE
 from ent.engines.prescriptions.pediatric_dosing import FORMULA as PEDIATRIC_FORMULA
 from ent.engines.prescriptions.pediatric_dosing import REFERENCE as PEDIATRIC_REFERENCE
-from ent.engines.prescriptions.pediatric_dosing import VERSION as PEDIATRIC_VERSION
+from ent.engines.prescriptions.pediatric_dosing import (
+    VERSION as PEDIATRIC_VERSION,
+)
+from ent.engines.prescriptions.pediatric_dosing import (
+    DosingRule,
+    PediatricDoseInput,
+    weight_based_dose,
+)
 from ent.engines.prescriptions.steroid_taper import CODE as TAPER_CODE
 from ent.engines.prescriptions.steroid_taper import FORMULA as TAPER_FORMULA
 from ent.engines.prescriptions.steroid_taper import REFERENCE as TAPER_REFERENCE
 from ent.engines.prescriptions.steroid_taper import VERSION as TAPER_VERSION
+from ent.engines.prescriptions.steroid_taper import TaperInput, generate_steroid_taper
 from ent.engines.recalls.protocol_resolver import CODE as PROTOCOL_RESOLVER_CODE
 from ent.engines.recalls.protocol_resolver import FORMULA as PROTOCOL_RESOLVER_FORMULA
 from ent.engines.recalls.protocol_resolver import (
@@ -170,6 +210,24 @@ from ent.engines.scoring.sum_scorer import CODE as SCORING_SUM_CODE
 from ent.engines.scoring.sum_scorer import FORMULA as SCORING_SUM_FORMULA
 from ent.engines.scoring.sum_scorer import REFERENCE as SCORING_SUM_REFERENCE
 from ent.engines.scoring.sum_scorer import VERSION as SCORING_SUM_VERSION
+from ent.engines.surgery.adenotonsillectomy import CODE as ATOSA_CODE
+from ent.engines.surgery.adenotonsillectomy import FORMULA as ATOSA_FORMULA
+from ent.engines.surgery.adenotonsillectomy import REFERENCE as ATOSA_REFERENCE
+from ent.engines.surgery.adenotonsillectomy import VERSION as ATOSA_VERSION
+from ent.engines.surgery.adenotonsillectomy import (
+    AdenotonsillectomyInput,
+    adenotonsillectomy_checklist,
+)
+from ent.engines.surgery.paradise import CODE as PARADISE_CODE
+from ent.engines.surgery.paradise import FORMULA as PARADISE_FORMULA
+from ent.engines.surgery.paradise import REFERENCE as PARADISE_REFERENCE
+from ent.engines.surgery.paradise import VERSION as PARADISE_VERSION
+from ent.engines.surgery.paradise import ParadiseInput, paradise_checklist
+from ent.engines.surgery.tube_criteria import CODE as TUBE_CODE
+from ent.engines.surgery.tube_criteria import FORMULA as TUBE_FORMULA
+from ent.engines.surgery.tube_criteria import REFERENCE as TUBE_REFERENCE
+from ent.engines.surgery.tube_criteria import VERSION as TUBE_VERSION
+from ent.engines.surgery.tube_criteria import TubeCriteriaInput, tube_criteria_checklist
 
 InputKind = Literal["integer", "decimal", "select", "boolean", "date"]
 Runner = Callable[[Mapping[str, Any]], CalculationResult]
@@ -226,6 +284,60 @@ def _int_field(
         max_value=str(maximum),
         default_value=default_value,
     )
+
+
+def _decimal_field(
+    name: str,
+    *,
+    label_key: str,
+    minimum: str,
+    maximum: str,
+    required: bool = True,
+    unit: str | None = None,
+) -> CalculatorInputField:
+    return CalculatorInputField(
+        name=name,
+        kind="decimal",
+        required=required,
+        label_key=label_key,
+        unit=unit,
+        min_value=minimum,
+        max_value=maximum,
+    )
+
+
+def _bool_field(
+    name: str, *, label_key: str, required: bool = True
+) -> CalculatorInputField:
+    return CalculatorInputField(
+        name=name,
+        kind="boolean",
+        required=required,
+        label_key=label_key,
+    )
+
+
+def _lund_mackay_fields() -> tuple[CalculatorInputField, ...]:
+    fields: list[CalculatorInputField] = []
+    for side in ("right", "left"):
+        for item in LM_SINUS_ITEMS:
+            fields.append(
+                _int_field(
+                    f"{side}_{item}",
+                    label_key=f"calculators.fields.endoscopy.lundMackay.{item}.{side}",
+                    minimum=0,
+                    maximum=2,
+                )
+            )
+        fields.append(
+            _int_field(
+                f"{side}_ostiomeatal_complex",
+                label_key=f"calculators.fields.endoscopy.lundMackay.omc.{side}",
+                minimum=0,
+                maximum=2,
+            )
+        )
+    return tuple(fields)
 
 
 def _select_field(
@@ -594,6 +706,151 @@ def _run_candidacy(raw: Mapping[str, Any]) -> CalculationResult:
     return device_candidacy_calculation(data)
 
 
+def _run_pediatric_dose(raw: Mapping[str, Any]) -> CalculationResult:
+    rule = DosingRule(
+        mg_per_kg_per_day=require_decimal(raw, "mg_per_kg_per_day"),
+        doses_per_day=require_int(raw, "doses_per_day", minimum=1, maximum=12),
+        max_mg_per_day=optional_decimal(raw, "max_mg_per_day"),
+        indication_code=optional_str(raw, "indication_code"),
+    )
+    data = PediatricDoseInput(
+        weight_kg=require_decimal(raw, "weight_kg"),
+        rule=rule,
+        concentration_mg_per_ml=optional_decimal(raw, "concentration_mg_per_ml"),
+        completed_years=optional_int(raw, "completed_years", minimum=0, maximum=18),
+    )
+    return weight_based_dose(data)
+
+
+def _run_steroid_taper(raw: Mapping[str, Any]) -> CalculationResult:
+    data = TaperInput(
+        start_mg=require_decimal(raw, "start_mg"),
+        step_mg=require_decimal(raw, "step_mg"),
+        days_per_step=require_int(raw, "days_per_step", minimum=1, maximum=30),
+        minimum_mg=require_decimal(raw, "minimum_mg"),
+    )
+    return generate_steroid_taper(data).calculation
+
+
+def _run_bmi(raw: Mapping[str, Any]) -> CalculationResult:
+    return bmi_score(
+        weight_kg=require_decimal(raw, "weight_kg"),
+        height_cm=require_decimal(raw, "height_cm"),
+    )
+
+
+def _run_bsa(raw: Mapping[str, Any]) -> CalculationResult:
+    method = require_str(raw, "method")
+    if method not in ("mosteller", "dubois"):
+        raise CalculatorInputError("calculator.invalid_select", field="method")
+    return bsa_score(
+        weight_kg=require_decimal(raw, "weight_kg"),
+        height_cm=require_decimal(raw, "height_cm"),
+        method=method,  # type: ignore[arg-type]
+    )
+
+
+def _run_corrected_age(raw: Mapping[str, Any]) -> CalculationResult:
+    return corrected_age_score(
+        birth_date=require_date(raw, "birth_date"),
+        as_of_date=require_date(raw, "as_of_date"),
+        gestational_age_weeks=require_int(
+            raw, "gestational_age_weeks", minimum=22, maximum=42
+        ),
+        gestational_age_days=(
+            optional_int(raw, "gestational_age_days", minimum=0, maximum=6) or 0
+        ),
+    )
+
+
+def _run_lund_mackay(raw: Mapping[str, Any]) -> CalculationResult:
+    right = {
+        item: require_int(raw, f"right_{item}", minimum=0, maximum=2)
+        for item in LM_SINUS_ITEMS
+    }
+    right["ostiomeatal_complex"] = require_int(
+        raw, "right_ostiomeatal_complex", minimum=0, maximum=2
+    )
+    left = {
+        item: require_int(raw, f"left_{item}", minimum=0, maximum=2)
+        for item in LM_SINUS_ITEMS
+    }
+    left["ostiomeatal_complex"] = require_int(
+        raw, "left_ostiomeatal_complex", minimum=0, maximum=2
+    )
+    return lund_mackay_score(right=right, left=left)
+
+
+def _run_myer_cotton(raw: Mapping[str, Any]) -> CalculationResult:
+    return myer_cotton_score(
+        obstruction_percent=require_int(
+            raw, "obstruction_percent", minimum=0, maximum=100
+        ),
+    )
+
+
+def _run_ett_size(raw: Mapping[str, Any]) -> CalculationResult:
+    cuffed_value = raw.get("cuffed")
+    cuffed = (
+        True
+        if cuffed_value is None or cuffed_value == ""
+        else require_bool(raw, "cuffed")
+    )
+    return ett_score(age_years=require_decimal(raw, "age_years"), cuffed=cuffed)
+
+
+def _run_paradise(raw: Mapping[str, Any]) -> CalculationResult:
+    data = ParadiseInput(
+        episodes_last_year=require_int(
+            raw, "episodes_last_year", minimum=0, maximum=30
+        ),
+        episodes_year_2=require_int(raw, "episodes_year_2", minimum=0, maximum=30),
+        episodes_year_3=require_int(raw, "episodes_year_3", minimum=0, maximum=30),
+        fever_38_3c=require_bool(raw, "fever_38_3c"),
+        cervical_adenopathy=require_bool(raw, "cervical_adenopathy"),
+        tonsillar_exudate=require_bool(raw, "tonsillar_exudate"),
+        positive_strep_a=require_bool(raw, "positive_strep_a"),
+        episodes_documented=require_bool(raw, "episodes_documented"),
+    )
+    return paradise_checklist(data)
+
+
+def _run_tube_criteria(raw: Mapping[str, Any]) -> CalculationResult:
+    data = TubeCriteriaInput(
+        aom_episodes_6_months=require_int(
+            raw, "aom_episodes_6_months", minimum=0, maximum=24
+        ),
+        aom_episodes_12_months=require_int(
+            raw, "aom_episodes_12_months", minimum=0, maximum=36
+        ),
+        middle_ear_effusion_present=require_bool(raw, "middle_ear_effusion_present"),
+        ome_duration_months=require_int(
+            raw, "ome_duration_months", minimum=0, maximum=60
+        ),
+        bilateral_ome=require_bool(raw, "bilateral_ome"),
+        hearing_difficulty_documented=require_bool(
+            raw, "hearing_difficulty_documented"
+        ),
+        at_risk_or_symptomatic_ome=require_bool(raw, "at_risk_or_symptomatic_ome"),
+    )
+    return tube_criteria_checklist(data)
+
+
+def _run_adenotonsillectomy(raw: Mapping[str, Any]) -> CalculationResult:
+    data = AdenotonsillectomyInput(
+        sdb_symptoms_present=require_bool(raw, "sdb_symptoms_present"),
+        tonsil_brodsky_grade=require_int(
+            raw, "tonsil_brodsky_grade", minimum=0, maximum=4
+        ),
+        adenoid_hypertrophy=require_bool(raw, "adenoid_hypertrophy"),
+        psg_performed=require_bool(raw, "psg_performed"),
+        psg_ahi=optional_decimal(raw, "psg_ahi"),
+        age_under_3_years=require_bool(raw, "age_under_3_years"),
+        high_risk_comorbidity=require_bool(raw, "high_risk_comorbidity"),
+    )
+    return adenotonsillectomy_checklist(data)
+
+
 def _spec(
     *,
     code: str,
@@ -666,9 +923,53 @@ def _catalog_entries() -> list[tuple[CalculatorSpec, Runner | None]]:
             reference=PEDIATRIC_REFERENCE,
             unit="mg",
             formula=PEDIATRIC_FORMULA,
-            inputs=(),
-            interactive=False,
-            runner=None,
+            inputs=(
+                _decimal_field(
+                    "weight_kg",
+                    label_key="calculators.fields.prescriptions.weightKg",
+                    minimum="0.1",
+                    maximum="500",
+                    unit="kg",
+                ),
+                _decimal_field(
+                    "mg_per_kg_per_day",
+                    label_key="calculators.fields.prescriptions.mgPerKgPerDay",
+                    minimum="0.01",
+                    maximum="500",
+                    unit="mg/kg/day",
+                ),
+                _int_field(
+                    "doses_per_day",
+                    label_key="calculators.fields.prescriptions.dosesPerDay",
+                    minimum=1,
+                    maximum=12,
+                ),
+                _decimal_field(
+                    "max_mg_per_day",
+                    label_key="calculators.fields.prescriptions.maxMgPerDay",
+                    minimum="0",
+                    maximum="20000",
+                    required=False,
+                    unit="mg",
+                ),
+                _decimal_field(
+                    "concentration_mg_per_ml",
+                    label_key="calculators.fields.prescriptions.concentrationMgPerMl",
+                    minimum="0.01",
+                    maximum="500",
+                    required=False,
+                    unit="mg/mL",
+                ),
+                _int_field(
+                    "completed_years",
+                    label_key="calculators.fields.prescriptions.completedYears",
+                    minimum=0,
+                    maximum=18,
+                    required=False,
+                ),
+            ),
+            interactive=True,
+            runner=_run_pediatric_dose,
         ),
         _spec(
             code=TAPER_CODE,
@@ -676,9 +977,37 @@ def _catalog_entries() -> list[tuple[CalculatorSpec, Runner | None]]:
             reference=TAPER_REFERENCE,
             unit="day",
             formula=TAPER_FORMULA,
-            inputs=(),
-            interactive=False,
-            runner=None,
+            inputs=(
+                _decimal_field(
+                    "start_mg",
+                    label_key="calculators.fields.prescriptions.taperStartMg",
+                    minimum="0.1",
+                    maximum="200",
+                    unit="mg",
+                ),
+                _decimal_field(
+                    "step_mg",
+                    label_key="calculators.fields.prescriptions.taperStepMg",
+                    minimum="0.1",
+                    maximum="200",
+                    unit="mg",
+                ),
+                _int_field(
+                    "days_per_step",
+                    label_key="calculators.fields.prescriptions.taperDaysPerStep",
+                    minimum=1,
+                    maximum=30,
+                ),
+                _decimal_field(
+                    "minimum_mg",
+                    label_key="calculators.fields.prescriptions.taperMinimumMg",
+                    minimum="0",
+                    maximum="200",
+                    unit="mg",
+                ),
+            ),
+            interactive=True,
+            runner=_run_steroid_taper,
         ),
         _spec(
             code=LK_CODE,
@@ -1210,6 +1539,291 @@ def _catalog_entries() -> list[tuple[CalculatorSpec, Runner | None]]:
             runner=_run_candidacy,
         ),
         _spec(
+            code=BMI_CODE,
+            version=BMI_VERSION,
+            reference=BMI_REFERENCE,
+            unit="kg/m2",
+            formula=BMI_FORMULA,
+            inputs=(
+                _decimal_field(
+                    "weight_kg",
+                    label_key="calculators.fields.general.weightKg",
+                    minimum="0.1",
+                    maximum="500",
+                    unit="kg",
+                ),
+                _decimal_field(
+                    "height_cm",
+                    label_key="calculators.fields.general.heightCm",
+                    minimum="30",
+                    maximum="250",
+                    unit="cm",
+                ),
+            ),
+            interactive=True,
+            runner=_run_bmi,
+        ),
+        _spec(
+            code=BSA_CODE,
+            version=BSA_VERSION,
+            reference=BSA_REFERENCE,
+            unit="m2",
+            formula=BSA_FORMULA,
+            inputs=(
+                _decimal_field(
+                    "weight_kg",
+                    label_key="calculators.fields.general.weightKg",
+                    minimum="0.1",
+                    maximum="500",
+                    unit="kg",
+                ),
+                _decimal_field(
+                    "height_cm",
+                    label_key="calculators.fields.general.heightCm",
+                    minimum="20",
+                    maximum="250",
+                    unit="cm",
+                ),
+                _select_field(
+                    "method",
+                    label_key="calculators.fields.general.bsaMethod",
+                    options=(
+                        CalculatorInputOption(
+                            "mosteller", "calculators.fields.general.bsaMosteller"
+                        ),
+                        CalculatorInputOption(
+                            "dubois", "calculators.fields.general.bsaDuBois"
+                        ),
+                    ),
+                ),
+            ),
+            interactive=True,
+            runner=_run_bsa,
+        ),
+        _spec(
+            code=CORRECTED_AGE_CODE,
+            version=CORRECTED_AGE_VERSION,
+            reference=CORRECTED_AGE_REFERENCE,
+            unit="weeks",
+            formula=CORRECTED_AGE_FORMULA,
+            inputs=(
+                CalculatorInputField(
+                    name="birth_date",
+                    kind="date",
+                    required=True,
+                    label_key="calculators.fields.general.birthDate",
+                ),
+                CalculatorInputField(
+                    name="as_of_date",
+                    kind="date",
+                    required=True,
+                    label_key="calculators.fields.general.asOfDate",
+                ),
+                _int_field(
+                    "gestational_age_weeks",
+                    label_key="calculators.fields.general.gestationalWeeks",
+                    minimum=22,
+                    maximum=42,
+                ),
+                _int_field(
+                    "gestational_age_days",
+                    label_key="calculators.fields.general.gestationalDays",
+                    minimum=0,
+                    maximum=6,
+                    required=False,
+                    default_value="0",
+                ),
+            ),
+            interactive=True,
+            runner=_run_corrected_age,
+        ),
+        _spec(
+            code=LM_CODE,
+            version=LM_VERSION,
+            reference=LM_REFERENCE,
+            unit="points",
+            formula=LM_FORMULA,
+            inputs=_lund_mackay_fields(),
+            interactive=True,
+            runner=_run_lund_mackay,
+        ),
+        _spec(
+            code=MYER_COTTON_CODE,
+            version=MYER_COTTON_VERSION,
+            reference=MYER_COTTON_REFERENCE,
+            unit="grade",
+            formula=MYER_COTTON_FORMULA,
+            inputs=(
+                _int_field(
+                    "obstruction_percent",
+                    label_key="calculators.fields.airway.obstructionPercent",
+                    minimum=0,
+                    maximum=100,
+                    unit="%",
+                ),
+            ),
+            interactive=True,
+            runner=_run_myer_cotton,
+        ),
+        _spec(
+            code=ETT_CODE,
+            version=ETT_VERSION,
+            reference=ETT_REFERENCE,
+            unit="mm",
+            formula=ETT_FORMULA,
+            inputs=(
+                _decimal_field(
+                    "age_years",
+                    label_key="calculators.fields.airway.ageYears",
+                    minimum="1",
+                    maximum="16",
+                ),
+                _bool_field(
+                    "cuffed",
+                    label_key="calculators.fields.airway.cuffedTube",
+                    required=False,
+                ),
+            ),
+            interactive=True,
+            runner=_run_ett_size,
+        ),
+        _spec(
+            code=PARADISE_CODE,
+            version=PARADISE_VERSION,
+            reference=PARADISE_REFERENCE,
+            unit=None,
+            formula=PARADISE_FORMULA,
+            inputs=(
+                _int_field(
+                    "episodes_last_year",
+                    label_key="calculators.fields.surgery.episodesLastYear",
+                    minimum=0,
+                    maximum=30,
+                ),
+                _int_field(
+                    "episodes_year_2",
+                    label_key="calculators.fields.surgery.episodesYear2",
+                    minimum=0,
+                    maximum=30,
+                ),
+                _int_field(
+                    "episodes_year_3",
+                    label_key="calculators.fields.surgery.episodesYear3",
+                    minimum=0,
+                    maximum=30,
+                ),
+                _bool_field(
+                    "fever_38_3c", label_key="calculators.fields.surgery.fever383"
+                ),
+                _bool_field(
+                    "cervical_adenopathy",
+                    label_key="calculators.fields.surgery.cervicalAdenopathy",
+                ),
+                _bool_field(
+                    "tonsillar_exudate",
+                    label_key="calculators.fields.surgery.tonsillarExudate",
+                ),
+                _bool_field(
+                    "positive_strep_a",
+                    label_key="calculators.fields.surgery.positiveStrepA",
+                ),
+                _bool_field(
+                    "episodes_documented",
+                    label_key="calculators.fields.surgery.episodesDocumented",
+                ),
+            ),
+            interactive=True,
+            runner=_run_paradise,
+        ),
+        _spec(
+            code=TUBE_CODE,
+            version=TUBE_VERSION,
+            reference=TUBE_REFERENCE,
+            unit=None,
+            formula=TUBE_FORMULA,
+            inputs=(
+                _int_field(
+                    "aom_episodes_6_months",
+                    label_key="calculators.fields.surgery.aom6Months",
+                    minimum=0,
+                    maximum=24,
+                ),
+                _int_field(
+                    "aom_episodes_12_months",
+                    label_key="calculators.fields.surgery.aom12Months",
+                    minimum=0,
+                    maximum=36,
+                ),
+                _bool_field(
+                    "middle_ear_effusion_present",
+                    label_key="calculators.fields.surgery.effusionPresent",
+                ),
+                _int_field(
+                    "ome_duration_months",
+                    label_key="calculators.fields.surgery.omeDurationMonths",
+                    minimum=0,
+                    maximum=60,
+                ),
+                _bool_field(
+                    "bilateral_ome", label_key="calculators.fields.surgery.bilateralOme"
+                ),
+                _bool_field(
+                    "hearing_difficulty_documented",
+                    label_key="calculators.fields.surgery.hearingDifficulty",
+                ),
+                _bool_field(
+                    "at_risk_or_symptomatic_ome",
+                    label_key="calculators.fields.surgery.atRiskOme",
+                ),
+            ),
+            interactive=True,
+            runner=_run_tube_criteria,
+        ),
+        _spec(
+            code=ATOSA_CODE,
+            version=ATOSA_VERSION,
+            reference=ATOSA_REFERENCE,
+            unit=None,
+            formula=ATOSA_FORMULA,
+            inputs=(
+                _bool_field(
+                    "sdb_symptoms_present",
+                    label_key="calculators.fields.surgery.sdbSymptoms",
+                ),
+                _int_field(
+                    "tonsil_brodsky_grade",
+                    label_key="calculators.fields.surgery.brodskyGrade",
+                    minimum=0,
+                    maximum=4,
+                ),
+                _bool_field(
+                    "adenoid_hypertrophy",
+                    label_key="calculators.fields.surgery.adenoidHypertrophy",
+                ),
+                _bool_field(
+                    "psg_performed",
+                    label_key="calculators.fields.surgery.psgPerformed",
+                ),
+                _decimal_field(
+                    "psg_ahi",
+                    label_key="calculators.fields.surgery.psgAhi",
+                    minimum="0",
+                    maximum="200",
+                    required=False,
+                ),
+                _bool_field(
+                    "age_under_3_years",
+                    label_key="calculators.fields.surgery.ageUnder3",
+                ),
+                _bool_field(
+                    "high_risk_comorbidity",
+                    label_key="calculators.fields.surgery.highRiskComorbidity",
+                ),
+            ),
+            interactive=True,
+            runner=_run_adenotonsillectomy,
+        ),
+        _spec(
             code=SCORING_SUM_CODE,
             version=SCORING_SUM_VERSION,
             reference=SCORING_SUM_REFERENCE,
@@ -1253,10 +1867,13 @@ def evaluate_calculator(code: str, raw_inputs: Mapping[str, Any]) -> Calculation
     except CalculatorInputError:
         raise
     except Exception as exc:
+        from ent.engines.airway.errors import AirwayInputError
         from ent.engines.audiology.errors import AudiometryInputError
         from ent.engines.endoscopy.errors import ScoreInputError
+        from ent.engines.general.errors import GeneralCalculatorInputError
         from ent.engines.laryngoscopy.errors import ScoreInputError as LScoreInputError
         from ent.engines.prescriptions.errors import EngineInputError
+        from ent.engines.surgery.errors import SurgeryChecklistInputError
 
         if isinstance(exc, (ScoreInputError, LScoreInputError)):
             raise CalculatorInputError(
@@ -1267,6 +1884,17 @@ def evaluate_calculator(code: str, raw_inputs: Mapping[str, Any]) -> Calculation
                 "calculator.clinical_input", calculator_code=code
             ) from exc
         if isinstance(exc, EngineInputError):
+            raise CalculatorInputError(
+                "calculator.clinical_input", calculator_code=code
+            ) from exc
+        if isinstance(
+            exc,
+            (
+                GeneralCalculatorInputError,
+                AirwayInputError,
+                SurgeryChecklistInputError,
+            ),
+        ):
             raise CalculatorInputError(
                 "calculator.clinical_input", calculator_code=code
             ) from exc

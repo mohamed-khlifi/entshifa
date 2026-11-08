@@ -86,8 +86,8 @@ async def test_evaluate_non_interactive_raises() -> None:
     with pytest.raises(CalculatorNotInteractiveError):
         await service.evaluate(
             user=_user(),
-            code="prescriptions.pediatric_dose",
-            body=CalculatorEvaluateRequest(inputs={"weight_kg": "10"}),
+            code="scoring.questionnaire_sum",
+            body=CalculatorEvaluateRequest(inputs={}),
         )
 
 

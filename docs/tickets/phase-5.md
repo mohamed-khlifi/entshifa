@@ -54,7 +54,7 @@ calculator from its metadata. Move the phase 3 and 4 engines into it.
 
 ---
 
-## - [ ] P5-06 Remaining calculators
+## - [x] P5-06 Remaining calculators
 
 Pediatric dosing (already built in phase 2, register it here), BMI, BSA,
 corrected age, surgical decision checklists (Paradise criteria, tube criteria,

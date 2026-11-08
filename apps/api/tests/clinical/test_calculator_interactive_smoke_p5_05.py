@@ -17,6 +17,7 @@ from ent.engines.calculator_catalog import (
 )
 from ent.engines.endoscopy.lund_kennedy import CODE as LK_CODE
 from ent.engines.endoscopy.lund_kennedy import ITEMS as LK_ITEMS
+from ent.engines.endoscopy.lund_mackay import SINUS_ITEMS as LM_SINUS_ITEMS
 from ent.engines.endoscopy.modified_lund_kennedy import ITEMS as MLK_ITEMS
 from ent.engines.laryngoscopy.grbas import ITEMS as GRBAS_ITEMS
 from ent.engines.laryngoscopy.reflux_finding_score import ITEMS as RFS_ITEMS
@@ -59,6 +60,11 @@ def _fixtures() -> dict[str, dict[str, object]]:
     }
     rfs = {item: 0 for item in RFS_ITEMS}
     grbas = {item: 1 for item in GRBAS_ITEMS}
+    lm = {}
+    for side in ("right", "left"):
+        for item in LM_SINUS_ITEMS:
+            lm[f"{side}_{item}"] = 0
+        lm[f"{side}_ostiomeatal_complex"] = 0
     return {
         LK_CODE: lk,
         "endoscopy.modified_lund_kennedy": mlk,
@@ -104,6 +110,59 @@ def _fixtures() -> dict[str, dict[str, object]]:
             "hearing_aid_trial_completed": "true",
             "imaging_clearance": "true",
             "communication_impact_assessed": "true",
+        },
+        "prescriptions.pediatric_dose": {
+            "weight_kg": "10",
+            "mg_per_kg_per_day": "80",
+            "doses_per_day": "2",
+        },
+        "prescriptions.steroid_taper": {
+            "start_mg": "30",
+            "step_mg": "5",
+            "days_per_step": "2",
+            "minimum_mg": "5",
+        },
+        "general.bmi": {"weight_kg": "70", "height_cm": "170"},
+        "general.bsa": {
+            "weight_kg": "70",
+            "height_cm": "170",
+            "method": "mosteller",
+        },
+        "general.corrected_age": {
+            "birth_date": "2024-01-01",
+            "as_of_date": "2024-04-01",
+            "gestational_age_weeks": "32",
+            "gestational_age_days": "0",
+        },
+        "endoscopy.lund_mackay": lm,
+        "airway.myer_cotton": {"obstruction_percent": 40},
+        "airway.ett_size": {"age_years": "6"},
+        "surgery.paradise_criteria": {
+            "episodes_last_year": "3",
+            "episodes_year_2": "3",
+            "episodes_year_3": "3",
+            "fever_38_3c": "false",
+            "cervical_adenopathy": "false",
+            "tonsillar_exudate": "false",
+            "positive_strep_a": "false",
+            "episodes_documented": "true",
+        },
+        "surgery.tube_criteria": {
+            "aom_episodes_6_months": "0",
+            "aom_episodes_12_months": "0",
+            "middle_ear_effusion_present": "false",
+            "ome_duration_months": "3",
+            "bilateral_ome": "true",
+            "hearing_difficulty_documented": "true",
+            "at_risk_or_symptomatic_ome": "false",
+        },
+        "surgery.adenotonsillectomy_osa": {
+            "sdb_symptoms_present": "true",
+            "tonsil_brodsky_grade": "3",
+            "adenoid_hypertrophy": "true",
+            "psg_performed": "false",
+            "age_under_3_years": "false",
+            "high_risk_comorbidity": "false",
         },
     }
 
