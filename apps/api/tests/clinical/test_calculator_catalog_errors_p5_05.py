@@ -79,6 +79,26 @@ def test_evaluate_maps_prescription_engine_input_error() -> None:
 
 
 @pytest.mark.clinical
+def test_evaluate_maps_airway_input_error() -> None:
+    from ent.engines.airway.errors import AirwayInputError
+
+    def _boom(_raw: object) -> object:
+        raise AirwayInputError("airway.ett_age_out_of_range")
+
+    spec, _ = catalog._CATALOG["airway.ett_size"]
+    catalog._CATALOG["airway.ett_size"] = (spec, _boom)
+    try:
+        with pytest.raises(CalculatorInputError) as exc:
+            catalog.evaluate_calculator(
+                "airway.ett_size",
+                {"age_years": "6", "cuffed": "true"},
+            )
+        assert exc.value.code == "calculator.clinical_input"
+    finally:
+        catalog._CATALOG["airway.ett_size"] = (spec, catalog._run_ett_size)
+
+
+@pytest.mark.clinical
 def test_evaluate_maps_general_input_error() -> None:
     from ent.engines.general.errors import GeneralCalculatorInputError
 
@@ -98,6 +118,7 @@ def test_evaluate_maps_general_input_error() -> None:
         catalog._CATALOG["general.bmi"] = (spec, catalog._run_bmi)
 
 
+@pytest.mark.clinical
 def test_evaluate_unexpected_error_propagates() -> None:
     def _boom(_raw: object) -> object:
         raise RuntimeError("unexpected")

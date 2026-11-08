@@ -7,6 +7,7 @@ from decimal import Decimal
 
 import pytest
 
+from ent.engines.airway.errors import AirwayInputError
 from ent.engines.airway.ett_size import score as ett_score
 from ent.engines.airway.myer_cotton import score as myer_cotton_score
 from ent.engines.calculator_catalog import evaluate_calculator
@@ -15,14 +16,12 @@ from ent.engines.endoscopy.lund_mackay import score as lund_mackay_score
 from ent.engines.general.bmi import score as bmi_score
 from ent.engines.general.bsa import score as bsa_score
 from ent.engines.general.corrected_age import score as corrected_age_score
-from ent.engines.airway.errors import AirwayInputError
 from ent.engines.general.errors import GeneralCalculatorInputError
-from ent.engines.general.bsa import score as bsa_score
-from ent.engines.surgery.errors import SurgeryChecklistInputError
 from ent.engines.surgery.adenotonsillectomy import (
     AdenotonsillectomyInput,
     adenotonsillectomy_checklist,
 )
+from ent.engines.surgery.errors import SurgeryChecklistInputError
 from ent.engines.surgery.paradise import ParadiseInput, paradise_checklist
 from ent.engines.surgery.tube_criteria import TubeCriteriaInput, tube_criteria_checklist
 
@@ -185,6 +184,7 @@ def test_bmi_out_of_range_height() -> None:
         (Decimal("50"), Decimal("190"), "underweight"),
         (Decimal("77"), Decimal("170"), "overweight"),
         (Decimal("100"), Decimal("170"), "obesity_class_i"),
+        (Decimal("110"), Decimal("170"), "obesity_class_ii"),
         (Decimal("120"), Decimal("170"), "obesity_class_iii"),
     ],
 )
