@@ -40,7 +40,7 @@ endpoint.
 
 ---
 
-## - [ ] P5-04 Score presentation (frontend)
+## - [x] P5-04 Score presentation (frontend)
 
 Total, subscales, severity band, change from previous with the MCID where
 published, trend graph with treatment events marked, item-level view.

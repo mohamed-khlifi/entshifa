@@ -303,3 +303,26 @@ export type OmeEpisodeUpdate = Schemas["OmeEpisodeUpdate"];
 export type OmeEpisodeRead = Schemas["OmeEpisodeRead"];
 export type HearingDeviceType = HearingDeviceRead["deviceType"];
 export type OmeLaterality = OmeEpisodeRead["laterality"];
+
+export type InstrumentSummaryRead = Schemas["InstrumentSummaryRead"];
+export type InstrumentDetailRead = Schemas["InstrumentDetailRead"];
+export type InstrumentLocalizedRead = Schemas["InstrumentLocalizedRead"];
+export type InstrumentScoreRead = Schemas["InstrumentScoreRead"];
+export type PageSchemaInstrumentSummaryRead =
+  Schemas["PageSchema_InstrumentSummaryRead_"];
+export type QuestionnaireResponseRead = Schemas["QuestionnaireResponseRead"];
+export type QuestionnaireResponseDetailRead =
+  Schemas["QuestionnaireResponseDetailRead"];
+export type QuestionnaireResponseItemDetailRead =
+  Schemas["QuestionnaireResponseItemDetailRead"];
+export type QuestionnaireInvitationRead =
+  Schemas["QuestionnaireInvitationRead"];
+export type QuestionnaireInvitationCreatedRead =
+  Schemas["QuestionnaireInvitationCreatedRead"];
+export type PageSchemaQuestionnaireResponseRead =
+  Schemas["PageSchema_QuestionnaireResponseRead_"];
+export type PublicQuestionnaireSessionRead =
+  Schemas["PublicQuestionnaireSessionRead"];
+export type PublicInstrumentItemRead = Schemas["PublicInstrumentItemRead"];
+export type PublicInstrumentOptionRead = Schemas["PublicInstrumentOptionRead"];
+export type QuestionnaireAnswerRead = Schemas["QuestionnaireAnswerRead"];

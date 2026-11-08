@@ -201,6 +201,14 @@ function collectReferencedKeys(sourceRoot) {
       }
       referenced.add(`${ns}.${key}`);
     }
+
+    if (file.replaceAll('\\', '/').endsWith('features/questionnaires/lib/labels.ts')) {
+      for (const match of source.matchAll(
+        /"((?:severityBands|subscales|presentation)\.[^"]+)"/g,
+      )) {
+        referenced.add(`questionnaires.${match[1]}`);
+      }
+    }
   }
 
   return referenced;

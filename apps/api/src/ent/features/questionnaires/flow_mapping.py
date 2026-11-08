@@ -10,6 +10,7 @@ from ent.features.questionnaires.mapping import (
 )
 from ent.features.questionnaires.models import (
     Instrument,
+    InstrumentItem,
     InstrumentVersion,
     QuestionnaireAnswer,
     QuestionnaireInvitation,
@@ -17,11 +18,13 @@ from ent.features.questionnaires.models import (
 )
 from ent.features.questionnaires.schemas.flow_responses import (
     PublicInstrumentItemRead,
+    PublicInstrumentOptionRead,
     PublicInstrumentRead,
     PublicQuestionnaireSessionRead,
     QuestionnaireAnswerRead,
     QuestionnaireInvitationCreatedRead,
     QuestionnaireInvitationRead,
+    QuestionnaireResponseItemDetailRead,
     QuestionnaireResponseRead,
 )
 
@@ -80,14 +83,75 @@ def _answers_by_code(
     return sorted(out, key=lambda a: a.item_code)
 
 
+def _display_locale(response: QuestionnaireResponse, locale: str | None) -> str:
+    return locale if locale is not None else response.locale
+
+
+def _option_text_for_value(
+    version: InstrumentVersion,
+    item: InstrumentItem,
+    value: int,
+    texts: dict[tuple[int | None, int | None], str],
+) -> str:
+    options = _options_for_item(version, item)
+    for opt in options:
+        if int(opt.value) == int(value):
+            return texts.get((None, opt.id), "")
+    return ""
+
+
+def response_item_details(
+    response: QuestionnaireResponse,
+    *,
+    version: InstrumentVersion,
+    display_locale: str,
+) -> list[QuestionnaireResponseItemDetailRead]:
+    texts = _translation_map(version, display_locale)
+    answer_by_item_id = {
+        int(a.instrument_item_id): a for a in response.answers if a.deleted_at is None
+    }
+    details: list[QuestionnaireResponseItemDetailRead] = []
+    for item in sorted(
+        [i for i in version.items if i.deleted_at is None],
+        key=lambda i: i.position,
+    ):
+        answer = answer_by_item_id.get(int(item.id))
+        if answer is None:
+            continue
+        options = _options_for_item(version, item)
+        values = sorted({int(o.value) for o in options})
+        min_value = values[0] if values else int(answer.value)
+        max_value = values[-1] if values else int(answer.value)
+        details.append(
+            QuestionnaireResponseItemDetailRead(
+                code=item.code,
+                position=int(item.position),
+                text=texts.get((item.id, None), ""),
+                subscale=item.subscale,
+                value=int(answer.value),
+                option_text=_option_text_for_value(
+                    version,
+                    item,
+                    int(answer.value),
+                    texts,
+                ),
+                min_value=min_value,
+                max_value=max_value,
+            ),
+        )
+    return details
+
+
 def response_read(
     response: QuestionnaireResponse,
     *,
     instrument: Instrument,
     version: InstrumentVersion,
     encounter_public_id: str | None,
+    display_locale: str | None = None,
 ) -> QuestionnaireResponseRead:
-    texts = _translation_map(version, response.locale)
+    locale = _display_locale(response, display_locale)
+    texts = _translation_map(version, locale)
     title = texts.get((None, None), "")
     subscales = {
         key: Decimal(str(value))
@@ -105,6 +169,9 @@ def response_read(
         severity_band=response.severity_band,
         change_from_previous=response.change_from_previous,
         mcid_reached=response.mcid_reached,
+        min_score=int(instrument.min_score),
+        max_score=int(instrument.max_score),
+        mcid=instrument.mcid,
         encounter_id=encounter_public_id,
         answers=_answers_by_code(version, list(response.answers)),
     )
@@ -124,14 +191,14 @@ def public_instrument_read(
     )
     for item in active_items:
         options = _options_for_item(version, item)
-        option_reads: list[dict[str, object]] = []
+        option_reads: list[PublicInstrumentOptionRead] = []
         for opt in options:
             option_reads.append(
-                {
-                    "value": int(opt.value),
-                    "position": int(opt.position),
-                    "text": texts.get((None, opt.id), ""),
-                },
+                PublicInstrumentOptionRead(
+                    value=int(opt.value),
+                    position=int(opt.position),
+                    text=texts.get((None, opt.id), ""),
+                ),
             )
         items.append(
             PublicInstrumentItemRead(

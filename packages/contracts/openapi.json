@@ -19957,7 +19957,7 @@
           },
           "options": {
             "items": {
-              "type": "object"
+              "$ref": "#/components/schemas/PublicInstrumentOptionRead"
             },
             "title": "Options",
             "type": "array"
@@ -19978,6 +19978,29 @@
           "options"
         ],
         "title": "PublicInstrumentItemRead",
+        "type": "object"
+      },
+      "PublicInstrumentOptionRead": {
+        "properties": {
+          "position": {
+            "title": "Position",
+            "type": "integer"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "value",
+          "position",
+          "text"
+        ],
+        "title": "PublicInstrumentOptionRead",
         "type": "object"
       },
       "PublicInstrumentRead": {
@@ -20367,7 +20390,7 @@
           },
           "items": {
             "items": {
-              "type": "object"
+              "$ref": "#/components/schemas/QuestionnaireResponseItemDetailRead"
             },
             "title": "Items",
             "type": "array"
@@ -20375,6 +20398,21 @@
           "locale": {
             "title": "Locale",
             "type": "string"
+          },
+          "maxScore": {
+            "title": "Maxscore",
+            "type": "integer"
+          },
+          "mcid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mcid"
           },
           "mcidReached": {
             "anyOf": [
@@ -20386,6 +20424,10 @@
               }
             ],
             "title": "Mcidreached"
+          },
+          "minScore": {
+            "title": "Minscore",
+            "type": "integer"
           },
           "publicId": {
             "title": "Publicid",
@@ -20426,9 +20468,67 @@
           "severityBand",
           "changeFromPrevious",
           "mcidReached",
+          "minScore",
+          "maxScore",
+          "mcid",
           "encounterId"
         ],
         "title": "QuestionnaireResponseDetailRead",
+        "type": "object"
+      },
+      "QuestionnaireResponseItemDetailRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "maxValue": {
+            "title": "Maxvalue",
+            "type": "integer"
+          },
+          "minValue": {
+            "title": "Minvalue",
+            "type": "integer"
+          },
+          "optionText": {
+            "title": "Optiontext",
+            "type": "string"
+          },
+          "position": {
+            "title": "Position",
+            "type": "integer"
+          },
+          "subscale": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subscale"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "code",
+          "position",
+          "text",
+          "subscale",
+          "value",
+          "optionText",
+          "minValue",
+          "maxValue"
+        ],
+        "title": "QuestionnaireResponseItemDetailRead",
         "type": "object"
       },
       "QuestionnaireResponseRead": {
@@ -20490,6 +20590,21 @@
             "title": "Locale",
             "type": "string"
           },
+          "maxScore": {
+            "title": "Maxscore",
+            "type": "integer"
+          },
+          "mcid": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mcid"
+          },
           "mcidReached": {
             "anyOf": [
               {
@@ -20500,6 +20615,10 @@
               }
             ],
             "title": "Mcidreached"
+          },
+          "minScore": {
+            "title": "Minscore",
+            "type": "integer"
           },
           "publicId": {
             "title": "Publicid",
@@ -20540,6 +20659,9 @@
           "severityBand",
           "changeFromPrevious",
           "mcidReached",
+          "minScore",
+          "maxScore",
+          "mcid",
           "encounterId"
         ],
         "title": "QuestionnaireResponseRead",
@@ -38031,6 +38153,23 @@
           },
           {
             "in": "query",
+            "name": "locale",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 10,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Locale"
+            }
+          },
+          {
+            "in": "query",
             "name": "limit",
             "required": false,
             "schema": {
@@ -40006,6 +40145,23 @@
             "schema": {
               "title": "Response Id",
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "locale",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 10,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Locale"
             }
           },
           {

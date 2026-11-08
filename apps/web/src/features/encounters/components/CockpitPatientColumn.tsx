@@ -6,10 +6,14 @@ import {
   conceptDisplayText,
   PatientSafetyAlertBanner,
 } from "@/features/patients";
-import { usePatientQuestionnaireResponses } from "@/features/questionnaires";
+import {
+  severityBandLabel,
+  usePatientQuestionnaireResponses,
+} from "@/features/questionnaires";
 import type { EncounterRead, PatientRead } from "@/lib/api/generated";
 import {
   formatDate,
+  formatNumber,
   formatPersonName,
   patientAgeDisplay,
 } from "@/lib/i18n/format";
@@ -124,15 +128,35 @@ export function CockpitPatientColumn({
           {scores.data?.items.length ? (
             scores.data.items.slice(0, 3).map((row) => (
               <li key={row.publicId} className="text-sm">
-                <span className="font-medium">
-                  {row.instrumentTitle ?? row.instrumentCode}
-                </span>{" "}
-                <span>{row.totalScore}</span>
-                <span className="ms-2 text-xs text-muted-foreground">
+                <div>
+                  <span className="font-medium">
+                    {row.instrumentTitle ?? row.instrumentCode}
+                  </span>{" "}
+                  <span className="tabular-nums">
+                    {formatNumber(Number(row.totalScore), locale)}
+                  </span>
+                  {severityBandLabel(tQ, row.severityBand) ? (
+                    <span className="ms-2 text-xs text-primary">
+                      {severityBandLabel(tQ, row.severityBand)}
+                    </span>
+                  ) : null}
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  {formatDate(row.completedAt, locale, { dateStyle: "short" })}
+                  {row.changeFromPrevious !== null &&
+                  row.changeFromPrevious !== undefined
+                    ? ` · ${tQ("presentation.changeValue", {
+                        delta: Number(row.changeFromPrevious),
+                      })}`
+                    : ""}
+                  {row.mcidReached ? ` · ${tQ("presentation.mcidShort")}` : ""}
+                  {" · "}
                   {row.enteredBy === "patient"
                     ? tQ("delivery.provenancePatient")
-                    : tQ("delivery.provenanceStaff")}
-                </span>
+                    : row.enteredBy === "clinician"
+                      ? tQ("delivery.provenanceClinician")
+                      : tQ("delivery.provenanceStaff")}
+                </p>
               </li>
             ))
           ) : (

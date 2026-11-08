@@ -329,6 +329,17 @@ export const testIds = {
     runnerComplete: testId("questionnaires", "runner-complete"),
     cockpitScores: testId("questionnaires", "cockpit-scores"),
     patientPage: testId("questionnaires", "patient-page"),
+    scoreCard: testId("questionnaires", "score-card"),
+    totalScore: testId("questionnaires", "total-score"),
+    severityBand: testId("questionnaires", "severity-band"),
+    changeFromPrevious: testId("questionnaires", "change-from-previous"),
+    mcidBadge: testId("questionnaires", "mcid-badge"),
+    subscaleList: testId("questionnaires", "subscale-list"),
+    trendChart: testId("questionnaires", "trend-chart"),
+    trendEmpty: testId("questionnaires", "trend-empty"),
+    trendEventMarker: testId("questionnaires", "trend-event-marker"),
+    itemBreakdown: testId("questionnaires", "item-breakdown"),
+    itemSubscaleFilter: testId("questionnaires", "item-subscale-filter"),
   },
   examination: {
     root: testId("examination", "root"),
@@ -1078,6 +1089,18 @@ export function prescriptionTemplateTestId(publicId: string): string {
 export function prescriptionAlertTestId(code: string): string {
   const segment = code.replace(/^prescription\./, "").replace(/_/g, "-");
   return testId("prescriptions", "alert", segment);
+}
+
+export function questionnaireResponseRowTestId(publicId: string): string {
+  return publicIdTestId("questionnaires.response", publicId);
+}
+
+export function questionnaireTrendPointTestId(publicId: string): string {
+  return publicIdTestId("questionnaires.trend-point", publicId);
+}
+
+export function questionnaireItemRowTestId(itemCode: string): string {
+  return testId("questionnaires", "item", examinationToken(itemCode));
 }
 
 export function publicIdTestId(scope: string, publicId: string): string {

@@ -39,6 +39,17 @@ class QuestionnaireAnswerRead(CamelModel):
     value: int
 
 
+class QuestionnaireResponseItemDetailRead(CamelModel):
+    code: str
+    position: int
+    text: str
+    subscale: str | None
+    value: int
+    option_text: str
+    min_value: int
+    max_value: int
+
+
 class QuestionnaireResponseRead(CamelModel):
     public_id: str
     instrument_code: str
@@ -51,19 +62,28 @@ class QuestionnaireResponseRead(CamelModel):
     severity_band: str | None
     change_from_previous: Decimal | None
     mcid_reached: bool | None
+    min_score: int
+    max_score: int
+    mcid: Decimal | None
     encounter_id: str | None
     answers: list[QuestionnaireAnswerRead] = Field(default_factory=list)
 
 
 class QuestionnaireResponseDetailRead(QuestionnaireResponseRead):
-    items: list[dict[str, object]] = Field(default_factory=list)
+    items: list[QuestionnaireResponseItemDetailRead] = Field(default_factory=list)
+
+
+class PublicInstrumentOptionRead(CamelModel):
+    value: int
+    position: int
+    text: str
 
 
 class PublicInstrumentItemRead(CamelModel):
     code: str
     position: int
     text: str
-    options: list[dict[str, object]]
+    options: list[PublicInstrumentOptionRead]
 
 
 class PublicInstrumentRead(CamelModel):

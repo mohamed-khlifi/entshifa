@@ -214,7 +214,7 @@ export const queryKeys = {
     all: ["questionnaires"] as const,
     patientResponses: (
       patientId: string,
-      filters?: { instrumentCode?: string },
+      filters?: { instrumentCode?: string; locale?: string },
     ) =>
       [
         ...queryKeys.questionnaires.all,
@@ -226,8 +226,15 @@ export const queryKeys = {
       [...queryKeys.questionnaires.all, "invitations", patientId] as const,
     publicSession: (token: string) =>
       [...queryKeys.questionnaires.all, "public", token] as const,
-    responseDetail: (responseId: string) =>
-      [...queryKeys.questionnaires.all, "detail", responseId] as const,
+    responseDetail: (responseId: string, locale?: string) =>
+      [
+        ...queryKeys.questionnaires.all,
+        "detail",
+        responseId,
+        locale ?? "",
+      ] as const,
+    instruments: (locale?: string) =>
+      [...queryKeys.questionnaires.all, "instruments", locale ?? ""] as const,
   },
   terminology: {
     all: ["terminology"] as const,

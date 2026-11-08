@@ -102,6 +102,7 @@ async def list_questionnaire_responses(
     patient_id: str,
     instrument_code: str | None = Query(default=None, max_length=40),
     encounter_id: str | None = Query(default=None, max_length=26),
+    locale: str | None = Query(default=None, max_length=10),
     limit: int = Query(default=25, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
     user: CurrentUser = Depends(require(Permission.PATIENT_READ_CLINIC)),
@@ -113,6 +114,7 @@ async def list_questionnaire_responses(
         instrument_code=instrument_code,
         encounter_id=encounter_id,
         page=_page(limit, offset),
+        display_locale=locale,
     )
 
 
@@ -122,7 +124,12 @@ async def list_questionnaire_responses(
 )
 async def get_questionnaire_response(
     response_id: str,
+    locale: str | None = Query(default=None, max_length=10),
     user: CurrentUser = Depends(require(Permission.PATIENT_READ_CLINIC)),
     service: QuestionnaireFlowService = Depends(get_questionnaire_flow_service),
 ) -> QuestionnaireResponseDetailRead:
-    return await service.get_response(user=user, response_id=response_id)
+    return await service.get_response(
+        user=user,
+        response_id=response_id,
+        display_locale=locale,
+    )

@@ -46,6 +46,7 @@ from ent.features.questionnaires.flow_mapping import (
     invitation_created,
     invitation_read,
     public_session_read,
+    response_item_details,
     response_read,
 )
 from ent.features.questionnaires.flow_repository import (
@@ -296,6 +297,7 @@ class QuestionnaireFlowService:
         instrument_code: str | None,
         encounter_id: str | None,
         page: PaginationParams | None,
+        display_locale: str | None = None,
     ) -> PageSchema[QuestionnaireResponseRead]:
         set_clinic_id(user.clinic_id)
         patient = await self._require_patient(user, patient_id)
@@ -333,7 +335,13 @@ class QuestionnaireFlowService:
                 int(row.instrument_version_id),
             )
             reads.append(
-                await self._to_response_read(user, row, instrument, version),
+                await self._to_response_read(
+                    user,
+                    row,
+                    instrument,
+                    version,
+                    display_locale=display_locale,
+                ),
             )
         await self._session.commit()
         return PageSchema(
@@ -350,6 +358,7 @@ class QuestionnaireFlowService:
         *,
         user: CurrentUser,
         response_id: str,
+        display_locale: str | None = None,
     ) -> QuestionnaireResponseDetailRead:
         set_clinic_id(user.clinic_id)
         row = await QuestionnaireResponseRepository(
@@ -370,9 +379,21 @@ class QuestionnaireFlowService:
             user,
             int(row.instrument_version_id),
         )
-        base = await self._to_response_read(user, row, instrument, version)
+        base = await self._to_response_read(
+            user,
+            row,
+            instrument,
+            version,
+            display_locale=display_locale,
+        )
+        locale = display_locale or row.locale
+        items = response_item_details(
+            row,
+            version=version,
+            display_locale=locale,
+        )
         await self._session.commit()
-        return QuestionnaireResponseDetailRead(**base.model_dump())
+        return QuestionnaireResponseDetailRead(**base.model_dump(), items=items)
 
     async def public_get_session(
         self,
@@ -588,6 +609,8 @@ class QuestionnaireFlowService:
         row: QuestionnaireResponse,
         instrument: Instrument,
         version: InstrumentVersion,
+        *,
+        display_locale: str | None = None,
     ) -> QuestionnaireResponseRead:
         encounter_public: str | None = None
         if row.encounter_id is not None:
@@ -602,6 +625,7 @@ class QuestionnaireFlowService:
             instrument=instrument,
             version=version,
             encounter_public_id=encounter_public,
+            display_locale=display_locale,
         )
 
     async def _instrument_for_version(

@@ -8734,11 +8734,20 @@ export interface components {
             /** Code */
             code: string;
             /** Options */
-            options: Record<string, never>[];
+            options: components["schemas"]["PublicInstrumentOptionRead"][];
             /** Position */
             position: number;
             /** Text */
             text: string;
+        };
+        /** PublicInstrumentOptionRead */
+        PublicInstrumentOptionRead: {
+            /** Position */
+            position: number;
+            /** Text */
+            text: string;
+            /** Value */
+            value: number;
         };
         /** PublicInstrumentRead */
         PublicInstrumentRead: {
@@ -8890,11 +8899,17 @@ export interface components {
             /** Instrumenttitle */
             instrumentTitle: string | null;
             /** Items */
-            items?: Record<string, never>[];
+            items?: components["schemas"]["QuestionnaireResponseItemDetailRead"][];
             /** Locale */
             locale: string;
+            /** Maxscore */
+            maxScore: number;
+            /** Mcid */
+            mcid: string | null;
             /** Mcidreached */
             mcidReached: boolean | null;
+            /** Minscore */
+            minScore: number;
             /** Publicid */
             publicId: string;
             /** Severityband */
@@ -8905,6 +8920,25 @@ export interface components {
             };
             /** Totalscore */
             totalScore: string;
+        };
+        /** QuestionnaireResponseItemDetailRead */
+        QuestionnaireResponseItemDetailRead: {
+            /** Code */
+            code: string;
+            /** Maxvalue */
+            maxValue: number;
+            /** Minvalue */
+            minValue: number;
+            /** Optiontext */
+            optionText: string;
+            /** Position */
+            position: number;
+            /** Subscale */
+            subscale: string | null;
+            /** Text */
+            text: string;
+            /** Value */
+            value: number;
         };
         /** QuestionnaireResponseRead */
         QuestionnaireResponseRead: {
@@ -8927,8 +8961,14 @@ export interface components {
             instrumentTitle: string | null;
             /** Locale */
             locale: string;
+            /** Maxscore */
+            maxScore: number;
+            /** Mcid */
+            mcid: string | null;
             /** Mcidreached */
             mcidReached: boolean | null;
+            /** Minscore */
+            minScore: number;
             /** Publicid */
             publicId: string;
             /** Severityband */
@@ -16025,6 +16065,7 @@ export interface operations {
             query?: {
                 instrument_code?: string | null;
                 encounter_id?: string | null;
+                locale?: string | null;
                 limit?: number;
                 offset?: number;
             };
@@ -16873,7 +16914,9 @@ export interface operations {
     };
     get_questionnaire_response_api_v1_questionnaire_responses__response_id__get: {
         parameters: {
-            query?: never;
+            query?: {
+                locale?: string | null;
+            };
             header?: {
                 "X-Clinic-Id"?: string | null;
             };

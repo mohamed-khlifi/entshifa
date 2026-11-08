@@ -12,7 +12,7 @@ import {
   usePublicQuestionnaireSession,
   useSubmitPublicQuestionnaire,
 } from "../hooks/use-questionnaire-queries";
-import type { PublicInstrumentItem } from "../types";
+import type { PublicInstrumentItemRead } from "@/lib/api/generated";
 
 type PublicQuestionnaireRunnerProps = {
   token: string;
@@ -30,7 +30,7 @@ export function PublicQuestionnaireRunner({
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [done, setDone] = useState(false);
 
-  const items: PublicInstrumentItem[] = useMemo(
+  const items: PublicInstrumentItemRead[] = useMemo(
     () =>
       session.data
         ? [...session.data.instrument.items].sort(
