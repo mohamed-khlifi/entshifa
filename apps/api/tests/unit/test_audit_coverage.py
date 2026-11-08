@@ -13,6 +13,7 @@ from ent.features.audiology.evoked_service import AbrResultService, OaeResultSer
 from ent.features.audiology.service import AudiologyService
 from ent.features.audiology.speech_service import SpeechAudiometryService
 from ent.features.audiology.tympanometry_service import TympanometryService
+from ent.features.calculators.service import CalculatorService
 from ent.features.documents.service import DocumentService
 from ent.features.documents.templates.service import DocumentTemplateService
 from ent.features.encounters.service import EncounterService
@@ -64,6 +65,7 @@ def test_clinical_read_methods_record_access() -> None:
         (OaeResultService, ("list_", "get_")),
         (AbrResultService, ("list_", "get_")),
         (QuestionnaireFlowService, ("list_", "get_", "public_get_")),
+        (CalculatorService, ("list_", "get_")),
     )
     missing: list[str] = []
     for cls, prefixes in expectations:

@@ -87,6 +87,7 @@ COLLECTION_ROUTES = frozenset(
         ("GET", "/api/v1/oae-results"),
         ("GET", "/api/v1/abr-results"),
         ("GET", "/api/v1/instruments"),
+        ("GET", "/api/v1/calculators"),
     }
 )
 

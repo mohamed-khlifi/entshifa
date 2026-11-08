@@ -226,6 +226,39 @@ class PrescriptionTemplateRepository(BaseRepository[PrescriptionTemplate]):
 class CalculationResultRepository(BaseRepository[CalculationResultRow]):
     model = CalculationResultRow
 
+    async def list_for_patient(
+        self,
+        *,
+        patient_id: int,
+        page: PaginationParams,
+        calculator_code: str | None = None,
+        encounter_id: int | None = None,
+    ) -> Page[CalculationResultRow]:
+        resolved = normalize_pagination(page)
+        stmt = self._base_query().where(CalculationResultRow.patient_id == patient_id)
+        if calculator_code is not None:
+            stmt = stmt.where(CalculationResultRow.calculator_code == calculator_code)
+        if encounter_id is not None:
+            stmt = stmt.where(CalculationResultRow.encounter_id == encounter_id)
+        stmt = stmt.order_by(
+            CalculationResultRow.computed_at.desc(),
+            CalculationResultRow.id.desc(),
+        )
+        total_value = (
+            await self.session.execute(
+                select(func.count()).select_from(stmt.subquery())
+            )
+        ).scalar_one()
+        rows = list(
+            (await self.session.scalars(apply_pagination(stmt, resolved))).all()
+        )
+        return Page(
+            items=rows,
+            total=int(total_value or 0),
+            limit=resolved.limit,
+            offset=resolved.offset,
+        )
+
     async def list_for_procedures(
         self,
         procedure_record_ids: list[int],

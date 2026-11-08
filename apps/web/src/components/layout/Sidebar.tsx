@@ -39,6 +39,7 @@ export function Sidebar() {
   const patientsActive = pathname.startsWith("/patients");
   const scheduleActive = pathname.startsWith("/schedule");
   const recallsActive = pathname.startsWith("/recalls");
+  const calculatorsActive = pathname.startsWith("/calculators");
   const templatesActive = pathname.startsWith("/admin/templates");
 
   return (
@@ -77,6 +78,13 @@ export function Sidebar() {
             {t("nav.recalls")}
           </Link>
         ) : null}
+        <Link
+          href="/calculators"
+          className={navClass(calculatorsActive)}
+          {...testIdProps(testIds.calculators.nav)}
+        >
+          {t("nav.calculators")}
+        </Link>
         <Link href="/settings/security" className={navClass(securityActive)}>
           {t("nav.security")}
         </Link>

@@ -210,6 +210,13 @@ export const queryKeys = {
       offset?: number;
     }) => [...queryKeys.recalls.all, "list", filters ?? {}] as const,
   },
+  calculators: {
+    all: ["calculators"] as const,
+    list: (filters?: { domain?: string }) =>
+      [...queryKeys.calculators.all, "list", filters ?? {}] as const,
+    detail: (code: string) =>
+      [...queryKeys.calculators.all, "detail", code] as const,
+  },
   questionnaires: {
     all: ["questionnaires"] as const,
     patientResponses: (

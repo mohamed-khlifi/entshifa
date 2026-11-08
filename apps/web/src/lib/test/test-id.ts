@@ -643,6 +643,18 @@ export const testIds = {
     devices: testId("otology", "devices"),
     map: testId("otology", "map"),
   },
+  calculators: {
+    nav: testId("calculators", "nav"),
+    workspace: testId("calculators", "workspace"),
+    loading: testId("calculators", "loading"),
+    form: testId("calculators", "form"),
+    submit: testId("calculators", "submit"),
+    reset: testId("calculators", "reset"),
+    saveToggle: testId("calculators", "save-toggle"),
+    resultEmpty: testId("calculators", "result-empty"),
+    resultValue: testId("calculators", "result-value"),
+    flags: testId("calculators", "flags"),
+  },
   audiology: {
     root: testId("audiology", "root"),
     loading: testId("audiology", "loading"),
@@ -1089,6 +1101,19 @@ export function prescriptionTemplateTestId(publicId: string): string {
 export function prescriptionAlertTestId(code: string): string {
   const segment = code.replace(/^prescription\./, "").replace(/_/g, "-");
   return testId("prescriptions", "alert", segment);
+}
+
+export function calculatorNavItemTestId(code: string): string {
+  const segment = code.toLowerCase().replaceAll(".", "-");
+  return testId("calculators", "nav-item", segment);
+}
+
+export function calculatorFieldTestId(name: string): string {
+  return testId(
+    "calculators",
+    "field",
+    name.toLowerCase().replaceAll("_", "-"),
+  );
 }
 
 export function questionnaireResponseRowTestId(publicId: string): string {

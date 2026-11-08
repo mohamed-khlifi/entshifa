@@ -15,6 +15,7 @@ from ent.core.errors.handlers import register_exception_handlers
 from ent.features.attachments.router import router as attachments_router
 from ent.features.audiology.router import router as audiology_router
 from ent.features.auth.router import router as auth_router
+from ent.features.calculators.router import router as calculators_router
 from ent.features.clinics.router import router as clinics_router
 from ent.features.diagnoses.router import router as diagnoses_router
 from ent.features.documents.router import router as documents_router
@@ -100,6 +101,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(laryngoscopy_router)
     app.include_router(otology_router)
     app.include_router(office_procedures_router)
+    app.include_router(calculators_router)
     app.include_router(questionnaires_router)
     app.include_router(questionnaire_flow_router)
     app.include_router(questionnaire_public_router)

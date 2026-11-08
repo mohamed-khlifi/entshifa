@@ -1,0 +1,183 @@
+{
+  "selectPlaceholder": "Choose…",
+  "actions": {
+    "calculate": "Calculate",
+    "reset": "Reset fields",
+    "saveToConsultation": "Save to consultation"
+  },
+  "catalog": {
+    "endoscopy_adenoid_obstruction": "Adenoid obstruction (%)",
+    "endoscopy_lund_kennedy": "Lund-Kennedy endoscopic score",
+    "endoscopy_modified_lund_kennedy": "Modified Lund-Kennedy score",
+    "endoscopy_polyp_grade": "Nasal polyp grade",
+    "laryngoscopy_grbas": "GRBAS voice grade",
+    "laryngoscopy_penetration_aspiration": "Penetration-Aspiration Scale",
+    "laryngoscopy_reflux_finding_score": "Reflux Finding Score (RFS)",
+    "audiology_pta": "Pure-tone average (PTA)",
+    "audiology_air_bone_gap": "Air-bone gap",
+    "audiology_who_grade": "WHO hearing grade",
+    "audiology_loss_type": "Suggested loss type",
+    "audiology_configuration": "Audiogram configuration",
+    "audiology_interaural_difference": "Interaural difference",
+    "audiology_impairment": "Hearing impairment (%)",
+    "audiology_asymmetry": "Asymmetry criterion",
+    "audiology_threshold_shift": "Threshold shift",
+    "audiology_speech_pta_agreement": "Speech–PTA agreement",
+    "audiology_jerger_tympanogram": "Jerger tympanogram",
+    "audiology_abr_latencies": "ABR interpeak intervals",
+    "audiology_ehdi_136": "EHDI 1-3-6 benchmarks",
+    "audiology_device_candidacy": "Device candidacy checklist"
+  },
+  "domains": {
+    "audiology": "Audiology",
+    "endoscopy": "Nasal endoscopy",
+    "laryngoscopy": "Laryngoscopy",
+    "prescriptions": "Prescriptions",
+    "recalls": "Recalls",
+    "scoring": "Scoring"
+  },
+  "empty": {
+    "result": "Enter values and run the calculator. The server computes every clinical number."
+  },
+  "fields": {
+    "audiology": {
+      "abrThreshold": "Interaural wave V threshold (ms)",
+      "adjacentCount": "Adjacent-frequency count",
+      "adjacentDb": "Adjacent-frequency difference (dB)",
+      "air_left_250": "Left air 250 Hz",
+      "air_left_500": "Left air 500 Hz",
+      "air_left_1000": "Left air 1 kHz",
+      "air_left_2000": "Left air 2 kHz",
+      "air_left_3000": "Left air 3 kHz",
+      "air_left_4000": "Left air 4 kHz",
+      "air_left_6000": "Left air 6 kHz",
+      "air_left_8000": "Left air 8 kHz",
+      "air_right_250": "Right air 250 Hz",
+      "air_right_500": "Right air 500 Hz",
+      "air_right_1000": "Right air 1 kHz",
+      "air_right_2000": "Right air 2 kHz",
+      "air_right_3000": "Right air 3 kHz",
+      "air_right_4000": "Right air 4 kHz",
+      "air_right_6000": "Right air 6 kHz",
+      "air_right_8000": "Right air 8 kHz",
+      "asOfDate": "As-of date",
+      "birthDate": "Birth date",
+      "bone_left_500": "Left bone 500 Hz",
+      "bone_left_1000": "Left bone 1 kHz",
+      "bone_left_2000": "Left bone 2 kHz",
+      "bone_left_4000": "Left bone 4 kHz",
+      "bone_right_500": "Right bone 500 Hz",
+      "bone_right_1000": "Right bone 1 kHz",
+      "bone_right_2000": "Right bone 2 kHz",
+      "bone_right_4000": "Right bone 4 kHz",
+      "communicationImpact": "Communication impact assessed",
+      "complianceMl": "Static compliance",
+      "contralateralWaveV": "Contralateral wave V (ms)",
+      "diagnosticAbrDate": "Diagnostic ABR date",
+      "ecvMl": "Ear canal volume",
+      "formula3freq": "3-frequency PTA",
+      "formula4freqWho": "4-frequency PTA (WHO)",
+      "formulaFletcher": "Fletcher formula",
+      "formulaHighFreq": "High-frequency PTA",
+      "gradientDapa": "Gradient",
+      "haTrialCompleted": "Hearing-aid trial completed",
+      "imagingClearance": "Imaging and medical clearance",
+      "interventionDate": "Intervention date",
+      "lossConductive": "Conductive",
+      "lossMixed": "Mixed",
+      "lossSensorineural": "Sensorineural",
+      "lossTypeLeft": "Loss type (left)",
+      "lossTypeRight": "Loss type (right)",
+      "peakPressureDapa": "Peak pressure",
+      "permanentHearingLoss": "Permanent hearing loss",
+      "ptaFormula": "PTA formula",
+      "ptaLeft": "PTA left",
+      "ptaRight": "PTA right",
+      "rescreenDate": "Rescreen date",
+      "ruleAsha": "ASHA ototoxicity",
+      "ruleOccupational": "Occupational STS",
+      "screenDate": "Screening date",
+      "screenRefer": "Screen refer result",
+      "shiftRule": "Shift rule",
+      "singleDb": "Single-frequency difference (dB)",
+      "speechLeft": "WRS left (%)",
+      "speechRight": "WRS right (%)",
+      "srtDb": "SRT",
+      "waveI": "Wave I latency",
+      "waveIii": "Wave III latency",
+      "waveV": "Wave V latency",
+      "wrsLeft": "WRS left (%)",
+      "wrsPercent": "WRS difference (%)",
+      "wrsRight": "WRS right (%)"
+    },
+    "endoscopy": {
+      "adenoidPercent": "Choanal obstruction",
+      "lk": {
+        "crusting": { "left": "Crusting (left)", "right": "Crusting (right)" },
+        "discharge": { "left": "Discharge (left)", "right": "Discharge (right)" },
+        "edema": { "left": "Edema (left)", "right": "Edema (right)" },
+        "polyps": { "left": "Polyps (left)", "right": "Polyps (right)" },
+        "scarring": { "left": "Scarring (left)", "right": "Scarring (right)" }
+      },
+      "modifiedLk": {
+        "discharge": { "left": "Discharge (left)", "right": "Discharge (right)" },
+        "edema": { "left": "Edema (left)", "right": "Edema (right)" },
+        "polyps": { "left": "Polyps (left)", "right": "Polyps (right)" }
+      },
+      "polypScale": "Polyp scale",
+      "scaleLildholdt": "Lildholdt (0–3)",
+      "scaleMeltzer": "Meltzer (0–4)"
+    },
+    "laryngoscopy": {
+      "grbas": {
+        "asthenia": "Asthenia",
+        "breathiness": "Breathiness",
+        "grade": "Overall grade",
+        "roughness": "Roughness",
+        "strain": "Strain"
+      },
+      "pasLevel": "PAS level",
+      "rfs": {
+        "diffuse_laryngeal_edema": "Diffuse laryngeal edema",
+        "erythema": "Erythema",
+        "granuloma": "Granuloma",
+        "posterior_commissure_hypertrophy": "Posterior commissure hypertrophy",
+        "subglottic_edema": "Subglottic edema",
+        "thick_endolaryngeal_mucus": "Thick endolaryngeal mucus",
+        "ventricular_obliteration": "Ventricular obliteration",
+        "vocal_fold_edema": "Vocal fold edema"
+      }
+    },
+    "shared": {
+      "ear": "Ear",
+      "earLeft": "Left",
+      "earRight": "Right",
+      "sideLeft": "Left",
+      "sideRight": "Right"
+    }
+  },
+  "flags": {
+    "title": "Clinical flags"
+  },
+  "history": {
+    "empty": "No saved calculations for this patient yet.",
+    "title": "Saved on chart"
+  },
+  "loading": "Loading calculators…",
+  "selectPrompt": "Select a calculator from the list.",
+  "page": {
+    "description": "Server-side clinical formulas with cited references. Nothing is computed in the browser.",
+    "title": "Clinical calculators"
+  },
+  "result": {
+    "formula": "Formula",
+    "reference": "Reference",
+    "title": "Result",
+    "version": "Engine version"
+  },
+  "save": {
+    "encounterId": "Encounter",
+    "patientId": "Patient",
+    "title": "Attach to chart"
+  }
+}

@@ -1260,7 +1260,7 @@ def _taper_payload(
 def _calculation_row(
     user: CurrentUser,
     patient: Patient,
-    encounter: Encounter,
+    encounter: Encounter | None,
     result: CalculationResult,
     now: datetime,
 ) -> CalculationResultRow:
@@ -1268,7 +1268,7 @@ def _calculation_row(
         public_id=new_ulid(),
         clinic_id=user.clinic_id,
         patient_id=int(patient.id),
-        encounter_id=int(encounter.id),
+        encounter_id=None if encounter is None else int(encounter.id),
         calculator_code=result.code,
         engine_version=result.version,
         inputs=dict(result.inputs),

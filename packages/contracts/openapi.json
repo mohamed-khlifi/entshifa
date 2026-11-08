@@ -2833,6 +2833,26 @@
         "title": "BotulinumWrite",
         "type": "object"
       },
+      "CalculationFlagRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "detail": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Detail",
+            "type": "object"
+          }
+        },
+        "required": [
+          "code"
+        ],
+        "title": "CalculationFlagRead",
+        "type": "object"
+      },
       "CalculationRead": {
         "properties": {
           "code": {
@@ -2892,6 +2912,282 @@
           "inputs"
         ],
         "title": "CalculationRead",
+        "type": "object"
+      },
+      "CalculationResultRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "computedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Computedat"
+          },
+          "flags": {
+            "items": {
+              "$ref": "#/components/schemas/CalculationFlagRead"
+            },
+            "title": "Flags",
+            "type": "array"
+          },
+          "formula": {
+            "title": "Formula",
+            "type": "string"
+          },
+          "inputs": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "Inputs",
+            "type": "object"
+          },
+          "reference": {
+            "title": "Reference",
+            "type": "string"
+          },
+          "savedResultId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Savedresultid"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "value",
+          "unit",
+          "inputs",
+          "formula",
+          "version",
+          "reference"
+        ],
+        "title": "CalculationResultRead",
+        "type": "object"
+      },
+      "CalculatorEvaluateRequest": {
+        "properties": {
+          "encounterId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterid"
+          },
+          "inputs": {
+            "title": "Inputs",
+            "type": "object"
+          },
+          "patientId": {
+            "anyOf": [
+              {
+                "maxLength": 26,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Patientid"
+          },
+          "saveToConsultation": {
+            "default": false,
+            "title": "Savetoconsultation",
+            "type": "boolean"
+          }
+        },
+        "title": "CalculatorEvaluateRequest",
+        "type": "object"
+      },
+      "CalculatorInputFieldRead": {
+        "properties": {
+          "defaultValue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Defaultvalue"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "labelKey": {
+            "title": "Labelkey",
+            "type": "string"
+          },
+          "maxValue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maxvalue"
+          },
+          "minValue": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Minvalue"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/CalculatorInputOptionRead"
+            },
+            "title": "Options",
+            "type": "array"
+          },
+          "required": {
+            "title": "Required",
+            "type": "boolean"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          }
+        },
+        "required": [
+          "name",
+          "kind",
+          "required",
+          "labelKey"
+        ],
+        "title": "CalculatorInputFieldRead",
+        "type": "object"
+      },
+      "CalculatorInputOptionRead": {
+        "properties": {
+          "labelKey": {
+            "title": "Labelkey",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "labelKey"
+        ],
+        "title": "CalculatorInputOptionRead",
+        "type": "object"
+      },
+      "CalculatorSpecRead": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "domain": {
+            "title": "Domain",
+            "type": "string"
+          },
+          "formula": {
+            "title": "Formula",
+            "type": "string"
+          },
+          "inputs": {
+            "items": {
+              "$ref": "#/components/schemas/CalculatorInputFieldRead"
+            },
+            "title": "Inputs",
+            "type": "array"
+          },
+          "interactive": {
+            "title": "Interactive",
+            "type": "boolean"
+          },
+          "reference": {
+            "title": "Reference",
+            "type": "string"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "domain",
+          "version",
+          "reference",
+          "unit",
+          "formula",
+          "interactive"
+        ],
+        "title": "CalculatorSpecRead",
         "type": "object"
       },
       "CandidacyConfirm": {
@@ -14445,6 +14741,26 @@
         "title": "PageSchema[AudiogramRead]",
         "type": "object"
       },
+      "PageSchema_CalculatorSpecRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CalculatorSpecRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[CalculatorSpecRead]",
+        "type": "object"
+      },
       "PageSchema_ConceptAdminRead_": {
         "properties": {
           "items": {
@@ -15063,6 +15379,26 @@
           "page"
         ],
         "title": "PageSchema[RecallRead]",
+        "type": "object"
+      },
+      "PageSchema_SavedCalculationResultRead_": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SavedCalculationResultRead"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "page": {
+            "$ref": "#/components/schemas/PageMeta"
+          }
+        },
+        "required": [
+          "items",
+          "page"
+        ],
+        "title": "PageSchema[SavedCalculationResultRead]",
         "type": "object"
       },
       "PageSchema_SchedulableDoctorRead_": {
@@ -21826,6 +22162,92 @@
         "title": "SafetyOverrideWrite",
         "type": "object"
       },
+      "SavedCalculationResultRead": {
+        "properties": {
+          "calculatorCode": {
+            "title": "Calculatorcode",
+            "type": "string"
+          },
+          "computedAt": {
+            "format": "date-time",
+            "title": "Computedat",
+            "type": "string"
+          },
+          "encounterId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Encounterid"
+          },
+          "engineVersion": {
+            "title": "Engineversion",
+            "type": "string"
+          },
+          "flags": {
+            "items": {
+              "type": "object"
+            },
+            "title": "Flags",
+            "type": "array"
+          },
+          "inputs": {
+            "title": "Inputs",
+            "type": "object"
+          },
+          "patientId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Patientid"
+          },
+          "publicId": {
+            "title": "Publicid",
+            "type": "string"
+          },
+          "reference": {
+            "title": "Reference",
+            "type": "string"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          },
+          "value": {
+            "title": "Value",
+            "type": "string"
+          }
+        },
+        "required": [
+          "publicId",
+          "calculatorCode",
+          "engineVersion",
+          "inputs",
+          "value",
+          "unit",
+          "flags",
+          "reference",
+          "computedAt"
+        ],
+        "title": "SavedCalculationResultRead",
+        "type": "object"
+      },
       "SchedulableDoctorRead": {
         "properties": {
           "firstName": {
@@ -28247,6 +28669,244 @@
         "summary": "Refresh Tokens",
         "tags": [
           "auth"
+        ]
+      }
+    },
+    "/api/v1/calculators": {
+      "get": {
+        "operationId": "list_calculators_api_v1_calculators_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "domain",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 40,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Domain"
+            }
+          },
+          {
+            "in": "query",
+            "name": "interactive_only",
+            "required": false,
+            "schema": {
+              "default": true,
+              "title": "Interactive Only",
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_CalculatorSpecRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Calculators",
+        "tags": [
+          "calculators"
+        ]
+      }
+    },
+    "/api/v1/calculators/{code}": {
+      "get": {
+        "operationId": "get_calculator_api_v1_calculators__code__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "title": "Code",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculatorSpecRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Get Calculator",
+        "tags": [
+          "calculators"
+        ]
+      },
+      "post": {
+        "operationId": "evaluate_calculator_api_v1_calculators__code__post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "title": "Code",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CalculatorEvaluateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CalculationResultRead"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "Evaluate Calculator",
+        "tags": [
+          "calculators"
         ]
       }
     },
@@ -35323,6 +35983,126 @@
         "summary": "Update Newborn Screening",
         "tags": [
           "audiology"
+        ]
+      }
+    },
+    "/api/v1/patients/{patient_id}/calculations": {
+      "get": {
+        "operationId": "list_patient_calculations_api_v1_patients__patient_id__calculations_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "patient_id",
+            "required": true,
+            "schema": {
+              "title": "Patient Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "calculator_code",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 60,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Calculator Code"
+            }
+          },
+          {
+            "in": "query",
+            "name": "encounter_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 26,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Encounter Id"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "X-Clinic-Id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "X-Clinic-Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageSchema_SavedCalculationResultRead_"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "summary": "List Patient Calculations",
+        "tags": [
+          "calculators"
         ]
       }
     },

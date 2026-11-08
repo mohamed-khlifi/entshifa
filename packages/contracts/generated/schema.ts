@@ -680,6 +680,41 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/calculators": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Calculators */
+        get: operations["list_calculators_api_v1_calculators_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/calculators/{code}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Calculator */
+        get: operations["get_calculator_api_v1_calculators__code__get"];
+        put?: never;
+        /** Evaluate Calculator */
+        post: operations["evaluate_calculator_api_v1_calculators__code__post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/clinic": {
         parameters: {
             query?: never;
@@ -1831,6 +1866,23 @@ export interface paths {
         get?: never;
         /** Update Newborn Screening */
         put: operations["update_newborn_screening_api_v1_patients__patient_id__audiology_pediatric_screening_put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/patients/{patient_id}/calculations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Patient Calculations */
+        get: operations["list_patient_calculations_api_v1_patients__patient_id__calculations_get"];
+        put?: never;
         post?: never;
         delete?: never;
         options?: never;
@@ -4023,6 +4075,15 @@ export interface components {
              */
             subtype: "botulinum_injection";
         };
+        /** CalculationFlagRead */
+        CalculationFlagRead: {
+            /** Code */
+            code: string;
+            /** Detail */
+            detail?: {
+                [key: string]: string;
+            };
+        };
         /** CalculationRead */
         CalculationRead: {
             /** Code */
@@ -4041,6 +4102,92 @@ export interface components {
             unit: string | null;
             /** Value */
             value: string;
+            /** Version */
+            version: string;
+        };
+        /** CalculationResultRead */
+        CalculationResultRead: {
+            /** Code */
+            code: string;
+            /** Computedat */
+            computedAt?: string | null;
+            /** Flags */
+            flags?: components["schemas"]["CalculationFlagRead"][];
+            /** Formula */
+            formula: string;
+            /** Inputs */
+            inputs: {
+                [key: string]: string;
+            };
+            /** Reference */
+            reference: string;
+            /** Savedresultid */
+            savedResultId?: string | null;
+            /** Unit */
+            unit: string | null;
+            /** Value */
+            value: string;
+            /** Version */
+            version: string;
+        };
+        /** CalculatorEvaluateRequest */
+        CalculatorEvaluateRequest: {
+            /** Encounterid */
+            encounterId?: string | null;
+            /** Inputs */
+            inputs?: Record<string, never>;
+            /** Patientid */
+            patientId?: string | null;
+            /**
+             * Savetoconsultation
+             * @default false
+             */
+            saveToConsultation: boolean;
+        };
+        /** CalculatorInputFieldRead */
+        CalculatorInputFieldRead: {
+            /** Defaultvalue */
+            defaultValue?: string | null;
+            /** Kind */
+            kind: string;
+            /** Labelkey */
+            labelKey: string;
+            /** Maxvalue */
+            maxValue?: string | null;
+            /** Minvalue */
+            minValue?: string | null;
+            /** Name */
+            name: string;
+            /** Options */
+            options?: components["schemas"]["CalculatorInputOptionRead"][];
+            /** Required */
+            required: boolean;
+            /** Unit */
+            unit?: string | null;
+        };
+        /** CalculatorInputOptionRead */
+        CalculatorInputOptionRead: {
+            /** Labelkey */
+            labelKey: string;
+            /** Value */
+            value: string;
+        };
+        /** CalculatorSpecRead */
+        CalculatorSpecRead: {
+            /** Code */
+            code: string;
+            /** Domain */
+            domain: string;
+            /** Formula */
+            formula: string;
+            /** Inputs */
+            inputs?: components["schemas"]["CalculatorInputFieldRead"][];
+            /** Interactive */
+            interactive: boolean;
+            /** Reference */
+            reference: string;
+            /** Unit */
+            unit: string | null;
             /** Version */
             version: string;
         };
@@ -7267,6 +7414,12 @@ export interface components {
             items: components["schemas"]["AudiogramRead"][];
             page: components["schemas"]["PageMeta"];
         };
+        /** PageSchema[CalculatorSpecRead] */
+        PageSchema_CalculatorSpecRead_: {
+            /** Items */
+            items: components["schemas"]["CalculatorSpecRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
         /** PageSchema[ConceptAdminRead] */
         PageSchema_ConceptAdminRead_: {
             /** Items */
@@ -7451,6 +7604,12 @@ export interface components {
         PageSchema_RecallRead_: {
             /** Items */
             items: components["schemas"]["RecallRead"][];
+            page: components["schemas"]["PageMeta"];
+        };
+        /** PageSchema[SavedCalculationResultRead] */
+        PageSchema_SavedCalculationResultRead_: {
+            /** Items */
+            items: components["schemas"]["SavedCalculationResultRead"][];
             page: components["schemas"]["PageMeta"];
         };
         /** PageSchema[SchedulableDoctorRead] */
@@ -9346,6 +9505,34 @@ export interface components {
             code: "prescription.allergy_conflict" | "prescription.dose_above_maximum";
             /** Reason */
             reason: string;
+        };
+        /** SavedCalculationResultRead */
+        SavedCalculationResultRead: {
+            /** Calculatorcode */
+            calculatorCode: string;
+            /**
+             * Computedat
+             * Format: date-time
+             */
+            computedAt: string;
+            /** Encounterid */
+            encounterId?: string | null;
+            /** Engineversion */
+            engineVersion: string;
+            /** Flags */
+            flags: Record<string, never>[];
+            /** Inputs */
+            inputs: Record<string, never>;
+            /** Patientid */
+            patientId?: string | null;
+            /** Publicid */
+            publicId: string;
+            /** Reference */
+            reference: string;
+            /** Unit */
+            unit: string | null;
+            /** Value */
+            value: string;
         };
         /** SchedulableDoctorRead */
         SchedulableDoctorRead: {
@@ -11790,6 +11977,112 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LoginResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_calculators_api_v1_calculators_get: {
+        parameters: {
+            query?: {
+                domain?: string | null;
+                interactive_only?: boolean;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_CalculatorSpecRead_"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_calculator_api_v1_calculators__code__get: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CalculatorSpecRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    evaluate_calculator_api_v1_calculators__code__post: {
+        parameters: {
+            query?: never;
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                code: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CalculatorEvaluateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["CalculationResultRead"];
                 };
             };
             /** @description Validation Error */
@@ -14881,6 +15174,44 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PediatricAudiologyRead"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_patient_calculations_api_v1_patients__patient_id__calculations_get: {
+        parameters: {
+            query?: {
+                calculator_code?: string | null;
+                encounter_id?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: {
+                "X-Clinic-Id"?: string | null;
+            };
+            path: {
+                patient_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PageSchema_SavedCalculationResultRead_"];
                 };
             };
             /** @description Validation Error */

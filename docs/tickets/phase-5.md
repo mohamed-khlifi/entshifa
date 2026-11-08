@@ -47,7 +47,7 @@ published, trend graph with treatment events marked, item-level view.
 
 ---
 
-## - [ ] P5-05 Calculator registry and endpoint (backend and frontend)
+## - [x] P5-05 Calculator registry and endpoint (backend and frontend)
 
 One registry, one generic endpoint pair, one frontend page that renders any
 calculator from its metadata. Move the phase 3 and 4 engines into it.

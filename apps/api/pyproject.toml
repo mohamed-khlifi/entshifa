@@ -146,6 +146,7 @@ forbidden_modules = [
     "ent.features.laryngoscopy.service",
     "ent.features.otology.service",
     "ent.features.office_procedures.service",
+    "ent.features.calculators.service",
 ]
 
 [[tool.importlinter.contracts]]
