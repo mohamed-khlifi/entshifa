@@ -183,7 +183,7 @@ def test_bmi_out_of_range_height() -> None:
     ("weight", "height", "band"),
     [
         (Decimal("50"), Decimal("190"), "underweight"),
-        (Decimal("90"), Decimal("170"), "overweight"),
+        (Decimal("77"), Decimal("170"), "overweight"),
         (Decimal("100"), Decimal("170"), "obesity_class_i"),
         (Decimal("120"), Decimal("170"), "obesity_class_iii"),
     ],
